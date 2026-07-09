@@ -1,0 +1,96 @@
+.block {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0 0 50px;
+
+  width: 1440px;
+  height: 581px;
+  margin: 0 auto;
+
+  overflow: hidden;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background: url("/block_5.png") center / cover no-repeat;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background: rgba(255, 255, 255, 0.78);
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 100px 0;
+  gap: 60px;
+
+  width: 700px;
+  height: 355px;
+
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.1));
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 20px;
+
+  width: 700px;
+  height: 155px;
+}
+
+.titleLine1 {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 39px;
+
+  color: #0b0b0b;
+}
+
+.titleLine2 {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 38px;
+  text-align: center;
+
+  color: #0b0b0b;
+}
+
+.titleLine3 {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 38px;
+  text-align: right;
+
+  color: #0b0b0b;
+}

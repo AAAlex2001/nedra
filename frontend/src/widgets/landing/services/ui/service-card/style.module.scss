@@ -1,0 +1,115 @@
+.card {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  height: 320px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.imageWrap {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 45%;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.image {
+  object-fit: cover;
+}
+
+.label {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 27px;
+
+  color: #ffffff;
+
+  transition: opacity 0.3s ease;
+}
+
+.overlay {
+  box-sizing: border-box;
+
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  gap: 10px;
+
+  background: #ffffff;
+  border: 1px solid #f69827;
+  border-radius: 20px;
+
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+
+  overflow: hidden;
+}
+
+.card:hover .overlay,
+.card:focus-within .overlay {
+  transform: translateY(0);
+}
+
+.card:hover .label,
+.card:focus-within .label {
+  opacity: 0;
+}
+
+.overlayTitle {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 27px;
+
+  color: #f69827;
+
+  flex: none;
+}
+
+.overlayText {
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}

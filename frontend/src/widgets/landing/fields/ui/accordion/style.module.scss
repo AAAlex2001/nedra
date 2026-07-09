@@ -1,0 +1,90 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 728px;
+}
+
+.item {
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 15px;
+
+  width: 100%;
+  min-height: 82px;
+
+  background: #ffffff;
+  border: 2px solid #d1d1d6;
+  border-radius: 16px;
+
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.itemActive {
+  background: rgba(246, 152, 39, 0.1);
+  border-color: #f69827;
+}
+
+.number {
+  flex: none;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #f69827;
+}
+
+.title {
+  flex: 1;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 27px;
+
+  color: #0b0b0b;
+}
+
+.count {
+  flex: none;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #f69827;
+}
+
+.chevron {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: #797979;
+  transform: rotate(-90deg);
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.chevronActive {
+  color: #f69827;
+  transform: rotate(180deg);
+}

@@ -1,0 +1,139 @@
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0;
+  isolation: isolate;
+
+  width: 1440px;
+  height: 574px;
+  margin: 0 auto;
+}
+
+.headings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 50px;
+  gap: 50px;
+
+  width: 768px;
+  height: 574px;
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  z-index: 0;
+}
+
+.headingsInner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  gap: 30px;
+
+  width: 668px;
+  height: 159px;
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.kicker {
+  width: 668px;
+  height: 21px;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+
+  color: #797979;
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.title {
+  width: 668px;
+  height: 78px;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 38px;
+  text-transform: uppercase;
+
+  color: #0b0b0b;
+
+  flex: none;
+  order: 2;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.titleBold {
+  font-weight: 700;
+}
+
+.pic {
+  width: 597px;
+  height: 574px;
+
+  background: url("/globe/globe.png") no-repeat center / contain;
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  z-index: 1;
+}
+
+.accordion {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 15px;
+
+  position: absolute;
+
+  background: #ffffff;
+  box-shadow: 0px 4px 10px rgba(246, 152, 39, 0.2);
+  border-radius: 6px;
+
+  flex: none;
+  flex-grow: 0;
+}
+
+.accordionText {
+  width: 100%;
+  height: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  text-align: center;
+
+  color: #0b0b0b;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: none;
+  order: 0;
+  flex-grow: 1;
+}

@@ -1,0 +1,33 @@
+.section {
+  box-sizing: border-box;
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 50px;
+  gap: 50px;
+
+  width: 1440px;
+  height: 673px;
+  margin: 0 auto;
+
+  overflow: hidden;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background: url("/block_7.png") center / cover no-repeat;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background: rgba(255, 255, 255, 0.89);
+  pointer-events: none;
+}

@@ -1,0 +1,101 @@
+.card {
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+
+  flex: 1;
+  min-width: 0;
+  height: 365px;
+
+  background: #ffffff;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}
+
+.imageWrap {
+  position: relative;
+  width: 230px;
+  height: 325px;
+  flex: none;
+
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.05));
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 20px;
+
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+.title {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+
+  color: #0b0b0b;
+}
+
+.number {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.point {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.check {
+  flex: none;
+}
