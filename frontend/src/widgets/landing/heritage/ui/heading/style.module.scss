@@ -1,0 +1,25 @@
+.heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 20px;
+
+  width: 100%;
+}
+
+.title {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 39px;
+
+  color: #0b0b0b;
+}
+
+.titleAccent {
+  color: #f69827;
+}

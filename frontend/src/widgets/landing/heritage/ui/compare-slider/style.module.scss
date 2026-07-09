@@ -1,0 +1,85 @@
+.slider {
+  position: relative;
+  width: 639px;
+  height: 352px;
+  flex: none;
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  user-select: none;
+  touch-action: none;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.afterLayer {
+  position: absolute;
+  inset: 0;
+}
+
+.chipBefore,
+.chipAfter {
+  position: absolute;
+  top: 10px;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px 7px;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 15px;
+  text-transform: uppercase;
+
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.chipBefore {
+  left: 10px;
+  background: #797979;
+}
+
+.chipAfter {
+  right: 10px;
+  background: #f69827;
+}
+
+.divider {
+  position: absolute;
+  top: 0;
+  z-index: 4;
+
+  width: 5px;
+  height: 100%;
+  margin-left: -2.5px;
+
+  background: #ffffff;
+  cursor: ew-resize;
+}
+
+.handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  padding: 4px;
+
+  background: #ffffff;
+  border-radius: 100px;
+  transform: translate(-50%, -50%);
+}

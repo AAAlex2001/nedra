@@ -1,0 +1,33 @@
+.section {
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 100px 50px;
+  gap: 50px;
+
+  width: 1440px;
+  margin: 0 auto;
+
+  background: #ffffff;
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 50px;
+
+  width: 100%;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 45px;
+
+  flex: 1;
+  min-width: 0;
+}

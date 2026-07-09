@@ -1,0 +1,24 @@
+.section {
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 100px 50px;
+  gap: 50px;
+
+  width: 1440px;
+  min-height: 1011px;
+  margin: 0 auto;
+
+  background: #ffffff;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 45px;
+
+  width: 100%;
+}
