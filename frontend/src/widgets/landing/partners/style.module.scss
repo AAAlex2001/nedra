@@ -68,7 +68,23 @@
   flex: none;
 
   height: 90px;
-  margin: 0 35px;
+  padding: 0 24px;
+  margin: 0 12px;
+
+  color: #0b0b0b;
+  border-radius: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.cell:hover {
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(246, 152, 39, 0.25);
+  transform: translateY(-2px);
 }
 
 .logo {

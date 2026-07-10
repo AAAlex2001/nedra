@@ -1,0 +1,212 @@
+.footer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 100px 50px 0;
+  gap: 30px;
+
+  width: 1440px;
+  margin: 0 auto;
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 50px;
+
+  width: 100%;
+}
+
+/* --- Бренд --- */
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+
+  flex: none;
+  width: 502px;
+}
+
+.logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.logoIcon {
+  flex: none;
+  width: 38px;
+  height: 38px;
+
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+}
+
+.company {
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33px;
+
+  color: #0b0b0b;
+}
+
+.description {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  background: linear-gradient(90deg, #000a1f 0%, #012e59 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* --- Колонки навигации / контактов --- */
+.nav,
+.contacts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  flex: 1;
+  width: 369px;
+}
+
+.colTitle {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  text-transform: uppercase;
+
+  color: #f69827;
+}
+
+.navList,
+.contactsList {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 100%;
+  list-style: none;
+}
+
+.navLink {
+  display: block;
+  padding: 5px 0;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  text-decoration: none;
+
+  background: linear-gradient(90deg, #000a1f 0%, #012e59 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  transition: -webkit-text-fill-color 0.15s ease;
+}
+
+.navLink:hover {
+  -webkit-text-fill-color: #f69827;
+  color: #f69827;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+
+  width: 100%;
+}
+
+.rowTop {
+  align-items: flex-start;
+}
+
+.icon {
+  flex: none;
+}
+
+.contactText {
+  flex: 1;
+  min-width: 0;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  text-decoration: none;
+
+  color: #0b0b0b;
+  transition: color 0.15s ease;
+}
+
+a.contactText:hover {
+  color: #f69827;
+}
+
+/* --- Нижняя полоса --- */
+.bottom {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 20px 0;
+
+  width: 100%;
+
+  border-top: 1px solid rgba(120, 120, 128, 0.16);
+}
+
+.copyright {
+  flex: 1;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+
+  background: linear-gradient(90deg, #000a1f 0%, #012e59 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.privacy {
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: right;
+  text-decoration-line: underline;
+
+  color: #f69827;
+}

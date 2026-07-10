@@ -1,8 +1,10 @@
 import Activities from "@/widgets/landing/activities";
 import Advantages from "@/widgets/landing/advantages";
+import Contacts from "@/widgets/landing/contacts";
 import Directions from "@/widgets/landing/directions";
 import Documents from "@/widgets/landing/documents";
 import Fields from "@/widgets/landing/fields";
+import Footer from "@/widgets/landing/footer";
 import Heritage from "@/widgets/landing/heritage";
 import Hero from "@/widgets/landing/hero";
 import Institute from "@/widgets/landing/institute";
@@ -26,6 +28,8 @@ export default function Home() {
       <Documents />
       <Advantages />
       <Partners />
+      <Contacts />
+      <Footer />
     </main>
   );
 }

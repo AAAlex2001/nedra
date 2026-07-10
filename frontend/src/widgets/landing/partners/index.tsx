@@ -64,9 +64,16 @@ const Partners = () => {
             gradientWidth={120}
           >
             {row.map((item) => (
-              <span key={item.label} className={styles.cell}>
+              <a
+                key={item.label}
+                className={styles.cell}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={item.label}
+              >
                 <LogoCell item={item} />
-              </span>
+              </a>
             ))}
           </Marquee>
         ))}
