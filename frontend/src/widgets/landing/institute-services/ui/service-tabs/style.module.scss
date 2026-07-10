@@ -1,0 +1,14 @@
+.tabs {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 10px;
+
+  width: 210px;
+  flex: none;
+
+  border: 1px solid #f2f2f7;
+  border-radius: 20px;
+}

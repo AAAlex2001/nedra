@@ -3,11 +3,11 @@ import Advantages from "@/widgets/landing/advantages";
 import Contacts from "@/widgets/landing/contacts";
 import Directions from "@/widgets/landing/directions";
 import Documents from "@/widgets/landing/documents";
-import Fields from "@/widgets/landing/fields";
 import Footer from "@/widgets/landing/footer";
 import Heritage from "@/widgets/landing/heritage";
 import Hero from "@/widgets/landing/hero";
 import Institute from "@/widgets/landing/institute";
+import InstituteServices from "@/widgets/landing/institute-services";
 import Laboratory from "@/widgets/landing/laboratory";
 import Partners from "@/widgets/landing/partners";
 import Quality from "@/widgets/landing/quality";
@@ -19,7 +19,7 @@ export default function Home() {
       <Hero />
       <Directions />
       <Services />
-      <Fields />
+      <InstituteServices />
       <Quality />
       <Laboratory />
       <Activities />

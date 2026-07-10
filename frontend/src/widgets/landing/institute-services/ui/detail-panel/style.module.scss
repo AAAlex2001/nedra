@@ -1,4 +1,4 @@
-.drawer {
+.panel {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -13,10 +13,21 @@
   border-radius: 20px 0 0 20px;
 }
 
-.stack {
+.split {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+
+  width: 100%;
+}
+
+.column {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
-  width: 100%;
+  gap: 20px;
+
+  flex: 1;
+  min-width: 0;
 }

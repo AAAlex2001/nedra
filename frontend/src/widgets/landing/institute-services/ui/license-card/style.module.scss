@@ -26,11 +26,24 @@
   color: #000000;
 }
 
+.note {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #000000;
+}
+
 .columns {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   gap: 10px;
+
   width: 100%;
 }
 
@@ -39,14 +52,17 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
+
   flex: 1;
+  min-width: 0;
 }
 
-.note {
+.colNote {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   gap: 5px;
+
   width: 100%;
 
   font-family: "Gilroy";
@@ -59,10 +75,10 @@
 }
 
 .dot {
+  position: relative;
   flex: none;
   width: 16px;
   height: 16px;
-  position: relative;
 
   &::after {
     content: "";
@@ -81,6 +97,7 @@
   flex-direction: row;
   align-items: center;
   gap: 5px;
+
   width: 100%;
   text-decoration: none;
   color: inherit;
@@ -96,6 +113,7 @@
   justify-content: center;
   gap: 5px;
   flex: 1;
+  min-width: 0;
 }
 
 .fileTitle {

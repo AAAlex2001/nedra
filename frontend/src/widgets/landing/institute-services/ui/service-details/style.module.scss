@@ -1,4 +1,4 @@
-.body {
+.card {
   box-sizing: border-box;
 
   display: flex;
@@ -18,13 +18,14 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
+
   width: 100%;
   padding-bottom: 20px;
   border-bottom: 1px solid #f2f2f7;
 
   &:last-of-type {
-    border-bottom: none;
     padding-bottom: 0;
+    border-bottom: none;
   }
 }
 
@@ -56,17 +57,19 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+
   width: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.item {
+.bullet {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   gap: 5px;
+
   width: 100%;
 
   font-family: "Gilroy";
@@ -79,10 +82,10 @@
 }
 
 .dot {
+  position: relative;
   flex: none;
   width: 16px;
   height: 16px;
-  position: relative;
 
   &::after {
     content: "";
@@ -93,5 +96,36 @@
     top: calc(50% - 2.5px + 1.5px);
     background: #0b0b0b;
     border-radius: 50%;
+  }
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 0;
+  gap: 8px;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: #f69827;
+    }
   }
 }
