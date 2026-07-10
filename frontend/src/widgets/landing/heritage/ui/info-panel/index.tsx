@@ -1,8 +1,12 @@
-import { INFO_PANELS } from "./data";
+import type { InfoPanel } from "../../data";
 import styles from "./style.module.scss";
 
-const InfoPanels = () => {
-  const [servicesPanel, staffPanel] = INFO_PANELS;
+type InfoPanelsProps = {
+  panels: InfoPanel[];
+};
+
+const InfoPanels = ({ panels }: InfoPanelsProps) => {
+  const [servicesPanel, staffPanel] = panels;
 
   return (
     <div className={styles.row}>

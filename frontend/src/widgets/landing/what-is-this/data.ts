@@ -1,10 +1,14 @@
+export const WHAT_IS_THIS_DATA = {
+  title: "ЧТО ЭТО ТАКОЕ",
+};
+
 export type ServiceCardItem = {
   image: string;
   title: string;
   description: string;
 };
 
-export const SERVICE_CARDS: ServiceCardItem[] = [
+export const WHAT_IS_THIS_CARDS: ServiceCardItem[] = [
   {
     image: "/what_is_this/what_is_this_1.png",
     title: "Обоснование безопасности",

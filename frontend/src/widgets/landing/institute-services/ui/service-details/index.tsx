@@ -1,3 +1,4 @@
+import ContactRow from "@/shared/ui/contact-row";
 import { MailIcon, PersonIcon, PhoneIcon } from "@/shared/ui/icons";
 import type { SubService } from "../../data";
 import styles from "./style.module.scss";
@@ -35,20 +36,15 @@ const ServiceDetails = ({ service }: ServiceDetailsProps) => {
       <div className={styles.section}>
         <h4 className={styles.title}>Связаться по направлению</h4>
         <div className={styles.contact}>
-          <div className={styles.row}>
-            <PhoneIcon />
-            <a href={`tel:${contact.phone.replace(/[\s-]/g, "")}`}>{contact.phone}</a>
-          </div>
+          <ContactRow icon={<PhoneIcon />} href={`tel:${contact.phone.replace(/[\s-]/g, "")}`}>
+            {contact.phone}
+          </ContactRow>
           {contact.email && (
-            <div className={styles.row}>
-              <MailIcon />
-              <a href={`mailto:${contact.email}`}>{contact.email}</a>
-            </div>
+            <ContactRow icon={<MailIcon />} href={`mailto:${contact.email}`}>
+              {contact.email}
+            </ContactRow>
           )}
-          <div className={styles.row}>
-            <PersonIcon />
-            <span>{contact.person}</span>
-          </div>
+          <ContactRow icon={<PersonIcon />}>{contact.person}</ContactRow>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import AccentLine from "@/shared/ui/accent-line";
-import { LABORATORY_DATA } from "./data";
+import { LABORATORY_DATA, NUMBERED_CARDS, WIDE_CARDS } from "./data";
 import NumberedCards from "./ui/numbered-card";
 import WideCards from "./ui/wide-card";
 import styles from "./style.module.scss";
@@ -18,10 +18,10 @@ const Laboratory = () => {
       </header>
 
       <div className={styles.grid}>
-        <NumberedCards />
+        <NumberedCards cards={NUMBERED_CARDS} />
 
         <div className={styles.rowWide}>
-          <WideCards />
+          <WideCards cards={WIDE_CARDS} />
         </div>
       </div>
     </section>

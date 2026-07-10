@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DIRECTIONS } from "../../data";
+import { DIRECTIONS, SERVICES_DATA } from "../../data";
 import DetailPanel from "../detail-panel";
 import DirectionList from "../direction-list";
 import Heading from "../heading";
@@ -14,8 +14,8 @@ const Catalog = () => {
   return (
     <div className={styles.catalog}>
       <div className={styles.left}>
-        <Heading />
-        <DirectionList activeId={activeId} onSelect={setActiveId} />
+        <Heading title={SERVICES_DATA.title} subtitle={SERVICES_DATA.subtitle} />
+        <DirectionList directions={DIRECTIONS} activeId={activeId} onSelect={setActiveId} />
       </div>
 
       <DetailPanel key={activeDirection.id} direction={activeDirection} />

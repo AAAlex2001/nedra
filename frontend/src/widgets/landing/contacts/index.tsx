@@ -1,4 +1,5 @@
 import AccentLine from "@/shared/ui/accent-line";
+import ContactRow from "@/shared/ui/contact-row";
 import {
   ClockIcon,
   DirectorIcon,
@@ -35,39 +36,26 @@ const Contacts = () => {
           <AccentLine width={30} />
         </div>
 
-        <ul className={styles.list}>
-          <li className={`${styles.row} ${styles.rowTop}`}>
+        <div className={styles.list}>
+          <div className={`${styles.row} ${styles.rowTop}`}>
             <DirectorIcon className={styles.icon} />
             <div className={styles.person}>
               <span className={styles.personLabel}>{CONTACTS_DATA.director.label}</span>
               <span className={styles.personName}>{CONTACTS_DATA.director.value}</span>
             </div>
-          </li>
+          </div>
 
-          <li className={styles.row}>
-            <PhoneIcon className={styles.icon} />
-            <a className={`${styles.text} ${styles.link}`} href={`tel:${CONTACTS_DATA.phoneHref}`}>
-              {CONTACTS_DATA.phone}
-            </a>
-          </li>
-
-          <li className={styles.row}>
-            <MailIcon className={styles.icon} />
-            <a className={`${styles.text} ${styles.link}`} href={`mailto:${CONTACTS_DATA.email}`}>
-              {CONTACTS_DATA.email}
-            </a>
-          </li>
-
-          <li className={`${styles.row} ${styles.rowTop}`}>
-            <LocationIcon className={styles.icon} />
-            <span className={styles.text}>{CONTACTS_DATA.address}</span>
-          </li>
-
-          <li className={styles.row}>
-            <ClockIcon className={styles.icon} />
-            <span className={styles.text}>{CONTACTS_DATA.schedule}</span>
-          </li>
-        </ul>
+          <ContactRow icon={<PhoneIcon />} href={`tel:${CONTACTS_DATA.phoneHref}`}>
+            {CONTACTS_DATA.phone}
+          </ContactRow>
+          <ContactRow icon={<MailIcon />} href={`mailto:${CONTACTS_DATA.email}`}>
+            {CONTACTS_DATA.email}
+          </ContactRow>
+          <ContactRow icon={<LocationIcon />} align="top">
+            {CONTACTS_DATA.address}
+          </ContactRow>
+          <ContactRow icon={<ClockIcon />}>{CONTACTS_DATA.schedule}</ContactRow>
+        </div>
       </div>
     </section>
   );

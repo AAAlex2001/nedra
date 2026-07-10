@@ -3,7 +3,7 @@ import {
   OfficialCertificateIcon,
   OfficialResultsIcon,
 } from "@/shared/ui/icons";
-import { FEATURE_ITEMS } from "./data";
+import type { FeatureItem } from "../../data";
 import styles from "./style.module.scss";
 
 const ICONS = {
@@ -12,10 +12,14 @@ const ICONS = {
   results: OfficialResultsIcon,
 } as const;
 
-const FeatureList = () => {
+type FeatureListProps = {
+  items: FeatureItem[];
+};
+
+const FeatureList = ({ items }: FeatureListProps) => {
   return (
     <div className={styles.list}>
-      {FEATURE_ITEMS.map((item) => {
+      {items.map((item) => {
         const Icon = ICONS[item.icon];
 
         return (

@@ -1,15 +1,16 @@
 import { ChevronIcon } from "@/shared/ui/icons";
-import { DIRECTIONS, formatServiceCount } from "../../data";
+import { type Direction, formatServiceCount } from "../../data";
 import styles from "./style.module.scss";
 
 type DirectionListProps = {
+  directions: Direction[];
   activeId: string;
   onSelect: (id: string) => void;
 };
 
-const DirectionList = ({ activeId, onSelect }: DirectionListProps) => (
+const DirectionList = ({ directions, activeId, onSelect }: DirectionListProps) => (
   <div className={styles.list} role="tablist">
-    {DIRECTIONS.map((direction) => {
+    {directions.map((direction) => {
       const isActive = direction.id === activeId;
 
       return (

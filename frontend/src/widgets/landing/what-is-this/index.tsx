@@ -1,21 +1,21 @@
 import AccentLine from "@/shared/ui/accent-line";
-import { SERVICES_DATA } from "./data";
+import { WHAT_IS_THIS_CARDS, WHAT_IS_THIS_DATA } from "./data";
 import ServiceCards from "./ui/service-card";
 import styles from "./style.module.scss";
 
-const Services = () => {
+const WhatIsThis = () => {
   return (
     <section className={styles.section}>
       <div className={styles.heading}>
-        <h2 className={styles.title}>{SERVICES_DATA.title}</h2>
+        <h2 className={styles.title}>{WHAT_IS_THIS_DATA.title}</h2>
         <AccentLine width={150} />
       </div>
 
       <div className={styles.grid}>
-        <ServiceCards />
+        <ServiceCards cards={WHAT_IS_THIS_CARDS} />
       </div>
     </section>
   );
 };
 
-export default Services;
+export default WhatIsThis;

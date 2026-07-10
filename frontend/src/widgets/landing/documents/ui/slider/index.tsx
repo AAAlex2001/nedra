@@ -3,11 +3,14 @@
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { useState } from "react";
-import { DOCUMENT_SLIDES } from "./data";
 import styles from "./style.module.scss";
 
-const DocumentsSlider = () => {
-  const initialSlide = Math.min(2, DOCUMENT_SLIDES.length - 1);
+type DocumentsSliderProps = {
+  slides: string[];
+};
+
+const DocumentsSlider = ({ slides }: DocumentsSliderProps) => {
+  const initialSlide = Math.min(2, slides.length - 1);
   const [activeIndex, setActiveIndex] = useState(initialSlide);
 
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
@@ -30,7 +33,7 @@ const DocumentsSlider = () => {
   return (
     <div className={styles.wrap}>
       <div ref={sliderRef} className={`keen-slider ${styles.viewport}`}>
-        {DOCUMENT_SLIDES.map((src, index) => (
+        {slides.map((src, index) => (
           <div
             key={src}
             className={`keen-slider__slide ${styles.slide} ${

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import AccentLine from "@/shared/ui/accent-line";
 import { INSTITUTE_DATA } from "./data";
 import styles from "./style.module.scss";
@@ -18,17 +19,21 @@ const Institute = () => {
           </ul>
         </div>
 
-        <img
+        <Image
           className={styles.photo}
           src={INSTITUTE_DATA.photo}
           alt="Специалисты НПИ «Недра» на объекте"
+          width={482}
+          height={389}
         />
       </div>
 
-      <img
+      <Image
         className={styles.diploma}
         src={INSTITUTE_DATA.diploma}
         alt="Диплом конкурса «Лучший экспонат»"
+        width={265}
+        height={377}
       />
     </section>
   );

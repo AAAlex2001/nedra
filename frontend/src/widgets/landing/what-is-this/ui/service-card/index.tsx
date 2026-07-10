@@ -1,11 +1,15 @@
-import { SERVICE_CARDS } from "./data";
 import Image from "next/image";
+import type { ServiceCardItem } from "../../data";
 import styles from "./style.module.scss";
 
-const ServiceCards = () => {
+type ServiceCardsProps = {
+  cards: ServiceCardItem[];
+};
+
+const ServiceCards = ({ cards }: ServiceCardsProps) => {
   return (
     <>
-      {SERVICE_CARDS.map((item) => (
+      {cards.map((item) => (
         <article key={item.title} className={styles.card}>
           <div className={styles.imageWrap}>
             <Image

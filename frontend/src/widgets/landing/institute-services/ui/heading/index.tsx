@@ -1,12 +1,16 @@
 import AccentLine from "@/shared/ui/accent-line";
-import { SERVICES_DATA } from "../../data";
 import styles from "./style.module.scss";
 
-const Heading = () => (
+type HeadingProps = {
+  title: string;
+  subtitle: string;
+};
+
+const Heading = ({ title, subtitle }: HeadingProps) => (
   <div className={styles.heading}>
-    <h2 className={styles.title}>{SERVICES_DATA.title}</h2>
+    <h2 className={styles.title}>{title}</h2>
     <AccentLine width={30} />
-    <p className={styles.subtitle}>{SERVICES_DATA.subtitle}</p>
+    <p className={styles.subtitle}>{subtitle}</p>
   </div>
 );
 

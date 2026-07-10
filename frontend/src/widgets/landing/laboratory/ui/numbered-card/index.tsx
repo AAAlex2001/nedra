@@ -1,11 +1,15 @@
-import { NUMBERED_CARDS } from "./data";
+import type { NumberedCardItem } from "../../data";
 import styles from "./style.module.scss";
 
-const NumberedCards = () => {
+type NumberedCardsProps = {
+  cards: NumberedCardItem[];
+};
+
+const NumberedCards = ({ cards }: NumberedCardsProps) => {
   return (
     <>
       <div className={styles.row}>
-        {NUMBERED_CARDS.slice(0, 3).map((item) => (
+        {cards.slice(0, 3).map((item) => (
           <article key={item.number} className={styles.card}>
             <p className={styles.text}>{item.text}</p>
             <div className={styles.numberCol}>
@@ -16,7 +20,7 @@ const NumberedCards = () => {
       </div>
 
       <div className={`${styles.row} ${styles.rowTall}`}>
-        {NUMBERED_CARDS.slice(3, 6).map((item) => (
+        {cards.slice(3, 6).map((item) => (
           <article key={item.number} className={styles.card}>
             <p className={styles.text}>{item.text}</p>
             <div className={styles.numberCol}>

@@ -1,10 +1,14 @@
-import { WIDE_CARDS } from "./data";
+import type { WideCardItem } from "../../data";
 import styles from "./style.module.scss";
 
-const WideCards = () => {
+type WideCardsProps = {
+  cards: WideCardItem[];
+};
+
+const WideCards = ({ cards }: WideCardsProps) => {
   return (
     <>
-      {WIDE_CARDS.map((item) => (
+      {cards.map((item) => (
         <article key={item.title} className={styles.card}>
           <div className={styles.titleRow}>
             <h3 className={styles.title}>{item.title}</h3>

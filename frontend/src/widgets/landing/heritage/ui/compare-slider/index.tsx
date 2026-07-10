@@ -1,10 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { COMPARE_SLIDER } from "./data";
+import type { CompareSliderData } from "../../data";
 import styles from "./style.module.scss";
 
-const CompareSlider = () => {
+type CompareSliderProps = {
+  data: CompareSliderData;
+};
+
+const CompareSlider = ({ data }: CompareSliderProps) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(50);
   const [dragging, setDragging] = useState(false);
@@ -38,7 +42,7 @@ const CompareSlider = () => {
     >
       <img
         className={styles.image}
-        src={COMPARE_SLIDER.beforeImage}
+        src={data.beforeImage}
         alt="Состояние объекта до реставрации"
         draggable={false}
       />
@@ -49,14 +53,14 @@ const CompareSlider = () => {
       >
         <img
           className={styles.image}
-          src={COMPARE_SLIDER.afterImage}
+          src={data.afterImage}
           alt="Состояние объекта после реставрации"
           draggable={false}
         />
       </div>
 
-      <span className={styles.chipBefore}>{COMPARE_SLIDER.beforeLabel}</span>
-      <span className={styles.chipAfter}>{COMPARE_SLIDER.afterLabel}</span>
+      <span className={styles.chipBefore}>{data.beforeLabel}</span>
+      <span className={styles.chipAfter}>{data.afterLabel}</span>
 
       <div className={styles.divider} style={{ left: `${position}%` }}>
         <span className={styles.handle}>

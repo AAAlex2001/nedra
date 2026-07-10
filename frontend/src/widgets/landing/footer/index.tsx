@@ -1,3 +1,4 @@
+import ContactRow from "@/shared/ui/contact-row";
 import { LocationIcon, MailIcon, PhoneIcon } from "@/shared/ui/icons";
 import { CONTACTS_DATA } from "../contacts/data";
 import { FOOTER_DATA } from "./data";
@@ -30,24 +31,17 @@ const Footer = () => {
 
         <div className={styles.contacts}>
           <span className={styles.colTitle}>{FOOTER_DATA.contactsTitle}</span>
-          <ul className={styles.contactsList}>
-            <li className={styles.row}>
-              <PhoneIcon className={styles.icon} />
-              <a className={styles.contactText} href={`tel:${CONTACTS_DATA.phoneHref}`}>
-                {CONTACTS_DATA.phone}
-              </a>
-            </li>
-            <li className={styles.row}>
-              <MailIcon className={styles.icon} />
-              <a className={styles.contactText} href={`mailto:${CONTACTS_DATA.email}`}>
-                {CONTACTS_DATA.email}
-              </a>
-            </li>
-            <li className={`${styles.row} ${styles.rowTop}`}>
-              <LocationIcon className={styles.icon} />
-              <span className={styles.contactText}>{CONTACTS_DATA.address}</span>
-            </li>
-          </ul>
+          <div className={styles.contactsList}>
+            <ContactRow icon={<PhoneIcon />} href={`tel:${CONTACTS_DATA.phoneHref}`}>
+              {CONTACTS_DATA.phone}
+            </ContactRow>
+            <ContactRow icon={<MailIcon />} href={`mailto:${CONTACTS_DATA.email}`}>
+              {CONTACTS_DATA.email}
+            </ContactRow>
+            <ContactRow icon={<LocationIcon />} align="top">
+              {CONTACTS_DATA.address}
+            </ContactRow>
+          </div>
         </div>
       </div>
 

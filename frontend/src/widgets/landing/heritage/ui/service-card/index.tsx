@@ -1,8 +1,5 @@
-import {
-  HeritageDesignIcon,
-  HeritageRepairIcon,
-} from "@/shared/ui/icons";
-import { SERVICE_CARDS } from "./data";
+import { HeritageDesignIcon, HeritageRepairIcon } from "@/shared/ui/icons";
+import type { HeritageServiceCard } from "../../data";
 import styles from "./style.module.scss";
 
 const ICONS = {
@@ -10,10 +7,14 @@ const ICONS = {
   repair: HeritageRepairIcon,
 } as const;
 
-const ServiceCards = () => {
+type ServiceCardsProps = {
+  cards: HeritageServiceCard[];
+};
+
+const ServiceCards = ({ cards }: ServiceCardsProps) => {
   return (
     <div className={styles.list}>
-      {SERVICE_CARDS.map((item) => {
+      {cards.map((item) => {
         const Icon = ICONS[item.icon];
 
         return (

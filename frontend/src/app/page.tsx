@@ -11,14 +11,14 @@ import InstituteServices from "@/widgets/landing/institute-services";
 import Laboratory from "@/widgets/landing/laboratory";
 import Partners from "@/widgets/landing/partners";
 import Quality from "@/widgets/landing/quality";
-import Services from "@/widgets/landing/services";
+import WhatIsThis from "@/widgets/landing/what-is-this";
 
 export default function Home() {
   return (
     <main>
       <Hero />
       <Directions />
-      <Services />
+      <WhatIsThis />
       <InstituteServices />
       <Quality />
       <Laboratory />
