@@ -1,6 +1,6 @@
+import { COMPANY_CONTACTS } from "@/shared/config/company";
 import ContactRow from "@/shared/ui/contact-row";
 import { LocationIcon, MailIcon, PhoneIcon } from "@/shared/ui/icons";
-import { CONTACTS_DATA } from "../contacts/data";
 import { FOOTER_DATA } from "./data";
 import styles from "./style.module.scss";
 
@@ -32,14 +32,14 @@ const Footer = () => {
         <div className={styles.contacts}>
           <span className={styles.colTitle}>{FOOTER_DATA.contactsTitle}</span>
           <div className={styles.contactsList}>
-            <ContactRow icon={<PhoneIcon />} href={`tel:${CONTACTS_DATA.phoneHref}`}>
-              {CONTACTS_DATA.phone}
+            <ContactRow icon={<PhoneIcon />} href={`tel:${COMPANY_CONTACTS.phoneHref}`}>
+              {COMPANY_CONTACTS.phone}
             </ContactRow>
-            <ContactRow icon={<MailIcon />} href={`mailto:${CONTACTS_DATA.email}`}>
-              {CONTACTS_DATA.email}
+            <ContactRow icon={<MailIcon />} href={`mailto:${COMPANY_CONTACTS.email}`}>
+              {COMPANY_CONTACTS.email}
             </ContactRow>
             <ContactRow icon={<LocationIcon />} align="top">
-              {CONTACTS_DATA.address}
+              {COMPANY_CONTACTS.address}
             </ContactRow>
           </div>
         </div>

@@ -1,21 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { DIRECTIONS, SERVICES_DATA } from "../../data";
+import type { Direction } from "../../data";
 import DetailPanel from "../detail-panel";
 import DirectionList from "../direction-list";
 import Heading from "../heading";
 import styles from "./style.module.scss";
 
-const Catalog = () => {
-  const [activeId, setActiveId] = useState(DIRECTIONS[0].id);
-  const activeDirection = DIRECTIONS.find((item) => item.id === activeId) ?? DIRECTIONS[0];
+type CatalogProps = {
+  directions: Direction[];
+  heading: { title: string; subtitle: string };
+};
+
+const Catalog = ({ directions, heading }: CatalogProps) => {
+  const [activeId, setActiveId] = useState(directions[0].id);
+  const activeDirection = directions.find((item) => item.id === activeId) ?? directions[0];
 
   return (
     <div className={styles.catalog}>
       <div className={styles.left}>
-        <Heading title={SERVICES_DATA.title} subtitle={SERVICES_DATA.subtitle} />
-        <DirectionList directions={DIRECTIONS} activeId={activeId} onSelect={setActiveId} />
+        <Heading title={heading.title} subtitle={heading.subtitle} />
+        <DirectionList directions={directions} activeId={activeId} onSelect={setActiveId} />
       </div>
 
       <DetailPanel key={activeDirection.id} direction={activeDirection} />

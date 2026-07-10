@@ -1,3 +1,5 @@
+import { COMPANY_CONTACTS } from "@/shared/config/company";
+
 export const SERVICES_DATA = {
   title: "Все услуги института",
   subtitle:
@@ -53,8 +55,8 @@ export type Direction = {
 };
 
 const DEFAULT_CONTACT: Contact = {
-  phone: "+7 905 995-94-11",
-  email: "nedra-npi@mail.ru",
+  phone: COMPANY_CONTACTS.phone,
+  email: COMPANY_CONTACTS.email,
   person: "Самохин Сергей Владимирович",
 };
 
