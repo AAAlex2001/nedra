@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
@@ -6,85 +6,45 @@ import { useState } from "react";
 import { DOCUMENT_SLIDES } from "./data";
 import styles from "./style.module.scss";
 
-const SLOT_OFFSETS = [-2, -1, 0, 1, 2] as const;
-
 const DocumentsSlider = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState<"prev" | "next" | null>(null);
+  const initialSlide = Math.min(2, DOCUMENT_SLIDES.length - 1);
+  const [activeIndex, setActiveIndex] = useState(initialSlide);
 
-  const [engineRef, slider] = useKeenSlider({
+  const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     loop: true,
-    defaultAnimation: {
-      duration: 600,
-    },
+    initial: initialSlide,
+    mode: "snap",
     slides: {
-      perView: 1,
+      origin: "center",
+      perView: "auto",
+      spacing: 85,
     },
     created(instance) {
       setActiveIndex(instance.track.details.rel);
     },
     slideChanged(instance) {
       setActiveIndex(instance.track.details.rel);
-      setDirection(null);
     },
   });
 
-  const getSlideIndex = (offset: number) => {
-    const length = DOCUMENT_SLIDES.length;
-    return ((activeIndex + offset) % length + length) % length;
-  };
-
-  const goPrev = () => {
-    setDirection("prev");
-    slider.current?.prev();
-  };
-
-  const goNext = () => {
-    setDirection("next");
-    slider.current?.next();
-  };
-
   return (
     <div className={styles.wrap}>
-      <div
-        ref={engineRef}
-        className={`keen-slider ${styles.engine}`}
-        aria-hidden
-      >
-        {DOCUMENT_SLIDES.map((src) => (
-          <div key={src} className="keen-slider__slide">
-            <span />
+      <div ref={sliderRef} className={`keen-slider ${styles.viewport}`}>
+        {DOCUMENT_SLIDES.map((src, index) => (
+          <div
+            key={src}
+            className={`keen-slider__slide ${styles.slide} ${
+              index === activeIndex ? styles.slideActive : ""
+            }`}
+          >
+            <img
+              className={styles.image}
+              src={src}
+              alt={`Документ ${index + 1}`}
+              draggable={false}
+            />
           </div>
         ))}
-      </div>
-
-      <div
-        className={`${styles.viewport} ${
-          direction === "next"
-            ? styles.viewportNext
-            : direction === "prev"
-              ? styles.viewportPrev
-              : ""
-        }`}
-      >
-        {SLOT_OFFSETS.map((offset) => {
-          const slideIndex = getSlideIndex(offset);
-          const isCenter = offset === 0;
-
-          return (
-            <div
-              key={offset}
-              className={`${styles.slot} ${isCenter ? styles.slotCenter : ""}`}
-            >
-              <img
-                className={styles.image}
-                src={DOCUMENT_SLIDES[slideIndex]}
-                alt={`Документ ${slideIndex + 1}`}
-                draggable={false}
-              />
-            </div>
-          );
-        })}
       </div>
 
       <div className={styles.controls}>
@@ -92,7 +52,7 @@ const DocumentsSlider = () => {
           type="button"
           className={styles.button}
           aria-label="Предыдущий документ"
-          onClick={goPrev}
+          onClick={() => slider.current?.prev()}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
             <path
@@ -110,7 +70,7 @@ const DocumentsSlider = () => {
           type="button"
           className={styles.button}
           aria-label="Следующий документ"
-          onClick={goNext}
+          onClick={() => slider.current?.next()}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
             <path

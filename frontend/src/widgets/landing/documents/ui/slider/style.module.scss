@@ -1,6 +1,4 @@
-﻿.wrap {
-  position: relative;
-
+.wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,85 +7,53 @@
   width: 100%;
 }
 
-.engine {
-  position: absolute;
-
-  width: 0;
-  height: 0;
-  overflow: hidden;
-
-  opacity: 0;
-  pointer-events: none;
-}
-
 .viewport {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-
   width: 1380px;
   max-width: 100%;
   height: 565px;
+  overflow: hidden;
 }
 
-.slot {
-  flex: 0 0 230px;
-
+.slide {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 
   width: 230px;
-  height: 325px;
-
-  opacity: 0.6;
-}
-
-.slotCenter {
-  flex: 0 0 400px;
-
-  width: 400px;
+  min-width: 230px;
+  max-width: 230px;
   height: 565px;
-
-  opacity: 1;
+  overflow: visible !important;
 }
 
 .image {
   display: block;
-  width: 100%;
-  height: 100%;
+
+  width: 230px;
+  height: 325px;
 
   object-fit: contain;
   border-radius: 5px;
-  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.05));
+  opacity: 0.6;
+  filter: blur(2px) drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.05));
 
   transition:
-    transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    opacity 0.6s ease,
-    filter 0.6s ease;
+    width 0.35s ease,
+    height 0.35s ease,
+    opacity 0.35s ease,
+    filter 0.35s ease;
 }
 
-.slotCenter .image {
-  transform: translateY(-10px);
-  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.18));
+.slideActive {
+  z-index: 2;
 }
 
-.viewportNext .image {
-  transform: translateX(-30px);
-  opacity: 0.3;
-}
+.slideActive .image {
+  width: 360px;
+  height: 508px;
 
-.viewportPrev .image {
-  transform: translateX(30px);
-  opacity: 0.3;
-}
-
-.viewportNext .slotCenter .image,
-.viewportPrev .slotCenter .image {
-  transform: translateY(-10px);
-  opacity: 0.5;
+  opacity: 1;
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.05));
 }
 
 .controls {

@@ -1,6 +1,5 @@
 import AccentLine from "@/shared/ui/accent-line";
 import { DOCUMENTS_DATA } from "../../data";
-import DocumentsSlider from "../slider";
 import styles from "./style.module.scss";
 
 const DocumentsHeading = () => {
