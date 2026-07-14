@@ -36,7 +36,7 @@ const Contacts = () => {
           <AccentLine width={30} />
         </div>
 
-        <div className={styles.list}>
+        <address className={styles.list} style={{ fontStyle: "normal" }}>
           <div className={`${styles.row} ${styles.rowTop}`}>
             <DirectorIcon className={styles.icon} />
             <div className={styles.person}>
@@ -55,7 +55,7 @@ const Contacts = () => {
             {CONTACTS_DATA.address}
           </ContactRow>
           <ContactRow icon={<ClockIcon />}>{CONTACTS_DATA.schedule}</ContactRow>
-        </div>
+        </address>
       </div>
     </section>
   );

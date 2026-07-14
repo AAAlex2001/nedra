@@ -3,9 +3,24 @@ import { WHAT_IS_THIS_CARDS, WHAT_IS_THIS_DATA } from "./data";
 import ServiceCards from "./ui/service-card";
 import styles from "./style.module.scss";
 
+const definedTermsJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTermSet",
+  name: WHAT_IS_THIS_DATA.title,
+  hasDefinedTerm: WHAT_IS_THIS_CARDS.map((card) => ({
+    "@type": "DefinedTerm",
+    name: card.title,
+    description: card.description,
+  })),
+};
+
 const WhatIsThis = () => {
   return (
     <section id="about" className={styles.section}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermsJsonLd) }}
+      />
       <div className={styles.heading}>
         <h2 className={styles.title}>{WHAT_IS_THIS_DATA.title}</h2>
         <AccentLine width={150} />

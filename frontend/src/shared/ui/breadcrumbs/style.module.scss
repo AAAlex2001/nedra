@@ -30,6 +30,11 @@ a.crumb:hover {
   color: #f69827;
 }
 
+.list,
+.item {
+  display: contents;
+}
+
 .arrow {
   flex: none;
   width: 15px;

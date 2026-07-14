@@ -1,12 +1,10 @@
-import type { Metadata } from "next";
+import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import SectionHeading from "@/shared/ui/section-heading";
 import ObshchestvennyeObsuzhdeniya from "@/widgets/obshchestvennye-obsuzhdeniya";
 import styles from "./page.module.scss";
 
-export const metadata: Metadata = {
-  title: "Общественные обсуждения | НПИ «Недра»",
-};
+export const metadata = buildMetadata("/obshchestvennye-obsuzhdeniya");
 
 export default function ObshchestvennyeObsuzhdeniyaPage() {
   return (

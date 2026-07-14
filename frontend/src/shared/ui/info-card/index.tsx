@@ -13,23 +13,35 @@ type InfoCardProps = {
   children?: ReactNode;
 };
 
+const isExternal = (href: string) => /^https?:/.test(href);
+
 const InfoCard = ({ rows, children }: InfoCardProps) => (
   <Card gap={0}>
-    {rows.map((row, index) => (
-      <div
-        key={index}
-        className={`${styles.row} ${index < rows.length - 1 ? styles.divider : ""}`}
-      >
-        <span className={styles.label}>{row.label}</span>
-        {row.href ? (
-          <a className={styles.link} href={row.href}>
-            {row.value}
-          </a>
-        ) : (
-          <span className={styles.value}>{row.value}</span>
-        )}
-      </div>
-    ))}
+    <dl className={styles.dl}>
+      {rows.map((row, index) => (
+        <div
+          key={index}
+          className={`${styles.row} ${index < rows.length - 1 ? styles.divider : ""}`}
+        >
+          <dt className={styles.label}>{row.label}</dt>
+          <dd className={styles.value}>
+            {row.href ? (
+              <a
+                className={styles.link}
+                href={row.href}
+                {...(isExternal(row.href)
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
+                {row.value}
+              </a>
+            ) : (
+              row.value
+            )}
+          </dd>
+        </div>
+      ))}
+    </dl>
     {children}
   </Card>
 );

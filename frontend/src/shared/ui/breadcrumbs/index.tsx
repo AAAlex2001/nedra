@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { SITE_URL } from "@/shared/config/seo";
 import styles from "./style.module.scss";
 
 export type Crumb = {
@@ -30,30 +30,51 @@ const Chevron = () => (
   </svg>
 );
 
-const Breadcrumbs = ({ items }: BreadcrumbsProps) => (
-  <nav className={styles.breadcrumbs} aria-label="Хлебные крошки">
-    {items.map((item, index) => {
-      const isLast = index === items.length - 1;
+const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.label,
+      ...(item.href ? { item: `${SITE_URL}${item.href}` } : {}),
+    })),
+  };
 
-      return (
-        <Fragment key={`${item.label}-${index}`}>
-          {item.href && !isLast ? (
-            <a className={styles.crumb} href={item.href}>
-              {item.label}
-            </a>
-          ) : (
-            <span
-              className={`${styles.crumb} ${isLast ? styles.current : ""}`}
-              aria-current={isLast ? "page" : undefined}
-            >
-              {item.label}
-            </span>
-          )}
-          {!isLast && <Chevron />}
-        </Fragment>
-      );
-    })}
-  </nav>
-);
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <nav className={styles.breadcrumbs} aria-label="Хлебные крошки">
+        <ol className={styles.list}>
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1;
+
+            return (
+              <li className={styles.item} key={`${item.label}-${index}`}>
+                {item.href && !isLast ? (
+                  <a className={styles.crumb} href={item.href}>
+                    {item.label}
+                  </a>
+                ) : (
+                  <span
+                    className={`${styles.crumb} ${isLast ? styles.current : ""}`}
+                    aria-current={isLast ? "page" : undefined}
+                  >
+                    {item.label}
+                  </span>
+                )}
+                {!isLast && <Chevron />}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    </>
+  );
+};
 
 export default Breadcrumbs;

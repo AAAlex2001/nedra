@@ -1,10 +1,8 @@
-import type { Metadata } from "next";
 import SvedeniyaPage from "@/shared/ui/svedeniya-page";
 import SvedeniyaRukovodstvo from "@/widgets/svedeniya/rukovodstvo";
+import { buildMetadata } from "@/shared/config/seo";
 
-export const metadata: Metadata = {
-  title: "Руководство — Сведения об образовательной организации | НПИ «Недра»",
-};
+export const metadata = buildMetadata("/svedeniya/rukovodstvo");
 
 export default function SvedeniyaRukovodstvoPage() {
   return (

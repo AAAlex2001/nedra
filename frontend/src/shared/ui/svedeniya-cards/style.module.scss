@@ -1,3 +1,7 @@
+.nav {
+  width: 100%;
+}
+
 .cards {
   display: grid;
   grid-template-columns: 1fr;
@@ -5,6 +9,12 @@
   gap: 10px;
 
   width: 100%;
+
+  list-style: none;
+}
+
+.li {
+  display: contents;
 }
 
 .card {

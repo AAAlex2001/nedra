@@ -1,11 +1,8 @@
-import type { Metadata } from "next";
 import SvedeniyaPage from "@/shared/ui/svedeniya-page";
 import SvedeniyaMezhdunarodnoe from "@/widgets/svedeniya/mezhdunarodnoe-sotrudnichestvo";
+import { buildMetadata } from "@/shared/config/seo";
 
-export const metadata: Metadata = {
-  title:
-    "Международное сотрудничество — Сведения об образовательной организации | НПИ «Недра»",
-};
+export const metadata = buildMetadata("/svedeniya/mezhdunarodnoe-sotrudnichestvo");
 
 export default function SvedeniyaMezhdunarodnoePage() {
   return (

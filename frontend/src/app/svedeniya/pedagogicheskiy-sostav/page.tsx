@@ -1,11 +1,8 @@
-import type { Metadata } from "next";
 import SvedeniyaPage from "@/shared/ui/svedeniya-page";
 import SvedeniyaPedagogicheskiySostav from "@/widgets/svedeniya/pedagogicheskiy-sostav";
+import { buildMetadata } from "@/shared/config/seo";
 
-export const metadata: Metadata = {
-  title:
-    "Педагогический состав — Сведения об образовательной организации | НПИ «Недра»",
-};
+export const metadata = buildMetadata("/svedeniya/pedagogicheskiy-sostav");
 
 export default function SvedeniyaPedagogicheskiySostavPage() {
   return (

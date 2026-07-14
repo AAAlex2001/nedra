@@ -11,6 +11,9 @@ import Laboratory from "@/widgets/landing/laboratory";
 import Quality from "@/widgets/landing/quality";
 import Partners from "@/widgets/landing/partners";
 import WhatIsThis from "@/widgets/landing/what-is-this";
+import { buildMetadata } from "@/shared/config/seo";
+
+export const metadata = buildMetadata("/");
 
 export default function Home() {
   return (

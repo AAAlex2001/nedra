@@ -23,13 +23,28 @@ const LicenseCard = ({ licenses }: LicenseCardProps) => (
               <span>{column.text}</span>
             </div>
           )}
-          <a href={column.doc.href} className={styles.file}>
-            <DocumentIcon />
-            <span className={styles.fileText}>
-              <span className={styles.fileTitle}>{column.doc.title}</span>
-              <span className={styles.fileMeta}>{column.doc.meta}</span>
-            </span>
-          </a>
+          {column.doc.href && column.doc.href !== "#" ? (
+            <a
+              href={column.doc.href}
+              className={styles.file}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <DocumentIcon />
+              <span className={styles.fileText}>
+                <span className={styles.fileTitle}>{column.doc.title}</span>
+                <span className={styles.fileMeta}>{column.doc.meta}</span>
+              </span>
+            </a>
+          ) : (
+            <div className={styles.file}>
+              <DocumentIcon />
+              <span className={styles.fileText}>
+                <span className={styles.fileTitle}>{column.doc.title}</span>
+                <span className={styles.fileMeta}>{column.doc.meta}</span>
+              </span>
+            </div>
+          )}
         </div>
       ))}
     </div>

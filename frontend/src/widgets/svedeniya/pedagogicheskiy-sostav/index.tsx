@@ -7,8 +7,31 @@ import styles from "./style.module.scss";
 const SvedeniyaPedagogicheskiySostav = () => {
   const { title, teachers } = PEDAGOGICHESKIY_SOSTAV;
 
+  const staffJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: title,
+    itemListElement: teachers.map((teacher, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Person",
+        name: teacher.name,
+        jobTitle: teacher.role,
+        worksFor: {
+          "@type": "Organization",
+          name: "НПИ «Недра»",
+        },
+      },
+    })),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(staffJsonLd) }}
+      />
       <SectionHeading title={title} />
 
       <div className={styles.cards}>

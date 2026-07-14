@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
 import SvedeniyaPage from "@/shared/ui/svedeniya-page";
 import SvedeniyaFinansovo from "@/widgets/svedeniya/finansovo-hozyaystvennaya-deyatelnost";
+import { buildMetadata } from "@/shared/config/seo";
 
-export const metadata: Metadata = {
-  title:
-    "Финансово-хозяйственная деятельность — Сведения об образовательной организации | НПИ «Недра»",
-};
+export const metadata = buildMetadata(
+  "/svedeniya/finansovo-hozyaystvennaya-deyatelnost",
+);
 
 export default function SvedeniyaFinansovoPage() {
   return (

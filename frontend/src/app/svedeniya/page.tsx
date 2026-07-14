@@ -1,12 +1,10 @@
-import type { Metadata } from "next";
+import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import SectionHeading from "@/shared/ui/section-heading";
 import SvedeniyaCards from "@/shared/ui/svedeniya-cards";
 import styles from "./page.module.scss";
 
-export const metadata: Metadata = {
-  title: "Сведения об образовательной организации | НПИ «Недра»",
-};
+export const metadata = buildMetadata("/svedeniya");
 
 export default function SvedeniyaIndexPage() {
   return (

@@ -18,8 +18,16 @@ export const OSNOVNYE_SVEDENIYA = {
     { label: "Директор", value: "Самохин Сергей Владимирович" },
     { label: "Юридический адрес", value: COMPANY_CONTACTS.address },
     { label: "Режим работы", value: "с 08:30-17:00" },
-    { label: "Телефон", value: COMPANY_CONTACTS.phone },
-    { label: "Почта", value: COMPANY_CONTACTS.email },
+    {
+      label: "Телефон",
+      value: COMPANY_CONTACTS.phone,
+      href: `tel:${COMPANY_CONTACTS.phoneHref}`,
+    },
+    {
+      label: "Почта",
+      value: COMPANY_CONTACTS.email,
+      href: `mailto:${COMPANY_CONTACTS.email}`,
+    },
     {
       label: "Лицензия на осуществление образовательной деятельности",
       value: "№ Л035-01199-54/01139236 от 22.04.2024",

@@ -17,8 +17,16 @@ export const SVEDENIYA_STRUKTURA = {
       label: "Единоличный исполнительный орган",
       value: "Директор – Самохин Сергей Владимирович.",
     },
-    { label: "Единый телефон", value: COMPANY_CONTACTS.phone },
-    { label: "Электронная почта", value: COMPANY_CONTACTS.email },
+    {
+      label: "Единый телефон",
+      value: COMPANY_CONTACTS.phone,
+      href: `tel:${COMPANY_CONTACTS.phoneHref}`,
+    },
+    {
+      label: "Электронная почта",
+      value: COMPANY_CONTACTS.email,
+      href: `mailto:${COMPANY_CONTACTS.email}`,
+    },
     {
       label: "Образовательная деятельность осуществляется по следующим адресам",
       value: COMPANY_CONTACTS.address,
