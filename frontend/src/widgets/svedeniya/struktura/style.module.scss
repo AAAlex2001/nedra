@@ -1,0 +1,83 @@
+.collegial {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+
+  width: 100%;
+
+  background: rgba(246, 152, 39, 0.1);
+  border-radius: 10px;
+}
+
+.collegialHead {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.collegialIcon {
+  flex: none;
+  width: 24px;
+  height: 26px;
+}
+
+.collegialTitle {
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #000000;
+}
+
+.collegialList {
+  width: 100%;
+  margin: 0;
+  padding-left: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #000000;
+  list-style: disc;
+}
+
+.collegialList li::marker {
+  color: #000000;
+}
+
+@media (min-width: 768px) {
+  .collegial {
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .collegialHead {
+    flex: none;
+    width: 255px;
+  }
+
+  .collegialList {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .collegialHead {
+    width: 394px;
+  }
+}

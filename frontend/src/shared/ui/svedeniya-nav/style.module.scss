@@ -1,0 +1,49 @@
+.nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+
+  width: 100%;
+}
+
+.pill {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+
+  max-width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+  text-decoration: none;
+
+  color: #797979;
+  background: #ffffff;
+  border: 1px solid #ededed;
+  border-radius: 100px;
+
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.pill:hover {
+  color: #f69827;
+  border-color: #f69827;
+}
+
+.active {
+  color: #f69827;
+  background:
+    linear-gradient(0deg, rgba(246, 152, 39, 0.1), rgba(246, 152, 39, 0.1)),
+    #ffffff;
+  border-color: #f69827;
+}

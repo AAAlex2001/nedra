@@ -1,0 +1,62 @@
+.title {
+  margin: 0;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+
+  color: #0b0b0b;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  width: 100%;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 5px 0;
+
+  text-decoration: none;
+}
+
+.icon {
+  flex: none;
+  width: 28px;
+  height: 28px;
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  text-decoration: underline;
+
+  color: #000000;
+  transition: color 0.15s ease;
+}
+
+.item:hover .text {
+  color: #f69827;
+}
+
+@media (min-width: 1440px) {
+  .list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px 20px;
+  }
+}

@@ -1,0 +1,37 @@
+.page {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.sidebar {
+  box-sizing: border-box;
+  padding: 40px 20px 25px;
+}
+
+.body {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 25px 20px 50px;
+}
+
+@media (min-width: 1440px) {
+  .page {
+    max-width: 1440px;
+  }
+
+  .sidebar {
+    padding: 40px 50px 25px;
+  }
+
+  .body {
+    padding: 25px 50px 50px;
+  }
+}

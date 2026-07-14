@@ -1,0 +1,120 @@
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+
+  width: 100%;
+}
+
+.person {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid rgba(246, 152, 39, 0.1);
+}
+
+.personIcon {
+  flex: none;
+  width: 52px;
+  height: 52px;
+}
+
+.personInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+
+  flex: 1;
+  min-width: 0;
+}
+
+.personName {
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  text-transform: uppercase;
+
+  color: #000000;
+}
+
+.personRole {
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #000000;
+}
+
+.diploma {
+  margin: 0;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #000000;
+}
+
+.download {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.downloadLabel {
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #000000;
+}
+
+.downloadLink {
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  text-decoration: underline;
+
+  color: #000000;
+  transition: color 0.15s ease;
+}
+
+.downloadLink:hover {
+  color: #f69827;
+}
+
+@media (min-width: 768px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cards > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1440px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .cards > :first-child {
+    grid-column: auto;
+  }
+}

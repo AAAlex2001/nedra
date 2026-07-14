@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Footer from "@/widgets/footer";
 import Header from "@/widgets/header";
 import "./globals.scss";
 
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

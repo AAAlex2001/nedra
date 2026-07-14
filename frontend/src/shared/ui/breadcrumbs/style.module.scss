@@ -1,0 +1,43 @@
+.breadcrumbs {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 30px 20px 10px;
+
+  width: 100%;
+}
+
+.crumb {
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  text-decoration: none;
+
+  color: #cccccc;
+  transition: color 0.15s ease;
+}
+
+a.crumb:hover {
+  color: #f69827;
+}
+
+.current {
+  color: #f69827;
+}
+
+.arrow {
+  flex: none;
+  width: 15px;
+  height: 15px;
+}
+
+@media (min-width: 1440px) {
+  .breadcrumbs {
+    padding: 30px 50px 10px;
+  }
+}

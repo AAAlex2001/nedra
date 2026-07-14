@@ -29,3 +29,7 @@ export { BurgerIcon } from "./burger-icon";
 export { CloseIcon } from "./close-icon";
 export { PdfIcon } from "./pdf-icon";
 export { GlobeIcon } from "./globe-icon";
+export { PeopleIcon } from "./people-icon";
+export { InfoIcon } from "./info-icon";
+export { GraduationIcon } from "./graduation-icon";
+export { UserCircleIcon } from "./user-circle-icon";

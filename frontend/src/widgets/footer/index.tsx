@@ -9,10 +9,13 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.top}>
         <div className={styles.brand}>
-          <div className={styles.logo}>
+          <a
+            className={styles.logo}
+            href="/"
+            aria-label="НПИ «Недра» — на главную"
+          >
             <NedraLogo className={styles.logoIcon} />
-            <span className={styles.company}>{FOOTER_DATA.company}</span>
-          </div>
+          </a>
           <p className={styles.description}>{FOOTER_DATA.description}</p>
         </div>
 

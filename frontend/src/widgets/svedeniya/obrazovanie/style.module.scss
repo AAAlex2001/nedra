@@ -1,0 +1,40 @@
+.note {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid rgba(246, 152, 39, 0.1);
+}
+
+.note:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.noteIconInfo {
+  flex: none;
+  width: 44px;
+  height: 44px;
+}
+
+.noteIcon {
+  flex: none;
+  width: 28px;
+  height: 28px;
+}
+
+.noteText {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #000000;
+}

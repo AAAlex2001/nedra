@@ -8,7 +8,10 @@ export const HEADER_NAV: HeaderNavItem[] = [
   { label: "Услуги", href: "/#services" },
   { label: "Партнёры", href: "/#partners" },
   { label: "Разрешительные документы", href: "/#documents" },
-  { label: "Сведения об образовательной организации", href: "#" },
+  {
+    label: "Сведения об образовательной организации",
+    href: "/svedeniya",
+  },
   { label: "Общественные обсуждения", href: "#" },
   { label: "Контакты", href: "/#contacts" },
 ];
