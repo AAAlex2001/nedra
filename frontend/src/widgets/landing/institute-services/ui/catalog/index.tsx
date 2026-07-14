@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import type { Direction } from "../../data";
 import DetailPanel from "../detail-panel";
-import DirectionList from "../direction-list";
+import DirectionHeader from "../direction-header";
 import Heading from "../heading";
 import styles from "./style.module.scss";
 
@@ -14,16 +14,31 @@ type CatalogProps = {
 
 const Catalog = ({ directions, heading }: CatalogProps) => {
   const [activeId, setActiveId] = useState(directions[0].id);
-  const activeDirection = directions.find((item) => item.id === activeId) ?? directions[0];
 
   return (
     <div className={styles.catalog}>
-      <div className={styles.left}>
+      <div className={styles.headingCell}>
         <Heading title={heading.title} subtitle={heading.subtitle} />
-        <DirectionList directions={directions} activeId={activeId} onSelect={setActiveId} />
       </div>
 
-      <DetailPanel key={activeDirection.id} direction={activeDirection} />
+      {directions.map((direction) => {
+        const isOpen = direction.id === activeId;
+
+        return (
+          <Fragment key={direction.id}>
+            <DirectionHeader
+              direction={direction}
+              isOpen={isOpen}
+              onSelect={() => setActiveId(direction.id)}
+            />
+            {isOpen && (
+              <div className={styles.drawer}>
+                <DetailPanel key={direction.id} direction={direction} />
+              </div>
+            )}
+          </Fragment>
+        );
+      })}
     </div>
   );
 };

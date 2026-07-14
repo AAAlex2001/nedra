@@ -5,7 +5,7 @@ import styles from "./style.module.scss";
 
 const WhatIsThis = () => {
   return (
-    <section className={styles.section}>
+    <section id="about" className={styles.section}>
       <div className={styles.heading}>
         <h2 className={styles.title}>{WHAT_IS_THIS_DATA.title}</h2>
         <AccentLine width={150} />

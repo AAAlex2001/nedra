@@ -3,6 +3,7 @@
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { useState } from "react";
+import Lightbox from "@/shared/ui/lightbox";
 import styles from "./style.module.scss";
 
 type DocumentsSliderProps = {
@@ -12,6 +13,7 @@ type DocumentsSliderProps = {
 const DocumentsSlider = ({ slides }: DocumentsSliderProps) => {
   const initialSlide = Math.min(2, slides.length - 1);
   const [activeIndex, setActiveIndex] = useState(initialSlide);
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     loop: true,
@@ -20,7 +22,16 @@ const DocumentsSlider = ({ slides }: DocumentsSliderProps) => {
     slides: {
       origin: "center",
       perView: "auto",
-      spacing: 85,
+      spacing: 30,
+    },
+    breakpoints: {
+      "(min-width: 768px)": {
+        slides: {
+          origin: "center",
+          perView: "auto",
+          spacing: 85,
+        },
+      },
     },
     created(instance) {
       setActiveIndex(instance.track.details.rel);
@@ -45,6 +56,7 @@ const DocumentsSlider = ({ slides }: DocumentsSliderProps) => {
               src={src}
               alt={`Документ ${index + 1}`}
               draggable={false}
+              onClick={() => setLightboxSrc(src)}
             />
           </div>
         ))}
@@ -87,6 +99,10 @@ const DocumentsSlider = ({ slides }: DocumentsSliderProps) => {
           </svg>
         </button>
       </div>
+
+      {lightboxSrc && (
+        <Lightbox src={lightboxSrc} onClose={() => setLightboxSrc(null)} />
+      )}
     </div>
   );
 };

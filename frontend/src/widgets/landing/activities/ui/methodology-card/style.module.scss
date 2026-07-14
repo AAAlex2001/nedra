@@ -2,14 +2,13 @@
   box-sizing: border-box;
 
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: 20px;
   gap: 20px;
 
-  flex: 1;
-  min-width: 0;
-  height: 365px;
+  width: 100%;
 
   background: #ffffff;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
@@ -38,9 +37,7 @@
   align-items: flex-start;
   gap: 20px;
 
-  flex: 1;
-  min-width: 0;
-  height: 100%;
+  width: 100%;
 }
 
 .title {
@@ -50,7 +47,7 @@
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
-  line-height: 29px;
+  line-height: 28px;
 
   color: #0b0b0b;
 }
@@ -98,4 +95,60 @@
 
 .check {
   flex: none;
+}
+
+.docButton {
+  box-sizing: border-box;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+
+  background: transparent;
+  border: 1px solid #f69827;
+  border-radius: 100px;
+  cursor: pointer;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  text-align: center;
+
+  color: #0b0b0b;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.docButton:hover {
+  background: #f69827;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .card {
+    flex-direction: row;
+    align-items: center;
+    height: 365px;
+  }
+
+  .content {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .card {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .title {
+    line-height: 29px;
+  }
 }

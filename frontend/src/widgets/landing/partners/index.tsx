@@ -43,7 +43,7 @@ const LogoCell = ({ item }: { item: Logo }) => {
 
 const Partners = () => {
   return (
-    <section className={styles.section}>
+    <section id="partners" className={styles.section}>
       <div className={styles.heading}>
         <h2 className={styles.title}>{PARTNERS_DATA.title}</h2>
         <AccentLine width={30} />

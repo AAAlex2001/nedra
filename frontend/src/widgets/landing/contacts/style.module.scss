@@ -1,14 +1,13 @@
 .section {
   box-sizing: border-box;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 100px 50px;
+  flex-direction: column-reverse;
+  align-items: stretch;
+  padding: 100px 20px;
   gap: 20px;
 
-  width: 1440px;
-  min-height: 624px;
+  width: 100%;
+  max-width: 768px;
   margin: 0 auto;
 
   position: relative;
@@ -40,9 +39,8 @@
   position: relative;
   z-index: 2;
 
-  flex: none;
-  width: 665px;
-  height: 424px;
+  width: 100%;
+  aspect-ratio: 665 / 424;
 
   overflow: hidden;
   border-radius: 20px;
@@ -65,8 +63,7 @@
   align-items: flex-start;
   gap: 50px;
 
-  flex: none;
-  width: 624px;
+  width: 100%;
 }
 
 .heading {
@@ -173,4 +170,35 @@
 
 .link:hover {
   color: #f69827;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 100px 50px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .section {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 100px 50px;
+
+    width: 1440px;
+    max-width: 1440px;
+    min-height: 624px;
+  }
+
+  .map {
+    flex: none;
+    width: 665px;
+    height: 424px;
+    aspect-ratio: auto;
+  }
+
+  .content {
+    flex: none;
+    width: 624px;
+  }
 }

@@ -9,14 +9,16 @@ const Heritage = () => {
   return (
     <section className={styles.section}>
       <div className={styles.top}>
-        <CompareSlider data={COMPARE_SLIDER} />
-
         <div className={styles.right}>
           <HeritageHeading
             titleBefore={HERITAGE_DATA.titleBefore}
             titleAccent={HERITAGE_DATA.titleAccent}
           />
           <ServiceCards cards={SERVICE_CARDS} />
+        </div>
+
+        <div className={styles.compareWrap}>
+          <CompareSlider data={COMPARE_SLIDER} />
         </div>
       </div>
 

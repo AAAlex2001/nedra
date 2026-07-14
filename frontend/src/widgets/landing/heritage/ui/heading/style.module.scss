@@ -15,11 +15,17 @@
   font-style: normal;
   font-weight: 700;
   font-size: 32px;
-  line-height: 39px;
+  line-height: 38px;
 
   color: #0b0b0b;
 }
 
 .titleAccent {
   color: #f69827;
+}
+
+@media (min-width: 1440px) {
+  .title {
+    line-height: 39px;
+  }
 }

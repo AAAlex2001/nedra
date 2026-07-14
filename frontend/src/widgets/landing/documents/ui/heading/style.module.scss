@@ -5,7 +5,7 @@
   align-items: center;
   gap: 20px;
 
-  width: 700px;
+  width: 100%;
 }
 
 .title {
@@ -16,7 +16,7 @@
   font-style: normal;
   font-weight: 700;
   font-size: 32px;
-  line-height: 39px;
+  line-height: 38px;
   text-align: center;
 
   color: #0b0b0b;
@@ -34,4 +34,10 @@
   text-align: center;
 
   color: #0b0b0b;
+}
+
+@media (min-width: 1440px) {
+  .title {
+    line-height: 39px;
+  }
 }

@@ -1,16 +1,33 @@
 .card {
   box-sizing: border-box;
   position: relative;
+  display: block;
+
   width: 100%;
-  min-width: 0;
-  height: 320px;
+  min-height: 160px;
+  padding: 0;
+
+  background: #ffffff;
+  border: 1px solid #ffffff;
   border-radius: 20px;
   overflow: hidden;
+
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.open {
+  border-color: #f69827;
 }
 
 .imageWrap {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  display: block;
+
+  width: 100%;
+  height: 160px;
+
   border-radius: 20px;
   overflow: hidden;
 
@@ -20,7 +37,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 45%;
+    height: 55%;
+
     background: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0%,
@@ -46,44 +64,26 @@
   font-style: normal;
   font-weight: 700;
   font-size: 22px;
-  line-height: 27px;
+  line-height: 26px;
 
   color: #ffffff;
-
-  transition: opacity 0.3s ease;
+  text-shadow: 2px 4px 4.2px rgba(0, 0, 0, 0.7);
 }
 
 .overlay {
-  box-sizing: border-box;
-
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: flex-start;
-  padding: 20px;
   gap: 10px;
-
-  background: #ffffff;
-  border: 1px solid #f69827;
-  border-radius: 20px;
-
-  transform: translateY(100%);
-  transition: transform 0.35s ease;
-
-  overflow: hidden;
+  padding: 20px;
 }
 
-.card:hover .overlay,
-.card:focus-within .overlay {
-  transform: translateY(0);
+.open .imageWrap {
+  display: none;
 }
 
-.card:hover .label,
-.card:focus-within .label {
-  opacity: 0;
+.open .overlay {
+  display: flex;
 }
 
 .overlayTitle {
@@ -93,17 +93,13 @@
   font-style: normal;
   font-weight: 700;
   font-size: 22px;
-  line-height: 27px;
+  line-height: 26px;
 
   color: #f69827;
-
-  flex: none;
 }
 
 .overlayText {
   width: 100%;
-  flex: 1;
-  overflow-y: auto;
 
   font-family: "Gilroy";
   font-style: normal;
@@ -112,4 +108,72 @@
   line-height: 19px;
 
   color: #0b0b0b;
+}
+
+@media (min-width: 768px) {
+  .card {
+    min-height: 228px;
+  }
+
+  .imageWrap {
+    height: 228px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .card {
+    height: 320px;
+    min-height: 0;
+    border: none;
+  }
+
+  .open {
+    border: none;
+  }
+
+  .imageWrap {
+    position: absolute;
+    inset: 0;
+    height: auto;
+  }
+
+  .open .imageWrap {
+    display: block;
+  }
+
+  .label {
+    transition: opacity 0.3s ease;
+  }
+
+  .overlay {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+
+    background: #ffffff;
+    border: 1px solid #f69827;
+    border-radius: 20px;
+
+    transform: translateY(100%);
+    transition: transform 0.35s ease;
+    overflow: hidden;
+  }
+
+  .overlayText {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .card:hover .overlay,
+  .card:focus-visible .overlay,
+  .open .overlay {
+    transform: translateY(0);
+  }
+
+  .card:hover .label,
+  .card:focus-visible .label,
+  .open .label {
+    opacity: 0;
+  }
 }

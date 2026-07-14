@@ -2,14 +2,10 @@
   box-sizing: border-box;
   position: relative;
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0 50px;
-  gap: 50px;
+  padding: 0 20px;
 
-  width: 1440px;
-  height: 673px;
+  width: 100%;
+  max-width: 768px;
   margin: 0 auto;
 
   overflow: hidden;
@@ -30,4 +26,24 @@
 
   background: rgba(255, 255, 255, 0.89);
   pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 0 50px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 50px;
+    gap: 50px;
+
+    width: 1440px;
+    max-width: 1440px;
+    height: 673px;
+  }
 }

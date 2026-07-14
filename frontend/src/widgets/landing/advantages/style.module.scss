@@ -6,10 +6,10 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  padding: 0 50px;
+  padding: 0 20px;
 
-  width: 1440px;
-  min-height: 434px;
+  width: 100%;
+  max-width: 768px;
   margin: 0 auto;
 
   overflow: hidden;
@@ -39,7 +39,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 100px 0;
+  padding: 50px 0;
   gap: 60px;
 
   flex: 1;
@@ -71,12 +71,11 @@
 
 .row {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: stretch;
   gap: 20px;
 
   width: 100%;
-  min-height: 116px;
 }
 
 .card {
@@ -105,7 +104,7 @@
   font-style: normal;
   font-weight: 900;
   font-size: 100px;
-  line-height: 100px;
+  line-height: 117px;
 
   color: #f69827;
 }
@@ -121,4 +120,37 @@
   line-height: 21px;
 
   color: #0b0b0b;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 0 50px;
+  }
+
+  .content {
+    padding: 100px 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .section {
+    padding: 0 50px;
+
+    width: 1440px;
+    max-width: 1440px;
+    min-height: 434px;
+  }
+
+  .content {
+    padding: 100px 0;
+  }
+
+  .row {
+    flex-direction: row;
+    min-height: 116px;
+  }
+
+  .number {
+    line-height: 100px;
+  }
 }

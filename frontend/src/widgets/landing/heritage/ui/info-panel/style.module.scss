@@ -1,7 +1,6 @@
 .row {
   display: flex;
-  flex-direction: row;
-  align-items: stretch;
+  flex-direction: column;
   gap: 20px;
 
   width: 100%;
@@ -16,9 +15,7 @@
   padding: 20px;
   gap: 20px;
 
-  flex: 1;
-  min-width: 0;
-  min-height: 470px;
+  width: 100%;
 
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid #ffffff;
@@ -46,7 +43,7 @@
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
-  line-height: 29px;
+  line-height: 28px;
 
   color: #0b0b0b;
 }
@@ -85,4 +82,21 @@
 
 .list li::marker {
   color: #0b0b0b;
+}
+
+@media (min-width: 1440px) {
+  .row {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .card {
+    flex: 1;
+    min-width: 0;
+    min-height: 470px;
+  }
+
+  .title {
+    line-height: 29px;
+  }
 }

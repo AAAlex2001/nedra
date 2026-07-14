@@ -40,11 +40,17 @@
 
 .columns {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  flex-direction: column;
   gap: 10px;
 
   width: 100%;
+}
+
+@media (min-width: 768px) {
+  .columns {
+    flex-direction: row;
+    align-items: flex-start;
+  }
 }
 
 .column {

@@ -5,7 +5,7 @@ import styles from "./style.module.scss";
 
 const Documents = () => {
   return (
-    <section className={styles.section}>
+    <section id="documents" className={styles.section}>
       <div className={styles.inner}>
         <DocumentsHeading
           title={DOCUMENTS_DATA.title}

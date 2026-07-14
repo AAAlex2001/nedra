@@ -16,7 +16,7 @@ const mapSrc = `https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(
 
 const Contacts = () => {
   return (
-    <section className={styles.section}>
+    <section id="contacts" className={styles.section}>
       <div className={styles.bg} aria-hidden />
       <div className={styles.tint} aria-hidden />
 

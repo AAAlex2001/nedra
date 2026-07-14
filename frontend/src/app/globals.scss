@@ -36,6 +36,10 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   min-height: 100%;
@@ -51,4 +55,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-synthesis: none;
+}
+
+section[id],
+footer[id] {
+  scroll-margin-top: 100px;
 }

@@ -3,12 +3,12 @@
 
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 100px 50px;
+  align-items: center;
+  padding: 50px 20px;
   gap: 50px;
 
-  width: 1440px;
-  min-height: 1011px;
+  width: 100%;
+  max-width: 768px;
   margin: 0 auto;
 
   background: #ffffff;
@@ -21,4 +21,18 @@
   gap: 45px;
 
   width: 100%;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 100px 50px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .section {
+    width: 1440px;
+    max-width: 1440px;
+    min-height: 1011px;
+  }
 }

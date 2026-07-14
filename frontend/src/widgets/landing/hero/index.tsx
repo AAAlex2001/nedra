@@ -1,7 +1,9 @@
 import AccentLine from "@/shared/ui/accent-line";
 import OutlineButton from "@/shared/ui/outline-button";
-import { HERO_ACCORDION_LAYOUT, HERO_DATA } from "./data";
+import { HERO_DATA } from "./data";
 import styles from "./style.module.scss";
+
+const CHIP_CLASSES = [styles.chip0, styles.chip1, styles.chip2, styles.chip3];
 
 const Hero = () => {
   return (
@@ -21,27 +23,14 @@ const Hero = () => {
         </OutlineButton>
       </div>
 
-      <div className={styles.pic} />
-
-      {HERO_DATA.advantages.slice(0, 4).map((item, i) => {
-        const layout = HERO_ACCORDION_LAYOUT[i];
-        if (!layout) return null;
-        return (
-          <div
-            key={item.title}
-            className={styles.accordion}
-            style={{
-              left: layout.left,
-              top: layout.top,
-              width: layout.width,
-              height: layout.height,
-              zIndex: layout.zIndex,
-            }}
-          >
+      <div className={styles.stage}>
+        <div className={styles.pic} />
+        {HERO_DATA.advantages.slice(0, 4).map((item, index) => (
+          <div key={item.title} className={`${styles.accordion} ${CHIP_CLASSES[index]}`}>
             <span className={styles.accordionText}>{item.title}</span>
           </div>
-        );
-      })}
+        ))}
+      </div>
     </section>
   );
 };

@@ -1,13 +1,14 @@
 .hero {
   position: relative;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 0 0;
+  gap: 100px;
   isolation: isolate;
 
-  width: 1440px;
-  height: 574px;
+  width: 100%;
+  max-width: 768px;
   margin: 0 auto;
 }
 
@@ -16,38 +17,25 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 0 50px;
+  padding: 0 20px;
   gap: 50px;
 
-  width: 768px;
-  height: 574px;
+  width: 100%;
 
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
-  z-index: 0;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.25));
 }
 
 .headingsInner {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0;
   gap: 30px;
 
-  width: 668px;
-  height: 159px;
-
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
+  width: 100%;
 }
 
 .kicker {
-  width: 668px;
-  height: 21px;
+  width: 100%;
 
   font-family: "Gilroy";
   font-style: normal;
@@ -56,16 +44,10 @@
   line-height: 21px;
 
   color: #797979;
-
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
 }
 
 .title {
-  width: 668px;
-  height: 78px;
+  width: 100%;
 
   font-family: "Gilroy";
   font-style: normal;
@@ -75,65 +57,191 @@
   text-transform: uppercase;
 
   color: #0b0b0b;
-
-  flex: none;
-  order: 2;
-  align-self: stretch;
-  flex-grow: 0;
 }
 
 .titleBold {
   font-weight: 700;
 }
 
+.stage {
+  position: relative;
+  flex: none;
+
+  width: 360px;
+  max-width: 100%;
+  height: 346px;
+}
+
 .pic {
-  width: 597px;
-  height: 574px;
-
-  background: url("/globe/globe.png") no-repeat center / contain;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
-}
-
-.accordion {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  gap: 15px;
-
-  position: absolute;
-
-  background: #ffffff;
-  box-shadow: 0px 4px 10px rgba(246, 152, 39, 0.2);
-  border-radius: 6px;
-
-  flex: none;
-  flex-grow: 0;
-}
-
-.accordionText {
   width: 100%;
   height: 100%;
 
+  background: url("/globe/globe.png") no-repeat center / contain;
+}
+
+.accordion {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  gap: 15px;
+
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(246, 152, 39, 0.2);
+  border-radius: 6px;
+}
+
+.accordionText {
   font-family: "Gilroy";
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 16px;
   text-align: center;
 
   color: #0b0b0b;
+}
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.chip0 {
+  left: 38px;
+  top: 60.82px;
+  width: 121px;
+  height: 36px;
+}
 
-  flex: none;
-  order: 0;
-  flex-grow: 1;
+.chip1 {
+  left: 227px;
+  top: 109.82px;
+  width: 116px;
+  height: 52px;
+}
+
+.chip2 {
+  left: 22px;
+  top: 204.82px;
+  width: 127px;
+  height: 52px;
+}
+
+.chip3 {
+  left: 204px;
+  top: 269.82px;
+  width: 122px;
+  height: 52px;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    gap: 0;
+  }
+
+  .headings {
+    padding: 0 50px;
+  }
+
+  .stage {
+    width: 597px;
+    height: 574px;
+  }
+
+  .accordionText {
+    font-size: 16px;
+  }
+
+  .chip0 {
+    left: 143.5px;
+    top: 69.82px;
+    width: 141px;
+    height: 36px;
+  }
+
+  .chip1 {
+    left: 374.5px;
+    top: 175.82px;
+    width: 131px;
+    height: 52px;
+  }
+
+  .chip2 {
+    left: 96.5px;
+    top: 296.82px;
+    width: 143px;
+    height: 52px;
+  }
+
+  .chip3 {
+    left: 321.5px;
+    top: 395.82px;
+    width: 143px;
+    height: 52px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .hero {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0;
+
+    width: 1440px;
+    max-width: 1440px;
+    height: 574px;
+  }
+
+  .headings {
+    width: 768px;
+    height: 574px;
+
+    filter: none;
+  }
+
+  .headingsInner {
+    width: 668px;
+  }
+
+  .kicker {
+    width: 668px;
+  }
+
+  .title {
+    width: 668px;
+  }
+
+  .stage {
+    z-index: 1;
+  }
+
+  .chip0 {
+    left: 158px;
+    top: 66px;
+    width: 141px;
+    height: 36px;
+    z-index: 3;
+  }
+
+  .chip1 {
+    left: 111px;
+    top: 293px;
+    width: 143px;
+    height: 52px;
+    z-index: 4;
+  }
+
+  .chip2 {
+    left: 389px;
+    top: 172px;
+    width: 131px;
+    height: 52px;
+    z-index: 2;
+  }
+
+  .chip3 {
+    left: 336px;
+    top: 392px;
+    width: 143px;
+    height: 52px;
+    z-index: 5;
+  }
 }

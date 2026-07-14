@@ -1,6 +1,6 @@
 import { COMPANY_CONTACTS } from "@/shared/config/company";
 import ContactRow from "@/shared/ui/contact-row";
-import { LocationIcon, MailIcon, PhoneIcon } from "@/shared/ui/icons";
+import { LocationIcon, MailIcon, NedraLogo, PhoneIcon } from "@/shared/ui/icons";
 import { FOOTER_DATA } from "./data";
 import styles from "./style.module.scss";
 
@@ -10,7 +10,7 @@ const Footer = () => {
       <div className={styles.top}>
         <div className={styles.brand}>
           <div className={styles.logo}>
-            <span className={styles.logoIcon} aria-hidden />
+            <NedraLogo className={styles.logoIcon} />
             <span className={styles.company}>{FOOTER_DATA.company}</span>
           </div>
           <p className={styles.description}>{FOOTER_DATA.description}</p>

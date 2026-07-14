@@ -3,16 +3,17 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 100px 50px 0;
+  padding: 100px 20px 0;
   gap: 30px;
 
-  width: 1440px;
+  width: 100%;
+  max-width: 768px;
   margin: 0 auto;
 }
 
 .top {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
   gap: 50px;
 
@@ -26,8 +27,7 @@
   align-items: flex-start;
   gap: 15px;
 
-  flex: none;
-  width: 502px;
+  width: 100%;
 }
 
 .logo {
@@ -39,11 +39,10 @@
 
 .logoIcon {
   flex: none;
-  width: 38px;
-  height: 38px;
+  display: block;
 
-  border: 1px dashed #d9d9d9;
-  border-radius: 8px;
+  width: auto;
+  height: 60px;
 }
 
 .company {
@@ -80,8 +79,7 @@
   align-items: flex-start;
   gap: 10px;
 
-  flex: 1;
-  width: 369px;
+  width: 100%;
 }
 
 .colTitle {
@@ -173,9 +171,9 @@ a.contactText:hover {
 .bottom {
   box-sizing: border-box;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 30px;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 10px;
   padding: 20px 0;
 
   width: 100%;
@@ -184,13 +182,12 @@ a.contactText:hover {
 }
 
 .copyright {
-  flex: 1;
-
   font-family: "Gilroy";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
+  text-align: center;
 
   background: linear-gradient(90deg, #000a1f 0%, #012e59 100%);
   -webkit-background-clip: text;
@@ -205,8 +202,51 @@ a.contactText:hover {
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
-  text-align: right;
+  text-align: center;
   text-decoration-line: underline;
 
   color: #f69827;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    padding: 100px 50px 0;
+  }
+
+  .brand {
+    flex: none;
+    width: 502px;
+  }
+
+  .bottom {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 30px;
+  }
+
+  .copyright {
+    flex: 1;
+    text-align: left;
+  }
+
+  .privacy {
+    text-align: right;
+  }
+}
+
+@media (min-width: 1440px) {
+  .footer {
+    width: 1440px;
+    max-width: 1440px;
+  }
+
+  .top {
+    flex-direction: row;
+  }
+
+  .nav,
+  .contacts {
+    flex: 1;
+    width: 369px;
+  }
 }

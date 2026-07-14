@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 import AccentLine from "@/shared/ui/accent-line";
 import { CheckIcon } from "@/shared/ui/icons";
-import OutlineButton from "@/shared/ui/outline-button";
+import Lightbox from "@/shared/ui/lightbox";
 import type { MethodologyCardData } from "../../data";
 import styles from "./style.module.scss";
 
@@ -10,6 +13,8 @@ type MethodologyCardProps = {
 };
 
 const MethodologyCard = ({ card }: MethodologyCardProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className={styles.card}>
       <div className={styles.imageWrap}>
@@ -36,8 +41,18 @@ const MethodologyCard = ({ card }: MethodologyCardProps) => {
           ))}
         </ul>
 
-        <OutlineButton href={card.button.href}>{card.button.text}</OutlineButton>
+        <button
+          type="button"
+          className={styles.docButton}
+          onClick={() => setIsOpen(true)}
+        >
+          {card.button.text}
+        </button>
       </div>
+
+      {isOpen && (
+        <Lightbox src={card.image} alt={card.title} onClose={() => setIsOpen(false)} />
+      )}
     </div>
   );
 };

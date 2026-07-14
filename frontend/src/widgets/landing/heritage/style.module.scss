@@ -4,10 +4,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 100px 50px;
   gap: 50px;
+  padding: 100px 20px;
 
-  width: 1440px;
+  width: 100%;
+  max-width: 768px;
   margin: 0 auto;
 
   background: #ffffff;
@@ -15,8 +16,7 @@
 
 .top {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   gap: 50px;
 
   width: 100%;
@@ -26,8 +26,53 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 45px;
+  gap: 50px;
 
-  flex: 1;
-  min-width: 0;
+  width: 100%;
+}
+
+.compareWrap {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 100px 50px;
+  }
+
+  .top {
+    align-items: center;
+  }
+
+  .compareWrap {
+    width: 639px;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .section {
+    width: 1440px;
+    max-width: 1440px;
+    padding: 100px 50px;
+  }
+
+  .top {
+    flex-direction: row;
+    align-items: center;
+    gap: 50px;
+  }
+
+  .right {
+    order: 1;
+    gap: 45px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .compareWrap {
+    order: 0;
+    flex: none;
+    width: 639px;
+  }
 }

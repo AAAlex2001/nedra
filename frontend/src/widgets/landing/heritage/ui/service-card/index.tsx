@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { HeritageDesignIcon, HeritageRepairIcon } from "@/shared/ui/icons";
 import type { HeritageServiceCard } from "../../data";
 import styles from "./style.module.scss";
@@ -22,7 +23,7 @@ const ServiceCards = ({ cards }: ServiceCardsProps) => {
             <Icon className={styles.icon} />
             <span
               className={styles.number}
-              style={{ left: `${item.badgeLeft}px` }}
+              style={{ "--badge-left": `${item.badgeLeft}px` } as CSSProperties}
             >
               {item.number}
             </span>

@@ -2,21 +2,19 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 20px;
   gap: 20px;
+  padding: 0;
 
-  flex: 3;
-  min-width: 0;
+  width: 100%;
 
   background: #ffffff;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
-  border-radius: 20px 0 0 20px;
+  border-radius: 20px;
 }
 
 .split {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  flex-direction: column;
   gap: 20px;
 
   width: 100%;
@@ -25,9 +23,29 @@
 .column {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 20px;
 
-  flex: 1;
-  min-width: 0;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .panel {
+    padding: 20px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .panel {
+    border-radius: 20px 0 0 20px;
+  }
+
+  .split {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .column {
+    flex: 1;
+    min-width: 0;
+  }
 }

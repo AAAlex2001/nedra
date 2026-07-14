@@ -6,7 +6,7 @@ import styles from "./style.module.scss";
 
 const Laboratory = () => {
   return (
-    <section className={styles.section}>
+    <section id="laboratory" className={styles.section}>
       <header className={styles.header}>
         <h2 className={styles.title}>
           {LABORATORY_DATA.titleBefore}{" "}
