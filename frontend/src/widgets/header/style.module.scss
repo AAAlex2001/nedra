@@ -33,12 +33,10 @@
   display: block;
   width: auto;
   height: 54px;
-
-  transition: transform 0.3s ease;
 }
 
-.logo:hover .logoIcon {
-  transform: scale(1.05);
+.logo:hover :global(.nedra-logo-fill) {
+  clip-path: inset(0 0 0 0) fill-box;
 }
 
 .controls {

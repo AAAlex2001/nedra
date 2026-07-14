@@ -70,25 +70,7 @@ footer[id] {
   scroll-margin-top: 100px;
 }
 
-.nedra-logo-sun {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: nedra-logo-sun 3s ease-in-out infinite;
-}
-
-@keyframes nedra-logo-sun {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-1.5px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nedra-logo-sun {
-    animation: none;
-  }
+.nedra-logo-fill {
+  clip-path: inset(0 100% 0 0) fill-box;
+  transition: clip-path 0.6s ease;
 }
