@@ -3,29 +3,19 @@
   flex-direction: row;
   align-items: flex-start;
   gap: 10px;
-  padding-bottom: 10px;
+}
 
+.divider {
+  padding-bottom: 10px;
   border-bottom: 1px solid rgba(246, 152, 39, 0.1);
 }
 
-.note:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-.noteIconInfo {
+.icon {
   flex: none;
-  width: 44px;
-  height: 44px;
+  display: inline-flex;
 }
 
-.noteIcon {
-  flex: none;
-  width: 28px;
-  height: 28px;
-}
-
-.noteText {
+.text {
   flex: 1;
   min-width: 0;
   margin: 0;

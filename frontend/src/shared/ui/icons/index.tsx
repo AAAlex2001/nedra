@@ -32,4 +32,6 @@ export { GlobeIcon } from "./globe-icon";
 export { PeopleIcon } from "./people-icon";
 export { InfoIcon } from "./info-icon";
 export { GraduationIcon } from "./graduation-icon";
+export { GraduationCapIcon } from "./graduation-cap-icon";
 export { UserCircleIcon } from "./user-circle-icon";
+export { AddUserIcon } from "./add-user-icon";

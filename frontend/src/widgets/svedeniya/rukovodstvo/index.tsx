@@ -1,5 +1,6 @@
 import Card from "@/shared/ui/card";
 import { UserCircleIcon } from "@/shared/ui/icons";
+import NoteRow from "@/shared/ui/note-row";
 import SectionHeading from "@/shared/ui/section-heading";
 import { RUKOVODSTVO } from "./data";
 import styles from "./style.module.scss";
@@ -12,10 +13,9 @@ const SvedeniyaRukovodstvo = () => {
       <SectionHeading title={title} />
 
       <Card gap={20}>
-        <div className={styles.note}>
-          <UserCircleIcon className={styles.noteIcon} />
-          <p className={styles.noteText}>{notice}</p>
-        </div>
+        <NoteRow icon={<UserCircleIcon />} divider>
+          {notice}
+        </NoteRow>
 
         <div className={styles.leader}>
           <h2 className={styles.subtitle}>{subtitle}</h2>

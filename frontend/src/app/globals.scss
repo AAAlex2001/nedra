@@ -46,6 +46,10 @@ body {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
   font-family: "Gilroy";
   line-height: 1.5;
   color: #111;
@@ -55,6 +59,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-synthesis: none;
+}
+
+body > main {
+  flex: 1 0 auto;
 }
 
 section[id],

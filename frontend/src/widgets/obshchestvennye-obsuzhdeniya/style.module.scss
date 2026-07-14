@@ -1,6 +1,6 @@
-.cards {
-  display: grid;
-  grid-template-columns: 1fr;
+.list {
+  display: flex;
+  flex-direction: column;
   align-items: stretch;
   gap: 10px;
 
@@ -11,35 +11,22 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   gap: 15px;
   padding: 20px;
 
-  height: 125px;
+  width: 100%;
 
   background: #ffffff;
-  border: 2px solid #f2f2f7;
+  border: 2px solid #f69827;
   border-radius: 16px;
   text-decoration: none;
 
-  transition: border-color 0.15s ease;
+  transition: background-color 0.15s ease;
 }
 
 .card:hover {
-  border-color: #f69827;
-}
-
-.number {
-  flex: none;
-  align-self: flex-start;
-
-  font-family: "Gilroy";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 22px;
-  line-height: 26px;
-
-  color: #f69827;
+  background: rgba(246, 152, 39, 0.05);
 }
 
 .label {
@@ -57,15 +44,8 @@
 
 .chevron {
   flex: none;
-  align-self: center;
   width: 24px;
   height: 24px;
 
   color: #797979;
-}
-
-@media (min-width: 1440px) {
-  .cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
