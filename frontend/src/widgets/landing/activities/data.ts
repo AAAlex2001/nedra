@@ -43,7 +43,7 @@ export type MethodologyCardData = {
 };
 
 export const METHODOLOGY_CARD: MethodologyCardData = {
-  image: "/nedra_doc_attest_metodica.jpg",
+  image: "/nedra_doc_attest_metodica.webp",
   title: "Методика измерения химической активности угля",
   number: "№ 149/RA.RU.310473/2026",
   points: [

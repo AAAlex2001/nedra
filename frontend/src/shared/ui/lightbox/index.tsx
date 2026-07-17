@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import styles from "./style.module.scss";
@@ -44,10 +45,16 @@ const Lightbox = ({ src, alt = "", onClose }: LightboxProps) => {
         </svg>
       </button>
 
-      <img
+      <Image
         className={styles.image}
         src={src}
         alt={alt}
+        width={1241}
+        height={1755}
+        sizes="100vw"
+        quality={90}
+        loading="eager"
+        decoding="async"
         onClick={(event) => event.stopPropagation()}
         draggable={false}
       />

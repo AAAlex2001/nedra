@@ -9,13 +9,8 @@
 }
 
 .image {
-  position: absolute;
-  inset: 0;
-
-  background-color: #f2f2f7;
-  background-size: cover;
-  background-position: center right;
-  background-repeat: no-repeat;
+  object-fit: cover;
+  object-position: center right;
   opacity: 0.7;
 }
 

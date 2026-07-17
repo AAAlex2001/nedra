@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
 import type { CompareSliderData } from "../../data";
 import styles from "./style.module.scss";
@@ -40,10 +41,15 @@ const CompareSlider = ({ data }: CompareSliderProps) => {
       onMouseUp={() => setDragging(false)}
       onMouseLeave={() => setDragging(false)}
     >
-      <img
+      <Image
         className={styles.image}
         src={data.beforeImage}
         alt="Состояние объекта до реставрации"
+        fill
+        sizes="(min-width: 768px) 639px, calc(100vw - 40px)"
+        quality={82}
+        loading="lazy"
+        decoding="async"
         draggable={false}
       />
 
@@ -51,10 +57,15 @@ const CompareSlider = ({ data }: CompareSliderProps) => {
         className={styles.afterLayer}
         style={{ clipPath: `inset(0 0 0 ${position}%)` }}
       >
-        <img
+        <Image
           className={styles.image}
           src={data.afterImage}
           alt="Состояние объекта после реставрации"
+          fill
+          sizes="(min-width: 768px) 639px, calc(100vw - 40px)"
+          quality={82}
+          loading="lazy"
+          decoding="async"
           draggable={false}
         />
       </div>

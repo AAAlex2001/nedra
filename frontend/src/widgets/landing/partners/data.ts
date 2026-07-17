@@ -50,14 +50,14 @@ export const ROWS: Logo[][] = [
   ],
   [
     { kind: "svg", Logo: MetallserviceLogo, label: "Металлсервис", href: "https://mc.ru/" },
-    { kind: "img", src: "/partners/stroyservice.png", width: 300, height: 100, label: "Стройсервис", href: "https://stroysv.com/" },
+    { kind: "img", src: "/partners/stroyservice.webp", width: 300, height: 100, label: "Стройсервис", href: "https://stroysv.com/" },
     { kind: "img", src: "/partners/kolmar.png", width: 200, height: 36, label: "Колмар", href: "https://www.kolmar.ru/" },
     { kind: "svg", Logo: MnkLogo, label: "ИНК", href: "https://irkutskoil.ru/" },
-    { kind: "img", src: "/partners/bashmed.jpg", width: 125, height: 125, label: "Башмедь", href: "http://bm02.ru/" },
+    { kind: "img", src: "/partners/bashmed.webp", width: 125, height: 125, label: "Башмедь", href: "http://bm02.ru/" },
   ],
 ];
 
 export const LAST_ROW: Logo[] = [
-  { kind: "img", src: "/partners/volkovskiygok.jpg", width: 100, height: 91, label: "Святогор", href: "https://volkgok.ru/applicants/" },
+  { kind: "img", src: "/partners/volkovskiygok.webp", width: 100, height: 91, label: "Святогор", href: "https://volkgok.ru/applicants/" },
   { kind: "img", src: "/partners/metalloinvest.png", width: 350, height: 59, label: "Металлоинвест", href: "https://www.metalloinvest.com/" },
 ];

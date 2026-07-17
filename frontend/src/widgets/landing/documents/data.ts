@@ -5,16 +5,16 @@ export const DOCUMENTS_DATA = {
 };
 
 export const DOCUMENT_SLIDES = [
-  "/docs/docs_1.png",
-  "/docs/docs_2.png",
-  "/docs/docs_3.jpg",
-  "/docs/docs_4.jpg",
-  "/docs/docs_5.jpg",
-  "/docs/docs_6.jpg",
-  "/docs/docs_7.jpg",
-  "/docs/docs_8.jpg",
-  "/docs/docs_9.jpg",
-  "/docs/docs_10.jpg",
-  "/docs/docs_11.jpg",
-  "/docs/docs_12.jpg",
+  "/docs/docs_1.webp",
+  "/docs/docs_2.webp",
+  "/docs/docs_3.webp",
+  "/docs/docs_4.webp",
+  "/docs/docs_5.webp",
+  "/docs/docs_6.webp",
+  "/docs/docs_7.webp",
+  "/docs/docs_8.webp",
+  "/docs/docs_9.webp",
+  "/docs/docs_10.webp",
+  "/docs/docs_11.webp",
+  "/docs/docs_12.webp",
 ];

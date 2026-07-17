@@ -73,10 +73,13 @@
 }
 
 .pic {
+  position: relative;
   width: 100%;
   height: 100%;
+}
 
-  background: url("/globe/globe.png") no-repeat center / contain;
+.picImage {
+  object-fit: contain;
 }
 
 .accordion {

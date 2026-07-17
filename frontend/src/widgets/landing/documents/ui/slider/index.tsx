@@ -1,6 +1,7 @@
 "use client";
 
 import "keen-slider/keen-slider.min.css";
+import Image from "next/image";
 import { useKeenSlider } from "keen-slider/react";
 import { useState } from "react";
 import Lightbox from "@/shared/ui/lightbox";
@@ -51,10 +52,16 @@ const DocumentsSlider = ({ slides }: DocumentsSliderProps) => {
               index === activeIndex ? styles.slideActive : ""
             }`}
           >
-            <img
+            <Image
               className={styles.image}
               src={src}
               alt={`Документ ${index + 1}`}
+              width={360}
+              height={508}
+              sizes="(min-width: 768px) 360px, 200px"
+              quality={90}
+              loading="lazy"
+              decoding="async"
               draggable={false}
               onClick={() => setLightboxSrc(src)}
             />

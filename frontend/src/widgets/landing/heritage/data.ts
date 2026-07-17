@@ -67,8 +67,8 @@ export type CompareSliderData = {
 };
 
 export const COMPARE_SLIDER: CompareSliderData = {
-  beforeImage: "/block_8_right.png",
-  afterImage: "/block_8_left.png",
+  beforeImage: "/block_8_right.webp",
+  afterImage: "/block_8_left.webp",
   beforeLabel: "до",
   afterLabel: "после",
 };

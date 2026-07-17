@@ -23,6 +23,9 @@ const MethodologyCard = ({ card }: MethodologyCardProps) => {
           alt={card.title}
           fill
           sizes="230px"
+          quality={90}
+          loading="lazy"
+          decoding="async"
           className={styles.image}
         />
       </div>

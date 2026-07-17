@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Direction } from "../../data";
 import styles from "./style.module.scss";
 
@@ -7,10 +8,16 @@ type HeroCardProps = {
 
 const HeroCard = ({ direction }: HeroCardProps) => (
   <div className={styles.card}>
-    <div
+    <Image
       className={styles.image}
-      style={{ backgroundImage: `url(${direction.image})` }}
-      aria-hidden
+      src={direction.image}
+      alt=""
+      fill
+      sizes="(min-width: 1440px) 816px, (min-width: 768px) calc(100vw - 140px), calc(100vw - 40px)"
+      quality={82}
+      decoding="async"
+      loading="lazy"
+      aria-hidden="true"
     />
     <div className={styles.fade} aria-hidden />
     <div className={styles.content}>

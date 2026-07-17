@@ -25,6 +25,10 @@ const Institute = () => {
           alt="Специалисты НПИ «Недра» на объекте"
           width={482}
           height={389}
+          sizes="(min-width: 768px) 482px, 275px"
+          quality={82}
+          loading="lazy"
+          decoding="async"
         />
       </div>
 
@@ -34,6 +38,10 @@ const Institute = () => {
         alt="Диплом конкурса «Лучший экспонат»"
         width={265}
         height={377}
+        sizes="(min-width: 768px) 265px, 155px"
+        quality={90}
+        loading="lazy"
+        decoding="async"
       />
     </section>
   );

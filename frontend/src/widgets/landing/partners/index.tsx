@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Marquee from "react-fast-marquee";
 import AccentLine from "@/shared/ui/accent-line";
 import { LAST_ROW, PARTNERS_DATA, ROWS, type Logo } from "./data";
@@ -20,11 +21,16 @@ const LogoCell = ({ item }: { item: Logo }) => {
 
   if (item.kind === "img") {
     return (
-      <img
+      <Image
         className={styles.logo}
         src={item.src}
         alt={item.label}
+        width={item.width}
+        height={item.height}
+        sizes={`${Math.min(item.width, 240)}px`}
+        quality={90}
         loading="lazy"
+        decoding="async"
         draggable={false}
       />
     );

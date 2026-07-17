@@ -30,7 +30,10 @@ const ServiceCards = ({ cards }: ServiceCardsProps) => {
                 src={item.image}
                 alt={item.title}
                 fill
-                sizes="(min-width: 1440px) 440px, 320px"
+                sizes="(min-width: 1440px) 433px, (min-width: 768px) calc(100vw - 100px), calc(100vw - 40px)"
+                quality={82}
+                loading="lazy"
+                decoding="async"
                 className={styles.image}
               />
               <span className={styles.label}>{item.title}</span>
