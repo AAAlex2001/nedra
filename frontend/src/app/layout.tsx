@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Footer from "@/widgets/footer";
 import Header from "@/widgets/header";
+import YandexMetrika from "@/shared/ui/yandex-metrika";
 import {
   organizationJsonLd,
   SITE_DESCRIPTION,
@@ -83,6 +84,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
+        <YandexMetrika />
       </body>
     </html>
   );
