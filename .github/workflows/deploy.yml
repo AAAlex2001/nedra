@@ -1,0 +1,155 @@
+name: Deploy production
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "frontend/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+      DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+      DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Lint
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+
+      - name: Prepare standalone release
+        working-directory: frontend
+        run: |
+          rm -rf .deploy
+          mkdir -p .deploy/.next
+          cp -a .next/standalone/. .deploy/
+          cp -a .next/static .deploy/.next/static
+          cp -a public .deploy/public
+          test -f .deploy/server.js
+
+      - name: Configure SSH
+        run: |
+          for variable in DEPLOY_HOST DEPLOY_PORT DEPLOY_USER DEPLOY_SSH_KEY DEPLOY_KNOWN_HOSTS; do
+            if [ -z "${!variable:-}" ]; then
+              echo "::error::GitHub secret $variable is not configured"
+              exit 1
+            fi
+          done
+
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_SSH_KEY" | tr -d '\r' > "$HOME/.ssh/deploy_key"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" | tr -d '\r' > "$HOME/.ssh/known_hosts"
+
+      - name: Upload and activate release
+        working-directory: frontend
+        run: |
+          ssh_options=(
+            -p "$DEPLOY_PORT"
+            -i "$HOME/.ssh/deploy_key"
+            -o IdentitiesOnly=yes
+            -o StrictHostKeyChecking=yes
+          )
+          release_path="/var/www/nedra/releases/$GITHUB_SHA"
+
+          ssh "${ssh_options[@]}" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "mkdir -p '$release_path'"
+
+          rsync -az --delete \
+            -e "ssh -p $DEPLOY_PORT -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
+            .deploy/ "$DEPLOY_USER@$DEPLOY_HOST:$release_path/"
+
+          ssh "${ssh_options[@]}" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "bash -se -- '$GITHUB_SHA'" <<'REMOTE_SCRIPT'
+          set -euo pipefail
+
+          release_sha="$1"
+          app_root="/var/www/nedra"
+          release="$app_root/releases/$release_sha"
+          current="$app_root/current"
+          previous="$(readlink "$current" 2>/dev/null || true)"
+
+          test -f "$release/server.js"
+          mkdir -p "$release/public"
+
+          if [ -d "$app_root/shared/public" ]; then
+            cp -a "$app_root/shared/public/." "$release/public/"
+          fi
+
+          activate() {
+            target="$1"
+            ln -sfn "$target" "$app_root/current.next"
+            mv -Tf "$app_root/current.next" "$current"
+          }
+
+          rollback() {
+            if [ -n "$previous" ] && [ -d "$app_root/$previous" ]; then
+              activate "$previous"
+              sudo /usr/bin/systemctl restart nedra-frontend
+            fi
+          }
+
+          activate "releases/$release_sha"
+
+          if ! sudo /usr/bin/systemctl restart nedra-frontend; then
+            rollback
+            exit 1
+          fi
+
+          healthy=0
+          for attempt in $(seq 1 15); do
+            if curl --fail --silent --show-error http://127.0.0.1:3000/ >/dev/null; then
+              healthy=1
+              break
+            fi
+            sleep 2
+          done
+
+          if [ "$healthy" -ne 1 ]; then
+            rollback
+            exit 1
+          fi
+
+          find "$app_root/releases" -mindepth 1 -maxdepth 1 -type d -printf '%T@ %p\n' \
+            | sort -nr \
+            | tail -n +6 \
+            | cut -d' ' -f2- \
+            | while IFS= read -r old_release; do
+                [ -n "$old_release" ] && rm -rf -- "$old_release"
+              done
+          REMOTE_SCRIPT
