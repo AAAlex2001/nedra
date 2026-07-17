@@ -1,7 +1,7 @@
 import { COMPANY_CONTACTS } from "@/shared/config/company";
 import ContactRow from "@/shared/ui/contact-row";
 import { LocationIcon, MailIcon, NedraLogo, PhoneIcon } from "@/shared/ui/icons";
-import { FOOTER_DATA } from "./data";
+import { FOOTER_DATA, FOOTER_SITEMAP } from "./data";
 import styles from "./style.module.scss";
 
 const Footer = () => {
@@ -19,19 +19,6 @@ const Footer = () => {
           <p className={styles.description}>{FOOTER_DATA.description}</p>
         </div>
 
-        <nav className={styles.nav}>
-          <span className={styles.colTitle}>{FOOTER_DATA.navTitle}</span>
-          <ul className={styles.navList}>
-            {FOOTER_DATA.nav.map((item) => (
-              <li key={item.label}>
-                <a className={styles.navLink} href={item.href}>
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
         <div className={styles.contacts}>
           <span className={styles.colTitle}>{FOOTER_DATA.contactsTitle}</span>
           <div className={styles.contactsList}>
@@ -45,6 +32,31 @@ const Footer = () => {
               {COMPANY_CONTACTS.address}
             </ContactRow>
           </div>
+        </div>
+      </div>
+
+      <div className={styles.sitemap}>
+        <span className={styles.sitemapTitle}>{FOOTER_DATA.sitemapTitle}</span>
+
+        <div className={styles.sitemapGrid}>
+          {FOOTER_SITEMAP.map((group) => (
+            <nav
+              key={group.title}
+              className={`${styles.sitemapGroup} ${group.wide ? styles.sitemapGroupWide : ""}`}
+              aria-label={group.title}
+            >
+              <span className={styles.groupTitle}>{group.title}</span>
+              <ul className={styles.navList}>
+                {group.links.map((item) => (
+                  <li key={item.href}>
+                    <a className={styles.navLink} href={item.href}>
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
       </div>
 

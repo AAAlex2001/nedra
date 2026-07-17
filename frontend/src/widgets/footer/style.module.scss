@@ -77,8 +77,7 @@
   color: transparent;
 }
 
-/* --- Колонки навигации / контактов --- */
-.nav,
+/* --- Контакты --- */
 .contacts {
   display: flex;
   flex-direction: column;
@@ -134,6 +133,61 @@
 .navLink:hover {
   -webkit-text-fill-color: #f69827;
   color: #f69827;
+}
+
+/* --- Карта сайта --- */
+.sitemap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+
+  width: 100%;
+  padding-top: 20px;
+
+  border-top: 1px solid rgba(120, 120, 128, 0.16);
+}
+
+.sitemapTitle {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  text-transform: uppercase;
+
+  color: #f69827;
+}
+
+.sitemapGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+
+  width: 100%;
+}
+
+.sitemapGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  width: 100%;
+}
+
+.groupTitle {
+  width: 100%;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #0b0b0b;
 }
 
 .row {
@@ -224,6 +278,12 @@ a.contactText:hover {
     width: 502px;
   }
 
+  .sitemapGroupWide .navList {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 30px;
+  }
+
   .bottom {
     flex-direction: row;
     align-items: flex-start;
@@ -250,9 +310,13 @@ a.contactText:hover {
     flex-direction: row;
   }
 
-  .nav,
   .contacts {
     flex: 1;
     width: 369px;
+  }
+
+  .sitemapGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 30px 50px;
   }
 }
