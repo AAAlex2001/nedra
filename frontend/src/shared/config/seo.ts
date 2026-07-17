@@ -5,7 +5,7 @@ import { COMPANY_CONTACTS } from "./company";
  * ВАЖНО: замените на реальный домен после деплоя.
  * От него зависят canonical-ссылки, sitemap, robots и Open Graph.
  */
-export const SITE_URL = "https://npi-nedra.ru";
+export const SITE_URL = "https://nedra-npi.ru";
 
 export const SITE_NAME = "НПИ «Недра»";
 export const SITE_LEGAL_NAME =
