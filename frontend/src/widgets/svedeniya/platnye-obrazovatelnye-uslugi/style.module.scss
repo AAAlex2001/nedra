@@ -1,0 +1,50 @@
+.procedure {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+
+  width: 100%;
+}
+
+.icon {
+  flex: none;
+  display: inline-flex;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #000000;
+}
+
+.text {
+  margin: 0;
+
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #000000;
+}
+
+.highlight {
+  font-weight: 700;
+}

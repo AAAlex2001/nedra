@@ -2,6 +2,7 @@ export { PhoneIcon } from "./phone-icon";
 export { MailIcon } from "./mail-icon";
 export { PersonIcon } from "./person-icon";
 export { DocumentIcon } from "./document-icon";
+export { ProcedureDocumentIcon } from "./procedure-document-icon";
 export { ChevronIcon } from "./chevron-icon";
 export { CertifiedMethodIcon } from "./certified-method-icon";
 export { OfficialCertificateIcon } from "./official-certificate-icon";

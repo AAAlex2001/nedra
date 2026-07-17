@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import styles from "./style.module.scss";
 
 type LightboxProps = {
@@ -10,6 +11,12 @@ type LightboxProps = {
 };
 
 const Lightbox = ({ src, alt = "", onClose }: LightboxProps) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
@@ -25,7 +32,9 @@ const Lightbox = ({ src, alt = "", onClose }: LightboxProps) => {
     };
   }, [onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div
       className={styles.overlay}
       role="dialog"
@@ -50,7 +59,8 @@ const Lightbox = ({ src, alt = "", onClose }: LightboxProps) => {
         onClick={(event) => event.stopPropagation()}
         draggable={false}
       />
-    </div>
+    </div>,
+    document.body,
   );
 };
 
