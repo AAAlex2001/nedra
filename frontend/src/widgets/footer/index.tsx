@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { COMPANY_CONTACTS } from "@/shared/config/company";
 import ContactRow from "@/shared/ui/contact-row";
 import { LocationIcon, MailIcon, NedraLogo, PhoneIcon } from "@/shared/ui/icons";
@@ -9,13 +10,13 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.top}>
         <div className={styles.brand}>
-          <a
+          <Link
             className={styles.logo}
             href="/"
             aria-label="НПИ «Недра» — на главную"
           >
             <NedraLogo className={styles.logoIcon} />
-          </a>
+          </Link>
           <p className={styles.description}>{FOOTER_DATA.description}</p>
         </div>
 
@@ -49,9 +50,9 @@ const Footer = () => {
               <ul className={styles.navList}>
                 {group.links.map((item) => (
                   <li key={item.href}>
-                    <a className={styles.navLink} href={item.href}>
+                    <Link className={styles.navLink} href={item.href}>
                       {item.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -62,9 +63,9 @@ const Footer = () => {
 
       <div className={styles.bottom}>
         <span className={styles.copyright}>{FOOTER_DATA.copyright}</span>
-        <a className={styles.privacy} href={FOOTER_DATA.privacy.href}>
+        <Link className={styles.privacy} href={FOOTER_DATA.privacy.href}>
           {FOOTER_DATA.privacy.label}
-        </a>
+        </Link>
       </div>
     </footer>
   );

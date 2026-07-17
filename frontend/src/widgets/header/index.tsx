@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { BurgerIcon, CloseIcon, NedraLogo } from "@/shared/ui/icons";
 import { HEADER_NAV } from "./data";
@@ -13,22 +14,22 @@ const Header = () => {
     <>
       <header className={styles.header}>
         <div className={styles.inner}>
-          <a className={styles.logo} href="/" aria-label="НПИ «Недра» — на главную">
+          <Link className={styles.logo} href="/" aria-label="НПИ «Недра» — на главную">
             <NedraLogo className={styles.logoIcon} />
-          </a>
+          </Link>
 
           <nav className={styles.tabs}>
             {HEADER_NAV.map((item) => (
-              <a key={item.label} className={styles.tab} href={item.href}>
+              <Link key={item.label} className={styles.tab} href={item.href}>
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <div className={styles.controls}>
-            <a className={styles.contactChip} href="/#contacts">
+            <Link className={styles.contactChip} href="/#contacts">
               Контакты
-            </a>
+            </Link>
 
             <button
               type="button"

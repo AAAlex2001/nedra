@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
 import type { HeaderNavItem } from "../../data";
 import styles from "./style.module.scss";
@@ -38,14 +39,14 @@ const BurgerMenu = ({ open, nav, onClose }: BurgerMenuProps) => {
       <nav className={styles.panel} aria-label="Меню">
         <div className={styles.inner}>
           {nav.map((item) => (
-            <a
+            <Link
               key={item.label}
               className={styles.navLink}
               href={item.href}
               onClick={onClose}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </div>
       </nav>
