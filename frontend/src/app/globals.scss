@@ -38,6 +38,26 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-color: #f69827 transparent;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f69827;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e9850f;
 }
 
 html,

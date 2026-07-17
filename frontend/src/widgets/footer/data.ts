@@ -18,7 +18,10 @@ export const FOOTER_DATA = {
   contactsTitle: "Контакты",
   sitemapTitle: "Карта сайта",
   copyright: "© 2026 ООО НПИ «Недра». Все права защищены.",
-  privacy: { label: "Политика конфиденциальности", href: "#" },
+  privacy: {
+    label: "Политика конфиденциальности",
+    href: "/politika-konfidencialnosti",
+  },
 };
 
 export const FOOTER_SITEMAP: FooterLinkGroup[] = [

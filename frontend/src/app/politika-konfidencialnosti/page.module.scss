@@ -1,0 +1,27 @@
+.page {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.body {
+  display: flex;
+  justify-content: center;
+  padding: 50px 20px 25px;
+
+  width: 100%;
+}
+
+@media (min-width: 1440px) {
+  .page {
+    max-width: 1440px;
+  }
+
+  .body {
+    padding-right: 50px;
+    padding-left: 50px;
+  }
+}
