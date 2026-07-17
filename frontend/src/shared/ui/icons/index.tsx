@@ -36,3 +36,5 @@ export { GraduationIcon } from "./graduation-icon";
 export { GraduationCapIcon } from "./graduation-cap-icon";
 export { UserCircleIcon } from "./user-circle-icon";
 export { AddUserIcon } from "./add-user-icon";
+
+//коммент
