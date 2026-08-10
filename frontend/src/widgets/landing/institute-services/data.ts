@@ -280,9 +280,9 @@ export const DIRECTIONS: Direction[] = [
           },
         ],
         contact: {
-          phone: "+7 961 705-21-25",
-          email: "garlov@bk.ru",
-          person: "Гарлов Дмитрий Юрьевич",
+          phone: "+7 900 107-52-89",
+          email: "a.astraxantseva@yandex.ru",
+          person: "Астраханцева Анастасия Владимировна",
         },
         licenses: {
           note: "Регистрационный номер лицензии на проведение экспертизы промышленной безопасности: Л043-00109-54/00501967.",
