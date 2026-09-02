@@ -1,1 +1,1 @@
-export const YANDEX_METRIKA_ID = 110816802;
+export const YANDEX_METRIKA_ID = 112169672;
