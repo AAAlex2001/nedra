@@ -12,6 +12,8 @@ import {
 } from "@/shared/config/seo";
 import "./globals.scss";
 
+
+//правка
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
