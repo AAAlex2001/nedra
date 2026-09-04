@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { DirectionOption } from "@/entities/service";
+import { formatServiceCount, type DirectionOption } from "@/entities/service";
 import { keepDigits } from "@/shared/lib/text";
 import Button from "@/shared/ui/button";
 import SelectField from "@/shared/ui/select-field";
@@ -11,11 +11,13 @@ import styles from "./style.module.scss";
 
 type RequestFormProps = {
   directions: DirectionOption[];
+  onDirectionChange?: (id: string) => void;
 };
 
-const RequestForm = ({ directions }: RequestFormProps) => {
+const RequestForm = ({ directions, onDirectionChange }: RequestFormProps) => {
   const {
     state,
+    service,
     services,
     needsService,
     selectDirection,
@@ -24,6 +26,11 @@ const RequestForm = ({ directions }: RequestFormProps) => {
     submit,
     reset,
   } = useRequestForm(directions);
+
+  const handleDirection = (id: string) => {
+    selectDirection(id);
+    onDirectionChange?.(id);
+  };
 
   if (state.status === "success") {
     return (
@@ -50,10 +57,12 @@ const RequestForm = ({ directions }: RequestFormProps) => {
         placeholder="Выберите направление"
         required
         value={state.directionId}
-        onChange={selectDirection}
+        onChange={handleDirection}
         options={directions.map((item) => ({
           value: item.id,
           label: item.title,
+          hint: formatServiceCount(item.serviceCount),
+          image: item.image,
         }))}
       />
 
@@ -132,7 +141,7 @@ const RequestForm = ({ directions }: RequestFormProps) => {
 
       {state.error && <p className={styles.error}>{state.error}</p>}
 
-      <Button type="submit" disabled={state.status === "loading"}>
+      <Button type="submit" disabled={!service || state.status === "loading"}>
         {state.status === "loading" ? "Отправляем…" : "Отправить заявку"}
       </Button>
 

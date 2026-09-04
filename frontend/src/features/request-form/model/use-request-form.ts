@@ -52,6 +52,7 @@ export const useRequestForm = (directions: DirectionOption[]) => {
   return {
     state,
     direction,
+    service,
     services,
     needsService,
     selectDirection,

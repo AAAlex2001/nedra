@@ -1,6 +1,7 @@
 import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import SectionHeading from "@/shared/ui/section-heading";
+import RequestSection from "@/widgets/landing/request-form";
 import ObshchestvennyeObsuzhdeniya from "@/widgets/obshchestvennye-obsuzhdeniya";
 import styles from "./page.module.scss";
 
@@ -20,6 +21,8 @@ export default function ObshchestvennyeObsuzhdeniyaPage() {
         <SectionHeading title="Общественные обсуждения" />
         <ObshchestvennyeObsuzhdeniya />
       </div>
+
+      <RequestSection />
     </main>
   );
 }

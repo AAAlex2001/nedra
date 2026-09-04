@@ -1,40 +1,21 @@
-"use client";
-
 import { formatRequestDate, type RequestRecord } from "@/entities/request";
 import { findByActivity } from "@/entities/service";
 import styles from "./style.module.scss";
 
 type RequestCardProps = {
   request: RequestRecord;
-  pending: boolean;
-  onDelete: (id: number) => void;
 };
 
-const RequestCard = ({ request, pending, onDelete }: RequestCardProps) => {
+const RequestCard = ({ request }: RequestCardProps) => {
   const match = findByActivity(request.activity);
 
   return (
-    <article className={`${styles.card} ${pending ? styles.cardPending : ""}`}>
+    <article className={styles.card}>
       <header className={styles.head}>
-        <div className={styles.headMain}>
-          <span className={styles.id}>№{request.request_id}</span>
-          <time className={styles.date} dateTime={request.created_at}>
-            {formatRequestDate(request.created_at)}
-          </time>
-        </div>
-
-        <button
-          type="button"
-          className={styles.delete}
-          disabled={pending}
-          onClick={() => {
-            if (window.confirm(`Удалить заявку №${request.request_id}?`)) {
-              onDelete(request.request_id);
-            }
-          }}
-        >
-          {pending ? "Удаляем…" : "Удалить"}
-        </button>
+        <span className={styles.id}>№{request.request_id}</span>
+        <time className={styles.date} dateTime={request.created_at}>
+          {formatRequestDate(request.created_at)}
+        </time>
       </header>
 
       <div className={styles.tags}>

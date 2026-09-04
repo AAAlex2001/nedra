@@ -1,6 +1,7 @@
 "use client";
 
 import type { RequestRecord } from "@/entities/request";
+import Button from "@/shared/ui/button";
 import { useRequests } from "../../model/use-requests";
 import RequestCard from "../request-card";
 import styles from "./style.module.scss";
@@ -10,23 +11,16 @@ type RequestsListProps = {
 };
 
 const RequestsList = ({ initialItems }: RequestsListProps) => {
-  const { state, remove, refresh } = useRequests(initialItems);
+  const { state, refresh } = useRequests(initialItems);
 
   return (
     <div className={styles.root}>
       <div className={styles.toolbar}>
-        <span className={styles.count}>
-          Всего заявок: {state.items.length}
-        </span>
+        <span className={styles.count}>Всего заявок: {state.items.length}</span>
 
-        <button
-          type="button"
-          className={styles.refresh}
-          onClick={() => void refresh()}
-          disabled={state.refreshing}
-        >
+        <Button onClick={() => void refresh()} disabled={state.refreshing}>
           {state.refreshing ? "Обновляем…" : "Обновить"}
-        </button>
+        </Button>
       </div>
 
       {state.error && <p className={styles.error}>{state.error}</p>}
@@ -37,11 +31,7 @@ const RequestsList = ({ initialItems }: RequestsListProps) => {
         <ul className={styles.list}>
           {state.items.map((item) => (
             <li key={item.request_id}>
-              <RequestCard
-                request={item}
-                pending={state.pendingId === item.request_id}
-                onDelete={(id) => void remove(id)}
-              />
+              <RequestCard request={item} />
             </li>
           ))}
         </ul>

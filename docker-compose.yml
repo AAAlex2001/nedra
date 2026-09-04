@@ -42,6 +42,7 @@ services:
       API_INTERNAL_URL: http://backend:8000/api
       ADMIN_USER: ${ADMIN_USER}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      ADMIN_PATH: ${ADMIN_PATH}
     depends_on:
       - backend
 
