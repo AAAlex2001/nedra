@@ -5,7 +5,10 @@ import type { RequestRecord } from "@/entities/request";
 import { fetchRequests } from "../api/requests";
 import { requestsReducer } from "./reducer";
 
-export const useRequests = (initialItems: RequestRecord[]) => {
+export const useRequests = (
+  initialItems: RequestRecord[],
+  basePath: string,
+) => {
   const [state, dispatch] = useReducer(requestsReducer, {
     items: initialItems,
     refreshing: false,
@@ -16,7 +19,8 @@ export const useRequests = (initialItems: RequestRecord[]) => {
     dispatch({ type: "refresh/start" });
 
     try {
-      dispatch({ type: "refresh/success", items: await fetchRequests() });
+      const items = await fetchRequests(basePath);
+      dispatch({ type: "refresh/success", items });
     } catch (error) {
       dispatch({
         type: "refresh/error",

@@ -8,10 +8,11 @@ import styles from "./style.module.scss";
 
 type RequestsListProps = {
   initialItems: RequestRecord[];
+  basePath: string;
 };
 
-const RequestsList = ({ initialItems }: RequestsListProps) => {
-  const { state, refresh } = useRequests(initialItems);
+const RequestsList = ({ initialItems, basePath }: RequestsListProps) => {
+  const { state, refresh } = useRequests(initialItems, basePath);
 
   return (
     <div className={styles.root}>

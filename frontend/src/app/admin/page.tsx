@@ -31,8 +31,9 @@ const loadRequests = async (): Promise<LoadResult> => {
   }
 };
 
-export default async function AdminRequestsPage() {
+export default async function AdminPage() {
   const { items, error } = await loadRequests();
+  const basePath = `/${process.env.ADMIN_PATH ?? ""}`;
 
-  return <AdminRequests items={items} error={error} />;
+  return <AdminRequests items={items} error={error} basePath={basePath} />;
 }
