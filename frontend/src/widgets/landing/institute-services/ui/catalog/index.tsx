@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import type { Direction } from "../../data";
+import type { Direction } from "@/entities/service";
 import DetailPanel from "../detail-panel";
 import DirectionHeader from "../direction-header";
 import Heading from "../heading";

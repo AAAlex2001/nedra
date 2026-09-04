@@ -1,5 +1,5 @@
 import { DocumentIcon } from "@/shared/ui/icons";
-import type { Licenses } from "../../data";
+import type { Licenses } from "@/entities/service";
 import styles from "./style.module.scss";
 
 type LicenseCardProps = {

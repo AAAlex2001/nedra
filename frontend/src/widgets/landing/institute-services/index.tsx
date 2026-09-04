@@ -1,4 +1,5 @@
-import { DIRECTIONS, SERVICES_DATA } from "./data";
+import { DIRECTIONS } from "@/entities/service";
+import { SERVICES_DATA } from "./data";
 import Catalog from "./ui/catalog";
 import styles from "./style.module.scss";
 

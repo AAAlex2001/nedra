@@ -84,7 +84,7 @@ jobs:
 
       - name: Upload sources
         run: |
-          ssh_cmd="ssh -p $DEPLOY_PORT -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes"
+          ssh_cmd="ssh -p $DEPLOY_PORT -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o ServerAliveInterval=20 -o ServerAliveCountMax=30 -o TCPKeepAlive=yes"
 
           $ssh_cmd "$DEPLOY_USER@$DEPLOY_HOST" "mkdir -p '$APP_ROOT'"
 
@@ -103,6 +103,7 @@ jobs:
         run: |
           ssh -p "$DEPLOY_PORT" -i "$HOME/.ssh/deploy_key" \
             -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            -o ServerAliveInterval=20 -o ServerAliveCountMax=30 -o TCPKeepAlive=yes \
             "$DEPLOY_USER@$DEPLOY_HOST" "bash -se -- '$APP_ROOT'" <<'REMOTE_SCRIPT'
           set -euo pipefail
 

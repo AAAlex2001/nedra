@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Direction } from "../../data";
+import type { Direction } from "@/entities/service";
 import styles from "./style.module.scss";
 
 type HeroCardProps = {

@@ -1,6 +1,6 @@
 import ContactRow from "@/shared/ui/contact-row";
 import { MailIcon, PersonIcon, PhoneIcon } from "@/shared/ui/icons";
-import type { SubService } from "../../data";
+import type { SubService } from "@/entities/service";
 import styles from "./style.module.scss";
 
 type ServiceDetailsProps = {

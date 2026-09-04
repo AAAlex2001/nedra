@@ -10,6 +10,7 @@ import InstituteServices from "@/widgets/landing/institute-services";
 import Laboratory from "@/widgets/landing/laboratory";
 import Quality from "@/widgets/landing/quality";
 import Partners from "@/widgets/landing/partners";
+import RequestSection from "@/widgets/landing/request-form";
 import WhatIsThis from "@/widgets/landing/what-is-this";
 import { buildMetadata } from "@/shared/config/seo";
 
@@ -30,6 +31,7 @@ export default function Home() {
       <Documents />
       <Advantages />
       <Partners />
+      <RequestSection />
       <Contacts />
     </main>
   );

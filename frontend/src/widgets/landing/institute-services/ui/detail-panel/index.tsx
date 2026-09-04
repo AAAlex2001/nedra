@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Direction } from "../../data";
+import type { Direction } from "@/entities/service";
 import HeroCard from "../hero-card";
 import LicenseCard from "../license-card";
 import ServiceDetails from "../service-details";

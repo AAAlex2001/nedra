@@ -1,0 +1,195 @@
+.field {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  width: 100%;
+}
+
+.label {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #0b0b0b;
+}
+
+.required {
+  color: #f69827;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+
+  width: 100%;
+  min-height: 56px;
+
+  font-family: "Gilroy";
+  text-align: left;
+
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 14px;
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.control:hover {
+  border-color: #f6b567;
+}
+
+.control:focus-visible {
+  outline: none;
+  border-color: #f69827;
+  box-shadow: 0 0 0 3px rgba(246, 152, 39, 0.18);
+}
+
+.controlOpen {
+  border-color: #f69827;
+  box-shadow: 0 0 0 3px rgba(246, 152, 39, 0.18);
+}
+
+.controlInvalid {
+  border-color: #e05b4b;
+}
+
+.avatar {
+  position: relative;
+  flex: none;
+
+  width: 40px;
+  height: 40px;
+
+  overflow: hidden;
+  border-radius: 50%;
+  background: #f3f4f7;
+}
+
+.avatar img {
+  object-fit: cover;
+}
+
+.controlText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.controlTitle {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.controlSubtitle {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+
+  color: #7b8190;
+}
+
+.placeholder {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 19px;
+
+  color: #9aa0ad;
+}
+
+.chevron {
+  flex: none;
+  color: #7b8190;
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  margin: 0;
+
+  width: 100%;
+  max-height: 320px;
+  overflow-y: auto;
+
+  list-style: none;
+
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(11, 11, 11, 0.12);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+
+  width: 100%;
+
+  font-family: "Gilroy";
+  text-align: left;
+
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.option:hover,
+.option:focus-visible {
+  outline: none;
+  background: #fdf3e6;
+}
+
+.optionActive {
+  background: #fdf3e6;
+}
+
+.optionText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.optionTitle {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.optionSubtitle {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+
+  color: #7b8190;
+}

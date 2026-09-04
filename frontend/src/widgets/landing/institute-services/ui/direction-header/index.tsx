@@ -1,5 +1,5 @@
 import { ChevronIcon } from "@/shared/ui/icons";
-import { type Direction, formatServiceCount } from "../../data";
+import { type Direction, formatServiceCount } from "@/entities/service";
 import styles from "./style.module.scss";
 
 type DirectionHeaderProps = {

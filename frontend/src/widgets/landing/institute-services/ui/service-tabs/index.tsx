@@ -1,5 +1,5 @@
 import RadioButton from "@/shared/ui/radio-button";
-import type { SubService } from "../../data";
+import type { SubService } from "@/entities/service";
 import styles from "./style.module.scss";
 
 type ServiceTabsProps = {
