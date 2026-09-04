@@ -1,12 +1,12 @@
 import AccentLine from "@/shared/ui/accent-line";
 import styles from "./style.module.scss";
 
-type HeadingProps = {
+type BlockHeadingProps = {
   title: string;
   subtitle: string;
 };
 
-const Heading = ({ title, subtitle }: HeadingProps) => (
+const BlockHeading = ({ title, subtitle }: BlockHeadingProps) => (
   <div className={styles.heading}>
     <h2 className={styles.title}>{title}</h2>
     <AccentLine width={30} />
@@ -14,4 +14,4 @@ const Heading = ({ title, subtitle }: HeadingProps) => (
   </div>
 );
 
-export default Heading;
+export default BlockHeading;

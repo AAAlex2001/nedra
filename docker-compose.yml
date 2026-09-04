@@ -38,6 +38,10 @@ services:
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     restart: unless-stopped
+    environment:
+      API_INTERNAL_URL: http://backend:8000/api
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
     depends_on:
       - backend
 

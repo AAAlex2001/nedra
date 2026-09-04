@@ -1,25 +1,18 @@
-import type {
-  RequestFields,
-  RequestFormAction,
-  RequestFormState,
-} from "./types";
-
-const EMPTY_FIELDS: RequestFields = {
-  name: "",
-  telephone: "",
-  email: "",
-  companyName: "",
-  inn: "",
-  comment: "",
-};
+import type { RequestFormAction, RequestFormState } from "./types";
 
 export const INITIAL_STATE: RequestFormState = {
-  directionId: null,
-  serviceId: null,
-  fields: EMPTY_FIELDS,
+  directionId: "",
+  serviceId: "",
+  fields: {
+    name: "",
+    telephone: "",
+    email: "",
+    companyName: "",
+    inn: "",
+    comment: "",
+  },
   status: "idle",
   error: null,
-  submitted: false,
 };
 
 export const requestFormReducer = (
@@ -28,13 +21,7 @@ export const requestFormReducer = (
 ): RequestFormState => {
   switch (action.type) {
     case "direction/select":
-      // Смена направления сбрасывает услугу: старая к новому не относится.
-      return {
-        ...state,
-        directionId: action.id,
-        serviceId: null,
-        error: null,
-      };
+      return { ...state, directionId: action.id, serviceId: "", error: null };
 
     case "service/select":
       return { ...state, serviceId: action.id, error: null };
@@ -46,7 +33,7 @@ export const requestFormReducer = (
       };
 
     case "submit/start":
-      return { ...state, status: "loading", error: null, submitted: true };
+      return { ...state, status: "loading", error: null };
 
     case "submit/success":
       return { ...INITIAL_STATE, status: "success" };

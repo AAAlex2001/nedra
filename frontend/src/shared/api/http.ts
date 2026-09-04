@@ -10,21 +10,16 @@ export class ApiError extends Error {
   }
 }
 
-type FastApiDetail = { detail?: string | { msg?: string }[] };
+export const readErrorMessage = async (response: Response): Promise<string> => {
+  try {
+    const body = await response.json();
 
-/** FastAPI кладёт причину в detail: строкой при HTTPException, массивом при 422. */
-const extractDetail = (body: FastApiDetail): string | null => {
-  if (typeof body.detail === "string") return body.detail;
-
-  if (Array.isArray(body.detail)) {
-    const messages = body.detail
-      .map((item) => item?.msg)
-      .filter((msg): msg is string => Boolean(msg));
-
-    if (messages.length > 0) return messages.join(", ");
+    if (typeof body.detail === "string") return body.detail;
+  } catch {
+    return `Ошибка ${response.status}`;
   }
 
-  return null;
+  return `Ошибка ${response.status}`;
 };
 
 export const postJson = async <T>(path: string, payload: unknown): Promise<T> => {
@@ -35,15 +30,7 @@ export const postJson = async <T>(path: string, payload: unknown): Promise<T> =>
   });
 
   if (!response.ok) {
-    let detail: string | null = null;
-
-    try {
-      detail = extractDetail(await response.json());
-    } catch {
-      detail = null;
-    }
-
-    throw new ApiError(response.status, detail ?? `Сервер ответил ${response.status}`);
+    throw new ApiError(response.status, await readErrorMessage(response));
   }
 
   return (await response.json()) as T;

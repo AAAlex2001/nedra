@@ -1,7 +1,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 
   width: 100%;
 }
@@ -9,64 +9,18 @@
 .row {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 
   width: 100%;
 }
 
-.spacer {
-  display: none;
-}
-
-.submit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 16px 24px;
-
-  width: 100%;
-
-  font-family: "Gilroy";
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 19px;
-
-  color: #fff;
-  background: linear-gradient(90deg, #f6a927 0%, #f68127 100%);
-  border: 0;
-  border-radius: 14px;
-  cursor: pointer;
-
-  transition:
-    filter 0.15s ease,
-    transform 0.15s ease;
-}
-
-.submit:hover:not(:disabled) {
-  filter: brightness(1.05);
-}
-
-.submit:active:not(:disabled) {
-  transform: translateY(1px);
-}
-
-.submit:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
-.formError {
-  padding: 12px 14px;
-
+.error {
   font-family: "Gilroy";
   font-weight: 400;
   font-size: 14px;
   line-height: 18px;
 
   color: #b23b2c;
-  background: #fdeceb;
-  border-radius: 12px;
 }
 
 .consent {
@@ -74,31 +28,27 @@
   font-weight: 400;
   font-size: 13px;
   line-height: 17px;
-  text-align: center;
 
   color: #7b8190;
 }
 
 .consentLink {
   color: #f69827;
-  text-decoration: underline;
 }
 
 .success {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
+  gap: 16px;
   padding: 40px 0;
-
-  width: 100%;
 }
 
 .successTitle {
   font-family: "Gilroy";
   font-weight: 700;
-  font-size: 24px;
-  line-height: 29px;
+  font-size: 22px;
+  line-height: 26px;
 
   color: #0b0b0b;
 }
@@ -109,26 +59,11 @@
   font-size: 16px;
   line-height: 22px;
 
-  color: #5b6070;
+  color: #0b0b0b;
 }
 
 @media (min-width: 768px) {
   .row {
     flex-direction: row;
-  }
-
-  .spacer {
-    display: block;
-    width: 100%;
-  }
-
-  .submit {
-    width: auto;
-    align-self: flex-start;
-    min-width: 280px;
-  }
-
-  .consent {
-    text-align: left;
   }
 }

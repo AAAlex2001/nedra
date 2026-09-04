@@ -21,31 +21,30 @@
 
 .input,
 .textarea {
-  padding: 14px;
+  padding: 14px 16px;
 
   width: 100%;
 
   font-family: "Gilroy";
   font-weight: 400;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 19px;
 
   color: #0b0b0b;
   background: #fff;
   border: 1px solid #e3e6ec;
-  border-radius: 14px;
+  border-radius: 100px;
 
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: border-color 0.2s ease;
 }
 
 .input {
-  min-height: 52px;
+  height: 52px;
 }
 
 .textarea {
-  min-height: 120px;
+  min-height: 140px;
+  border-radius: 20px;
   resize: vertical;
 }
 
@@ -54,27 +53,8 @@
   color: #9aa0ad;
 }
 
-.input:hover,
-.textarea:hover {
-  border-color: #f6b567;
-}
-
 .input:focus,
 .textarea:focus {
   outline: none;
   border-color: #f69827;
-  box-shadow: 0 0 0 3px rgba(246, 152, 39, 0.18);
-}
-
-.invalid {
-  border-color: #e05b4b;
-}
-
-.error {
-  font-family: "Gilroy";
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 16px;
-
-  color: #e05b4b;
 }

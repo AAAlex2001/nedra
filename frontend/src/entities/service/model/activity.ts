@@ -1,13 +1,5 @@
 import { DIRECTIONS } from "./catalog";
 
-/**
- * Связь услуги каталога с числовым activity на бэкенде
- * (backend/app/services/requestDTO.py).
- *
- * Значения уже записаны в существующих заявках — менять их нельзя.
- * Новая услуга получает следующий свободный номер, и такой же номер
- * должен появиться в ACTIVITY_DIRECTION на бэкенде.
- */
 export const ACTIVITY_BY_SERVICE_ID: Record<string, number> = {
   "01-1": 0,
   "02-1": 1,
@@ -55,3 +47,20 @@ export const DIRECTION_OPTIONS: DirectionOption[] = DIRECTIONS.map(
     })),
   }),
 );
+
+export type ActivityMatch = {
+  direction: DirectionOption;
+  service: ServiceOption;
+};
+
+export const findByActivity = (activity: number): ActivityMatch | null => {
+  for (const direction of DIRECTION_OPTIONS) {
+    const service = direction.services.find(
+      (item) => item.activity === activity,
+    );
+
+    if (service) return { direction, service };
+  }
+
+  return null;
+};

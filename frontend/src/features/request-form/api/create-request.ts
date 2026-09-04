@@ -7,7 +7,6 @@ export type CreatedRequest = {
   created_at: string;
 };
 
-/** Приведение полей формы к контракту RequestInSchema на бэкенде. */
 export const createRequest = (fields: RequestFields, activity: number) =>
   postJson<CreatedRequest>("/v1/request", {
     name: fields.name.trim(),

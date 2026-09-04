@@ -13,6 +13,8 @@ export { DIRECTIONS } from "./model/catalog";
 export {
   ACTIVITY_BY_SERVICE_ID,
   DIRECTION_OPTIONS,
+  findByActivity,
+  type ActivityMatch,
   type DirectionOption,
   type ServiceOption,
 } from "./model/activity";

@@ -1,62 +1,39 @@
 "use client";
 
-import { useCallback, useMemo, useReducer } from "react";
+import { useReducer } from "react";
 import type { DirectionOption } from "@/entities/service";
 import { ApiError } from "@/shared/api";
 import { createRequest } from "../api/create-request";
 import { INITIAL_STATE, requestFormReducer } from "./reducer";
-import type { FieldErrors, RequestFields } from "./types";
-import { isValid, validate } from "./validation";
+import type { RequestFields } from "./types";
 
 export const useRequestForm = (directions: DirectionOption[]) => {
   const [state, dispatch] = useReducer(requestFormReducer, INITIAL_STATE);
 
-  const direction = useMemo(
-    () => directions.find((item) => item.id === state.directionId) ?? null,
-    [directions, state.directionId],
-  );
+  const direction =
+    directions.find((item) => item.id === state.directionId) ?? null;
 
-  // Второй дропдаун нужен только там, где услуг больше одной.
-  const needsService = (direction?.services.length ?? 0) > 1;
+  const services = direction?.services ?? [];
+  const needsService = services.length > 1;
 
-  const service = useMemo(() => {
-    if (!direction) return null;
-    if (!needsService) return direction.services[0] ?? null;
-    return direction.services.find((item) => item.id === state.serviceId) ?? null;
-  }, [direction, needsService, state.serviceId]);
+  const service = needsService
+    ? (services.find((item) => item.id === state.serviceId) ?? null)
+    : (services[0] ?? null);
 
-  const errors = useMemo(
-    () => validate(state.fields, Boolean(service)),
-    [state.fields, service],
-  );
+  const selectDirection = (id: string) =>
+    dispatch({ type: "direction/select", id });
 
-  const visibleErrors: FieldErrors = state.submitted ? errors : {};
+  const selectService = (id: string) => dispatch({ type: "service/select", id });
 
-  const selectDirection = useCallback(
-    (id: string) => dispatch({ type: "direction/select", id }),
-    [],
-  );
+  const changeField = (field: keyof RequestFields, value: string) =>
+    dispatch({ type: "field/change", field, value });
 
-  const selectService = useCallback(
-    (id: string) => dispatch({ type: "service/select", id }),
-    [],
-  );
+  const reset = () => dispatch({ type: "form/reset" });
 
-  const changeField = useCallback(
-    (field: keyof RequestFields, value: string) =>
-      dispatch({ type: "field/change", field, value }),
-    [],
-  );
+  const submit = async () => {
+    if (!service) return;
 
-  const reset = useCallback(() => dispatch({ type: "form/reset" }), []);
-
-  const submit = useCallback(async () => {
     dispatch({ type: "submit/start" });
-
-    if (!isValid(errors) || !service) {
-      dispatch({ type: "submit/error", message: "" });
-      return;
-    }
 
     try {
       await createRequest(state.fields, service.activity);
@@ -70,14 +47,13 @@ export const useRequestForm = (directions: DirectionOption[]) => {
             : "Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.",
       });
     }
-  }, [errors, service, state.fields]);
+  };
 
   return {
     state,
     direction,
-    service,
+    services,
     needsService,
-    errors: visibleErrors,
     selectDirection,
     selectService,
     changeField,

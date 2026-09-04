@@ -4,7 +4,7 @@ import { Fragment, useState } from "react";
 import type { Direction } from "@/entities/service";
 import DetailPanel from "../detail-panel";
 import DirectionHeader from "../direction-header";
-import Heading from "../heading";
+import Heading from "@/shared/ui/block-heading";
 import styles from "./style.module.scss";
 
 type CatalogProps = {

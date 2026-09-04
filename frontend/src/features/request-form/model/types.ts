@@ -10,13 +10,11 @@ export type RequestFields = {
 export type RequestStatus = "idle" | "loading" | "success" | "error";
 
 export type RequestFormState = {
-  directionId: string | null;
-  serviceId: string | null;
+  directionId: string;
+  serviceId: string;
   fields: RequestFields;
   status: RequestStatus;
   error: string | null;
-  /** Ошибки показываем только после первой попытки отправки. */
-  submitted: boolean;
 };
 
 export type RequestFormAction =
@@ -27,7 +25,3 @@ export type RequestFormAction =
   | { type: "submit/success" }
   | { type: "submit/error"; message: string }
   | { type: "form/reset" };
-
-export type FieldErrors = Partial<
-  Record<keyof RequestFields | "service", string>
->;

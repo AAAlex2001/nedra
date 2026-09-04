@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from app.models.request import Request
 from app.schemas.request import RequestInSchema
@@ -36,3 +37,12 @@ class RequestService:
         await self.db.commit()
         await self.db.refresh(request)
         return request
+
+    async def get_all_requests(self) -> list[Request]:
+        """Получение всех заявок."""
+
+        result = await self.db.execute(
+            select(Request).order_by(Request.created_at.desc())
+        )
+
+        return list(result.scalars().all())
