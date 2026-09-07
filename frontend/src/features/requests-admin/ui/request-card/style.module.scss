@@ -7,12 +7,51 @@
   background: #fff;
   border: 1px solid #eceef3;
   border-radius: 18px;
+
+  transition: opacity 0.2s ease;
+}
+
+.cardPending {
+  opacity: 0.5;
 }
 
 .head {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.headMain {
+  display: flex;
   align-items: baseline;
   gap: 12px;
+}
+
+.delete {
+  padding: 8px 16px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #b23b2c;
+  background: #fdeceb;
+  border: 1px solid #f6d5d1;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.delete:hover:not(:disabled) {
+  background: #f9d9d6;
+}
+
+.delete:disabled {
+  cursor: default;
+  opacity: 0.6;
 }
 
 .id {

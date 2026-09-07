@@ -1,21 +1,42 @@
+"use client";
+
 import { formatRequestDate, type RequestRecord } from "@/entities/request";
 import { findByActivity } from "@/entities/service";
 import styles from "./style.module.scss";
 
 type RequestCardProps = {
   request: RequestRecord;
+  pending: boolean;
+  onDelete: (id: number) => void;
 };
 
-const RequestCard = ({ request }: RequestCardProps) => {
+const RequestCard = ({ request, pending, onDelete }: RequestCardProps) => {
   const match = findByActivity(request.activity);
 
+  const handleDelete = () => {
+    if (window.confirm(`Удалить заявку №${request.request_id}?`)) {
+      onDelete(request.request_id);
+    }
+  };
+
   return (
-    <article className={styles.card}>
+    <article className={`${styles.card} ${pending ? styles.cardPending : ""}`}>
       <header className={styles.head}>
-        <span className={styles.id}>№{request.request_id}</span>
-        <time className={styles.date} dateTime={request.created_at}>
-          {formatRequestDate(request.created_at)}
-        </time>
+        <div className={styles.headMain}>
+          <span className={styles.id}>№{request.request_id}</span>
+          <time className={styles.date} dateTime={request.created_at}>
+            {formatRequestDate(request.created_at)}
+          </time>
+        </div>
+
+        <button
+          type="button"
+          className={styles.delete}
+          disabled={pending}
+          onClick={handleDelete}
+        >
+          {pending ? "Удаляем…" : "Удалить"}
+        </button>
       </header>
 
       <div className={styles.tags}>

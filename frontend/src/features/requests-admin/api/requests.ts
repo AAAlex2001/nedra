@@ -12,3 +12,14 @@ export const fetchRequests = async (
 
   return (await response.json()) as RequestRecord[];
 };
+
+export const deleteRequest = async (
+  basePath: string,
+  id: number,
+): Promise<void> => {
+  const response = await fetch(`${basePath}/api/requests/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) throw new Error(await readErrorMessage(response));
+};

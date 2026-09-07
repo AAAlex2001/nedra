@@ -46,3 +46,19 @@ class RequestService:
         )
 
         return list(result.scalars().all())
+
+
+    async def delete_request(self, request_id: int) -> None:
+        """Удаление заявки."""
+
+
+        request = await self.db.execute(
+            select(Request).where(Request.request_id == request_id)
+        )
+
+        request = request.scalar_one_or_none()
+        if request is None:
+            raise ValueError(f"Заявка с ID {request_id} не найдена.")
+
+        await self.db.delete(request)
+        await self.db.commit()

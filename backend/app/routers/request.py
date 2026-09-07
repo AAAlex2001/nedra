@@ -40,3 +40,18 @@ async def get_all_requests(
     requests = await service.get_all_requests()
 
     return [RequestOutSchema.model_validate(request) for request in requests]
+
+@router.delete("/request/{request_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_request(
+    request_id: int,
+    service: RequestService = Depends(get_request_service),
+) -> None:
+    """Удаление заявки."""
+
+    try:
+        await service.delete_request(request_id)
+    except ValueError as error:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(error),
+        ) from error

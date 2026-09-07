@@ -12,7 +12,7 @@ type RequestsListProps = {
 };
 
 const RequestsList = ({ initialItems, basePath }: RequestsListProps) => {
-  const { state, refresh } = useRequests(initialItems, basePath);
+  const { state, remove, refresh } = useRequests(initialItems, basePath);
 
   return (
     <div className={styles.root}>
@@ -32,7 +32,11 @@ const RequestsList = ({ initialItems, basePath }: RequestsListProps) => {
         <ul className={styles.list}>
           {state.items.map((item) => (
             <li key={item.request_id}>
-              <RequestCard request={item} />
+              <RequestCard
+                request={item}
+                pending={state.pendingId === item.request_id}
+                onDelete={(id) => void remove(id)}
+              />
             </li>
           ))}
         </ul>
