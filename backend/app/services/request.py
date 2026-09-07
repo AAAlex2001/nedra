@@ -53,7 +53,7 @@ class RequestService:
 
 
         request = await self.db.execute(
-            select(Request).where(Request.request_id == request_id)
+            select(Request).where(Request.id == request_id)
         )
 
         request = request.scalar_one_or_none()
