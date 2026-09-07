@@ -10,6 +10,12 @@ class Settings(BaseSettings):
     cors_origins: list[str] = []
     debug: bool = False
 
+    smtp_host: str | None = None
+    smtp_port: int = 465
+    smtp_user: str | None = None
+    smtp_password: str | None = None
+    notify_emails: list[str] = []
+
 
 @lru_cache
 def get_settings() -> Settings:

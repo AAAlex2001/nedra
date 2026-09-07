@@ -23,6 +23,11 @@ services:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       CORS_ORIGINS: ${CORS_ORIGINS}
       DEBUG: "false"
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      NOTIFY_EMAILS: ${NOTIFY_EMAILS}
     depends_on:
       db:
         condition: service_healthy

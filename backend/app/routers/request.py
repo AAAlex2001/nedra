@@ -1,42 +1,42 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
 from app.dependencies import get_request_service
-from app.models.request import Request
 from app.schemas.request import RequestInSchema, RequestOutSchema
+from app.services.email import send_new_request
 from app.services.request import RequestService
 
 
 router = APIRouter(tags=["requests"])
 
 
-@router.post(
-    "/request",
-    response_model=RequestOutSchema,
-    status_code=status.HTTP_201_CREATED,
-)
+@router.post("/request", status_code=status.HTTP_201_CREATED)
 async def create_request(
     payload: RequestInSchema,
+    background_tasks: BackgroundTasks,
     service: RequestService = Depends(get_request_service),
-) -> Request:
+) -> RequestOutSchema:
     """Создание заявки."""
 
     try:
-        return await service.create_request(payload)
+        request = await service.create_request(payload)
     except ValueError as error:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(error),
         ) from error
 
+    created = RequestOutSchema.model_validate(request)
+    background_tasks.add_task(send_new_request, created)
 
-@router.get(
-    "/requests",
-    response_model=list[RequestOutSchema],
-    status_code=status.HTTP_200_OK,
-)
+    return created
+
+
+@router.get("/requests")
 async def get_all_requests(
     service: RequestService = Depends(get_request_service),
-) -> list[Request]:
+) -> list[RequestOutSchema]:
     """Получение всех заявок."""
 
-    return await service.get_all_requests()
+    requests = await service.get_all_requests()
+
+    return [RequestOutSchema.model_validate(request) for request in requests]
