@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Article } from "@/entities/article";
+import type { ReactNode } from "react";
+import { SECTION_PATH, articlePath, splitContent, type Article } from "@/entities/article";
 import { ReactionBar } from "@/features/article-reactions";
 import { SITE_LEGAL_NAME, SITE_URL } from "@/shared/config/seo";
 import { formatDate } from "@/shared/lib/date";
@@ -9,9 +10,13 @@ import styles from "./style.module.scss";
 
 type ArticlePageProps = {
   article: Article;
+  middle?: ReactNode;
 };
 
-const ArticlePage = ({ article }: ArticlePageProps) => {
+const ArticlePage = ({ article, middle }: ArticlePageProps) => {
+  const sectionPath = SECTION_PATH[article.section];
+  const [firstPart, secondPart] = middle ? splitContent(article) : [article.content, ""];
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -21,7 +26,7 @@ const ArticlePage = ({ article }: ArticlePageProps) => {
     datePublished: article.published_at ?? undefined,
     author: { "@type": "Organization", name: SITE_LEGAL_NAME },
     publisher: { "@type": "Organization", name: SITE_LEGAL_NAME },
-    mainEntityOfPage: `${SITE_URL}/blog/${article.slug}`,
+    mainEntityOfPage: `${SITE_URL}${articlePath(article)}`,
   };
 
   const initialStats = {
@@ -45,7 +50,7 @@ const ArticlePage = ({ article }: ArticlePageProps) => {
 
         <div className={styles.meta}>
           {article.tags.map((tag) => (
-            <Link key={tag.slug} href={`/blog?tag=${tag.slug}`} className={styles.tag}>
+            <Link key={tag.slug} href={`${sectionPath}?tag=${tag.slug}`} className={styles.tag}>
               {tag.title}
             </Link>
           ))}
@@ -79,8 +84,23 @@ const ArticlePage = ({ article }: ArticlePageProps) => {
         <div className={styles.main}>
           <div
             className={styles.content}
-            dangerouslySetInnerHTML={{ __html: article.content }}
+            dangerouslySetInnerHTML={{ __html: firstPart }}
           />
+        </div>
+      </div>
+
+      {middle && <div className={styles.middle}>{middle}</div>}
+
+      <div className={styles.layout}>
+        {article.toc.length > 0 && <div className={styles.asideSpacer} />}
+
+        <div className={styles.main}>
+          {secondPart && (
+            <div
+              className={styles.content}
+              dangerouslySetInnerHTML={{ __html: secondPart }}
+            />
+          )}
 
           {article.cover_image && (
             <div className={styles.cover}>

@@ -1,3 +1,5 @@
+export type ArticleSection = "blog" | "news";
+
 export type Tag = {
   slug: string;
   title: string;
@@ -14,6 +16,7 @@ export type TocItem = {
 
 export type ArticleCard = {
   slug: string;
+  section: ArticleSection;
   title: string;
   description: string | null;
   cover_image: string | null;
@@ -64,9 +67,11 @@ export type ArticleAdmin = ArticleAdminCard &
 export type ArticlePayload = ArticleSeo & {
   title: string;
   slug: string | null;
+  section: ArticleSection;
   description: string | null;
   cover_image: string | null;
   content: string;
   tag_ids: number[];
   published: boolean;
+  published_at: string | null;
 };

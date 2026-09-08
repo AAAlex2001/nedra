@@ -1,13 +1,15 @@
-import type { ArticleAdminCard, TagAdmin } from "@/entities/article";
+import type { ArticleAdminCard, ArticleSection, TagAdmin } from "@/entities/article";
 
 export type EditorFields = {
   title: string;
   slug: string;
+  section: ArticleSection;
   description: string;
   cover_image: string;
   content: string;
   tag_ids: number[];
   published: boolean;
+  published_at: string;
   seo_title: string;
   seo_description: string;
   seo_keywords: string;

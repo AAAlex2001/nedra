@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { getArticle, getRelatedArticles } from "@/entities/article";
-import { SITE_NAME, SITE_URL } from "@/shared/config/seo";
+import { notFound, permanentRedirect } from "next/navigation";
+import {
+  NOT_FOUND_METADATA,
+  articlePath,
+  buildArticleMetadata,
+  getArticle,
+  getRelatedArticles,
+} from "@/entities/article";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import ArticlePage from "@/widgets/blog/article-page";
 import RelatedArticles from "@/widgets/blog/related-articles";
-import styles from "../blog.module.scss";
+import styles from "../../../articles-page.module.scss";
 
 export const dynamic = "force-dynamic";
 
@@ -15,45 +20,17 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params;
   const article = await getArticle(slug);
 
-  if (!article) {
-    return { title: "Статья не найдена", robots: { index: false } };
-  }
+  if (!article) return NOT_FOUND_METADATA;
 
-  const url = `${SITE_URL}/blog/${article.slug}`;
-  const description = article.seo_description ?? article.description ?? undefined;
-  const keywords = article.seo_keywords
-    ? article.seo_keywords.split(",").map((word) => word.trim()).filter(Boolean)
-    : undefined;
-
-  return {
-    title: article.seo_title ?? article.title,
-    description,
-    keywords,
-    alternates: { canonical: url },
-    openGraph: {
-      type: "article",
-      url,
-      siteName: SITE_NAME,
-      locale: "ru_RU",
-      title: article.title,
-      description,
-      publishedTime: article.published_at ?? undefined,
-      images: article.cover_image ? [{ url: article.cover_image }] : undefined,
-    },
-    twitter: {
-      card: article.cover_image ? "summary_large_image" : "summary",
-      title: article.title,
-      description,
-      images: article.cover_image ? [article.cover_image] : undefined,
-    },
-  };
+  return buildArticleMetadata(article);
 }
 
-export default async function ArticleRoute({ params }: { params: Params }) {
+export default async function BlogArticleRoute({ params }: { params: Params }) {
   const { slug } = await params;
   const article = await getArticle(slug);
 
   if (!article) notFound();
+  if (article.section !== "blog") permanentRedirect(articlePath(article));
 
   const related = await getRelatedArticles(slug, 10);
 

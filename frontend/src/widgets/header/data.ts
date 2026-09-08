@@ -14,5 +14,6 @@ export const HEADER_NAV: HeaderNavItem[] = [
   },
   { label: "Общественные обсуждения", href: "/obshchestvennye-obsuzhdeniya" },
   { label: "Блог", href: "/blog" },
+  { label: "Новости", href: "/novosti" },
   { label: "Контакты", href: "/#contacts" },
 ];

@@ -30,6 +30,7 @@ export default async function EditArticlePage({ params }: { params: Params }) {
       basePath={adminBasePath()}
       article={article.data}
       tags={tags.data}
+      section={article.data?.section ?? "blog"}
       error={article.error ?? tags.error}
     />
   );

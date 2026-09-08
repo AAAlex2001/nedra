@@ -2,7 +2,7 @@ import { getArticles, getTags } from "@/entities/article";
 import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import ArticlesList from "@/widgets/blog/articles-list";
-import styles from "./blog.module.scss";
+import styles from "../../articles-page.module.scss";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +19,7 @@ export default async function BlogPage({
   const pageNumber = Math.max(1, Number(page) || 1);
 
   const [list, tags] = await Promise.all([
-    getArticles({ tag, page: pageNumber }),
+    getArticles({ section: "blog", tag, page: pageNumber }),
     getTags(),
   ]);
 
@@ -36,7 +36,14 @@ export default async function BlogPage({
           </p>
         </div>
 
-        <ArticlesList list={list} tags={tags} activeTag={tag ?? null} page={pageNumber} />
+        <ArticlesList
+          basePath="/blog"
+          list={list}
+          tags={tags}
+          activeTag={tag ?? null}
+          page={pageNumber}
+          emptyText="Статей пока нет."
+        />
       </div>
     </main>
   );

@@ -5,6 +5,7 @@ export type {
   ArticleCard as ArticleCardData,
   ArticleList,
   ArticlePayload,
+  ArticleSection,
   ArticleStats,
   Tag,
   TagAdmin,
@@ -13,12 +14,16 @@ export type {
 
 export {
   ARTICLES_PER_PAGE,
-  getAllArticleSlugs,
+  getAllArticleCards,
   getArticle,
   getArticles,
   getLatestArticles,
   getRelatedArticles,
   getTags,
 } from "./api/articles";
+
+export { SECTION_PATH, SECTION_TITLE, articlePath } from "./lib/paths";
+export { NOT_FOUND_METADATA, buildArticleMetadata } from "./lib/metadata";
+export { splitContent } from "./lib/split-content";
 
 export { default as ArticleCard } from "./ui/article-card";

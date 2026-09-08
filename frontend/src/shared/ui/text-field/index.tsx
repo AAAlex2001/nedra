@@ -5,7 +5,7 @@ type TextFieldProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  type?: "text" | "tel" | "email";
+  type?: "text" | "tel" | "email" | "datetime-local";
   required?: boolean;
   maxLength?: number;
   inputMode?: "text" | "numeric" | "tel" | "email";

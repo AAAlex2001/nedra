@@ -1,4 +1,4 @@
-import type { ArticleAdmin, TagAdmin } from "@/entities/article";
+import type { ArticleAdmin, ArticleSection, TagAdmin } from "@/entities/article";
 import { ArticleForm } from "@/features/articles-admin";
 import AccentLine from "@/shared/ui/accent-line";
 import styles from "./style.module.scss";
@@ -7,10 +7,11 @@ type ArticleEditorProps = {
   basePath: string;
   article: ArticleAdmin | null;
   tags: TagAdmin[];
+  section: ArticleSection;
   error: string | null;
 };
 
-const ArticleEditor = ({ basePath, article, tags, error }: ArticleEditorProps) => {
+const ArticleEditor = ({ basePath, article, tags, section, error }: ArticleEditorProps) => {
   return (
     <section className={styles.section}>
       <div className={styles.heading}>
@@ -21,7 +22,7 @@ const ArticleEditor = ({ basePath, article, tags, error }: ArticleEditorProps) =
       {error ? (
         <p className={styles.error}>{error}</p>
       ) : (
-        <ArticleForm basePath={basePath} article={article} tags={tags} />
+        <ArticleForm basePath={basePath} article={article} tags={tags} section={section} />
       )}
     </section>
   );

@@ -3,7 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { ArticleAdmin, TagAdmin } from "@/entities/article";
+import {
+  SECTION_TITLE,
+  articlePath,
+  type ArticleAdmin,
+  type ArticleSection,
+  type TagAdmin,
+} from "@/entities/article";
 import Button from "@/shared/ui/button";
 import TextField from "@/shared/ui/text-field";
 import { useArticleEditor } from "../../model/use-article-editor";
@@ -13,13 +19,17 @@ type ArticleFormProps = {
   basePath: string;
   article: ArticleAdmin | null;
   tags: TagAdmin[];
+  section: ArticleSection;
 };
 
-const ArticleForm = ({ basePath, article, tags }: ArticleFormProps) => {
+const SECTIONS: ArticleSection[] = ["blog", "news"];
+
+const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => {
   const router = useRouter();
   const { state, changeField, toggleTag, uploadCover, save } = useArticleEditor(
     basePath,
     article,
+    section,
   );
   const { fields, status, uploading, error } = state;
 
@@ -83,6 +93,27 @@ const ArticleForm = ({ basePath, article, tags }: ArticleFormProps) => {
         </div>
 
         <aside className={styles.side}>
+          <div className={styles.panel}>
+            <span className={styles.label}>Раздел</span>
+
+            <div className={styles.tags}>
+              {SECTIONS.map((item) => (
+                <label
+                  key={item}
+                  className={`${styles.tag} ${fields.section === item ? styles.tagActive : ""}`}
+                >
+                  <input
+                    type="radio"
+                    name="section"
+                    checked={fields.section === item}
+                    onChange={() => changeField("section", item)}
+                  />
+                  {SECTION_TITLE[item]}
+                </label>
+              ))}
+            </div>
+          </div>
+
           <div className={styles.panel}>
             <span className={styles.label}>Обложка</span>
 
@@ -185,12 +216,18 @@ const ArticleForm = ({ basePath, article, tags }: ArticleFormProps) => {
               Опубликована на сайте
             </label>
 
+            <TextField
+              label="Дата публикации"
+              type="datetime-local"
+              value={fields.published_at}
+              onChange={(value) => changeField("published_at", value)}
+            />
+            <span className={styles.hint}>
+              Пусто — публикуется сейчас. Дата в будущем — статья выйдет сама в этот момент.
+            </span>
+
             {article?.published_at && (
-              <Link
-                href={`/blog/${article.slug}`}
-                target="_blank"
-                className={styles.link}
-              >
+              <Link href={articlePath(article)} target="_blank" className={styles.link}>
                 Открыть на сайте ↗
               </Link>
             )}

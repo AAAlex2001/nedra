@@ -5,7 +5,7 @@ import { BLOG_PREVIEW_DATA } from "./data";
 import styles from "./style.module.scss";
 
 const BlogPreview = async () => {
-  const articles = await getLatestArticles(3);
+  const articles = await getLatestArticles("blog", 3);
 
   if (articles.length === 0) return null;
 

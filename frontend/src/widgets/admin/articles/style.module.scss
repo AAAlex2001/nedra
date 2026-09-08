@@ -43,6 +43,42 @@
   color: #5b6070;
 }
 
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  padding: 8px 16px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-decoration: none;
+
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 100px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.pill:hover {
+  border-color: #f69827;
+}
+
+.pillActive {
+  color: #f69827;
+  background: #fdf3e6;
+  border-color: #f69827;
+}
+
 .error {
   padding: 20px;
 

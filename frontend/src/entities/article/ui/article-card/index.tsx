@@ -7,6 +7,7 @@ import {
   ThumbDownIcon,
   ThumbUpIcon,
 } from "@/shared/ui/icons";
+import { articlePath } from "../../lib/paths";
 import type { ArticleCard as ArticleCardType } from "../../model/types";
 import styles from "./style.module.scss";
 
@@ -19,7 +20,7 @@ const ArticleCard = ({ article, className }: ArticleCardProps) => {
   const tag = article.tags[0];
 
   return (
-    <Link href={`/blog/${article.slug}`} className={`${styles.card} ${className ?? ""}`}>
+    <Link href={articlePath(article)} className={`${styles.card} ${className ?? ""}`}>
       <div className={styles.cover}>
         {article.cover_image ? (
           <Image

@@ -1,17 +1,20 @@
 import { internalFetch } from "@/shared/api/server";
-import type { Article, ArticleCard, ArticleList, Tag } from "../model/types";
+import type { Article, ArticleCard, ArticleList, ArticleSection, Tag } from "../model/types";
 
 export const ARTICLES_PER_PAGE = 12;
+const MAX_PAGE_SIZE = 50;
 
 type ListParams = {
+  section: ArticleSection;
   tag?: string;
   page?: number;
 };
 
 const EMPTY_LIST: ArticleList = { articles: [], total: 0 };
 
-export const getArticles = async ({ tag, page = 1 }: ListParams): Promise<ArticleList> => {
+export const getArticles = async ({ section, tag, page = 1 }: ListParams): Promise<ArticleList> => {
   const params = new URLSearchParams({
+    section,
     limit: String(ARTICLES_PER_PAGE),
     offset: String((page - 1) * ARTICLES_PER_PAGE),
   });
@@ -29,9 +32,12 @@ export const getArticles = async ({ tag, page = 1 }: ListParams): Promise<Articl
   }
 };
 
-export const getLatestArticles = async (limit: number): Promise<ArticleCard[]> => {
+export const getLatestArticles = async (
+  section: ArticleSection,
+  limit: number,
+): Promise<ArticleCard[]> => {
   try {
-    const response = await internalFetch(`/v1/articles?limit=${limit}`, {
+    const response = await internalFetch(`/v1/articles?section=${section}&limit=${limit}`, {
       next: { revalidate: 300 },
     });
     if (!response.ok) return [];
@@ -88,15 +94,27 @@ export const getTags = async (): Promise<Tag[]> => {
   }
 };
 
-export const getAllArticleSlugs = async (): Promise<ArticleCard[]> => {
+export const getAllArticleCards = async (): Promise<ArticleCard[]> => {
+  const cards: ArticleCard[] = [];
+  let offset = 0;
+
   try {
-    const response = await internalFetch("/v1/articles?limit=50", { cache: "no-store" });
-    if (!response.ok) return [];
+    while (true) {
+      const response = await internalFetch(
+        `/v1/articles?limit=${MAX_PAGE_SIZE}&offset=${offset}`,
+        { cache: "no-store" },
+      );
+      if (!response.ok) break;
 
-    const list: ArticleList = await response.json();
+      const list: ArticleList = await response.json();
+      cards.push(...list.articles);
+      offset += MAX_PAGE_SIZE;
 
-    return list.articles;
+      if (list.articles.length === 0 || cards.length >= list.total) break;
+    }
   } catch {
-    return [];
+    return cards;
   }
+
+  return cards;
 };

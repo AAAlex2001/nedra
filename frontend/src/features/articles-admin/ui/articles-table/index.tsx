@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { ArticleAdminCard } from "@/entities/article";
-import { formatDate } from "@/shared/lib/date";
+import { SECTION_TITLE, type ArticleAdminCard } from "@/entities/article";
+import { formatDate, isFutureDate } from "@/shared/lib/date";
 import { EyeIcon, ThumbDownIcon, ThumbUpIcon } from "@/shared/ui/icons";
 import { useArticlesList } from "../../model/use-articles-list";
 import styles from "./style.module.scss";
@@ -29,6 +29,16 @@ const ArticlesTable = ({ basePath, initialItems }: ArticlesTableProps) => {
           const pending = state.pendingId === article.id;
           const editHref = `${basePath}/articles/${article.id}`;
 
+          let statusClass = styles.statusDraft;
+          let statusText = "Черновик";
+          if (isFutureDate(article.published_at)) {
+            statusClass = styles.statusScheduled;
+            statusText = "Запланирована";
+          } else if (article.published_at) {
+            statusClass = styles.statusPublished;
+            statusText = "Опубликована";
+          }
+
           return (
             <li
               key={article.id}
@@ -46,13 +56,8 @@ const ArticlesTable = ({ basePath, initialItems }: ArticlesTableProps) => {
                 </Link>
 
                 <div className={styles.meta}>
-                  <span
-                    className={`${styles.status} ${
-                      article.published_at ? styles.statusPublished : styles.statusDraft
-                    }`}
-                  >
-                    {article.published_at ? "Опубликована" : "Черновик"}
-                  </span>
+                  <span className={`${styles.status} ${statusClass}`}>{statusText}</span>
+                  <span className={styles.section}>{SECTION_TITLE[article.section]}</span>
                   <span className={styles.date}>
                     {formatDate(article.published_at ?? article.created_at)}
                   </span>

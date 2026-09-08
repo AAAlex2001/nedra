@@ -8,22 +8,24 @@ import {
 import styles from "./style.module.scss";
 
 type ArticlesListProps = {
+  basePath: string;
   list: ArticleList;
   tags: Tag[];
   activeTag: string | null;
   page: number;
+  emptyText: string;
 };
 
-const buildHref = (tag: string | null, page: number) => {
+const buildHref = (basePath: string, tag: string | null, page: number) => {
   const params = new URLSearchParams();
   if (tag) params.set("tag", tag);
   if (page > 1) params.set("page", String(page));
 
   const query = params.toString();
-  return query ? `/blog?${query}` : "/blog";
+  return query ? `${basePath}?${query}` : basePath;
 };
 
-const ArticlesList = ({ list, tags, activeTag, page }: ArticlesListProps) => {
+const ArticlesList = ({ basePath, list, tags, activeTag, page, emptyText }: ArticlesListProps) => {
   const totalPages = Math.max(1, Math.ceil(list.total / ARTICLES_PER_PAGE));
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
@@ -31,7 +33,7 @@ const ArticlesList = ({ list, tags, activeTag, page }: ArticlesListProps) => {
     <div className={styles.root}>
       <nav className={styles.filters} aria-label="Фильтр по тегам">
         <Link
-          href="/blog"
+          href={basePath}
           className={`${styles.pill} ${activeTag ? "" : styles.pillActive}`}
         >
           Все
@@ -39,7 +41,7 @@ const ArticlesList = ({ list, tags, activeTag, page }: ArticlesListProps) => {
         {tags.map((tag) => (
           <Link
             key={tag.slug}
-            href={buildHref(tag.slug, 1)}
+            href={buildHref(basePath, tag.slug, 1)}
             className={`${styles.pill} ${activeTag === tag.slug ? styles.pillActive : ""}`}
           >
             {tag.title}
@@ -48,7 +50,7 @@ const ArticlesList = ({ list, tags, activeTag, page }: ArticlesListProps) => {
       </nav>
 
       {list.articles.length === 0 ? (
-        <p className={styles.empty}>Статей пока нет.</p>
+        <p className={styles.empty}>{emptyText}</p>
       ) : (
         <ul className={styles.grid}>
           {list.articles.map((article) => (
@@ -62,7 +64,7 @@ const ArticlesList = ({ list, tags, activeTag, page }: ArticlesListProps) => {
       {totalPages > 1 && (
         <nav className={styles.pagination} aria-label="Страницы">
           {page > 1 && (
-            <Link href={buildHref(activeTag, page - 1)} className={styles.pageArrow}>
+            <Link href={buildHref(basePath, activeTag, page - 1)} className={styles.pageArrow}>
               ← Назад
             </Link>
           )}
@@ -70,7 +72,7 @@ const ArticlesList = ({ list, tags, activeTag, page }: ArticlesListProps) => {
           {pages.map((number) => (
             <Link
               key={number}
-              href={buildHref(activeTag, number)}
+              href={buildHref(basePath, activeTag, number)}
               className={`${styles.pageNumber} ${number === page ? styles.pageActive : ""}`}
               aria-current={number === page ? "page" : undefined}
             >
@@ -79,7 +81,7 @@ const ArticlesList = ({ list, tags, activeTag, page }: ArticlesListProps) => {
           ))}
 
           {page < totalPages && (
-            <Link href={buildHref(activeTag, page + 1)} className={styles.pageArrow}>
+            <Link href={buildHref(basePath, activeTag, page + 1)} className={styles.pageArrow}>
               Вперёд →
             </Link>
           )}

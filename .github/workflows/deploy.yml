@@ -7,6 +7,8 @@ on:
     paths:
       - "frontend/**"
       - "backend/**"
+      - "content/**"
+      - "scripts/**"
       - "deploy/**"
       - "docker-compose.yml"
       - ".github/workflows/deploy.yml"
@@ -137,4 +139,9 @@ jobs:
 
           docker compose ps
           docker image prune -f
+
+          echo "Загрузка новостей из content/news"
+          docker compose exec -T backend sh -c \
+            'python scripts/news/seed.py --api http://127.0.0.1:8000 --token "$ADMIN_API_TOKEN" --immediate 20' \
+            || echo "::warning::Загрузка новостей не удалась, сайт при этом задеплоен"
           REMOTE_SCRIPT

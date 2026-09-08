@@ -1,4 +1,5 @@
-import type { ArticleAdminCard, TagAdmin } from "@/entities/article";
+import Link from "next/link";
+import { SECTION_TITLE, type ArticleAdminCard, type ArticleSection, type TagAdmin } from "@/entities/article";
 import { ArticlesTable, TagManager } from "@/features/articles-admin";
 import AccentLine from "@/shared/ui/accent-line";
 import OutlineButton from "@/shared/ui/outline-button";
@@ -8,15 +9,23 @@ type AdminArticlesProps = {
   basePath: string;
   articles: ArticleAdminCard[];
   tags: TagAdmin[];
+  section: ArticleSection | null;
   error: string | null;
 };
 
-const AdminArticles = ({ basePath, articles, tags, error }: AdminArticlesProps) => {
+const FILTERS: Array<ArticleSection | null> = [null, "blog", "news"];
+
+const AdminArticles = ({ basePath, articles, tags, section, error }: AdminArticlesProps) => {
+  const listPath = `${basePath}/articles`;
+
+  let newHref = `${listPath}/new`;
+  if (section) newHref = `${listPath}/new?section=${section}`;
+
   return (
     <section className={styles.section}>
       <div className={styles.head}>
         <div className={styles.heading}>
-          <h1 className={styles.title}>Статьи блога</h1>
+          <h1 className={styles.title}>Статьи</h1>
           <AccentLine width={30} />
           <p className={styles.subtitle}>
             {articles.length > 0
@@ -25,8 +34,20 @@ const AdminArticles = ({ basePath, articles, tags, error }: AdminArticlesProps) 
           </p>
         </div>
 
-        <OutlineButton href={`${basePath}/articles/new`}>Новая статья</OutlineButton>
+        <OutlineButton href={newHref}>Новая статья</OutlineButton>
       </div>
+
+      <nav className={styles.filters} aria-label="Раздел">
+        {FILTERS.map((item) => (
+          <Link
+            key={item ?? "all"}
+            href={item ? `${listPath}?section=${item}` : listPath}
+            className={`${styles.pill} ${item === section ? styles.pillActive : ""}`}
+          >
+            {item ? SECTION_TITLE[item] : "Все"}
+          </Link>
+        ))}
+      </nav>
 
       {error ? (
         <p className={styles.error}>{error}</p>
