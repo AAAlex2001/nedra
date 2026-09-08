@@ -27,7 +27,11 @@ async def save_article_image(file: UploadFile) -> str:
     имена. Файл читается порциями и удаляется, если размер превысил лимит.
     """
 
-    extension = ALLOWED_TYPES.get(file.content_type or "")
+    content_type = file.content_type
+    if content_type is None:
+        raise UploadError("Не указан тип файла")
+
+    extension = ALLOWED_TYPES.get(content_type)
     if extension is None:
         raise UploadError("Допустимы только JPEG, PNG и WebP")
 
