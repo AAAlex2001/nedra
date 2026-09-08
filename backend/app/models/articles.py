@@ -32,6 +32,9 @@ class Article(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
 
     slug: Mapped[str] = mapped_column(String(255), unique=True)
+    section: Mapped[str] = mapped_column(
+        String(16), default="blog", server_default="blog", index=True
+    )
     title: Mapped[str] = mapped_column(String(255))
     description: Mapped[str | None] = mapped_column(String(400))
     cover_image: Mapped[str | None] = mapped_column(String(500))

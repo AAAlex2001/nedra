@@ -37,15 +37,20 @@ class ArticleService:
         self.db = db
 
     async def list_published(
-        self, tag_slug: str | None, limit: int, offset: int
+        self, section: str | None, tag_slug: str | None, limit: int, offset: int
     ) -> tuple[list[Article], int]:
         """Опубликованные статьи, свежие первыми, и их общее количество для пагинации.
 
+        Если передан section — только статьи этого раздела (blog или news).
         Если передан tag_slug — только статьи с этим тегом.
         """
 
         articles_stmt = select(Article).where(PUBLISHED)
         count_stmt = select(func.count()).select_from(Article).where(PUBLISHED)
+
+        if section:
+            articles_stmt = articles_stmt.where(Article.section == section)
+            count_stmt = count_stmt.where(Article.section == section)
 
         if tag_slug:
             has_tag = Article.tags.any(Tag.slug == tag_slug)
@@ -78,11 +83,11 @@ class ArticleService:
         return article
 
     async def get_related(self, article: Article, limit: int) -> list[Article]:
-        """Случайные опубликованные статьи для блока «Смотрите также», кроме текущей."""
+        """Случайные опубликованные статьи того же раздела для блока «Смотрите также»."""
 
         stmt = (
             select(Article)
-            .where(PUBLISHED, Article.id != article.id)
+            .where(PUBLISHED, Article.section == article.section, Article.id != article.id)
             .order_by(func.random())
             .limit(limit)
         )
@@ -182,10 +187,16 @@ class ArticleService:
             my_reaction=my_reaction,
         )
 
-    async def list_all(self) -> list[Article]:
-        """Все статьи для админки, включая черновики, новые первыми."""
+    async def list_all(self, section: str | None) -> list[Article]:
+        """Все статьи для админки, включая черновики, новые первыми.
+
+        Если передан section — только статьи этого раздела.
+        """
 
         stmt = select(Article).order_by(Article.created_at.desc())
+
+        if section:
+            stmt = stmt.where(Article.section == section)
 
         result = await self.db.execute(stmt)
 
@@ -207,6 +218,7 @@ class ArticleService:
         HTML очищается, оглавление собирается из заголовков H2.
         Slug берётся из запроса или строится из заголовка; при совпадении
         с существующим получает числовой суффикс.
+        Если передана published_at, она важнее флага published.
         """
 
         content, toc = prepare_content(data.content)
@@ -216,6 +228,7 @@ class ArticleService:
 
         article = Article(
             slug=slug,
+            section=data.section,
             title=data.title,
             description=data.description,
             cover_image=data.cover_image,
@@ -224,9 +237,12 @@ class ArticleService:
             seo_title=data.seo_title,
             seo_description=data.seo_description,
             seo_keywords=data.seo_keywords,
-            published_at=func.now() if data.published else None,
             tags=tags,
         )
+
+        self.apply_published(article, data.published)
+        if data.published_at is not None:
+            article.published_at = data.published_at
 
         self.db.add(article)
         await self.db.commit()
@@ -240,6 +256,9 @@ class ArticleService:
 
         if changes.get("title"):
             article.title = changes["title"]
+
+        if changes.get("section"):
+            article.section = changes["section"]
 
         if "description" in changes:
             article.description = changes["description"]
@@ -268,6 +287,9 @@ class ArticleService:
 
         if "published" in changes:
             self.apply_published(article, changes["published"])
+
+        if changes.get("published_at") is not None:
+            article.published_at = changes["published_at"]
 
         await self.db.commit()
 

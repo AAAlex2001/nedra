@@ -3,6 +3,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+Section = Literal["blog", "news"]
+
 
 class TagSchema(BaseModel):
     """Тег статьи."""
@@ -33,6 +35,7 @@ class ArticleCardSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     slug: str = Field(..., description="Slug статьи")
+    section: Section = Field(..., description="Раздел: blog или news")
     title: str = Field(..., description="Заголовок статьи")
     description: str | None = Field(None, description="Краткое описание статьи")
     cover_image: str | None = Field(None, description="Ссылка на обложку статьи")
@@ -116,11 +119,16 @@ class ArticleCreateSchema(BaseModel):
         None, max_length=255, pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$",
         description="Slug; если не задан — строится из заголовка",
     )
+    section: Section = Field("blog", description="Раздел: blog или news")
     description: str | None = Field(None, max_length=400, description="Краткое описание")
     cover_image: str | None = Field(None, max_length=500, description="Путь к обложке")
     content: str = Field(..., min_length=1, description="HTML-контент")
     tag_ids: list[int] = Field(default_factory=list, description="ID тегов")
     published: bool = Field(False, description="Опубликовать сразу")
+    published_at: datetime | None = Field(
+        None,
+        description="Дата публикации. Если в будущем — статья выйдет сама в этот момент",
+    )
     seo_title: str | None = Field(None, max_length=255, description="Title для поисковика")
     seo_description: str | None = Field(None, max_length=300, description="Meta description")
     seo_keywords: str | None = Field(None, max_length=500, description="Ключевые слова")
@@ -133,11 +141,13 @@ class ArticleUpdateSchema(BaseModel):
 
     title: str | None = Field(None, min_length=3, max_length=255)
     slug: str | None = Field(None, max_length=255, pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+    section: Section | None = None
     description: str | None = Field(None, max_length=400)
     cover_image: str | None = Field(None, max_length=500)
     content: str | None = Field(None, min_length=1)
     tag_ids: list[int] | None = None
     published: bool | None = None
+    published_at: datetime | None = None
     seo_title: str | None = Field(None, max_length=255)
     seo_description: str | None = Field(None, max_length=300)
     seo_keywords: str | None = Field(None, max_length=500)

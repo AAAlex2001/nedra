@@ -7,6 +7,7 @@ from app.schemas.articles import (
     ArticleSchema,
     ArticleStatsSchema,
     ReactionInSchema,
+    Section,
     TagSchema,
 )
 from app.services.articles import ArticleService
@@ -18,6 +19,7 @@ router = APIRouter(tags=["articles"])
 
 @router.get("/articles")
 async def get_articles(
+    section: Section | None = Query(None, description="Раздел: blog или news"),
     tag: str | None = Query(None, description="Slug тега для фильтрации"),
     limit: int = Query(12, ge=1, le=50),
     offset: int = Query(0, ge=0),
@@ -25,7 +27,7 @@ async def get_articles(
 ) -> ArticleListSchema:
     """Список опубликованных статей."""
 
-    articles, total = await service.list_published(tag, limit, offset)
+    articles, total = await service.list_published(section, tag, limit, offset)
 
     return ArticleListSchema(
         articles=[ArticleCardSchema.model_validate(article) for article in articles],

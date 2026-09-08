@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, status
 
 from app.dependencies import get_article_service, require_admin
 from app.schemas.articles import (
@@ -6,6 +6,7 @@ from app.schemas.articles import (
     ArticleAdminSchema,
     ArticleCreateSchema,
     ArticleUpdateSchema,
+    Section,
     TagAdminSchema,
     TagCreateSchema,
     UploadResultSchema,
@@ -24,11 +25,12 @@ router = APIRouter(
 
 @router.get("/articles")
 async def list_articles(
+    section: Section | None = Query(None, description="Раздел: blog или news"),
     service: ArticleService = Depends(get_article_service),
 ) -> list[ArticleAdminCardSchema]:
     """Все статьи, включая черновики."""
 
-    articles = await service.list_all()
+    articles = await service.list_all(section)
 
     return [ArticleAdminCardSchema.model_validate(article) for article in articles]
 
