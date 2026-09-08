@@ -1,0 +1,138 @@
+.root {
+  position: relative;
+
+  width: 100%;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 18px 0 20px;
+
+  width: 100%;
+  height: 48px;
+
+  font-family: "Gilroy";
+  text-align: left;
+
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.control:hover,
+.controlOpen {
+  border-color: #f69827;
+}
+
+.controlActive {
+  color: #f69827;
+  background: #fdf3e6;
+  border-color: #f69827;
+}
+
+.controlText {
+  overflow: hidden;
+
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chevron {
+  flex: none;
+  color: #7b8190;
+  transition: transform 0.2s ease;
+}
+
+.controlActive .chevron {
+  color: #f69827;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.list {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+
+  width: 100%;
+  max-height: 360px;
+  overflow-y: auto;
+
+  list-style: none;
+
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 18px;
+  box-shadow: 0 14px 36px rgba(11, 11, 11, 0.12);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  text-decoration: none;
+
+  color: #0b0b0b;
+  border-radius: 12px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.option:hover {
+  background: #f8f9fb;
+}
+
+.optionActive,
+.optionActive:hover {
+  color: #f69827;
+  background: #fdf3e6;
+}
+
+.check {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: #f69827;
+}
+
+@media (min-width: 768px) {
+  .root {
+    width: auto;
+    min-width: 320px;
+  }
+
+  .list {
+    width: max-content;
+    min-width: 100%;
+    max-width: 480px;
+  }
+}

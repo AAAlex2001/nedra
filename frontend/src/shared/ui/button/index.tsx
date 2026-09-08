@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 import styles from "./style.module.scss";
 
@@ -7,6 +8,8 @@ type ButtonProps = {
   disabled?: boolean;
   onClick?: () => void;
   className?: string;
+  href?: string;
+  scroll?: boolean;
 };
 
 const Button = ({
@@ -15,15 +18,27 @@ const Button = ({
   disabled,
   onClick,
   className,
-}: ButtonProps) => (
-  <button
-    type={type}
-    className={`${styles.button} ${className ?? ""}`}
-    disabled={disabled}
-    onClick={onClick}
-  >
-    <span className={styles.text}>{children}</span>
-  </button>
-);
+  href,
+  scroll = true,
+}: ButtonProps) => {
+  if (href) {
+    return (
+      <Link href={href} scroll={scroll} className={`${styles.button} ${className ?? ""}`}>
+        <span className={styles.text}>{children}</span>
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      type={type}
+      className={`${styles.button} ${className ?? ""}`}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      <span className={styles.text}>{children}</span>
+    </button>
+  );
+};
 
 export default Button;

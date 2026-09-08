@@ -1,10 +1,7 @@
-import Link from "next/link";
-import {
-  ARTICLES_PER_PAGE,
-  ArticleCard,
-  type ArticleList,
-  type Tag,
-} from "@/entities/article";
+import { ArticleCard, type ArticleList, type Tag } from "@/entities/article";
+import { pluralize } from "@/shared/lib/text";
+import Button from "@/shared/ui/button";
+import TagFilter from "./ui/tag-filter";
 import styles from "./style.module.scss";
 
 type ArticlesListProps = {
@@ -16,38 +13,24 @@ type ArticlesListProps = {
   emptyText: string;
 };
 
-const buildHref = (basePath: string, tag: string | null, page: number) => {
+const buildMoreHref = (basePath: string, tag: string | null, page: number) => {
   const params = new URLSearchParams();
   if (tag) params.set("tag", tag);
-  if (page > 1) params.set("page", String(page));
+  params.set("page", String(page));
 
-  const query = params.toString();
-  return query ? `${basePath}?${query}` : basePath;
+  return `${basePath}?${params}`;
 };
 
 const ArticlesList = ({ basePath, list, tags, activeTag, page, emptyText }: ArticlesListProps) => {
-  const totalPages = Math.max(1, Math.ceil(list.total / ARTICLES_PER_PAGE));
-  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+  const hasMore = list.articles.length < list.total;
+  const countText = `${list.total} ${pluralize(list.total, ["материал", "материала", "материалов"])}`;
 
   return (
     <div className={styles.root}>
-      <nav className={styles.filters} aria-label="Фильтр по тегам">
-        <Link
-          href={basePath}
-          className={`${styles.pill} ${activeTag ? "" : styles.pillActive}`}
-        >
-          Все
-        </Link>
-        {tags.map((tag) => (
-          <Link
-            key={tag.slug}
-            href={buildHref(basePath, tag.slug, 1)}
-            className={`${styles.pill} ${activeTag === tag.slug ? styles.pillActive : ""}`}
-          >
-            {tag.title}
-          </Link>
-        ))}
-      </nav>
+      <div className={styles.toolbar}>
+        <TagFilter basePath={basePath} tags={tags} activeTag={activeTag} />
+        {list.total > 0 && <span className={styles.count}>{countText}</span>}
+      </div>
 
       {list.articles.length === 0 ? (
         <p className={styles.empty}>{emptyText}</p>
@@ -61,31 +44,12 @@ const ArticlesList = ({ basePath, list, tags, activeTag, page, emptyText }: Arti
         </ul>
       )}
 
-      {totalPages > 1 && (
-        <nav className={styles.pagination} aria-label="Страницы">
-          {page > 1 && (
-            <Link href={buildHref(basePath, activeTag, page - 1)} className={styles.pageArrow}>
-              ← Назад
-            </Link>
-          )}
-
-          {pages.map((number) => (
-            <Link
-              key={number}
-              href={buildHref(basePath, activeTag, number)}
-              className={`${styles.pageNumber} ${number === page ? styles.pageActive : ""}`}
-              aria-current={number === page ? "page" : undefined}
-            >
-              {number}
-            </Link>
-          ))}
-
-          {page < totalPages && (
-            <Link href={buildHref(basePath, activeTag, page + 1)} className={styles.pageArrow}>
-              Вперёд →
-            </Link>
-          )}
-        </nav>
+      {hasMore && (
+        <div className={styles.more}>
+          <Button href={buildMoreHref(basePath, activeTag, page + 1)} scroll={false}>
+            Ещё
+          </Button>
+        </div>
       )}
     </div>
   );

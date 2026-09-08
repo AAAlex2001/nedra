@@ -13,23 +13,33 @@ type ListParams = {
 const EMPTY_LIST: ArticleList = { articles: [], total: 0 };
 
 export const getArticles = async ({ section, tag, page = 1 }: ListParams): Promise<ArticleList> => {
-  const params = new URLSearchParams({
-    section,
-    limit: String(ARTICLES_PER_PAGE),
-    offset: String((page - 1) * ARTICLES_PER_PAGE),
-  });
-  if (tag) params.set("tag", tag);
+  const wanted = page * ARTICLES_PER_PAGE;
+  const articles: ArticleCard[] = [];
+  let total = 0;
 
   try {
-    const response = await internalFetch(`/v1/articles?${params}`, { cache: "no-store" });
-    if (!response.ok) return EMPTY_LIST;
+    while (articles.length < wanted) {
+      const params = new URLSearchParams({
+        section,
+        limit: String(Math.min(MAX_PAGE_SIZE, wanted - articles.length)),
+        offset: String(articles.length),
+      });
+      if (tag) params.set("tag", tag);
 
-    const list: ArticleList = await response.json();
+      const response = await internalFetch(`/v1/articles?${params}`, { cache: "no-store" });
+      if (!response.ok) return EMPTY_LIST;
 
-    return list;
+      const chunk: ArticleList = await response.json();
+      articles.push(...chunk.articles);
+      total = chunk.total;
+
+      if (chunk.articles.length === 0 || articles.length >= total) break;
+    }
   } catch {
     return EMPTY_LIST;
   }
+
+  return { articles, total };
 };
 
 export const getLatestArticles = async (
