@@ -105,7 +105,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 12px;
+  gap: 8px;
+  padding: 12px 20px;
 
   font-family: "Gilroy";
   font-style: normal;
@@ -114,7 +115,8 @@
   line-height: 18px;
   text-align: center;
   text-decoration: none;
-  text-wrap: balance;
+  white-space: nowrap;
+  cursor: pointer;
 
   color: #0b0b0b;
   background: transparent;
@@ -122,12 +124,77 @@
   border-radius: 40px;
   transition:
     color 0.15s ease,
+    background-color 0.15s ease,
     border-color 0.15s ease;
 }
 
-.tab:hover {
-  color: #f69827;
-  border-color: #f69827;
+.tab:hover,
+.tab.active {
+  color: #b86108;
+  background: #fff2e2;
+}
+
+.tab:focus-visible,
+.dropdownLink:focus-visible {
+  outline: 2px solid #f69827;
+  outline-offset: 3px;
+}
+
+.group {
+  position: relative;
+}
+
+.chevron {
+  flex: none;
+  transition: transform 0.15s ease;
+}
+
+.active .chevron {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 360px;
+  padding-top: 14px;
+  transform: translateX(-50%);
+}
+
+.dropdownPanel {
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(11, 11, 11, 0.12);
+}
+
+.dropdownLink {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px;
+  color: #0b0b0b;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.15s ease;
+}
+
+.dropdownLink:hover {
+  background: #fff6ec;
+}
+
+.dropdownTitle {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+}
+
+.dropdownDescription {
+  color: #6c7078;
+  font-size: 14px;
+  line-height: 19px;
 }
 
 @media (min-width: 1440px) {
