@@ -298,7 +298,12 @@
     gap: 50px;
   }
 
+  .main {
+    order: 1;
+  }
+
   .aside {
+    order: 2;
     flex: none;
     width: 320px;
     position: sticky;

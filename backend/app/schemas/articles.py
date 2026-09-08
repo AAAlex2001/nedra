@@ -45,7 +45,15 @@ class ArticleCardSchema(BaseModel):
     tags: list[TagSchema] = Field(default_factory=list, description="Теги статьи")
 
 
-class ArticleSchema(ArticleCardSchema):
+class ArticleSeoSchema(BaseModel):
+    """SEO-поля статьи. Пустые значения подменяются заголовком и описанием на фронте."""
+
+    seo_title: str | None = Field(None, description="Заголовок для поисковика (title)")
+    seo_description: str | None = Field(None, description="Meta description")
+    seo_keywords: str | None = Field(None, description="Ключевые слова через запятую")
+
+
+class ArticleSchema(ArticleCardSchema, ArticleSeoSchema):
     """Схема статьи для страницы статьи."""
 
     content: str = Field(..., description="HTML-контент статьи")
@@ -91,7 +99,7 @@ class ArticleAdminCardSchema(ArticleCardSchema):
     tags: list[TagAdminSchema] = Field(default_factory=list, description="Теги статьи")
 
 
-class ArticleAdminSchema(ArticleAdminCardSchema):
+class ArticleAdminSchema(ArticleAdminCardSchema, ArticleSeoSchema):
     """Статья целиком для редактирования."""
 
     content: str = Field(..., description="HTML-контент статьи")
@@ -113,6 +121,9 @@ class ArticleCreateSchema(BaseModel):
     content: str = Field(..., min_length=1, description="HTML-контент")
     tag_ids: list[int] = Field(default_factory=list, description="ID тегов")
     published: bool = Field(False, description="Опубликовать сразу")
+    seo_title: str | None = Field(None, max_length=255, description="Title для поисковика")
+    seo_description: str | None = Field(None, max_length=300, description="Meta description")
+    seo_keywords: str | None = Field(None, max_length=500, description="Ключевые слова")
 
 
 class ArticleUpdateSchema(BaseModel):
@@ -127,6 +138,9 @@ class ArticleUpdateSchema(BaseModel):
     content: str | None = Field(None, min_length=1)
     tag_ids: list[int] | None = None
     published: bool | None = None
+    seo_title: str | None = Field(None, max_length=255)
+    seo_description: str | None = Field(None, max_length=300)
+    seo_keywords: str | None = Field(None, max_length=500)
 
 
 class UploadResultSchema(BaseModel):

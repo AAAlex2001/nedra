@@ -146,6 +146,36 @@ const ArticleForm = ({ basePath, article, tags }: ArticleFormProps) => {
           </div>
 
           <div className={styles.panel}>
+            <span className={styles.label}>SEO</span>
+
+            <TextField
+              label="Title для поисковика"
+              placeholder="Пусто — берётся заголовок статьи"
+              maxLength={255}
+              value={fields.seo_title}
+              onChange={(value) => changeField("seo_title", value)}
+            />
+
+            <TextField
+              label="Meta description"
+              multiline
+              rows={3}
+              maxLength={300}
+              placeholder="Пусто — берётся краткое описание. Оптимально 120–160 символов"
+              value={fields.seo_description}
+              onChange={(value) => changeField("seo_description", value)}
+            />
+
+            <TextField
+              label="Ключевые слова"
+              placeholder="через запятую"
+              maxLength={500}
+              value={fields.seo_keywords}
+              onChange={(value) => changeField("seo_keywords", value)}
+            />
+          </div>
+
+          <div className={styles.panel}>
             <label className={styles.checkbox}>
               <input
                 type="checkbox"

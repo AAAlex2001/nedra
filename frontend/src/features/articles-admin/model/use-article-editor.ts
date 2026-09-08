@@ -14,6 +14,9 @@ const toFields = (article: ArticleAdmin | null): EditorFields => ({
   content: article?.content ?? "",
   tag_ids: article?.tags.map((tag) => tag.id) ?? [],
   published: Boolean(article?.published_at),
+  seo_title: article?.seo_title ?? "",
+  seo_description: article?.seo_description ?? "",
+  seo_keywords: article?.seo_keywords ?? "",
 });
 
 const toPayload = (fields: EditorFields): ArticlePayload => ({
@@ -24,6 +27,9 @@ const toPayload = (fields: EditorFields): ArticlePayload => ({
   content: fields.content,
   tag_ids: fields.tag_ids,
   published: fields.published,
+  seo_title: fields.seo_title.trim() || null,
+  seo_description: fields.seo_description.trim() || null,
+  seo_keywords: fields.seo_keywords.trim() || null,
 });
 
 const errorText = (error: unknown, fallback: string) =>

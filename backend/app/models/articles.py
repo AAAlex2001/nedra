@@ -41,6 +41,10 @@ class Article(Base):
         JSON().with_variant(JSONB, "postgresql"), default=list
     )
 
+    seo_title: Mapped[str | None] = mapped_column(String(255))
+    seo_description: Mapped[str | None] = mapped_column(String(300))
+    seo_keywords: Mapped[str | None] = mapped_column(String(500))
+
     views_count: Mapped[int] = mapped_column(Integer, default=0)
     likes_count: Mapped[int] = mapped_column(Integer, default=0)
     dislikes_count: Mapped[int] = mapped_column(Integer, default=0)

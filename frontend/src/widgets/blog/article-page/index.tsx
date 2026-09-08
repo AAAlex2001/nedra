@@ -56,31 +56,6 @@ const ArticlePage = ({ article }: ArticlePageProps) => {
       </header>
 
       <div className={styles.layout}>
-        <div className={styles.main}>
-          <div
-            className={styles.content}
-            dangerouslySetInnerHTML={{ __html: article.content }}
-          />
-
-          {article.cover_image && (
-            <div className={styles.cover}>
-              <Image
-                src={article.cover_image}
-                alt={article.title}
-                fill
-                unoptimized
-                className={styles.coverImage}
-              />
-            </div>
-          )}
-
-          <div className={styles.actions}>
-            <ShareButton title={article.title} />
-          </div>
-
-          <ReactionBar slug={article.slug} initial={initialStats} />
-        </div>
-
         {article.toc.length > 0 && (
           <aside className={styles.aside}>
             <nav className={styles.toc} aria-label="Оглавление">
@@ -100,6 +75,31 @@ const ArticlePage = ({ article }: ArticlePageProps) => {
             </nav>
           </aside>
         )}
+
+        <div className={styles.main}>
+          <div
+            className={styles.content}
+            dangerouslySetInnerHTML={{ __html: article.content }}
+          />
+
+          {article.cover_image && (
+            <div className={styles.cover}>
+              <Image
+                src={article.cover_image}
+                alt={article.title}
+                fill
+                unoptimized
+                className={styles.coverImage}
+              />
+            </div>
+          )}
+
+          <div className={styles.actions}>
+            <ShareButton />
+          </div>
+
+          <ReactionBar slug={article.slug} initial={initialStats} />
+        </div>
       </div>
     </article>
   );

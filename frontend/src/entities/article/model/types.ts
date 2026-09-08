@@ -24,10 +24,17 @@ export type ArticleCard = {
   tags: Tag[];
 };
 
-export type Article = ArticleCard & {
-  content: string;
-  toc: TocItem[];
+export type ArticleSeo = {
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
 };
+
+export type Article = ArticleCard &
+  ArticleSeo & {
+    content: string;
+    toc: TocItem[];
+  };
 
 export type ArticleList = {
   articles: ArticleCard[];
@@ -48,12 +55,13 @@ export type ArticleAdminCard = Omit<ArticleCard, "tags"> & {
   tags: TagAdmin[];
 };
 
-export type ArticleAdmin = ArticleAdminCard & {
-  content: string;
-  toc: TocItem[];
-};
+export type ArticleAdmin = ArticleAdminCard &
+  ArticleSeo & {
+    content: string;
+    toc: TocItem[];
+  };
 
-export type ArticlePayload = {
+export type ArticlePayload = ArticleSeo & {
   title: string;
   slug: string | null;
   description: string | null;

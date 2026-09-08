@@ -21,11 +21,15 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
 
   const url = `${SITE_URL}/blog/${article.slug}`;
-  const description = article.description ?? undefined;
+  const description = article.seo_description ?? article.description ?? undefined;
+  const keywords = article.seo_keywords
+    ? article.seo_keywords.split(",").map((word) => word.trim()).filter(Boolean)
+    : undefined;
 
   return {
-    title: article.title,
+    title: article.seo_title ?? article.title,
     description,
+    keywords,
     alternates: { canonical: url },
     openGraph: {
       type: "article",

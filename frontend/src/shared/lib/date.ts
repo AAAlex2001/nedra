@@ -11,5 +11,5 @@ export const formatDate = (value: string | null | undefined): string => {
 
   if (Number.isNaN(date.getTime())) return value;
 
-  return LONG_DATE.format(date);
+  return LONG_DATE.format(date).replace(" г.", "");
 };

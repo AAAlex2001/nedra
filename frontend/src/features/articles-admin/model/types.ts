@@ -8,6 +8,9 @@ export type EditorFields = {
   content: string;
   tag_ids: number[];
   published: boolean;
+  seo_title: string;
+  seo_description: string;
+  seo_keywords: string;
 };
 
 export type EditorStatus = "idle" | "saving" | "saved" | "error";

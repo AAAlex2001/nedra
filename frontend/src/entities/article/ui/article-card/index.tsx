@@ -16,12 +16,11 @@ type ArticleCardProps = {
 };
 
 const ArticleCard = ({ article, className }: ArticleCardProps) => {
-  const href = `/blog/${article.slug}`;
   const tag = article.tags[0];
 
   return (
-    <article className={`${styles.card} ${className ?? ""}`}>
-      <Link href={href} className={styles.cover} aria-label={article.title}>
+    <Link href={`/blog/${article.slug}`} className={`${styles.card} ${className ?? ""}`}>
+      <div className={styles.cover}>
         {article.cover_image ? (
           <Image
             src={article.cover_image}
@@ -31,17 +30,13 @@ const ArticleCard = ({ article, className }: ArticleCardProps) => {
             className={styles.image}
           />
         ) : (
-          <span className={styles.placeholder} />
+          <div className={styles.placeholder} />
         )}
         {tag && <span className={styles.tag}>{tag.title}</span>}
-      </Link>
+      </div>
 
       <div className={styles.body}>
-        <h3 className={styles.title}>
-          <Link href={href} className={styles.titleLink}>
-            {article.title}
-          </Link>
-        </h3>
+        <h3 className={styles.title}>{article.title}</h3>
 
         {article.description && (
           <p className={styles.description}>{article.description}</p>
@@ -51,9 +46,9 @@ const ArticleCard = ({ article, className }: ArticleCardProps) => {
           <time className={styles.date} dateTime={article.published_at ?? undefined}>
             {formatDate(article.published_at)}
           </time>
-          <Link href={href} className={styles.read}>
+          <span className={styles.read}>
             Читать <ArrowRightIcon className={styles.readIcon} />
-          </Link>
+          </span>
         </div>
 
         <div className={styles.stats}>
@@ -71,7 +66,7 @@ const ArticleCard = ({ article, className }: ArticleCardProps) => {
           </span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 };
 

@@ -205,6 +205,9 @@ class ArticleService:
             cover_image=data.cover_image,
             content=content,
             toc=toc,
+            seo_title=data.seo_title,
+            seo_description=data.seo_description,
+            seo_keywords=data.seo_keywords,
             published_at=func.now() if data.published else None,
             tags=await self.tags_by_ids(data.tag_ids),
         )
@@ -227,6 +230,15 @@ class ArticleService:
 
         if "cover_image" in changes:
             article.cover_image = changes["cover_image"]
+
+        if "seo_title" in changes:
+            article.seo_title = changes["seo_title"]
+
+        if "seo_description" in changes:
+            article.seo_description = changes["seo_description"]
+
+        if "seo_keywords" in changes:
+            article.seo_keywords = changes["seo_keywords"]
 
         if changes.get("content"):
             article.content, article.toc = prepare_content(changes["content"])
