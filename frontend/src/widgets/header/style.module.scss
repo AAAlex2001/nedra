@@ -25,6 +25,7 @@
 
 .logo {
   display: flex;
+  flex: none;
   align-items: center;
   text-decoration: none;
 }
@@ -104,16 +105,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 8px 12px;
 
   font-family: "Gilroy";
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
-  line-height: 16px;
+  line-height: 18px;
   text-align: center;
   text-decoration: none;
-  white-space: nowrap;
+  text-wrap: balance;
 
   color: #0b0b0b;
   background: transparent;
@@ -132,15 +133,15 @@
 @media (min-width: 1440px) {
   .inner {
     max-width: 1580px;
-    gap: 10px;
+    gap: 30px;
   }
 
   .tabs {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    align-items: stretch;
-    gap: 25px;
+    align-items: center;
+    gap: 8px;
 
     flex: 1;
     min-width: 0;
@@ -148,5 +149,11 @@
 
   .controls {
     display: none;
+  }
+}
+
+@media (min-width: 1700px) {
+  .tabs {
+    gap: 20px;
   }
 }
