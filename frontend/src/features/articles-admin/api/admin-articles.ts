@@ -6,54 +6,61 @@ import type {
 } from "@/entities/article";
 import { readErrorMessage } from "@/shared/api";
 
-const json = async <T>(response: Response): Promise<T> => {
-  if (!response.ok) throw new Error(await readErrorMessage(response));
+const requestJson = async <T>(url: string, init?: RequestInit): Promise<T> => {
+  const response = await fetch(url, init);
 
-  return (await response.json()) as T;
+  if (!response.ok) {
+    const message = await readErrorMessage(response);
+    throw new Error(message);
+  }
+
+  const data: T = await response.json();
+
+  return data;
 };
 
-const ensureOk = async (response: Response): Promise<void> => {
-  if (!response.ok) throw new Error(await readErrorMessage(response));
+const requestEmpty = async (url: string, init?: RequestInit): Promise<void> => {
+  const response = await fetch(url, init);
+
+  if (!response.ok) {
+    const message = await readErrorMessage(response);
+    throw new Error(message);
+  }
 };
+
+const jsonBody = (method: string, payload: unknown): RequestInit => ({
+  method,
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload),
+});
 
 export const fetchArticles = (basePath: string) =>
-  fetch(`${basePath}/api/articles`, { cache: "no-store" }).then(json<ArticleAdminCard[]>);
+  requestJson<ArticleAdminCard[]>(`${basePath}/api/articles`, { cache: "no-store" });
 
 export const createArticle = (basePath: string, payload: ArticlePayload) =>
-  fetch(`${basePath}/api/articles`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  }).then(json<ArticleAdmin>);
+  requestJson<ArticleAdmin>(`${basePath}/api/articles`, jsonBody("POST", payload));
 
 export const updateArticle = (basePath: string, id: number, payload: Partial<ArticlePayload>) =>
-  fetch(`${basePath}/api/articles/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  }).then(json<ArticleAdmin>);
+  requestJson<ArticleAdmin>(`${basePath}/api/articles/${id}`, jsonBody("PATCH", payload));
 
 export const deleteArticle = (basePath: string, id: number) =>
-  fetch(`${basePath}/api/articles/${id}`, { method: "DELETE" }).then(ensureOk);
+  requestEmpty(`${basePath}/api/articles/${id}`, { method: "DELETE" });
 
 export const uploadImage = (basePath: string, file: File) => {
   const form = new FormData();
   form.append("file", file);
 
-  return fetch(`${basePath}/api/uploads`, { method: "POST", body: form }).then(
-    json<{ url: string }>,
-  );
+  return requestJson<{ url: string }>(`${basePath}/api/uploads`, {
+    method: "POST",
+    body: form,
+  });
 };
 
 export const fetchTags = (basePath: string) =>
-  fetch(`${basePath}/api/tags`, { cache: "no-store" }).then(json<TagAdmin[]>);
+  requestJson<TagAdmin[]>(`${basePath}/api/tags`, { cache: "no-store" });
 
 export const createTag = (basePath: string, title: string) =>
-  fetch(`${basePath}/api/tags`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title }),
-  }).then(json<TagAdmin>);
+  requestJson<TagAdmin>(`${basePath}/api/tags`, jsonBody("POST", { title }));
 
 export const deleteTag = (basePath: string, id: number) =>
-  fetch(`${basePath}/api/tags/${id}`, { method: "DELETE" }).then(ensureOk);
+  requestEmpty(`${basePath}/api/tags/${id}`, { method: "DELETE" });

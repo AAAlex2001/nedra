@@ -39,7 +39,9 @@ async def get_tags(
 ) -> list[TagSchema]:
     """Все теги для фильтра."""
 
-    return [TagSchema.model_validate(tag) for tag in await service.list_tags()]
+    tags = await service.list_tags()
+
+    return [TagSchema.model_validate(tag) for tag in tags]
 
 
 @router.get("/articles/{slug}")

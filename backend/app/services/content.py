@@ -53,7 +53,8 @@ def prepare_content(raw: str) -> tuple[str, list[dict[str, str]]]:
     Возвращает готовый HTML и список пунктов оглавления.
     """
 
-    soup = BeautifulSoup(sanitize_html(raw), "html.parser")
+    clean_html = sanitize_html(raw)
+    soup = BeautifulSoup(clean_html, "html.parser")
     toc: list[dict[str, str]] = []
     used_anchors: set[str] = set()
 
@@ -62,7 +63,8 @@ def prepare_content(raw: str) -> tuple[str, list[dict[str, str]]]:
         if not title:
             continue
 
-        anchor = unique_anchor(slugify(title, max_length=80) or "section", used_anchors)
+        wanted_anchor = slugify(title, max_length=80) or "section"
+        anchor = unique_anchor(wanted_anchor, used_anchors)
         used_anchors.add(anchor)
 
         heading["id"] = anchor

@@ -30,7 +30,9 @@ export const loadAdmin = async <T,>(path: string, fallback: T): Promise<Loaded<T
       return { data: fallback, error: `Бэкенд ответил ${response.status}` };
     }
 
-    return { data: (await response.json()) as T, error: null };
+    const data: T = await response.json();
+
+    return { data, error: null };
   } catch {
     return { data: fallback, error: "Бэкенд недоступен" };
   }

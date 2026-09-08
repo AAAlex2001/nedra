@@ -2,7 +2,6 @@ import { getArticles, getTags } from "@/entities/article";
 import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import ArticlesList from "@/widgets/blog/articles-list";
-import RequestSection from "@/widgets/landing/request-form";
 import styles from "./blog.module.scss";
 
 export const dynamic = "force-dynamic";
@@ -39,8 +38,6 @@ export default async function BlogPage({
 
         <ArticlesList list={list} tags={tags} activeTag={tag ?? null} page={pageNumber} />
       </div>
-
-      <RequestSection />
     </main>
   );
 }

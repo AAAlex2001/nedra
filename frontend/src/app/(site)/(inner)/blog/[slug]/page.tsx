@@ -5,7 +5,6 @@ import { SITE_NAME, SITE_URL } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import ArticlePage from "@/widgets/blog/article-page";
 import RelatedArticles from "@/widgets/blog/related-articles";
-import RequestSection from "@/widgets/landing/request-form";
 import styles from "../blog.module.scss";
 
 export const dynamic = "force-dynamic";
@@ -72,8 +71,6 @@ export default async function ArticleRoute({ params }: { params: Params }) {
         <ArticlePage article={article} />
         {related.length > 0 && <RelatedArticles articles={related} />}
       </div>
-
-      <RequestSection />
     </main>
   );
 }

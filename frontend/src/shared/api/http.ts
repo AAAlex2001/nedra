@@ -30,8 +30,11 @@ export const postJson = async <T>(path: string, payload: unknown): Promise<T> =>
   });
 
   if (!response.ok) {
-    throw new ApiError(response.status, await readErrorMessage(response));
+    const message = await readErrorMessage(response);
+    throw new ApiError(response.status, message);
   }
 
-  return (await response.json()) as T;
+  const data: T = await response.json();
+
+  return data;
 };

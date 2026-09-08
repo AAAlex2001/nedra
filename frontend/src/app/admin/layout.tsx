@@ -20,9 +20,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <Link href={`${basePath}/articles`} className={styles.link}>
           Статьи
         </Link>
-        <Link href="/blog" target="_blank" className={styles.external}>
-          Блог на сайте ↗
-        </Link>
       </nav>
 
       {children}

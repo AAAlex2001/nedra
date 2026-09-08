@@ -20,7 +20,10 @@ export const getArticles = async ({ tag, page = 1 }: ListParams): Promise<Articl
   try {
     const response = await internalFetch(`/v1/articles?${params}`, { cache: "no-store" });
     if (!response.ok) return EMPTY_LIST;
-    return (await response.json()) as ArticleList;
+
+    const list: ArticleList = await response.json();
+
+    return list;
   } catch {
     return EMPTY_LIST;
   }
@@ -32,7 +35,10 @@ export const getLatestArticles = async (limit: number): Promise<ArticleCard[]> =
       next: { revalidate: 300 },
     });
     if (!response.ok) return [];
-    return ((await response.json()) as ArticleList).articles;
+
+    const list: ArticleList = await response.json();
+
+    return list.articles;
   } catch {
     return [];
   }
@@ -44,7 +50,10 @@ export const getArticle = async (slug: string): Promise<Article | null> => {
       cache: "no-store",
     });
     if (!response.ok) return null;
-    return (await response.json()) as Article;
+
+    const article: Article = await response.json();
+
+    return article;
   } catch {
     return null;
   }
@@ -57,7 +66,10 @@ export const getRelatedArticles = async (slug: string, limit = 10): Promise<Arti
       { cache: "no-store" },
     );
     if (!response.ok) return [];
-    return (await response.json()) as ArticleCard[];
+
+    const articles: ArticleCard[] = await response.json();
+
+    return articles;
   } catch {
     return [];
   }
@@ -67,7 +79,10 @@ export const getTags = async (): Promise<Tag[]> => {
   try {
     const response = await internalFetch("/v1/tags", { cache: "no-store" });
     if (!response.ok) return [];
-    return (await response.json()) as Tag[];
+
+    const tags: Tag[] = await response.json();
+
+    return tags;
   } catch {
     return [];
   }
@@ -77,7 +92,10 @@ export const getAllArticleSlugs = async (): Promise<ArticleCard[]> => {
   try {
     const response = await internalFetch("/v1/articles?limit=50", { cache: "no-store" });
     if (!response.ok) return [];
-    return ((await response.json()) as ArticleList).articles;
+
+    const list: ArticleList = await response.json();
+
+    return list.articles;
   } catch {
     return [];
   }

@@ -8,9 +8,14 @@ export const fetchRequests = async (
     cache: "no-store",
   });
 
-  if (!response.ok) throw new Error(await readErrorMessage(response));
+  if (!response.ok) {
+    const message = await readErrorMessage(response);
+    throw new Error(message);
+  }
 
-  return (await response.json()) as RequestRecord[];
+  const requests: RequestRecord[] = await response.json();
+
+  return requests;
 };
 
 export const deleteRequest = async (
@@ -21,5 +26,8 @@ export const deleteRequest = async (
     method: "DELETE",
   });
 
-  if (!response.ok) throw new Error(await readErrorMessage(response));
+  if (!response.ok) {
+    const message = await readErrorMessage(response);
+    throw new Error(message);
+  }
 };

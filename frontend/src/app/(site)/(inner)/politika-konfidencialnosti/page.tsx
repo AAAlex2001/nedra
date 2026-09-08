@@ -1,6 +1,5 @@
 import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
-import RequestSection from "@/widgets/landing/request-form";
 import PrivacyPolicy from "@/widgets/privacy-policy";
 import styles from "./page.module.scss";
 
@@ -21,8 +20,6 @@ export default function PrivacyPolicyPage() {
       <div className={styles.body}>
         <PrivacyPolicy />
       </div>
-
-      <RequestSection />
     </main>
   );
 }

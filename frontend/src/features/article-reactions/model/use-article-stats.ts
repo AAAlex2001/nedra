@@ -41,11 +41,16 @@ export const useArticleStats = (slug: string, initial: ArticleStats) => {
   useEffect(() => {
     let cancelled = false;
 
-    registerView(slug)
-      .then((stats) => {
+    const loadStats = async () => {
+      try {
+        const stats = await registerView(slug);
         if (!cancelled) dispatch({ type: "stats/loaded", stats });
-      })
-      .catch(() => {});
+      } catch {
+        return;
+      }
+    };
+
+    void loadStats();
 
     return () => {
       cancelled = true;

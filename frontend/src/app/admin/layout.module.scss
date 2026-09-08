@@ -31,8 +31,7 @@
   color: #8a4c00;
 }
 
-.link,
-.external {
+.link {
   font-family: "Gilroy";
   font-weight: 500;
   font-size: 15px;
@@ -43,14 +42,8 @@
   transition: color 0.2s ease;
 }
 
-.link:hover,
-.external:hover {
+.link:hover {
   color: #f69827;
-}
-
-.external {
-  margin-left: auto;
-  color: #5b6070;
 }
 
 @media (min-width: 768px) {

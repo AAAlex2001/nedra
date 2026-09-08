@@ -56,8 +56,12 @@ class ArticleService:
             articles_stmt.order_by(Article.published_at.desc()).limit(limit).offset(offset)
         )
 
-        articles = list((await self.db.execute(articles_stmt)).scalars().all())
-        total = await self.db.scalar(count_stmt) or 0
+        result = await self.db.execute(articles_stmt)
+        articles = list(result.scalars().all())
+
+        total = await self.db.scalar(count_stmt)
+        if total is None:
+            total = 0
 
         return articles, total
 
@@ -65,7 +69,8 @@ class ArticleService:
         """Опубликованная статья по slug. Черновик считается ненайденным."""
 
         stmt = select(Article).where(Article.slug == slug, PUBLISHED)
-        article = (await self.db.execute(stmt)).scalar_one_or_none()
+        result = await self.db.execute(stmt)
+        article = result.scalar_one_or_none()
 
         if article is None:
             raise ArticleNotFoundError(f"Статья «{slug}» не найдена")
@@ -82,14 +87,18 @@ class ArticleService:
             .limit(limit)
         )
 
-        return list((await self.db.execute(stmt)).scalars().all())
+        result = await self.db.execute(stmt)
+
+        return list(result.scalars().all())
 
     async def list_tags(self) -> list[Tag]:
         """Все теги по алфавиту."""
 
         stmt = select(Tag).order_by(Tag.title)
 
-        return list((await self.db.execute(stmt)).scalars().all())
+        result = await self.db.execute(stmt)
+
+        return list(result.scalars().all())
 
     async def register_view(self, article: Article, visitor_id: str) -> None:
         """Засчитать просмотр статьи.
@@ -155,19 +164,22 @@ class ArticleService:
         после массового UPDATE значения в объекте могут быть устаревшими.
         """
 
-        counters = (
-            await self.db.execute(
-                select(Article.views_count, Article.likes_count, Article.dislikes_count)
-                .where(Article.id == article_id)
-            )
-        ).one()
+        stmt = select(
+            Article.views_count, Article.likes_count, Article.dislikes_count
+        ).where(Article.id == article_id)
+        result = await self.db.execute(stmt)
+        counters = result.one()
+
         reaction = await self.db.get(ArticleReaction, (article_id, visitor_id))
+        my_reaction = None
+        if reaction is not None:
+            my_reaction = reaction.value
 
         return ArticleStats(
             views_count=counters.views_count,
             likes_count=counters.likes_count,
             dislikes_count=counters.dislikes_count,
-            my_reaction=reaction.value if reaction else None,
+            my_reaction=my_reaction,
         )
 
     async def list_all(self) -> list[Article]:
@@ -175,7 +187,9 @@ class ArticleService:
 
         stmt = select(Article).order_by(Article.created_at.desc())
 
-        return list((await self.db.execute(stmt)).scalars().all())
+        result = await self.db.execute(stmt)
+
+        return list(result.scalars().all())
 
     async def get_by_id(self, article_id: int) -> Article:
         """Статья по идентификатору для админки, черновики тоже."""
@@ -196,7 +210,9 @@ class ArticleService:
         """
 
         content, toc = prepare_content(data.content)
-        slug = await self.unique_slug(data.slug or make_slug(data.title))
+        wanted_slug = data.slug or make_slug(data.title)
+        slug = await self.unique_slug(wanted_slug)
+        tags = await self.tags_by_ids(data.tag_ids)
 
         article = Article(
             slug=slug,
@@ -209,7 +225,7 @@ class ArticleService:
             seo_description=data.seo_description,
             seo_keywords=data.seo_keywords,
             published_at=func.now() if data.published else None,
-            tags=await self.tags_by_ids(data.tag_ids),
+            tags=tags,
         )
 
         self.db.add(article)
@@ -266,13 +282,8 @@ class ArticleService:
     async def create_tag(self, title: str) -> Tag:
         """Создать тег. Slug строится из названия и при совпадении получает суффикс."""
 
-        base_slug = make_slug(title, max_length=90)
-        slug = base_slug
-        suffix = 2
-
-        while await self.db.scalar(select(Tag.id).where(Tag.slug == slug)) is not None:
-            slug = f"{base_slug}-{suffix}"
-            suffix += 1
+        wanted_slug = make_slug(title, max_length=90)
+        slug = await self.unique_tag_slug(wanted_slug)
 
         tag = Tag(slug=slug, title=title)
         self.db.add(tag)
@@ -368,7 +379,9 @@ class ArticleService:
             .execution_options(populate_existing=True)
         )
 
-        return (await self.db.execute(stmt)).scalar_one()
+        result = await self.db.execute(stmt)
+
+        return result.scalar_one()
 
     async def unique_slug(self, wanted: str, exclude_id: int | None = None) -> str:
         """Вернуть wanted, если такого slug нет, иначе добавить суффикс -2, -3, ...
@@ -385,7 +398,24 @@ class ArticleService:
             if exclude_id is not None:
                 stmt = stmt.where(Article.id != exclude_id)
 
-            if await self.db.scalar(stmt) is None:
+            taken = await self.db.scalar(stmt)
+            if taken is None:
+                return slug
+
+            slug = f"{wanted}-{suffix}"
+            suffix += 1
+
+    async def unique_tag_slug(self, wanted: str) -> str:
+        """То же, что unique_slug, но для тегов."""
+
+        slug = wanted
+        suffix = 2
+
+        while True:
+            stmt = select(Tag.id).where(Tag.slug == slug)
+
+            taken = await self.db.scalar(stmt)
+            if taken is None:
                 return slug
 
             slug = f"{wanted}-{suffix}"
@@ -399,7 +429,8 @@ class ArticleService:
 
         wanted_ids = set(tag_ids)
         stmt = select(Tag).where(Tag.id.in_(wanted_ids))
-        tags = list((await self.db.execute(stmt)).scalars().all())
+        result = await self.db.execute(stmt)
+        tags = list(result.scalars().all())
 
         if len(tags) != len(wanted_ids):
             raise TagNotFoundError("Некоторые теги не найдены")

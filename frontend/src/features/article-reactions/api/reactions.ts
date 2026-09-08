@@ -3,21 +3,28 @@ import { API_URL, readErrorMessage } from "@/shared/api";
 
 const articleUrl = (slug: string) => `${API_URL}/v1/articles/${encodeURIComponent(slug)}`;
 
-const parseStats = async (response: Response): Promise<ArticleStats> => {
-  if (!response.ok) throw new Error(await readErrorMessage(response));
+const requestStats = async (url: string, init?: RequestInit): Promise<ArticleStats> => {
+  const response = await fetch(url, init);
 
-  return (await response.json()) as ArticleStats;
+  if (!response.ok) {
+    const message = await readErrorMessage(response);
+    throw new Error(message);
+  }
+
+  const stats: ArticleStats = await response.json();
+
+  return stats;
 };
 
 export const registerView = (slug: string) =>
-  fetch(`${articleUrl(slug)}/view`, { method: "POST" }).then(parseStats);
+  requestStats(`${articleUrl(slug)}/view`, { method: "POST" });
 
 export const setReaction = (slug: string, value: 1 | -1) =>
-  fetch(`${articleUrl(slug)}/reaction`, {
+  requestStats(`${articleUrl(slug)}/reaction`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ value }),
-  }).then(parseStats);
+  });
 
 export const removeReaction = (slug: string) =>
-  fetch(`${articleUrl(slug)}/reaction`, { method: "DELETE" }).then(parseStats);
+  requestStats(`${articleUrl(slug)}/reaction`, { method: "DELETE" });

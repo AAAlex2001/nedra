@@ -28,7 +28,9 @@ async def list_articles(
 ) -> list[ArticleAdminCardSchema]:
     """Все статьи, включая черновики."""
 
-    return [ArticleAdminCardSchema.model_validate(a) for a in await service.list_all()]
+    articles = await service.list_all()
+
+    return [ArticleAdminCardSchema.model_validate(article) for article in articles]
 
 
 @router.post("/articles", status_code=status.HTTP_201_CREATED)
@@ -113,7 +115,9 @@ async def list_tags(
 ) -> list[TagAdminSchema]:
     """Теги с идентификаторами."""
 
-    return [TagAdminSchema.model_validate(tag) for tag in await service.list_tags()]
+    tags = await service.list_tags()
+
+    return [TagAdminSchema.model_validate(tag) for tag in tags]
 
 
 @router.post("/tags", status_code=status.HTTP_201_CREATED)
@@ -123,7 +127,9 @@ async def create_tag(
 ) -> TagAdminSchema:
     """Создание тега."""
 
-    return TagAdminSchema.model_validate(await service.create_tag(payload.title))
+    tag = await service.create_tag(payload.title)
+
+    return TagAdminSchema.model_validate(tag)
 
 
 @router.delete("/tags/{tag_id}", status_code=status.HTTP_204_NO_CONTENT)
