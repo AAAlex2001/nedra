@@ -6,9 +6,9 @@
 не затираются. С флагом --update существующие статьи перезаписываются
 из файлов.
 
-Даты публикации расставляются для новых статей: первые --immediate выходят
-сразу (датами за последние дни), остальные — по --per-week штук в неделю
-по рабочим дням в 09:00 по Новосибирску.
+Все новые статьи публикуются сразу: даты расставляются назад от вчерашнего
+дня по рабочим дням, по --per-week штук в неделю, в 09:00 по Новосибирску.
+Первая статья в плане получает самую свежую дату.
 
 Запуск:
   python scripts/news/seed.py --api https://nedra-npi.ru --token <ADMIN_API_TOKEN>
@@ -78,21 +78,17 @@ def clean_links(html: str) -> str:
     return LINK_PATTERN.sub(replace, html)
 
 
-def build_schedule(count: int, start: date, immediate: int, per_week: int) -> list[datetime]:
-    """Даты публикации: первые immediate — в прошлом, остальные по рабочим дням вперёд."""
+def build_schedule(count: int, start: date, per_week: int) -> list[datetime]:
+    """Даты публикации в прошлом: от вчерашнего дня назад по рабочим дням, per_week штук в неделю."""
 
     dates: list[datetime] = []
-
-    for index in range(min(immediate, count)):
-        day = start - timedelta(days=immediate - index)
-        dates.append(datetime.combine(day, PUBLISH_TIME, NOVOSIBIRSK))
 
     day = start
     published_this_week = 0
     current_week = day.isocalendar()[1]
 
     while len(dates) < count:
-        day += timedelta(days=1)
+        day -= timedelta(days=1)
 
         week = day.isocalendar()[1]
         if week != current_week:
@@ -251,9 +247,8 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--api", required=True, help="Адрес сайта или бэкенда, например https://nedra-npi.ru")
     parser.add_argument("--token", required=True, help="ADMIN_API_TOKEN бэкенда")
-    parser.add_argument("--start", default=date.today().isoformat(), help="Дата отсчёта, ГГГГ-ММ-ДД")
-    parser.add_argument("--immediate", type=int, default=10, help="Сколько новых статей опубликовать сразу")
-    parser.add_argument("--per-week", type=int, default=5, help="Сколько статей выходит в неделю")
+    parser.add_argument("--start", default=date.today().isoformat(), help="Дата отсчёта, ГГГГ-ММ-ДД; даты идут назад от неё")
+    parser.add_argument("--per-week", type=int, default=5, help="Сколько статей приходится на одну неделю в прошлом")
     parser.add_argument("--update", action="store_true", help="Перезаписать и уже существующие статьи")
     parser.add_argument("--dry-run", action="store_true", help="Только показать, ничего не отправлять")
     args = parser.parse_args()
@@ -269,9 +264,7 @@ def main() -> None:
     existing_by_slug = {article["slug"]: article for article in existing}
 
     new_articles = [article for article in articles if article["slug"] not in existing_by_slug]
-    schedule = build_schedule(
-        len(new_articles), date.fromisoformat(args.start), args.immediate, args.per_week
-    )
+    schedule = build_schedule(len(new_articles), date.fromisoformat(args.start), args.per_week)
 
     created = 0
     for article, published_at in zip(new_articles, schedule):

@@ -142,6 +142,6 @@ jobs:
 
           echo "Загрузка новостей из content/news"
           docker compose exec -T backend sh -c \
-            'python scripts/news/seed.py --api http://127.0.0.1:8000 --token "$ADMIN_API_TOKEN" --immediate 20' \
+            'python scripts/news/seed.py --api http://127.0.0.1:8000 --token "$ADMIN_API_TOKEN"' \
             || echo "::warning::Загрузка новостей не удалась, сайт при этом задеплоен"
           REMOTE_SCRIPT
