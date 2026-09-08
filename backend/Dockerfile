@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 RUN useradd --create-home --uid 1000 appuser \
+    && mkdir -p /app/media \
     && chown -R appuser:appuser /app
 USER appuser
 

@@ -1,0 +1,29 @@
+.button {
+  box-sizing: border-box;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 22px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 16px;
+  white-space: nowrap;
+
+  color: #0b0b0b;
+  background: transparent;
+  border: 1px solid #f69827;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.button:hover {
+  color: #fff;
+  background: #f69827;
+}

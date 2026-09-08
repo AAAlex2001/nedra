@@ -1,0 +1,63 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  width: 100%;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.title {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 31px;
+
+  color: #0b0b0b;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  color: #f69827;
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px solid #f69827;
+  border-radius: 12px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.button:hover {
+  color: #fff;
+  background: #f69827;
+}
+
+.viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slide {
+  display: flex;
+  min-width: 0;
+}

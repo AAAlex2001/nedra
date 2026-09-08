@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -10,6 +11,20 @@ class TagSchema(BaseModel):
 
     slug: str = Field(..., description="Slug тега для фильтрации")
     title: str = Field(..., description="Название тега")
+
+
+class TagAdminSchema(TagSchema):
+    """Тег для админки — с идентификатором."""
+
+    id: int = Field(..., description="ID тега")
+
+
+class TagCreateSchema(BaseModel):
+    """Создание тега."""
+
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    title: str = Field(..., min_length=2, max_length=100, description="Название тега")
 
 
 class ArticleCardSchema(BaseModel):
@@ -46,3 +61,75 @@ class ArticleListSchema(BaseModel):
         ..., description="Статьи на текущей странице"
     )
     total: int = Field(..., description="Общее количество статей с учётом фильтра")
+
+
+class ArticleStatsSchema(BaseModel):
+    """Счётчики статьи и реакция текущего посетителя."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    views_count: int = Field(..., description="Количество просмотров")
+    likes_count: int = Field(..., description="Количество лайков")
+    dislikes_count: int = Field(..., description="Количество дизлайков")
+    my_reaction: int | None = Field(None, description="1 — лайк, -1 — дизлайк, null — нет")
+
+
+class ReactionInSchema(BaseModel):
+    """Реакция посетителя."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    value: Literal[1, -1] = Field(..., description="1 — лайк, -1 — дизлайк")
+
+
+class ArticleAdminCardSchema(ArticleCardSchema):
+    """Статья в списке админки."""
+
+    id: int = Field(..., description="ID статьи")
+    created_at: datetime = Field(..., description="Дата создания")
+    updated_at: datetime = Field(..., description="Дата последнего изменения")
+    tags: list[TagAdminSchema] = Field(default_factory=list, description="Теги статьи")
+
+
+class ArticleAdminSchema(ArticleAdminCardSchema):
+    """Статья целиком для редактирования."""
+
+    content: str = Field(..., description="HTML-контент статьи")
+    toc: list[dict[str, str]] = Field(default_factory=list, description="Оглавление")
+
+
+class ArticleCreateSchema(BaseModel):
+    """Создание статьи."""
+
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    title: str = Field(..., min_length=3, max_length=255, description="Заголовок")
+    slug: str | None = Field(
+        None, max_length=255, pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$",
+        description="Slug; если не задан — строится из заголовка",
+    )
+    description: str | None = Field(None, max_length=400, description="Краткое описание")
+    cover_image: str | None = Field(None, max_length=500, description="Путь к обложке")
+    content: str = Field(..., min_length=1, description="HTML-контент")
+    tag_ids: list[int] = Field(default_factory=list, description="ID тегов")
+    published: bool = Field(False, description="Опубликовать сразу")
+
+
+class ArticleUpdateSchema(BaseModel):
+    """Частичное обновление статьи."""
+
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    title: str | None = Field(None, min_length=3, max_length=255)
+    slug: str | None = Field(None, max_length=255, pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+    description: str | None = Field(None, max_length=400)
+    cover_image: str | None = Field(None, max_length=500)
+    content: str | None = Field(None, min_length=1)
+    tag_ids: list[int] | None = None
+    published: bool | None = None
+
+
+class UploadResultSchema(BaseModel):
+    """Результат загрузки файла."""
+
+    url: str = Field(..., description="Публичный путь к файлу")

@@ -1,0 +1,312 @@
+.article {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.title {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 34px;
+
+  color: #0b0b0b;
+}
+
+.lead {
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 25px;
+
+  color: #0b0b0b;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 14px;
+}
+
+.tag {
+  padding: 5px 12px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  text-decoration: none;
+
+  color: #f69827;
+  background: #fdf3e6;
+  border-radius: 100px;
+}
+
+.date {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #8a8f9c;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  width: 100%;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  flex: 1;
+  min-width: 0;
+}
+
+.content {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+
+  color: #0b0b0b;
+  overflow-wrap: anywhere;
+}
+
+.content h2 {
+  margin: 36px 0 14px;
+  scroll-margin-top: 110px;
+
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 28px;
+
+  color: #f69827;
+}
+
+.content h3 {
+  margin: 26px 0 10px;
+
+  font-weight: 700;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 23px;
+}
+
+.content h4 {
+  margin: 20px 0 8px;
+
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.content p {
+  margin: 0 0 14px;
+}
+
+.content ul,
+.content ol {
+  margin: 0 0 16px;
+  padding-left: 24px;
+}
+
+.content li {
+  margin-bottom: 8px;
+}
+
+.content li::marker {
+  color: #f69827;
+}
+
+.content a {
+  color: #f69827;
+  text-decoration: underline;
+}
+
+.content strong {
+  font-weight: 700;
+}
+
+.content blockquote {
+  margin: 20px 0;
+  padding: 16px 20px;
+
+  border-left: 3px solid #f69827;
+  background: #fdf3e6;
+  border-radius: 0 14px 14px 0;
+}
+
+.content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+  border-radius: 14px;
+}
+
+.content table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.content th,
+.content td {
+  padding: 10px 12px;
+  border: 1px solid #e3e6ec;
+  text-align: left;
+  vertical-align: top;
+}
+
+.content th {
+  background: #f8f9fb;
+  font-weight: 700;
+}
+
+.content pre {
+  margin: 16px 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+
+  font-size: 14px;
+  background: #f5f6f8;
+  border-radius: 12px;
+}
+
+.content code {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.9em;
+}
+
+.content hr {
+  margin: 28px 0;
+  border: 0;
+  border-top: 1px solid #e3e6ec;
+}
+
+.cover {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
+  border-radius: 20px;
+  background: #f3f4f7;
+}
+
+.coverImage {
+  object-fit: cover;
+}
+
+.actions {
+  display: flex;
+}
+
+.aside {
+  width: 100%;
+}
+
+.toc {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+
+  background: #fff;
+  border: 1px solid #fde3c2;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(246, 152, 39, 0.08);
+}
+
+.tocTitle {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+.tocList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  list-style: none;
+}
+
+.tocLink {
+  display: flex;
+  gap: 10px;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: none;
+
+  color: #3d4250;
+
+  transition: color 0.2s ease;
+}
+
+.tocLink:hover {
+  color: #f69827;
+}
+
+.tocNumber {
+  flex: none;
+
+  font-weight: 700;
+  color: #f69827;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 34px;
+    line-height: 41px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 50px;
+  }
+
+  .aside {
+    flex: none;
+    width: 320px;
+    position: sticky;
+    top: 120px;
+  }
+
+  .content {
+    font-size: 17px;
+    line-height: 28px;
+  }
+}

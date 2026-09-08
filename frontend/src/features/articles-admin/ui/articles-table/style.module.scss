@@ -1,0 +1,217 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  width: 100%;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 14px 16px;
+  padding: 16px;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 18px;
+
+  transition: opacity 0.2s ease;
+}
+
+.rowPending {
+  opacity: 0.5;
+}
+
+.thumb {
+  position: relative;
+  display: block;
+
+  width: 96px;
+  height: 64px;
+
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f3f4f7;
+}
+
+.thumbImage {
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.title {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 21px;
+
+  color: #0b0b0b;
+  text-decoration: none;
+}
+
+.title:hover {
+  color: #f69827;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.status {
+  padding: 4px 10px;
+
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+
+  border-radius: 100px;
+}
+
+.statusPublished {
+  color: #2f7d55;
+  background: #eaf5ee;
+}
+
+.statusDraft {
+  color: #8a4c00;
+  background: #fdf3e6;
+}
+
+.date,
+.tag {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+
+  color: #7b8190;
+}
+
+.tag::before {
+  content: "#";
+}
+
+.stats {
+  grid-column: 1 / -1;
+
+  display: flex;
+  gap: 14px;
+}
+
+.stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 13px;
+
+  color: #8a8f9c;
+}
+
+.statIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+  gap: 10px;
+}
+
+.edit,
+.delete {
+  padding: 8px 16px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-decoration: none;
+
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.edit {
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #f69827;
+}
+
+.edit:hover {
+  color: #fff;
+  background: #f69827;
+}
+
+.delete {
+  color: #b23b2c;
+  background: #fdeceb;
+  border: 1px solid #f6d5d1;
+}
+
+.delete:hover:not(:disabled) {
+  background: #f9d9d6;
+}
+
+.delete:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.empty,
+.error {
+  padding: 16px 20px;
+
+  font-family: "Gilroy";
+  font-size: 15px;
+  line-height: 20px;
+
+  border-radius: 14px;
+}
+
+.empty {
+  color: #5b6070;
+  background: #f8f9fb;
+}
+
+.error {
+  color: #b23b2c;
+  background: #fdeceb;
+}
+
+@media (min-width: 1024px) {
+  .row {
+    grid-template-columns: 96px minmax(0, 1fr) auto auto;
+    align-items: center;
+  }
+
+  .stats,
+  .actions {
+    grid-column: auto;
+  }
+}

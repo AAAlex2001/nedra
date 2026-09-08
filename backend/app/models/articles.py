@@ -1,10 +1,13 @@
 from datetime import datetime
 
 from sqlalchemy import (
+    JSON,
+    CheckConstraint,
     Column,
     DateTime,
     ForeignKey,
     Integer,
+    SmallInteger,
     String,
     Table,
     Text,
@@ -22,6 +25,7 @@ article_tags = Table(
     Column("tag_id", ForeignKey("tags.id", ondelete="CASCADE"), primary_key=True),
 )
 
+
 class Article(Base):
     __tablename__ = "articles"
 
@@ -33,7 +37,9 @@ class Article(Base):
     cover_image: Mapped[str | None] = mapped_column(String(500))
 
     content: Mapped[str] = mapped_column(Text)
-    toc: Mapped[list[dict[str, str]]] = mapped_column(JSONB, default=list)
+    toc: Mapped[list[dict[str, str]]] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"), default=list
+    )
 
     views_count: Mapped[int] = mapped_column(Integer, default=0)
     likes_count: Mapped[int] = mapped_column(Integer, default=0)
@@ -53,7 +59,9 @@ class Article(Base):
         secondary=article_tags,
         back_populates="articles",
         lazy="selectin",
+        order_by="Tag.title",
     )
+
 
 class Tag(Base):
     __tablename__ = "tags"
@@ -65,4 +73,33 @@ class Tag(Base):
     articles: Mapped[list["Article"]] = relationship(
         secondary=article_tags,
         back_populates="tags",
+    )
+
+
+class ArticleView(Base):
+    __tablename__ = "article_views"
+
+    article_id: Mapped[int] = mapped_column(
+        ForeignKey("articles.id", ondelete="CASCADE"), primary_key=True
+    )
+    visitor_id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+
+class ArticleReaction(Base):
+    __tablename__ = "article_reactions"
+
+    article_id: Mapped[int] = mapped_column(
+        ForeignKey("articles.id", ondelete="CASCADE"), primary_key=True
+    )
+    visitor_id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    value: Mapped[int] = mapped_column(SmallInteger)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+    __table_args__ = (
+        CheckConstraint("value IN (-1, 1)", name="ck_article_reactions_value"),
     )

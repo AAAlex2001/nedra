@@ -1,0 +1,92 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  width: 100%;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+}
+
+.label {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 18px;
+
+  color: #0b0b0b;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+
+  color: #3d4250;
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.button:hover:not(:disabled) {
+  border-color: #f69827;
+  color: #f69827;
+}
+
+.button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.active,
+.active:hover:not(:disabled) {
+  color: #fff;
+  background: #f69827;
+  border-color: #f69827;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+.views {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+
+  color: #8a8f9c;
+}
+
+.error {
+  font-family: "Gilroy";
+  font-size: 13px;
+  line-height: 16px;
+
+  color: #b23b2c;
+}

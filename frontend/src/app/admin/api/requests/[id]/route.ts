@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { API_INTERNAL_URL } from "@/shared/api/config";
+import { parseId, proxyToBackend } from "@/shared/api/admin-proxy";
 
 export const dynamic = "force-dynamic";
 
@@ -8,28 +8,11 @@ type RouteContext = {
 };
 
 export async function DELETE(_request: Request, context: RouteContext) {
-  const { id } = await context.params;
-  const requestId = Number(id);
+  const id = parseId((await context.params).id);
 
-  if (!Number.isInteger(requestId) || requestId <= 0) {
+  if (id === null) {
     return NextResponse.json({ detail: "Некорректный id" }, { status: 400 });
   }
 
-  try {
-    const response = await fetch(`${API_INTERNAL_URL}/v1/request/${requestId}`, {
-      method: "DELETE",
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      return NextResponse.json(
-        { detail: `Бэкенд ответил ${response.status}` },
-        { status: response.status },
-      );
-    }
-
-    return new NextResponse(null, { status: 204 });
-  } catch {
-    return NextResponse.json({ detail: "Бэкенд недоступен" }, { status: 502 });
-  }
+  return proxyToBackend(`/v1/request/${id}`, { method: "DELETE" });
 }

@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     smtp_password: str | None = None
     notify_emails: list[str] = []
 
+    admin_api_token: str | None = None
+    media_dir: str = "media"
+    cookie_secure: bool = True
+
 
 @lru_cache
 def get_settings() -> Settings:

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
-from app.dependencies import get_request_service
+from app.dependencies import get_request_service, require_admin
 from app.schemas.request import RequestInSchema, RequestOutSchema
 from app.services.email import send_new_request
 from app.services.request import RequestService
@@ -31,7 +31,7 @@ async def create_request(
     return created
 
 
-@router.get("/requests")
+@router.get("/requests", dependencies=[Depends(require_admin)])
 async def get_all_requests(
     service: RequestService = Depends(get_request_service),
 ) -> list[RequestOutSchema]:
@@ -41,7 +41,11 @@ async def get_all_requests(
 
     return [RequestOutSchema.model_validate(request) for request in requests]
 
-@router.delete("/request/{request_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/request/{request_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(require_admin)],
+)
 async def delete_request(
     request_id: int,
     service: RequestService = Depends(get_request_service),

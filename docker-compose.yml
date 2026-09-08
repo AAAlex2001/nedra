@@ -23,6 +23,8 @@ services:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       CORS_ORIGINS: ${CORS_ORIGINS}
       DEBUG: "false"
+      ADMIN_API_TOKEN: ${ADMIN_API_TOKEN}
+      MEDIA_DIR: /app/media
       SMTP_HOST: ${SMTP_HOST}
       SMTP_PORT: ${SMTP_PORT}
       SMTP_USER: ${SMTP_USER}
@@ -34,6 +36,8 @@ services:
     command: >
       sh -c "alembic upgrade head &&
              uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    volumes:
+      - media:/app/media
     ports:
       - "127.0.0.1:8000:8000"
 
@@ -45,6 +49,7 @@ services:
     restart: unless-stopped
     environment:
       API_INTERNAL_URL: http://backend:8000/api
+      ADMIN_API_TOKEN: ${ADMIN_API_TOKEN}
       ADMIN_USER: ${ADMIN_USER}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       ADMIN_PATH: ${ADMIN_PATH}
@@ -61,6 +66,7 @@ services:
       - ./deploy/nginx/nedra.conf:/etc/nginx/conf.d/default.conf:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - certbot_www:/var/www/certbot
+      - media:/var/www/media:ro
     depends_on:
       - frontend
       - backend
@@ -68,3 +74,4 @@ services:
 volumes:
   pgdata:
   certbot_www:
+  media:

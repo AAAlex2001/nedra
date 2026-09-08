@@ -36,5 +36,9 @@ export { GraduationIcon } from "./graduation-icon";
 export { GraduationCapIcon } from "./graduation-cap-icon";
 export { UserCircleIcon } from "./user-circle-icon";
 export { AddUserIcon } from "./add-user-icon";
+export { ThumbUpIcon } from "./thumb-up-icon";
+export { ThumbDownIcon } from "./thumb-down-icon";
+export { EyeIcon } from "./eye-icon";
+export { ArrowRightIcon } from "./arrow-right-icon";
 
 //коммент

@@ -4,6 +4,7 @@
 
 __pycache__/
 *.py[cod]
+backend/media/
 .venv/
 venv/
 .pytest_cache/
