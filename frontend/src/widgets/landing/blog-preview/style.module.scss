@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 40px;
-  padding: 100px 20px;
+  padding: 0 20px 100px;
 
   width: 100%;
   max-width: 768px;
@@ -14,12 +14,15 @@
 .actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
+
+  width: 100%;
 }
 
 @media (min-width: 768px) {
   .section {
-    padding: 100px 50px;
+    padding: 0 50px 100px;
   }
 }
 
