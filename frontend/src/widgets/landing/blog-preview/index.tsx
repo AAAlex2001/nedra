@@ -1,4 +1,4 @@
-import { ArticleCard, getLatestArticles, type ArticleCardData } from "@/entities/article";
+import { ArticlesSlider, getLatestArticles, type ArticleCardData } from "@/entities/article";
 import BlockHeading from "@/shared/ui/block-heading";
 import OutlineButton from "@/shared/ui/outline-button";
 import { BLOG_PREVIEW_DATA } from "./data";
@@ -24,13 +24,7 @@ const BlogPreview = async () => {
     <section id="blog" className={styles.section}>
       <BlockHeading title={BLOG_PREVIEW_DATA.title} subtitle={BLOG_PREVIEW_DATA.subtitle} />
 
-      <ul className={styles.grid}>
-        {articles.map((article) => (
-          <li key={article.slug} className={styles.cell}>
-            <ArticleCard article={article} />
-          </li>
-        ))}
-      </ul>
+      <ArticlesSlider articles={articles} ariaLabel={BLOG_PREVIEW_DATA.title} />
 
       <div className={styles.actions}>
         <OutlineButton href="/blog">{BLOG_PREVIEW_DATA.blogButton}</OutlineButton>

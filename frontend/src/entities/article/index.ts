@@ -27,3 +27,4 @@ export { NOT_FOUND_METADATA, buildArticleMetadata } from "./lib/metadata";
 export { splitContent } from "./lib/split-content";
 
 export { default as ArticleCard } from "./ui/article-card";
+export { default as ArticlesSlider } from "./ui/articles-slider";

@@ -2,6 +2,7 @@ import Directions from "@/widgets/landing/directions";
 import Activities from "@/widgets/landing/activities";
 import Hero from "@/widgets/landing/hero";
 import Advantages from "@/widgets/landing/advantages";
+import BlogPreview from "@/widgets/landing/blog-preview";
 import Contacts from "@/widgets/landing/contacts";
 import Documents from "@/widgets/landing/documents";
 import Heritage from "@/widgets/landing/heritage";
@@ -13,6 +14,8 @@ import Partners from "@/widgets/landing/partners";
 import RequestSection from "@/widgets/landing/request-form";
 import WhatIsThis from "@/widgets/landing/what-is-this";
 import { buildMetadata } from "@/shared/config/seo";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata("/");
 
@@ -31,6 +34,7 @@ export default function Home() {
       <Documents />
       <Advantages />
       <Partners />
+      <BlogPreview />
       <RequestSection />
       <Contacts />
     </main>

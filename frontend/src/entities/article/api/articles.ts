@@ -48,7 +48,7 @@ export const getLatestArticles = async (
 ): Promise<ArticleCard[]> => {
   try {
     const response = await internalFetch(`/v1/articles?section=${section}&limit=${limit}`, {
-      next: { revalidate: 300 },
+      cache: "no-store",
     });
     if (!response.ok) return [];
 
