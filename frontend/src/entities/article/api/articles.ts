@@ -91,9 +91,9 @@ export const getRelatedArticles = async (slug: string, limit = 10): Promise<Arti
   }
 };
 
-export const getTags = async (): Promise<Tag[]> => {
+export const getTags = async (section: ArticleSection): Promise<Tag[]> => {
   try {
-    const response = await internalFetch("/v1/tags", { cache: "no-store" });
+    const response = await internalFetch(`/v1/tags?section=${section}`, { cache: "no-store" });
     if (!response.ok) return [];
 
     const tags: Tag[] = await response.json();

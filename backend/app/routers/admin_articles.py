@@ -115,9 +115,9 @@ async def upload_image(file: UploadFile) -> UploadResultSchema:
 async def list_tags(
     service: ArticleService = Depends(get_article_service),
 ) -> list[TagAdminSchema]:
-    """Теги с идентификаторами."""
+    """Все теги с идентификаторами."""
 
-    tags = await service.list_tags()
+    tags = await service.list_tags(None)
 
     return [TagAdminSchema.model_validate(tag) for tag in tags]
 

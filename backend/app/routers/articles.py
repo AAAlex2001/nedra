@@ -37,11 +37,12 @@ async def get_articles(
 
 @router.get("/tags")
 async def get_tags(
+    section: Section | None = Query(None, description="Раздел: только теги его опубликованных статей"),
     service: ArticleService = Depends(get_article_service),
 ) -> list[TagSchema]:
-    """Все теги для фильтра."""
+    """Теги для фильтра списка статей."""
 
-    tags = await service.list_tags()
+    tags = await service.list_tags(section)
 
     return [TagSchema.model_validate(tag) for tag in tags]
 

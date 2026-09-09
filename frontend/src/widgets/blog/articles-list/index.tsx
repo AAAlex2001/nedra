@@ -27,10 +27,12 @@ const ArticlesList = ({ basePath, list, tags, activeTag, page, emptyText }: Arti
 
   return (
     <div className={styles.root}>
-      <div className={styles.toolbar}>
-        <TagFilter basePath={basePath} tags={tags} activeTag={activeTag} />
-        {list.total > 0 && <span className={styles.count}>{countText}</span>}
-      </div>
+      {(tags.length > 0 || list.total > 0) && (
+        <div className={styles.toolbar}>
+          {tags.length > 0 && <TagFilter basePath={basePath} tags={tags} activeTag={activeTag} />}
+          {list.total > 0 && <span className={styles.count}>{countText}</span>}
+        </div>
+      )}
 
       {list.articles.length === 0 ? (
         <p className={styles.empty}>{emptyText}</p>

@@ -6,7 +6,7 @@ from sqlalchemy import and_, func, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.articles import Article, ArticleReaction, ArticleView, Tag
+from app.models.articles import Article, ArticleReaction, ArticleView, Tag, article_tags
 from app.schemas.articles import ArticleCreateSchema, ArticleUpdateSchema
 from app.services.content import make_slug, prepare_content
 from app.services.exceptions import ArticleNotFoundError, TagNotFoundError
@@ -96,10 +96,24 @@ class ArticleService:
 
         return list(result.scalars().all())
 
-    async def list_tags(self) -> list[Tag]:
-        """Все теги по алфавиту."""
+    async def list_tags(self, section: str | None) -> list[Tag]:
+        """Теги по алфавиту.
+
+        Если передан section — только теги, которыми отмечена хотя бы одна
+        опубликованная статья этого раздела. Без section — все теги, для админки.
+        """
 
         stmt = select(Tag).order_by(Tag.title)
+
+        if section:
+            stmt = (
+                select(Tag)
+                .join(article_tags, article_tags.c.tag_id == Tag.id)
+                .join(Article, Article.id == article_tags.c.article_id)
+                .where(PUBLISHED, Article.section == section)
+                .distinct()
+                .order_by(Tag.title)
+            )
 
         result = await self.db.execute(stmt)
 

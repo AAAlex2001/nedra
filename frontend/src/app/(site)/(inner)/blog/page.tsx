@@ -20,7 +20,7 @@ export default async function BlogPage({
 
   const [list, tags] = await Promise.all([
     getArticles({ section: "blog", tag, page: pageNumber }),
-    getTags(),
+    getTags("blog"),
   ]);
 
   return (

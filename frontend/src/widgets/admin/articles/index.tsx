@@ -54,7 +54,7 @@ const AdminArticles = ({ basePath, articles, tags, section, error }: AdminArticl
       ) : (
         <>
           <TagManager basePath={basePath} initialItems={tags} />
-          <ArticlesTable basePath={basePath} initialItems={articles} />
+          <ArticlesTable key={section ?? "all"} basePath={basePath} initialItems={articles} />
         </>
       )}
     </section>

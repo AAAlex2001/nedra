@@ -21,7 +21,7 @@ export default async function NewsPage({
 
   const [list, tags] = await Promise.all([
     getArticles({ section: "news", tag, page: pageNumber }),
-    getTags(),
+    getTags("news"),
   ]);
 
   return (
