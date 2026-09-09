@@ -24,7 +24,9 @@ const Hero = () => {
           <OutlineButton href={HERO_DATA.button.href}>
             {HERO_DATA.button.text}
           </OutlineButton>
-          <Button href="#request">Оставить заявку</Button>
+          <Button href="#request" className={styles.sunButton}>
+            Оставить заявку
+          </Button>
         </div>
       </div>
 
