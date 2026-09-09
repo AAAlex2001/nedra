@@ -40,6 +40,13 @@ export const FOOTER_SITEMAP: FooterLinkGroup[] = [
     ],
   },
   {
+    title: "Материалы",
+    links: [
+      { label: "Блог", href: "/blog" },
+      { label: "Новости", href: "/novosti" },
+    ],
+  },
+  {
     title: "Сведения об образовательной организации",
     wide: true,
     links: [
