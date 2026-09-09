@@ -2,6 +2,7 @@
 
 import alembic_part
 import engine_part
+import interview_part
 import pg_part
 import sa_body
 
@@ -18,7 +19,7 @@ def build(P, B, C, note, table, Spacer, PageBreak, mm, CODE_BG, GOOD_BG):
     A(Spacer(1, 4 * mm))
     A(note("<b>Как читать.</b> Часть I — сама база: типы, ограничения, индексы, SQL. Части "
            "II–IV — SQLAlchemy: модели, связи, запросы. Часть V — движок, сессии и стык с "
-           "FastAPI. Часть VI — миграции Alembic и тесты. Часть VII — практика и шпаргалка. "
+           "FastAPI. Часть VI — миграции Alembic и тесты. Часть VII — практика и шпаргалка. Часть VIII — пятьдесят вопросов с собеседований с короткими ответами."
            "Каждый импорт объясняется в месте первого использования, а глава 39 собирает их "
            "в одну карту.", CODE_BG))
     A(Spacer(1, 5 * mm))
@@ -80,6 +81,8 @@ def build(P, B, C, note, table, Spacer, PageBreak, mm, CODE_BG, GOOD_BG):
         (None, "Как проектировать схему"),
         (None, "Частые ошибки"),
         (None, "Шпаргалка"),
+        ("Часть VIII. Вопросы с собеседований", None),
+        (None, "Топ-50 вопросов и коротких ответов"),
     ]
     number = 0
     for part, name in toc:
@@ -105,5 +108,6 @@ def build(P, B, C, note, table, Spacer, PageBreak, mm, CODE_BG, GOOD_BG):
     S.extend(engine_part.build(*args))
     S.extend(alembic_part.build(*args))
     S.extend(body[split:])
+    S.extend(interview_part.build(*args))
 
     return S
