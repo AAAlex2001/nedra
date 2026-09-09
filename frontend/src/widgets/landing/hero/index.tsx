@@ -1,5 +1,6 @@
 import Image from "next/image";
 import AccentLine from "@/shared/ui/accent-line";
+import Button from "@/shared/ui/button";
 import OutlineButton from "@/shared/ui/outline-button";
 import { HERO_DATA } from "./data";
 import styles from "./style.module.scss";
@@ -19,9 +20,12 @@ const Hero = () => {
           </h1>
         </div>
 
-        <OutlineButton href={HERO_DATA.button.href}>
-          {HERO_DATA.button.text}
-        </OutlineButton>
+        <div className={styles.actions}>
+          <OutlineButton href={HERO_DATA.button.href}>
+            {HERO_DATA.button.text}
+          </OutlineButton>
+          <Button href="#request">Оставить заявку</Button>
+        </div>
       </div>
 
       <div className={styles.stage}>

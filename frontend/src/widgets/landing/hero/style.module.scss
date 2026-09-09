@@ -34,6 +34,13 @@
   width: 100%;
 }
 
+.actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
 .kicker {
   width: 100%;
 
@@ -136,6 +143,12 @@
 }
 
 @media (min-width: 768px) {
+  .actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 400px;
+    max-width: 100%;
+  }
+
   .hero {
     gap: 0;
   }
