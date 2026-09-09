@@ -25,6 +25,12 @@
   min-width: 0;
 }
 
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 @media (min-width: 768px) {
   .section {
     padding: 100px 50px;
