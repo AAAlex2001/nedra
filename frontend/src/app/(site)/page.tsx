@@ -2,7 +2,6 @@ import Directions from "@/widgets/landing/directions";
 import Activities from "@/widgets/landing/activities";
 import Hero from "@/widgets/landing/hero";
 import Advantages from "@/widgets/landing/advantages";
-import BlogPreview from "@/widgets/landing/blog-preview";
 import Contacts from "@/widgets/landing/contacts";
 import Documents from "@/widgets/landing/documents";
 import Heritage from "@/widgets/landing/heritage";
@@ -32,7 +31,6 @@ export default function Home() {
       <Documents />
       <Advantages />
       <Partners />
-      <BlogPreview />
       <RequestSection />
       <Contacts />
     </main>
