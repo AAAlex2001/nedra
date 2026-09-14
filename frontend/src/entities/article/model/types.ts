@@ -37,6 +37,7 @@ export type Article = ArticleCard &
   ArticleSeo & {
     content: string;
     toc: TocItem[];
+    updated_at: string;
   };
 
 export type ArticleList = {

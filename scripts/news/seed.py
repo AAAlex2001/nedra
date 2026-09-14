@@ -29,6 +29,11 @@ CONTENT_DIR = ROOT / "content" / "news"
 ARTICLES_DIR = CONTENT_DIR / "articles"
 PLAN_FILE = CONTENT_DIR / "plan.json"
 CREDITS_FILE = CONTENT_DIR / "covers.json"
+INDEXNOW_KEY_FILE = CONTENT_DIR / "indexnow-key.txt"
+
+SITE_URL = "https://nedra-npi.ru"
+INDEXNOW_ENDPOINT = "https://yandex.com/indexnow"
+INDEXNOW_BATCH = 100
 
 NOVOSIBIRSK = timezone(timedelta(hours=7))
 PUBLISH_TIME = time(9, 0)
@@ -124,6 +129,46 @@ def credit_paragraph(credit: dict | None) -> str:
         parts.append(license_name)
 
     return f"<p><em>{', '.join(parts)}</em></p>"
+
+
+def notify_indexnow(slugs: list[str]) -> None:
+    """Сообщить поисковикам о новых адресах через IndexNow.
+
+    Яндекс и Bing принимают список URL и обходят их за минуты вместо недель.
+    Ключ лежит в content/news/indexnow-key.txt, а подтверждающий файл с тем же
+    именем — в frontend/public, иначе поисковик отклонит запрос.
+    """
+
+    if not INDEXNOW_KEY_FILE.exists():
+        print("IndexNow: ключа нет, пропускаем")
+        return
+
+    key = INDEXNOW_KEY_FILE.read_text(encoding="utf-8").strip()
+    host = SITE_URL.replace("https://", "")
+
+    for start in range(0, len(slugs), INDEXNOW_BATCH):
+        batch = slugs[start : start + INDEXNOW_BATCH]
+        payload = {
+            "host": host,
+            "key": key,
+            "keyLocation": f"{SITE_URL}/{key}.txt",
+            "urlList": [f"{SITE_URL}/novosti/{slug}" for slug in batch],
+        }
+
+        request = Request(
+            INDEXNOW_ENDPOINT,
+            data=json.dumps(payload).encode("utf-8"),
+            method="POST",
+            headers={"Content-Type": "application/json; charset=utf-8"},
+        )
+
+        try:
+            with urlopen(request, timeout=60) as response:
+                print(f"IndexNow: отправлено {len(batch)} адресов, ответ {response.status}")
+        except HTTPError as error:
+            print(f"IndexNow: отказ {error.code} — {error.read().decode('utf-8', 'replace')[:200]}")
+        except URLError as error:
+            print(f"IndexNow: не отправлено — {error.reason}")
 
 
 class AdminApi:
@@ -299,6 +344,10 @@ def main() -> None:
 
     skipped = len(articles) - len(new_articles) - updated
     print(f"\nГотово: создано {created}, обновлено {updated}, оставлено без изменений {skipped}")
+
+    if created and not args.dry_run:
+        published_slugs = [article["slug"] for article in new_articles[:created]]
+        notify_indexnow(published_slugs)
 
 
 if __name__ == "__main__":

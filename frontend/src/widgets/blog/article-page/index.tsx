@@ -1,9 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { SECTION_PATH, articlePath, splitContent, type Article } from "@/entities/article";
+import {
+  ARTICLE_COVER_SIZES,
+  SECTION_PATH,
+  buildArticleJsonLd,
+  buildFaqJsonLd,
+  isOptimizableCover,
+  splitContent,
+  type Article,
+} from "@/entities/article";
 import { ReactionBar } from "@/features/article-reactions";
-import { SITE_LEGAL_NAME, SITE_URL } from "@/shared/config/seo";
 import { formatDate } from "@/shared/lib/date";
 import ShareButton from "@/shared/ui/share-button";
 import styles from "./style.module.scss";
@@ -17,17 +24,8 @@ const ArticlePage = ({ article, middle }: ArticlePageProps) => {
   const sectionPath = SECTION_PATH[article.section];
   const [firstPart, secondPart] = middle ? splitContent(article) : [article.content, ""];
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: article.title,
-    description: article.description ?? undefined,
-    image: article.cover_image ? `${SITE_URL}${article.cover_image}` : undefined,
-    datePublished: article.published_at ?? undefined,
-    author: { "@type": "Organization", name: SITE_LEGAL_NAME },
-    publisher: { "@type": "Organization", name: SITE_LEGAL_NAME },
-    mainEntityOfPage: `${SITE_URL}${articlePath(article)}`,
-  };
+  const jsonLd = buildArticleJsonLd(article);
+  const faqJsonLd = buildFaqJsonLd(article);
 
   const initialStats = {
     views_count: article.views_count,
@@ -42,6 +40,13 @@ const ArticlePage = ({ article, middle }: ArticlePageProps) => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
 
       <header className={styles.header}>
         <h1 className={styles.title}>{article.title}</h1>
@@ -108,7 +113,8 @@ const ArticlePage = ({ article, middle }: ArticlePageProps) => {
                 src={article.cover_image}
                 alt={article.title}
                 fill
-                unoptimized
+                sizes={ARTICLE_COVER_SIZES}
+                unoptimized={!isOptimizableCover(article.cover_image)}
                 className={styles.coverImage}
               />
             </div>

@@ -7,6 +7,7 @@ import {
   ThumbDownIcon,
   ThumbUpIcon,
 } from "@/shared/ui/icons";
+import { CARD_COVER_SIZES, isOptimizableCover } from "../../lib/cover";
 import { articlePath } from "../../lib/paths";
 import type { ArticleCard as ArticleCardType } from "../../model/types";
 import styles from "./style.module.scss";
@@ -27,7 +28,8 @@ const ArticleCard = ({ article, className }: ArticleCardProps) => {
             src={article.cover_image}
             alt=""
             fill
-            unoptimized
+            sizes={CARD_COVER_SIZES}
+            unoptimized={!isOptimizableCover(article.cover_image)}
             className={styles.image}
           />
         ) : (

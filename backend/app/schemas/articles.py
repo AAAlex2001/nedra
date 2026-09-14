@@ -63,6 +63,7 @@ class ArticleSchema(ArticleCardSchema, ArticleSeoSchema):
     toc: list[dict[str, str]] = Field(
         default_factory=list, description="Оглавление из заголовков H2"
     )
+    updated_at: datetime = Field(..., description="Дата последнего изменения для dateModified")
 
 
 class ArticleListSchema(BaseModel):
