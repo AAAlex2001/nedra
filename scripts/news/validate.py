@@ -35,6 +35,28 @@ def word_count(html: str) -> int:
     return len(re.findall(r"\w+", text))
 
 
+def check_kind(kind: str, content: str, headings: list[str]) -> list[str]:
+    """Проверить требования, специфичные для типа страницы."""
+
+    problems = []
+
+    if kind == "faq":
+        questions = [text for text in headings if text.strip().rstrip("</em>").endswith("?")]
+        if len(questions) < 3:
+            problems.append(
+                f"faq: вопросов в H2 всего {len(questions)} из {len(headings)}, "
+                "разметка FAQPage не соберётся"
+            )
+
+    if kind == "howto" and "<ol" not in content:
+        problems.append("howto: нет нумерованного списка шагов")
+
+    if kind in ("fine", "compare") and "<table" not in content:
+        problems.append(f"{kind}: нет таблицы")
+
+    return problems
+
+
 def check_article(article: dict, plan_item: dict) -> list[str]:
     """Вернуть список проблем статьи; пустой список — статья в порядке."""
 
@@ -78,9 +100,11 @@ def check_article(article: dict, plan_item: dict) -> list[str]:
     if re.search(r"\s(style|class|onclick)=", content):
         problems.append("есть атрибуты style/class/onclick")
 
-    h2_count = len(re.findall(r"<h2[\s>]", content))
-    if h2_count < 3:
-        problems.append(f"мало разделов H2: {h2_count}")
+    headings = re.findall(r"<h2[^>]*>(.*?)</h2>", content, re.S)
+    if len(headings) < 3:
+        problems.append(f"мало разделов H2: {len(headings)}")
+
+    problems.extend(check_kind(article.get("kind", ""), content, headings))
 
     words = word_count(content)
     if not MIN_WORDS <= words <= MAX_WORDS:
