@@ -31,7 +31,11 @@ class LoginSchema(BaseModel):
 
 
 class UserOutSchema(BaseModel):
-    """Публичные данные пользователя. Хеш пароля наружу не отдаём."""
+    """Публичные данные пользователя. Хеш пароля наружу не отдаём.
+
+    role — активная роль, по ней работают права. is_expert — есть ли у аккаунта
+    одобренный профиль эксперта, то есть можно ли переключиться на эту роль.
+    """
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -39,5 +43,12 @@ class UserOutSchema(BaseModel):
     email: EmailStr = Field(..., description="Email")
     full_name: str = Field(..., description="Имя и фамилия")
     phone: str = Field(..., description="Телефон")
-    role: UserRole = Field(..., description="Роль")
+    role: UserRole = Field(..., description="Активная роль")
+    is_expert: bool = Field(..., description="Есть одобренный профиль эксперта")
     created_at: datetime = Field(..., description="Когда зарегистрирован")
+
+
+class RoleSwitchSchema(BaseModel):
+    """Смена активной роли."""
+
+    role: UserRole

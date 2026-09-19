@@ -42,29 +42,32 @@ def get_private_storage() -> PrivateStorage:
 def get_submit_application_usecase(
     applications: ExpertApplicationRepository = Depends(get_application_repository),
     users: UserRepository = Depends(get_user_repository),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
     storage: PrivateStorage = Depends(get_private_storage),
 ) -> SubmitExpertApplicationUseCase:
     """Сценарий подачи заявки."""
 
-    return SubmitExpertApplicationUseCase(applications, users, storage)
+    return SubmitExpertApplicationUseCase(applications, users, profiles, storage)
 
 
 def get_approve_application_usecase(
     applications: ExpertApplicationRepository = Depends(get_application_repository),
     users: UserRepository = Depends(get_user_repository),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
 ) -> ApproveExpertApplicationUseCase:
     """Сценарий одобрения заявки."""
 
-    return ApproveExpertApplicationUseCase(applications, users)
+    return ApproveExpertApplicationUseCase(applications, users, profiles)
 
 
 def get_delete_expert_usecase(
     users: UserRepository = Depends(get_user_repository),
     applications: ExpertApplicationRepository = Depends(get_application_repository),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
 ) -> DeleteExpertUseCase:
-    """Сценарий удаления эксперта."""
+    """Сценарий снятия роли эксперта."""
 
-    return DeleteExpertUseCase(users, applications)
+    return DeleteExpertUseCase(users, applications, profiles)
 
 
 def get_reject_application_usecase(

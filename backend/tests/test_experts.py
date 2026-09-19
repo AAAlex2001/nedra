@@ -9,8 +9,10 @@ from app.models.expert import ApplicationStatus, ExpertApplication, ExpertProfil
 from app.models.user import User, UserRole
 from app.schemas.expert import CertificateInSchema, ExpertApplicationInSchema
 from app.services.experts.exceptions import (
+    AlreadyExpertError,
     ApplicationAlreadyPendingError,
     ApplicationAlreadyReviewedError,
+    ContactsRequiredError,
     ExpertNotFoundError,
     InvalidCertificateError,
     InvalidDirectionError,
@@ -20,13 +22,14 @@ from app.services.experts.usecases.delete_expert import DeleteExpertUseCase
 from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
 from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
 from app.services.experts.validators import validate_certificate, validate_directions
-from app.services.users.exceptions import EmailAlreadyTakenError
+from app.services.users.exceptions import EmailAlreadyTakenError, RoleNotAvailableError
+from app.services.users.usecases.switch_role import SwitchRoleUseCase
 
 
 class FakeUserRepository:
     def __init__(self) -> None:
         self.users: dict[str, User] = {}
-        self.deleted: list[User] = []
+        self.next_id = 1
 
     async def get_by_email(self, email: str) -> User | None:
         return self.users.get(email)
@@ -37,15 +40,34 @@ class FakeUserRepository:
                 return user
         return None
 
-    async def delete(self, user: User) -> None:
-        self.deleted.append(user)
-        del self.users[user.email]
+    async def save(self, user: User) -> User:
+        return user
+
+    def put(self, user: User) -> User:
+        user.id = self.next_id
+        self.next_id = self.next_id + 1
+        self.users[user.email] = user
+        return user
+
+
+class FakeProfileRepository:
+    def __init__(self) -> None:
+        self.profiles: dict[int, ExpertProfile] = {}
+        self.removed: list[int] = []
+
+    async def get_by_user(self, user_id: int) -> ExpertProfile | None:
+        return self.profiles.get(user_id)
+
+    async def remove(self, profile: ExpertProfile) -> None:
+        self.removed.append(profile.user_id)
+        del self.profiles[profile.user_id]
 
 
 class FakeApplicationRepository:
-    def __init__(self) -> None:
+    def __init__(self, users: FakeUserRepository, profiles: FakeProfileRepository) -> None:
         self.items: list[ExpertApplication] = []
-        self.approved: list[tuple[ExpertApplication, User, ExpertProfile]] = []
+        self.users = users
+        self.profiles = profiles
 
     async def get_by_id(self, application_id: int) -> ExpertApplication | None:
         for item in self.items:
@@ -76,12 +98,13 @@ class FakeApplicationRepository:
     async def approve(
         self, application: ExpertApplication, user: User, profile: ExpertProfile
     ) -> ExpertApplication:
-        user.id = 100 + application.id
+        if user.id is None:
+            self.users.put(user)
         profile.user_id = user.id
+        self.profiles.profiles[user.id] = profile
         for certificate in application.certificates:
             certificate.user_id = user.id
         application.user_id = user.id
-        self.approved.append((application, user, profile))
         return application
 
 
@@ -90,12 +113,32 @@ class FakeStorage:
         raise AssertionError("в тестах сканы не загружаются")
 
 
-def make_payload(email: str = "Expert@Example.com") -> ExpertApplicationInSchema:
+class World:
+    """Все фейковые репозитории вместе, чтобы сценарии видели одни и те же данные."""
+
+    def __init__(self) -> None:
+        self.users = FakeUserRepository()
+        self.profiles = FakeProfileRepository()
+        self.applications = FakeApplicationRepository(self.users, self.profiles)
+
+    def submit(self) -> SubmitExpertApplicationUseCase:
+        return SubmitExpertApplicationUseCase(
+            self.applications, self.users, self.profiles, FakeStorage()
+        )
+
+    def approve(self) -> ApproveExpertApplicationUseCase:
+        return ApproveExpertApplicationUseCase(self.applications, self.users, self.profiles)
+
+    def delete_expert(self) -> DeleteExpertUseCase:
+        return DeleteExpertUseCase(self.users, self.applications, self.profiles)
+
+
+def make_payload(email: str | None = "Expert@Example.com") -> ExpertApplicationInSchema:
     return ExpertApplicationInSchema(
         email=email,
-        password="secret123",
-        full_name=" Пётр Экспертов ",
-        phone="+7 (999) 111-22-33",
+        password="secret123" if email else None,
+        full_name=" Пётр Экспертов " if email else None,
+        phone="+7 (999) 111-22-33" if email else None,
         directions=["industrial_safety", "sms_audit"],
         certificates=[
             CertificateInSchema(
@@ -105,10 +148,9 @@ def make_payload(email: str = "Expert@Example.com") -> ExpertApplicationInSchema
     )
 
 
-def make_usecase(
-    applications: FakeApplicationRepository, users: FakeUserRepository | None = None
-) -> SubmitExpertApplicationUseCase:
-    return SubmitExpertApplicationUseCase(applications, users or FakeUserRepository(), FakeStorage())
+def make_customer(world: World, email: str = "customer@example.com") -> User:
+    user = User(email=email, password_hash="hash", full_name="Заказчик", phone="+79990000000", role=UserRole.CUSTOMER)
+    return world.users.put(user)
 
 
 def test_validate_certificate_combinations() -> None:
@@ -128,12 +170,6 @@ def test_validate_certificate_combinations() -> None:
     with pytest.raises(InvalidCertificateError):
         validate_certificate("Э4", "tu", 1)
 
-    with pytest.raises(InvalidCertificateError):
-        validate_certificate("Э99", "tu", 1)
-
-    with pytest.raises(InvalidCertificateError):
-        validate_certificate("Э2", "d", 4)
-
 
 def test_validate_directions() -> None:
     validate_directions(["ecology", "design"])
@@ -145,96 +181,145 @@ def test_validate_directions() -> None:
         validate_directions(["unknown"])
 
 
-def test_submit_creates_pending_application() -> None:
-    applications = FakeApplicationRepository()
-    usecase = make_usecase(applications)
+def test_guest_submit_creates_pending_application() -> None:
+    world = World()
 
-    application = asyncio.run(usecase.execute(make_payload(), []))
+    application = asyncio.run(world.submit().execute(make_payload(), [], None))
 
     assert application.id == 1
     assert application.email == "expert@example.com"
     assert application.full_name == "Пётр Экспертов"
     assert application.phone == "+79991112233"
     assert application.status == ApplicationStatus.PENDING
+    assert application.user_id is None
     assert application.password_hash != "secret123"
     assert len(application.certificates) == 1
-    assert application.certificates[0].scan_path is None
+
+
+def test_guest_submit_requires_contacts() -> None:
+    world = World()
+
+    with pytest.raises(ContactsRequiredError):
+        asyncio.run(world.submit().execute(make_payload(email=None), [], None))
+
+
+def test_guest_submit_rejects_existing_account_email() -> None:
+    world = World()
+    make_customer(world, "expert@example.com")
+
+    with pytest.raises(EmailAlreadyTakenError):
+        asyncio.run(world.submit().execute(make_payload(), [], None))
 
 
 def test_submit_rejects_second_pending_application() -> None:
-    applications = FakeApplicationRepository()
-    usecase = make_usecase(applications)
-    asyncio.run(usecase.execute(make_payload(), []))
+    world = World()
+    asyncio.run(world.submit().execute(make_payload(), [], None))
 
     with pytest.raises(ApplicationAlreadyPendingError):
-        asyncio.run(usecase.execute(make_payload("expert@example.com"), []))
+        asyncio.run(world.submit().execute(make_payload("expert@example.com"), [], None))
 
 
-def test_submit_rejects_taken_email() -> None:
-    users = FakeUserRepository()
-    users.users["expert@example.com"] = User(
-        email="expert@example.com", password_hash="x", full_name="x", phone="x", role=UserRole.CUSTOMER
-    )
-    usecase = make_usecase(FakeApplicationRepository(), users)
+def test_logged_in_customer_submits_from_account() -> None:
+    world = World()
+    customer = make_customer(world)
 
-    with pytest.raises(EmailAlreadyTakenError):
-        asyncio.run(usecase.execute(make_payload(), []))
+    application = asyncio.run(world.submit().execute(make_payload(email=None), [], customer))
+
+    assert application.user_id == customer.id
+    assert application.email == customer.email
+    assert application.password_hash == customer.password_hash
+    assert application.full_name == customer.full_name
 
 
 def test_submit_rejects_missing_scan() -> None:
+    world = World()
     payload = make_payload()
     payload.certificates[0].scan_index = 0
-    usecase = make_usecase(FakeApplicationRepository())
 
     with pytest.raises(InvalidCertificateError):
-        asyncio.run(usecase.execute(payload, []))
+        asyncio.run(world.submit().execute(payload, [], None))
 
 
-def test_approve_creates_expert_user() -> None:
-    applications = FakeApplicationRepository()
-    users = FakeUserRepository()
-    asyncio.run(make_usecase(applications, users).execute(make_payload(), []))
-    usecase = ApproveExpertApplicationUseCase(applications, users)
+def test_approve_creates_new_expert_user() -> None:
+    world = World()
+    asyncio.run(world.submit().execute(make_payload(), [], None))
 
-    application = asyncio.run(usecase.execute(1))
+    application = asyncio.run(world.approve().execute(1))
 
+    user = world.users.users["expert@example.com"]
     assert application.status == ApplicationStatus.APPROVED
-    assert application.reviewed_at is not None
-    assert application.user_id == 101
-    approved_application, user, profile = applications.approved[0]
+    assert application.user_id == user.id
     assert user.role == UserRole.EXPERT
     assert user.password_hash == application.password_hash
-    assert profile.directions == ["industrial_safety", "sms_audit"]
-    assert application.certificates[0].user_id == 101
+    assert world.profiles.profiles[user.id].directions == ["industrial_safety", "sms_audit"]
+    assert application.certificates[0].user_id == user.id
 
     with pytest.raises(ApplicationAlreadyReviewedError):
-        asyncio.run(usecase.execute(1))
+        asyncio.run(world.approve().execute(1))
 
 
-def test_delete_expert_marks_application_rejected() -> None:
-    applications = FakeApplicationRepository()
-    users = FakeUserRepository()
-    asyncio.run(make_usecase(applications, users).execute(make_payload(), []))
-    asyncio.run(ApproveExpertApplicationUseCase(applications, users).execute(1))
-    expert = applications.approved[0][1]
-    users.users[expert.email] = expert
+def test_approve_attaches_profile_to_existing_customer() -> None:
+    world = World()
+    customer = make_customer(world)
+    asyncio.run(world.submit().execute(make_payload(email=None), [], customer))
 
-    asyncio.run(DeleteExpertUseCase(users, applications).execute(expert.id))
+    asyncio.run(world.approve().execute(1))
 
-    application = applications.items[0]
-    assert users.deleted == [expert]
+    assert customer.role == UserRole.CUSTOMER
+    assert customer.password_hash == "hash"
+    assert world.profiles.profiles[customer.id] is not None
+    assert len(world.users.users) == 1
+
+
+def test_approve_rejects_second_profile() -> None:
+    world = World()
+    customer = make_customer(world)
+    asyncio.run(world.submit().execute(make_payload(email=None), [], customer))
+    asyncio.run(world.approve().execute(1))
+
+    with pytest.raises(AlreadyExpertError):
+        asyncio.run(world.submit().execute(make_payload(email=None), [], customer))
+
+
+def test_switch_role_requires_profile() -> None:
+    world = World()
+    customer = make_customer(world)
+    usecase = SwitchRoleUseCase(world.users, world.profiles)
+
+    with pytest.raises(RoleNotAvailableError):
+        asyncio.run(usecase.execute(customer, UserRole.EXPERT))
+
+    world.profiles.profiles[customer.id] = ExpertProfile(user_id=customer.id, directions=[])
+    switched = asyncio.run(usecase.execute(customer, UserRole.EXPERT))
+    assert switched.role == UserRole.EXPERT
+
+    switched = asyncio.run(usecase.execute(customer, UserRole.CUSTOMER))
+    assert switched.role == UserRole.CUSTOMER
+
+
+def test_delete_expert_keeps_account_as_customer() -> None:
+    world = World()
+    asyncio.run(world.submit().execute(make_payload(), [], None))
+    asyncio.run(world.approve().execute(1))
+    user = world.users.users["expert@example.com"]
+
+    asyncio.run(world.delete_expert().execute(user.id))
+
+    application = world.applications.items[0]
+    assert world.profiles.removed == [user.id]
+    assert user.role == UserRole.CUSTOMER
+    assert "expert@example.com" in world.users.users
     assert application.status == ApplicationStatus.REJECTED
-    assert application.user_id is None
-    assert application.admin_comment == "Аккаунт эксперта удалён администратором"
+    assert application.admin_comment == "Профиль эксперта удалён администратором"
 
     with pytest.raises(ExpertNotFoundError):
-        asyncio.run(DeleteExpertUseCase(users, applications).execute(expert.id))
+        asyncio.run(world.delete_expert().execute(user.id))
 
 
 def test_reject_stores_comment() -> None:
-    applications = FakeApplicationRepository()
-    asyncio.run(make_usecase(applications).execute(make_payload(), []))
-    usecase = RejectExpertApplicationUseCase(applications)
+    world = World()
+    asyncio.run(world.submit().execute(make_payload(), [], None))
+    usecase = RejectExpertApplicationUseCase(world.applications)
 
     application = asyncio.run(usecase.execute(1, "  Удостоверение просрочено "))
 

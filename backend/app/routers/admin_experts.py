@@ -12,6 +12,7 @@ from app.dependencies.experts import (
 from app.models.expert import ApplicationStatus, ExpertApplication
 from app.schemas.expert import ExpertApplicationOutSchema, RejectApplicationSchema
 from app.services.experts.exceptions import (
+    AlreadyExpertError,
     ApplicationAlreadyReviewedError,
     ApplicationNotFoundError,
     ExpertNotFoundError,
@@ -22,7 +23,6 @@ from app.services.experts.usecases.approve_application import ApproveExpertAppli
 from app.services.experts.usecases.delete_expert import DeleteExpertUseCase
 from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
 from app.services.files.storage import PrivateStorage
-from app.services.users.exceptions import EmailAlreadyTakenError
 
 
 router = APIRouter(
@@ -81,13 +81,8 @@ async def approve_application(
         application = await usecase.execute(application_id)
     except ApplicationNotFoundError as error:
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
-    except ApplicationAlreadyReviewedError as error:
+    except (ApplicationAlreadyReviewedError, AlreadyExpertError) as error:
         raise HTTPException(status.HTTP_409_CONFLICT, str(error)) from error
-    except EmailAlreadyTakenError as error:
-        raise HTTPException(
-            status.HTTP_409_CONFLICT,
-            "Пользователь с таким email уже есть, одобрить нельзя",
-        ) from error
 
     background_tasks.add_task(send_application_approved, application)
 

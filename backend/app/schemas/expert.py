@@ -58,12 +58,18 @@ class CertificateInSchema(BaseModel):
 
 
 class ExpertApplicationInSchema(BaseModel):
-    """Заявка эксперта на регистрацию."""
+    """Заявка эксперта.
 
-    email: EmailStr
-    password: str = Field(..., min_length=PASSWORD_MIN_LENGTH, max_length=PASSWORD_MAX_LENGTH)
-    full_name: str = Field(..., min_length=2, max_length=255)
-    phone: str = Field(..., min_length=10, max_length=32)
+    Контакты и пароль обязательны для нового человека. Если заявку подаёт
+    вошедший заказчик, они берутся из его аккаунта и здесь не нужны.
+    """
+
+    email: EmailStr | None = None
+    password: str | None = Field(
+        None, min_length=PASSWORD_MIN_LENGTH, max_length=PASSWORD_MAX_LENGTH
+    )
+    full_name: str | None = Field(None, min_length=2, max_length=255)
+    phone: str | None = Field(None, min_length=10, max_length=32)
     directions: list[str] = Field(..., min_length=1, description="Коды направлений работы")
     certificates: list[CertificateInSchema] = Field(..., min_length=1)
 

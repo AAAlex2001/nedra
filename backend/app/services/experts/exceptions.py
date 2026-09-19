@@ -30,4 +30,12 @@ class CertificateNotFoundError(LookupError):
 
 
 class ExpertNotFoundError(LookupError):
-    """Пользователя с такой ролью эксперта нет."""
+    """У пользователя нет профиля эксперта."""
+
+
+class AlreadyExpertError(Exception):
+    """У аккаунта уже есть одобренный профиль эксперта, вторая заявка не нужна."""
+
+
+class ContactsRequiredError(ValueError):
+    """Заявка без входа должна содержать имя, email, телефон и пароль."""

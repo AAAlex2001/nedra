@@ -2,7 +2,7 @@
 
 from datetime import date
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.expert import ApplicationStatus, ExpertApplication, ExpertCertificate, ExpertProfile
@@ -116,6 +116,14 @@ class ExpertProfileRepository:
         result = await self.db.execute(stmt)
 
         return list(result.scalars().all())
+
+    async def remove(self, profile: ExpertProfile) -> None:
+        """Удалить профиль и удостоверения эксперта одной транзакцией."""
+
+        stmt = delete(ExpertCertificate).where(ExpertCertificate.user_id == profile.user_id)
+        await self.db.execute(stmt)
+        await self.db.delete(profile)
+        await self.db.commit()
 
     async def get_certificate(self, user_id: int, certificate_id: int) -> ExpertCertificate | None:
         """Удостоверение эксперта по id, только если принадлежит этому эксперту."""

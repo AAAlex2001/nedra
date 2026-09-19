@@ -7,7 +7,7 @@ from app.dependencies.experts import (
     get_profile_repository,
     get_submit_application_usecase,
 )
-from app.dependencies.users import require_expert
+from app.dependencies.users import get_optional_user, require_expert
 from app.models.user import User
 from app.schemas.expert import (
     AttestationAreaSchema,
@@ -28,7 +28,9 @@ from app.services.experts.catalog import (
     OBJECTS,
 )
 from app.services.experts.exceptions import (
+    AlreadyExpertError,
     ApplicationAlreadyPendingError,
+    ContactsRequiredError,
     InvalidCertificateError,
     InvalidDirectionError,
 )
@@ -74,12 +76,14 @@ async def submit_application(
     background_tasks: BackgroundTasks,
     payload: str = Form(..., description="JSON заявки по схеме ExpertApplicationInSchema"),
     scans: list[UploadFile] = File(default=[], description="Сканы удостоверений"),
+    user: User | None = Depends(get_optional_user),
     usecase: SubmitExpertApplicationUseCase = Depends(get_submit_application_usecase),
 ) -> ExpertApplicationCreatedSchema:
-    """Подать заявку на регистрацию эксперта.
+    """Подать заявку эксперта.
 
     Форма приходит как multipart: поле payload с JSON и файлы scans.
     Удостоверение ссылается на свой скан через scan_index.
+    Вошедший заказчик подаёт заявку от своего аккаунта, контакты не нужны.
     """
 
     try:
@@ -91,12 +95,13 @@ async def submit_application(
         ) from error
 
     try:
-        application = await usecase.execute(data, scans)
+        application = await usecase.execute(data, scans, user)
     except (
         WeakPasswordError,
         InvalidPhoneError,
         InvalidDirectionError,
         InvalidCertificateError,
+        ContactsRequiredError,
         UploadError,
     ) as error:
         raise HTTPException(
@@ -106,12 +111,17 @@ async def submit_application(
     except EmailAlreadyTakenError as error:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="Пользователь с таким email уже зарегистрирован",
+            detail="Этот email уже зарегистрирован. Войдите в аккаунт и подайте заявку из кабинета",
         ) from error
     except ApplicationAlreadyPendingError as error:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Заявка с этим email уже на рассмотрении",
+        ) from error
+    except AlreadyExpertError as error:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="У вашего аккаунта уже есть профиль эксперта",
         ) from error
 
     background_tasks.add_task(send_application_received, application)

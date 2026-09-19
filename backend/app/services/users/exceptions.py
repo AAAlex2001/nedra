@@ -15,3 +15,7 @@ class EmailAlreadyTakenError(Exception):
 
 class InvalidCredentialsError(Exception):
     """Неверная пара email и пароль. Что именно неверно — не сообщаем."""
+
+
+class RoleNotAvailableError(Exception):
+    """Пользователь пытается включить роль, которой у него нет: например, эксперта без одобрения."""

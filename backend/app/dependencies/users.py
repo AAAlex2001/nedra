@@ -6,11 +6,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.config import get_settings
 from app.database import get_session
 from app.models.user import User, UserRole
-from app.services.experts.repo import ExpertApplicationRepository
+from app.services.experts.repo import ExpertApplicationRepository, ExpertProfileRepository
 from app.services.security.tokens import read_user_id
 from app.services.users.repo import UserRepository
 from app.services.users.usecases.login import LoginUserUseCase
 from app.services.users.usecases.register import RegisterUserUseCase
+from app.services.users.usecases.switch_role import SwitchRoleUseCase
 
 AUTH_COOKIE = "access_token"
 SECONDS_IN_DAY = 60 * 60 * 24
@@ -41,6 +42,15 @@ def get_login_usecase(
     return LoginUserUseCase(users, ExpertApplicationRepository(session))
 
 
+def get_switch_role_usecase(
+    users: UserRepository = Depends(get_user_repository),
+    session: AsyncSession = Depends(get_session),
+) -> SwitchRoleUseCase:
+    """Сценарий переключения роли."""
+
+    return SwitchRoleUseCase(users, ExpertProfileRepository(session))
+
+
 def set_auth_cookie(response: Response, token: str) -> None:
     """Положить токен в httponly-cookie: JavaScript её не видит, браузер шлёт сам."""
 
@@ -63,34 +73,39 @@ def clear_auth_cookie(response: Response) -> None:
     response.delete_cookie(AUTH_COOKIE, path="/")
 
 
-async def get_current_user(
+async def get_optional_user(
     request: Request,
     users: UserRepository = Depends(get_user_repository),
-) -> User:
-    """Пользователь по токену из cookie. Без валидного токена — 401."""
-
-    unauthorized = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Требуется вход",
-    )
+) -> User | None:
+    """Пользователь по токену из cookie или None, если токена нет или он негодный."""
 
     token = request.cookies.get(AUTH_COOKIE)
     if token is None:
-        raise unauthorized
+        return None
 
     user_id = read_user_id(token)
     if user_id is None:
-        raise unauthorized
+        return None
 
-    user = await users.get_by_id(user_id)
+    return await users.get_by_id(user_id)
+
+
+async def get_current_user(
+    user: User | None = Depends(get_optional_user),
+) -> User:
+    """Пользователь по токену из cookie. Без валидного токена — 401."""
+
     if user is None:
-        raise unauthorized
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Требуется вход",
+        )
 
     return user
 
 
 def check_role(user: User, role: UserRole) -> User:
-    """Вернуть пользователя, если его роль совпадает, иначе 403."""
+    """Вернуть пользователя, если его активная роль совпадает, иначе 403."""
 
     if user.role != role:
         raise HTTPException(
