@@ -108,3 +108,24 @@ class ExpertProfileOutSchema(BaseModel):
     directions: list[str]
     approved_at: datetime
     certificates: list[CertificateOutSchema]
+
+
+class PublicCertificateSchema(BaseModel):
+    """Удостоверение в публичном каталоге: без сканов и внутренних полей."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    area_code: str
+    object_code: str
+    category: int
+    valid_until: date
+
+
+class PublicExpertSchema(BaseModel):
+    """Эксперт в публичном каталоге. Контакты не отдаём: связь идёт через платформу."""
+
+    id: int
+    full_name: str
+    directions: list[str]
+    approved_at: datetime
+    certificates: list[PublicCertificateSchema]

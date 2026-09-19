@@ -13,6 +13,8 @@ from app.schemas.expert import (
     ExpertCatalogSchema,
     ExpertiseObjectSchema,
     ExpertProfileOutSchema,
+    PublicCertificateSchema,
+    PublicExpertSchema,
 )
 from app.services.experts.catalog import AREAS, CATEGORIES, DIRECTIONS, OBJECTS
 from app.services.experts.exceptions import (
@@ -46,6 +48,28 @@ async def get_catalog() -> ExpertCatalogSchema:
         ],
         categories=list(CATEGORIES),
     )
+
+
+@router.get("/directory")
+async def get_directory(
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> list[PublicExpertSchema]:
+    """Публичный каталог экспертов с действующими удостоверениями для страницы «Блиц-эксперт»."""
+
+    experts = await profiles.list_public()
+
+    return [
+        PublicExpertSchema(
+            id=expert.user.id,
+            full_name=expert.user.full_name,
+            directions=expert.profile.directions,
+            approved_at=expert.profile.approved_at,
+            certificates=[
+                PublicCertificateSchema.model_validate(item) for item in expert.certificates
+            ],
+        )
+        for expert in experts
+    ]
 
 
 @router.post("/applications", status_code=status.HTTP_201_CREATED)
