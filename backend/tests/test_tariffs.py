@@ -46,25 +46,25 @@ def test_save_adds_updates_and_removes() -> None:
     asyncio.run(
         usecase.execute(
             [
-                TariffInSchema(area_code="Э1", object_code="tu", price=Decimal("15000")),
+                TariffInSchema(area_code="Э1", object_code="kl_tp", price=Decimal("15000")),
                 TariffInSchema(area_code="Э4", object_code="d", price=Decimal("20000")),
             ]
         )
     )
-    assert repo.items[("Э1", "tu")].price == Decimal("15000")
+    assert repo.items[("Э1", "kl_tp")].price == Decimal("15000")
     assert repo.committed
 
     result = asyncio.run(
         usecase.execute(
             [
-                TariffInSchema(area_code="Э1", object_code="tu", price=Decimal("16000")),
+                TariffInSchema(area_code="Э1", object_code="kl_tp", price=Decimal("16000")),
                 TariffInSchema(area_code="Э4", object_code="d", price=None),
             ]
         )
     )
 
     assert len(result) == 1
-    assert repo.items[("Э1", "tu")].price == Decimal("16000")
+    assert repo.items[("Э1", "kl_tp")].price == Decimal("16000")
     assert ("Э4", "d") not in repo.items
 
 
@@ -78,7 +78,7 @@ def test_save_rejects_unknown_pair() -> None:
 
     with pytest.raises(InvalidTariffError):
         asyncio.run(
-            usecase.execute([TariffInSchema(area_code="Э77", object_code="tu", price=Decimal("1"))])
+            usecase.execute([TariffInSchema(area_code="Э77", object_code="ob", price=Decimal("1"))])
         )
 
 
@@ -87,7 +87,7 @@ def test_removing_missing_tariff_is_noop() -> None:
     usecase = SaveTariffsUseCase(repo)
 
     result = asyncio.run(
-        usecase.execute([TariffInSchema(area_code="Э1", object_code="tu", price=None)])
+        usecase.execute([TariffInSchema(area_code="Э1", object_code="ob", price=None)])
     )
 
     assert result == []

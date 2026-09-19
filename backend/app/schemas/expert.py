@@ -30,13 +30,21 @@ class AttestationAreaSchema(BaseModel):
     objects: list[str]
 
 
+class HazardClassSchema(BaseModel):
+    """Класс опасности ОПО и минимальная категория эксперта, которая по нему допускается."""
+
+    hazard_class: int
+    category: int
+
+
 class ExpertCatalogSchema(BaseModel):
-    """Весь справочник для формы заявки: направления, области, объекты, категории."""
+    """Весь справочник для форм: направления, области, объекты, категории, классы опасности."""
 
     directions: list[DirectionSchema]
     areas: list[AttestationAreaSchema]
     objects: list[ExpertiseObjectSchema]
     categories: list[int]
+    hazard_classes: list[HazardClassSchema]
 
 
 class CertificateInSchema(BaseModel):

@@ -18,10 +18,17 @@ from app.schemas.expert import (
     ExpertCatalogSchema,
     ExpertiseObjectSchema,
     ExpertProfileOutSchema,
+    HazardClassSchema,
     PublicCertificateSchema,
     PublicExpertSchema,
 )
-from app.services.experts.catalog import AREAS, CATEGORIES, DIRECTIONS, OBJECTS
+from app.services.experts.catalog import (
+    AREAS,
+    CATEGORIES,
+    DIRECTIONS,
+    HAZARD_CLASS_CATEGORY,
+    OBJECTS,
+)
 from app.services.experts.exceptions import (
     ApplicationAlreadyPendingError,
     InvalidCertificateError,
@@ -57,6 +64,10 @@ async def get_catalog() -> ExpertCatalogSchema:
             for item in OBJECTS
         ],
         categories=list(CATEGORIES),
+        hazard_classes=[
+            HazardClassSchema(hazard_class=hazard_class, category=category)
+            for hazard_class, category in HAZARD_CLASS_CATEGORY.items()
+        ],
     )
 
 

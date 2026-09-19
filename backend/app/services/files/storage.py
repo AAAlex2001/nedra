@@ -16,10 +16,13 @@ MEGABYTE = 1024 * 1024
 
 DOCUMENT_TYPES = {
     "application/pdf": ".pdf",
+    "application/msword": ".doc",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
     "image/jpeg": ".jpg",
     "image/png": ".png",
 }
 DOCUMENT_MAX_SIZE_BYTES = 10 * MEGABYTE
+DOCUMENTATION_MAX_SIZE_BYTES = 50 * MEGABYTE
 
 
 class UploadError(ValueError):
@@ -62,8 +65,13 @@ class PrivateStorage:
     def __init__(self, root: Path) -> None:
         self.root = root
 
-    async def save(self, file: UploadFile, folder: str) -> StoredFile:
-        """Сохранить PDF или картинку в подкаталог folder. Бросает UploadError."""
+    async def save(
+        self,
+        file: UploadFile,
+        folder: str,
+        max_size_bytes: int = DOCUMENT_MAX_SIZE_BYTES,
+    ) -> StoredFile:
+        """Сохранить PDF, Word или картинку в подкаталог folder. Бросает UploadError."""
 
         content_type = file.content_type
         if content_type is None:
@@ -71,7 +79,7 @@ class PrivateStorage:
 
         extension = DOCUMENT_TYPES.get(content_type)
         if extension is None:
-            raise UploadError("Допустимы только PDF, JPEG и PNG")
+            raise UploadError("Допустимы только PDF, Word, JPEG и PNG")
 
         directory = self.root / folder
         directory.mkdir(parents=True, exist_ok=True)
@@ -80,7 +88,7 @@ class PrivateStorage:
         target = directory / filename
 
         try:
-            size = await write_limited(file, target, DOCUMENT_MAX_SIZE_BYTES)
+            size = await write_limited(file, target, max_size_bytes)
         except UploadError:
             target.unlink(missing_ok=True)
             raise

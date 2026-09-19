@@ -130,6 +130,29 @@ class ExpertProfileRepository:
 
         return result.scalar_one_or_none()
 
+    async def list_certified(
+        self, object_code: str, area_code: str, max_category: int
+    ) -> list[User]:
+        """Эксперты с действующим удостоверением под пару и категорией не хуже требуемой."""
+
+        today = date.today()
+
+        stmt = (
+            select(User)
+            .join(ExpertCertificate, ExpertCertificate.user_id == User.id)
+            .where(
+                ExpertCertificate.object_code == object_code,
+                ExpertCertificate.area_code == area_code,
+                ExpertCertificate.category <= max_category,
+                ExpertCertificate.valid_until >= today,
+            )
+            .distinct()
+            .order_by(User.full_name)
+        )
+        result = await self.db.execute(stmt)
+
+        return list(result.scalars().all())
+
     async def list_public(self) -> list[PublicExpert]:
         """Все одобренные эксперты с действующими удостоверениями, по алфавиту.
 
