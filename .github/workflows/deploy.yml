@@ -61,14 +61,16 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Check backend imports
+      - name: Check backend imports and run tests
         working-directory: backend
         env:
           DATABASE_URL: postgresql+asyncpg://user:pass@localhost:5432/db
           CORS_ORIGINS: "[]"
+          JWT_SECRET: ci-only-secret-not-used-in-production-0000
         run: |
-          pip install -q -r requirements.txt
+          pip install -q -r requirements.txt pytest
           python -c "from app.main import app; print('backend imports ok')"
+          python -m pytest tests -q
 
       - name: Configure SSH
         run: |
@@ -116,6 +118,13 @@ jobs:
             echo "::error::$app_root/.env отсутствует. Создайте его из .env.example."
             exit 1
           fi
+
+          for variable in JWT_SECRET ADMIN_API_TOKEN; do
+            if ! grep -q "^$variable=." .env; then
+              echo "::error::В $app_root/.env не задана переменная $variable"
+              exit 1
+            fi
+          done
 
           docker compose build
           docker compose up -d --remove-orphans
