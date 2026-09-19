@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 Section = Literal["blog", "news"]
 
-
+#123
 class TagSchema(BaseModel):
     """Тег статьи."""
 
