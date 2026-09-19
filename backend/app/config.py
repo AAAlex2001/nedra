@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     yookassa_shop_id: str | None = None
     yookassa_secret_key: str | None = None
     payment_return_url: str | None = None
+    yookassa_vat_code: int = 1
 
 
 @lru_cache

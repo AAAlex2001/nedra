@@ -46,13 +46,15 @@ def parse_payment(data: dict) -> GatewayPayment:
 class YooKassaGateway:
     """Создание платежа и запрос его состояния. Авторизация — Basic по shop_id и секретному ключу."""
 
-    def __init__(self, shop_id: str, secret_key: str) -> None:
+    def __init__(self, shop_id: str, secret_key: str, vat_code: int) -> None:
         self.auth = (shop_id, secret_key)
+        self.vat_code = vat_code
 
     async def create_payment(
         self,
         amount: Decimal,
         description: str,
+        customer_email: str,
         return_url: str,
         idempotence_key: str,
     ) -> GatewayPayment:
@@ -61,13 +63,30 @@ class YooKassaGateway:
         capture=True — деньги списываются сразу после оплаты, без ручного
         подтверждения. Idempotence-Key защищает от двойного платежа при
         повторе запроса: на один ключ ЮKassa создаёт один платёж.
+        Чек по 54-ФЗ обязателен: одна позиция «услуга» на всю сумму,
+        отправляется на email плательщика.
         """
 
+        price = {"value": f"{amount:.2f}", "currency": CURRENCY}
+
         body = {
-            "amount": {"value": f"{amount:.2f}", "currency": CURRENCY},
+            "amount": price,
             "capture": True,
             "confirmation": {"type": "redirect", "return_url": return_url},
             "description": description,
+            "receipt": {
+                "customer": {"email": customer_email},
+                "items": [
+                    {
+                        "description": description,
+                        "quantity": "1.00",
+                        "amount": price,
+                        "vat_code": self.vat_code,
+                        "payment_subject": "service",
+                        "payment_mode": "full_payment",
+                    }
+                ],
+            },
         }
         headers = {"Idempotence-Key": idempotence_key}
 

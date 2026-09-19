@@ -35,6 +35,7 @@ class CreatePaymentUseCase:
         gateway_payment = await self.gateway.create_payment(
             amount=amount,
             description=description,
+            customer_email=user.email,
             return_url=self.return_url,
             idempotence_key=idempotence_key,
         )

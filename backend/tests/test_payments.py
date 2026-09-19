@@ -52,12 +52,18 @@ class FakeGateway:
         self.created: list[dict] = []
 
     async def create_payment(
-        self, amount: Decimal, description: str, return_url: str, idempotence_key: str
+        self,
+        amount: Decimal,
+        description: str,
+        customer_email: str,
+        return_url: str,
+        idempotence_key: str,
     ) -> GatewayPayment:
         self.created.append(
             {
                 "amount": amount,
                 "description": description,
+                "customer_email": customer_email,
                 "return_url": return_url,
                 "idempotence_key": idempotence_key,
             }
@@ -97,6 +103,7 @@ def test_create_payment_saves_gateway_data() -> None:
     assert payment.provider_payment_id == "yk-1"
     assert payment.confirmation_url == "https://yookassa.ru/pay/yk-1"
     assert gateway.created[0]["return_url"] == "https://site/oplata"
+    assert gateway.created[0]["customer_email"] == "ivan@example.com"
     assert gateway.created[0]["idempotence_key"]
 
 

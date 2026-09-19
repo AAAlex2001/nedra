@@ -30,7 +30,9 @@ def get_payment_gateway() -> YooKassaGateway:
             detail="Оплата не настроена",
         )
 
-    return YooKassaGateway(settings.yookassa_shop_id, settings.yookassa_secret_key)
+    return YooKassaGateway(
+        settings.yookassa_shop_id, settings.yookassa_secret_key, settings.yookassa_vat_code
+    )
 
 
 def get_create_payment_usecase(

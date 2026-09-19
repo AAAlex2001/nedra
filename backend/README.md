@@ -156,9 +156,13 @@ multipart: поле `payload` с JSON и файлы `scans`), админ про�
 наружу отдаёт `GatewayPayment`, а не сырой JSON. Уведомлениям ЮKassa не верим:
 берём из тела только id и запрашиваем платёж через API.
 
+К каждому платежу прикладывается чек по 54-ФЗ: одна позиция «услуга»
+на всю сумму, email плательщика из аккаунта. Ставка НДС в чеке —
+`YOOKASSA_VAT_CODE` (по умолчанию 1, «без НДС»; 2 — 0 %, 3 — 10 %, 4 — 20 %).
+
 Ручки: `POST /payments`, `GET /payments/{id}`, `POST /payments/{id}/refresh`,
 `POST /payments/yookassa/webhook`. Переменные: `YOOKASSA_SHOP_ID`,
-`YOOKASSA_SECRET_KEY`, `PAYMENT_RETURN_URL`. В кабинете ЮKassa указать адрес
+`YOOKASSA_SECRET_KEY`, `PAYMENT_RETURN_URL`, `YOOKASSA_VAT_CODE`. В кабинете ЮKassa указать адрес
 уведомлений `https://nedra-npi.ru/api/v1/payments/yookassa/webhook`
 и включить события `payment.succeeded` и `payment.canceled`.
 

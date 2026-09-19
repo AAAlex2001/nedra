@@ -8,47 +8,53 @@ from app.services.tariffs.repo import TariffRepository
 
 
 class SaveTariffsUseCase:
-    """Проверить каждую ячейку по справочнику и применить изменения одной транзакцией."""
+    """Принять сетку из админки: каждая ячейка — пара «область × объект» и цена.
+
+    Пустая цена значит «удалить тариф». Все ячейки сохраняются одной транзакцией:
+    либо применяется вся сетка, либо ничего.
+    """
 
     def __init__(self, tariffs: TariffRepository) -> None:
         self.tariffs = tariffs
 
-    async def execute(self, items: list[TariffInSchema]) -> list[Tariff]:
-        """Обновить, добавить или удалить тарифы. Бросает InvalidTariffError.
+    async def execute(self, cells: list[TariffInSchema]) -> list[Tariff]:
+        """Сохранить сетку и вернуть актуальный список тарифов. Бросает InvalidTariffError."""
 
-        Пара проверяется только при назначении цены: удалить тариф по паре,
-        которой в справочнике уже нет, должно быть можно.
-        """
+        for cell in cells:
+            self.check_cell(cell)
 
-        for item in items:
-            if item.price is not None:
-                self.validate_pair(item.area_code, item.object_code)
-
-        for item in items:
-            existing = await self.tariffs.get(item.area_code, item.object_code)
-
-            if item.price is None:
-                if existing is not None:
-                    await self.tariffs.remove(existing)
-                continue
-
-            self.tariffs.set_price(existing, item.area_code, item.object_code, item.price)
+        for cell in cells:
+            await self.apply_cell(cell)
 
         await self.tariffs.commit()
 
         return await self.tariffs.list_all()
 
-    @staticmethod
-    def validate_pair(area_code: str, object_code: str) -> None:
-        """Область и объект должны быть в справочнике, а объект — выдаваться по области."""
+    def check_cell(self, cell: TariffInSchema) -> None:
+        """Ячейка с ценой должна быть допустимой парой по справочнику. Удаление не проверяем."""
 
-        area = AREA_BY_CODE.get(area_code)
+        if cell.price is None:
+            return
+
+        area = AREA_BY_CODE.get(cell.area_code)
         if area is None:
-            raise InvalidTariffError(f"Неизвестная область аттестации: {area_code}")
+            raise InvalidTariffError(f"Неизвестная область аттестации: {cell.area_code}")
 
-        if object_code not in OBJECT_BY_CODE:
-            raise InvalidTariffError(f"Неизвестный объект экспертизы: {object_code}")
+        if cell.object_code not in OBJECT_BY_CODE:
+            raise InvalidTariffError(f"Неизвестный объект экспертизы: {cell.object_code}")
 
-        if object_code not in area.objects:
-            label = OBJECT_BY_CODE[object_code].label
-            raise InvalidTariffError(f"По области {area_code} нет объекта {label}")
+        if cell.object_code not in area.objects:
+            label = OBJECT_BY_CODE[cell.object_code].label
+            raise InvalidTariffError(f"По области {cell.area_code} нет объекта {label}")
+
+    async def apply_cell(self, cell: TariffInSchema) -> None:
+        """Найти тариф этой пары в базе и обновить, создать или удалить его."""
+
+        tariff = await self.tariffs.get(cell.area_code, cell.object_code)
+
+        if cell.price is None:
+            if tariff is not None:
+                await self.tariffs.remove(tariff)
+            return
+
+        self.tariffs.set_price(tariff, cell.area_code, cell.object_code, cell.price)
