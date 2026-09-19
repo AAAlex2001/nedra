@@ -43,7 +43,12 @@ async def get_catalog() -> ExpertCatalogSchema:
             for area in AREAS
         ],
         objects=[
-            ExpertiseObjectSchema(code=item.code, label=item.label, title=item.title)
+            ExpertiseObjectSchema(
+                code=item.code,
+                label=item.label,
+                title=item.title,
+                description=item.description,
+            )
             for item in OBJECTS
         ],
         categories=list(CATEGORIES),

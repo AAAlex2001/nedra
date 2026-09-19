@@ -14,11 +14,12 @@ class DirectionSchema(BaseModel):
 
 
 class ExpertiseObjectSchema(BaseModel):
-    """Объект экспертизы: код, короткая подпись и расшифровка."""
+    """Объект экспертизы: код, короткая подпись, расшифровка и пояснение для заказчика."""
 
     code: str
     label: str
     title: str
+    description: str
 
 
 class AttestationAreaSchema(BaseModel):
