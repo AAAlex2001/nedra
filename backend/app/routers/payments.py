@@ -2,6 +2,7 @@ import logging
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from app.dependencies.expertise import get_apply_expertise_payment_usecase
 from app.dependencies.payments import (
     get_create_payment_usecase,
     get_payment_repository,
@@ -10,6 +11,7 @@ from app.dependencies.payments import (
 from app.dependencies.users import get_current_user
 from app.models.user import User
 from app.schemas.payment import PaymentCreateSchema, PaymentOutSchema, WebhookSchema
+from app.services.expertise.usecases.apply_expertise_payment import ApplyExpertisePaymentUseCase
 from app.services.payments.exceptions import PaymentGatewayError, PaymentNotFoundError
 from app.services.payments.repo import PaymentRepository
 from app.services.payments.usecases.create_payment import CreatePaymentUseCase
@@ -90,16 +92,19 @@ async def refresh_payment(
 async def yookassa_webhook(
     payload: WebhookSchema,
     usecase: SyncPaymentStatusUseCase = Depends(get_sync_payment_usecase),
+    apply_to_expertise: ApplyExpertisePaymentUseCase = Depends(get_apply_expertise_payment_usecase),
 ) -> dict[str, str]:
     """Уведомление от ЮKassa о смене статуса.
 
     Тело уведомления не считаем доказательством оплаты: берём из него только
     id и перепроверяем платёж через API. Отвечаем 200 даже на незнакомый id,
-    иначе ЮKassa будет повторять уведомление сутки.
+    иначе ЮKassa будет повторять уведомление сутки. Если платёж относится
+    к экспертизе, она сдвигается на следующий шаг.
     """
 
     try:
-        await usecase.execute(payload.object.id)
+        payment = await usecase.execute(payload.object.id)
+        await apply_to_expertise.execute(payment)
     except PaymentNotFoundError:
         logger.warning("Уведомление о неизвестном платеже %s", payload.object.id)
     except PaymentGatewayError as error:

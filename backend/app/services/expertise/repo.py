@@ -1,6 +1,6 @@
 """Репозиторий экспертиз: только запросы к таблицам expertises и expertise_documents."""
 
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.expert import ExpertCertificate
@@ -18,12 +18,37 @@ class ExpertiseRepository:
 
         return await self.db.get(Expertise, expertise_id)
 
+    async def get_by_payment_id(self, payment_id: int) -> Expertise | None:
+        """Экспертиза, к которой относится платёж: аванс или остаток."""
+
+        stmt = select(Expertise).where(
+            or_(
+                Expertise.advance_payment_id == payment_id,
+                Expertise.final_payment_id == payment_id,
+            )
+        )
+        result = await self.db.execute(stmt)
+
+        return result.scalar_one_or_none()
+
     async def list_for_customer(self, customer_id: int) -> list[Expertise]:
         """Экспертизы заказчика, новые первыми."""
 
         stmt = (
             select(Expertise)
             .where(Expertise.customer_id == customer_id)
+            .order_by(Expertise.created_at.desc())
+        )
+        result = await self.db.execute(stmt)
+
+        return list(result.scalars().all())
+
+    async def list_for_expert(self, expert_id: int) -> list[Expertise]:
+        """Экспертизы, которые эксперт взял в работу, новые первыми."""
+
+        stmt = (
+            select(Expertise)
+            .where(Expertise.expert_id == expert_id)
             .order_by(Expertise.created_at.desc())
         )
         result = await self.db.execute(stmt)
@@ -78,6 +103,14 @@ class ExpertiseRepository:
         """Сохранить новую экспертизу вместе с документами и уведомлениями в сессии."""
 
         self.db.add(expertise)
+        await self.db.commit()
+        await self.db.refresh(expertise)
+
+        return expertise
+
+    async def save(self, expertise: Expertise) -> Expertise:
+        """Сохранить изменения экспертизы и всё, что сценарий добавил в сессию."""
+
         await self.db.commit()
         await self.db.refresh(expertise)
 

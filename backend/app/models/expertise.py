@@ -1,16 +1,42 @@
 from datetime import datetime
+from decimal import Decimal
 from enum import StrEnum
 
-from sqlalchemy import DateTime, ForeignKey, Integer, SmallInteger, String, Text, func
+from sqlalchemy import DateTime, ForeignKey, Integer, Numeric, SmallInteger, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
 
 
 class ExpertiseStatus(StrEnum):
-    """Статусы экспертизы. Пока только подача, остальные шаги добавим по мере реализации."""
+    """Путь экспертизы от подачи документации до приёмки работы.
+
+    new — заявка подана, ждёт эксперта;
+    expert_ready — эксперт готов провести экспертизу, ждём согласия заказчика;
+    contract — обе стороны согласились, договор считается заключённым, ждём аванс;
+    in_progress — аванс оплачен, эксперт работает;
+    conclusion_ready — эксперт сообщил, что заключение готово, ждём остаток;
+    paid — остаток оплачен, эксперт подписывает заключение и отправляет;
+    sent — заключение отправлено заказчику;
+    accepted — заказчик принял работу.
+    """
 
     NEW = "new"
+    EXPERT_READY = "expert_ready"
+    CONTRACT = "contract"
+    IN_PROGRESS = "in_progress"
+    CONCLUSION_READY = "conclusion_ready"
+    PAID = "paid"
+    SENT = "sent"
+    ACCEPTED = "accepted"
+
+
+class ExpertiseResult(StrEnum):
+    """Исход экспертизы, который эксперт указывает при отправке заключения."""
+
+    POSITIVE = "positive"
+    NEGATIVE = "negative"
+    REMARKS = "remarks"
 
 
 class Expertise(Base):
@@ -18,7 +44,8 @@ class Expertise(Base):
 
     Заказчик указывает объект экспертизы, область аттестации и класс опасности
     объекта или требуемую категорию эксперта, прикладывает документацию.
-    Эксперт назначается позже, поэтому expert_id пустой при создании.
+    Цена берётся из тарифа в момент подачи, чтобы смена тарифа не меняла
+    уже поданные заявки. Эксперт назначается позже, поэтому expert_id пустой.
     """
 
     __tablename__ = "expertises"
@@ -39,10 +66,26 @@ class Expertise(Base):
 
     comment: Mapped[str | None] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(32), index=True, default=ExpertiseStatus.NEW)
+    price: Mapped[Decimal | None] = mapped_column(Numeric(10, 2))
+    result: Mapped[str | None] = mapped_column(String(16))
+
+    advance_payment_id: Mapped[int | None] = mapped_column(
+        ForeignKey("payments.id", ondelete="SET NULL")
+    )
+    final_payment_id: Mapped[int | None] = mapped_column(
+        ForeignKey("payments.id", ondelete="SET NULL")
+    )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+    expert_ready_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    contract_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    advance_paid_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    conclusion_ready_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    final_paid_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     documents: Mapped[list["ExpertiseDocument"]] = relationship(
         back_populates="expertise",
@@ -53,7 +96,7 @@ class Expertise(Base):
 
 
 class ExpertiseDocument(Base):
-    """Файл, приложенный к экспертизе: документация заказчика, позже договоры и заключение."""
+    """Файл, приложенный к экспертизе: документация заказчика или заключение эксперта."""
 
     __tablename__ = "expertise_documents"
 

@@ -21,6 +21,13 @@ DOCUMENT_TYPES = {
     "image/jpeg": ".jpg",
     "image/png": ".png",
 }
+SIGNATURE_TYPES = {
+    "application/pkcs7-signature": ".p7s",
+    "application/x-pkcs7-signature": ".p7s",
+    "application/pgp-signature": ".sig",
+    "application/octet-stream": ".sig",
+}
+CONCLUSION_TYPES = {**DOCUMENT_TYPES, **SIGNATURE_TYPES}
 DOCUMENT_MAX_SIZE_BYTES = 10 * MEGABYTE
 DOCUMENTATION_MAX_SIZE_BYTES = 50 * MEGABYTE
 
@@ -70,14 +77,19 @@ class PrivateStorage:
         file: UploadFile,
         folder: str,
         max_size_bytes: int = DOCUMENT_MAX_SIZE_BYTES,
+        allowed_types: dict[str, str] = DOCUMENT_TYPES,
     ) -> StoredFile:
-        """Сохранить PDF, Word или картинку в подкаталог folder. Бросает UploadError."""
+        """Сохранить файл допустимого типа в подкаталог folder. Бросает UploadError.
+
+        По умолчанию принимаются PDF, Word и картинки. Для заключений
+        передаётся CONCLUSION_TYPES, где есть ещё файлы отсоединённой ЭЦП.
+        """
 
         content_type = file.content_type
         if content_type is None:
             raise UploadError("Не указан тип файла")
 
-        extension = DOCUMENT_TYPES.get(content_type)
+        extension = allowed_types.get(content_type)
         if extension is None:
             raise UploadError("Допустимы только PDF, Word, JPEG и PNG")
 

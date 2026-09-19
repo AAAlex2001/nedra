@@ -99,6 +99,10 @@ JWT в httponly-cookie `access_token` (`services/security/tokens.py`).
 
 Нужна переменная окружения `JWT_SECRET` длиной не меньше 32 символов.
 
+Аккаунт один на email. `users.role` — активная роль, она переключается
+через `POST /auth/role`. Роль эксперта доступна, только если у аккаунта есть
+`ExpertProfile`; фронт узнаёт об этом из поля `is_expert`.
+
 ## Эксперты
 
 Эксперт не регистрируется сам. Он подаёт заявку (`POST /experts/applications`,
@@ -116,6 +120,28 @@ multipart: поле `payload` с JSON и файлы `scans`), админ про�
 
 Эксперт с нерассмотренной заявкой при попытке входа получает 403 с понятным
 текстом, а не «неверный пароль».
+
+## Экспертиза: путь от заявки до приёмки
+
+Статусы в `models/expertise.py`, по сценарию на каждый шаг в
+`services/expertise/usecases/`:
+
+| Статус | Кто действует | Ручка | Что происходит |
+|---|---|---|---|
+| `new` | заказчик | `POST /expertise` | документация загружена, цена зафиксирована из тарифа, эксперты по аттестации уведомлены |
+| `expert_ready` | эксперт | `POST /expertise/{id}/accept` | первый готовый эксперт закрепляется за заявкой, заказчику уведомление и письмо |
+| `contract` | заказчик | `POST /expertise/{id}/confirm` | вторая галочка — договор заключён |
+| `in_progress` | заказчик | `POST /expertise/{id}/payment` | аванс 50 % через ЮKassa; статус двигает вебхук или `POST /expertise/{id}/payment/refresh` |
+| `conclusion_ready` | эксперт | `POST /expertise/{id}/conclusion-ready` | заключение готово, заказчику письмо про остаток |
+| `paid` | заказчик | `POST /expertise/{id}/payment` | остаток 50 % |
+| `sent` | эксперт | `POST /expertise/{id}/conclusion` | multipart: `result` (positive/negative/remarks) и файлы заключения, подписанные ЭЦП |
+| `accepted` | заказчик | `POST /expertise/{id}/accept-work` | работа принята |
+
+Сумму этапов считает `services/expertise/money.py`: 50/50, копейка при
+нечётной сумме уходит в остаток. `ApplyExpertisePaymentUseCase` идемпотентен:
+повторное уведомление ЮKassa ничего не ломает. `PAYMENT_RETURN_URL` должен
+вести в кабинет (`/kabinet`): фронт при загрузке сам проверяет
+незавершённые платежи.
 
 ## Тарифы
 

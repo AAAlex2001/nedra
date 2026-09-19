@@ -14,6 +14,7 @@ from app.services.expertise.repo import ExpertiseRepository
 from app.services.expertise.validators import resolve_category, validate_pair
 from app.services.files.storage import DOCUMENTATION_MAX_SIZE_BYTES, PrivateStorage
 from app.services.notifications.repo import NotificationRepository
+from app.services.tariffs.repo import TariffRepository
 
 DOCUMENTS_FOLDER = "expertise-documents"
 
@@ -27,18 +28,24 @@ class CreatedExpertise:
 
 
 class CreateExpertiseUseCase:
-    """Проверить заявку по справочнику, сохранить файлы, найти подходящих экспертов и уведомить их."""
+    """Проверить заявку по справочнику, сохранить файлы, найти подходящих экспертов и уведомить их.
+
+    Цена фиксируется из тарифа при подаче: если админ позже поменяет тариф,
+    уже поданные заявки останутся с прежней ценой.
+    """
 
     def __init__(
         self,
         expertises: ExpertiseRepository,
         profiles: ExpertProfileRepository,
         notifications: NotificationRepository,
+        tariffs: TariffRepository,
         storage: PrivateStorage,
     ) -> None:
         self.expertises = expertises
         self.profiles = profiles
         self.notifications = notifications
+        self.tariffs = tariffs
         self.storage = storage
 
     async def execute(
@@ -52,6 +59,8 @@ class CreateExpertiseUseCase:
         if not files:
             raise InvalidExpertiseError("Приложите хотя бы один файл документации")
 
+        tariff = await self.tariffs.get(data.area_code, data.object_code)
+
         expertise = Expertise(
             customer_id=customer.id,
             object_code=data.object_code,
@@ -60,6 +69,7 @@ class CreateExpertiseUseCase:
             expert_category=category,
             comment=data.comment.strip() if data.comment else None,
             status=ExpertiseStatus.NEW,
+            price=tariff.price if tariff else None,
         )
 
         for file in files:

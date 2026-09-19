@@ -1,8 +1,10 @@
 from datetime import datetime
+from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.models.expertise import ExpertiseStatus
+from app.models.expertise import ExpertiseResult, ExpertiseStatus
+from app.models.payment import PaymentStatus
 
 
 class ExpertiseInSchema(BaseModel):
@@ -28,6 +30,18 @@ class ExpertiseDocumentSchema(BaseModel):
     created_at: datetime
 
 
+class ExpertisePaymentSchema(BaseModel):
+    """Платёж по этапу экспертизы: сумма, статус и ссылка на оплату, пока она есть."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    amount: Decimal
+    status: PaymentStatus
+    confirmation_url: str | None
+    paid_at: datetime | None
+
+
 class ExpertiseOutSchema(BaseModel):
     """Экспертиза для кабинета заказчика и эксперта."""
 
@@ -37,11 +51,23 @@ class ExpertiseOutSchema(BaseModel):
     customer_id: int
     customer_name: str
     expert_id: int | None
+    expert_name: str | None
     object_code: str
     area_code: str
     hazard_class: int | None
     expert_category: int
     comment: str | None
     status: ExpertiseStatus
+    result: ExpertiseResult | None
+    price: Decimal | None
+    advance_payment: ExpertisePaymentSchema | None
+    final_payment: ExpertisePaymentSchema | None
     created_at: datetime
+    expert_ready_at: datetime | None
+    contract_at: datetime | None
+    advance_paid_at: datetime | None
+    conclusion_ready_at: datetime | None
+    final_paid_at: datetime | None
+    sent_at: datetime | None
+    accepted_at: datetime | None
     documents: list[ExpertiseDocumentSchema]

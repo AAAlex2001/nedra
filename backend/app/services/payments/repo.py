@@ -12,6 +12,11 @@ class PaymentRepository:
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
+    async def get_by_id(self, payment_id: int) -> Payment | None:
+        """Платёж по id или None."""
+
+        return await self.db.get(Payment, payment_id)
+
     async def get_for_user(self, payment_id: int, user_id: int) -> Payment | None:
         """Платёж по id, но только если он принадлежит пользователю."""
 
