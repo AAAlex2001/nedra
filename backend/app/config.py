@@ -19,6 +19,7 @@ class Settings(BaseSettings):
 
     admin_api_token: str | None = None
     media_dir: str = "media"
+    private_dir: str = "private"
     cookie_secure: bool = True
 
     jwt_secret: str = Field(min_length=32)

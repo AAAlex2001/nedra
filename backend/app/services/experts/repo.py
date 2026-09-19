@@ -1,0 +1,108 @@
+"""Репозитории экспертов: заявки на регистрацию и профили."""
+
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models.expert import ApplicationStatus, ExpertApplication, ExpertCertificate, ExpertProfile
+from app.models.user import User
+
+
+class ExpertApplicationRepository:
+    """Доступ к таблице expert_applications. Сессию получает снаружи, коммитит сам."""
+
+    def __init__(self, db: AsyncSession) -> None:
+        self.db = db
+
+    async def list_all(self, status: str | None) -> list[ExpertApplication]:
+        """Заявки, новые первыми. Если передан status — только с этим статусом."""
+
+        stmt = select(ExpertApplication).order_by(ExpertApplication.created_at.desc())
+
+        if status:
+            stmt = stmt.where(ExpertApplication.status == status)
+
+        result = await self.db.execute(stmt)
+
+        return list(result.scalars().all())
+
+    async def get_by_id(self, application_id: int) -> ExpertApplication | None:
+        """Заявка по идентификатору или None."""
+
+        return await self.db.get(ExpertApplication, application_id)
+
+    async def has_pending(self, email: str) -> bool:
+        """Есть ли по этому email заявка, которая ещё ждёт проверки."""
+
+        stmt = select(ExpertApplication.id).where(
+            ExpertApplication.email == email,
+            ExpertApplication.status == ApplicationStatus.PENDING,
+        )
+        found = await self.db.scalar(stmt)
+
+        return found is not None
+
+    async def add(self, application: ExpertApplication) -> ExpertApplication:
+        """Сохранить новую заявку вместе с удостоверениями."""
+
+        self.db.add(application)
+        await self.db.commit()
+        await self.db.refresh(application)
+
+        return application
+
+    async def save(self, application: ExpertApplication) -> ExpertApplication:
+        """Сохранить изменения заявки."""
+
+        await self.db.commit()
+        await self.db.refresh(application)
+
+        return application
+
+    async def approve(
+        self, application: ExpertApplication, user: User, profile: ExpertProfile
+    ) -> ExpertApplication:
+        """Создать пользователя и профиль и привязать удостоверения одной транзакцией.
+
+        Если что-то упадёт посередине, не останется пользователя без профиля
+        или удостоверений без владельца: commit один на всё.
+        """
+
+        self.db.add(user)
+        await self.db.flush()
+
+        profile.user_id = user.id
+        self.db.add(profile)
+
+        for certificate in application.certificates:
+            certificate.user_id = user.id
+
+        application.user_id = user.id
+
+        await self.db.commit()
+        await self.db.refresh(application)
+
+        return application
+
+
+class ExpertProfileRepository:
+    """Доступ к профилям и удостоверениям одобренных экспертов."""
+
+    def __init__(self, db: AsyncSession) -> None:
+        self.db = db
+
+    async def get_by_user(self, user_id: int) -> ExpertProfile | None:
+        """Профиль эксперта по id пользователя или None."""
+
+        return await self.db.get(ExpertProfile, user_id)
+
+    async def list_certificates(self, user_id: int) -> list[ExpertCertificate]:
+        """Удостоверения эксперта в порядке добавления."""
+
+        stmt = (
+            select(ExpertCertificate)
+            .where(ExpertCertificate.user_id == user_id)
+            .order_by(ExpertCertificate.id)
+        )
+        result = await self.db.execute(stmt)
+
+        return list(result.scalars().all())

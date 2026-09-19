@@ -30,6 +30,7 @@ services:
       YOOKASSA_SECRET_KEY: ${YOOKASSA_SECRET_KEY}
       PAYMENT_RETURN_URL: ${PAYMENT_RETURN_URL}
       MEDIA_DIR: /app/media
+      PRIVATE_DIR: /app/private
       SMTP_HOST: ${SMTP_HOST}
       SMTP_PORT: ${SMTP_PORT}
       SMTP_USER: ${SMTP_USER}
@@ -43,6 +44,7 @@ services:
              uvicorn app.main:app --host 0.0.0.0 --port 8000"
     volumes:
       - media:/app/media
+      - private:/app/private
       - ./content:/app/content:ro
       - ./scripts:/app/scripts:ro
     ports:
@@ -82,3 +84,4 @@ volumes:
   pgdata:
   certbot_www:
   media:
+  private:

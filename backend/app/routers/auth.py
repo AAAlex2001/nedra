@@ -9,6 +9,7 @@ from app.dependencies.users import (
 )
 from app.models.user import User
 from app.schemas.user import LoginSchema, RegisterSchema, UserOutSchema
+from app.services.experts.exceptions import ApplicationPendingError
 from app.services.users.exceptions import (
     EmailAlreadyTakenError,
     InvalidCredentialsError,
@@ -64,6 +65,11 @@ async def login(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Неверный email или пароль",
+        ) from error
+    except ApplicationPendingError as error:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Ваша заявка эксперта ещё на рассмотрении. Мы напишем, когда одобрим её.",
         ) from error
 
     token = create_access_token(user.id)

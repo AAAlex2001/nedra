@@ -3,6 +3,12 @@ from app.models.request import Request
 from app.models.article import Article, ArticleReaction, ArticleView, Tag
 from app.models.user import User, UserRole
 from app.models.payment import Payment, PaymentStatus
+from app.models.expert import (
+    ApplicationStatus,
+    ExpertApplication,
+    ExpertCertificate,
+    ExpertProfile,
+)
 
 __all__ = [
     "Base",
@@ -15,4 +21,8 @@ __all__ = [
     "UserRole",
     "Payment",
     "PaymentStatus",
+    "ApplicationStatus",
+    "ExpertApplication",
+    "ExpertCertificate",
+    "ExpertProfile",
 ]

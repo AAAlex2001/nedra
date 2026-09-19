@@ -5,7 +5,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
-from app.routers import admin_articles, articles, auth, payments, requests
+from app.routers import (
+    admin_articles,
+    admin_experts,
+    articles,
+    auth,
+    experts,
+    payments,
+    requests,
+)
 
 settings = get_settings()
 
@@ -32,9 +40,12 @@ async def health() -> dict[str, str]:
 
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(payments.router, prefix="/api/v1")
+app.include_router(experts.router, prefix="/api/v1")
+app.include_router(admin_experts.router, prefix="/api/v1")
 app.include_router(requests.router, prefix="/api/v1")
 app.include_router(articles.router, prefix="/api/v1")
 app.include_router(admin_articles.router, prefix="/api/v1")
 
 Path(settings.media_dir).mkdir(parents=True, exist_ok=True)
+Path(settings.private_dir).mkdir(parents=True, exist_ok=True)
 app.mount("/media", StaticFiles(directory=settings.media_dir), name="media")

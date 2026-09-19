@@ -10,6 +10,7 @@ import pytest
 
 from app.models.user import User, UserRole
 from app.schemas.user import LoginSchema, RegisterSchema
+from app.services.experts.exceptions import ApplicationPendingError
 from app.services.users.exceptions import (
     EmailAlreadyTakenError,
     InvalidCredentialsError,
@@ -44,6 +45,16 @@ class FakeUserRepository:
         self.next_id = self.next_id + 1
         self.users[user.email] = user
         return user
+
+
+class FakeApplicationRepository:
+    """Заявки экспертов: помним только email тех, кто ждёт проверки."""
+
+    def __init__(self, pending_emails: list[str] | None = None) -> None:
+        self.pending_emails = pending_emails or []
+
+    async def has_pending(self, email: str) -> bool:
+        return email in self.pending_emails
 
 
 def make_register_payload(email: str = "Ivan@Example.com") -> RegisterSchema:
@@ -92,7 +103,7 @@ def test_register_rejects_weak_password() -> None:
 def test_login_success_ignores_email_case() -> None:
     repo = FakeUserRepository()
     asyncio.run(RegisterUserUseCase(repo).execute(make_register_payload()))
-    usecase = LoginUserUseCase(repo)
+    usecase = LoginUserUseCase(repo, FakeApplicationRepository())
 
     user = asyncio.run(
         usecase.execute(LoginSchema(email="IVAN@example.com", password="secret123"))
@@ -104,7 +115,7 @@ def test_login_success_ignores_email_case() -> None:
 def test_login_wrong_password() -> None:
     repo = FakeUserRepository()
     asyncio.run(RegisterUserUseCase(repo).execute(make_register_payload()))
-    usecase = LoginUserUseCase(repo)
+    usecase = LoginUserUseCase(repo, FakeApplicationRepository())
 
     with pytest.raises(InvalidCredentialsError):
         asyncio.run(
@@ -113,11 +124,21 @@ def test_login_wrong_password() -> None:
 
 
 def test_login_unknown_email() -> None:
-    usecase = LoginUserUseCase(FakeUserRepository())
+    usecase = LoginUserUseCase(FakeUserRepository(), FakeApplicationRepository())
 
     with pytest.raises(InvalidCredentialsError):
         asyncio.run(
             usecase.execute(LoginSchema(email="nobody@example.com", password="secret123"))
+        )
+
+
+def test_login_pending_expert() -> None:
+    applications = FakeApplicationRepository(pending_emails=["expert@example.com"])
+    usecase = LoginUserUseCase(FakeUserRepository(), applications)
+
+    with pytest.raises(ApplicationPendingError):
+        asyncio.run(
+            usecase.execute(LoginSchema(email="Expert@example.com", password="secret123"))
         )
 
 

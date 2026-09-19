@@ -21,7 +21,8 @@ from app.schemas.article import (
     UploadResultSchema,
 )
 from app.services.articles.exceptions import TagNotFoundError
-from app.services.articles.images import UploadError, save_article_image
+from app.services.articles.images import save_article_image
+from app.services.files.storage import UploadError
 from app.services.articles.repo import ArticleRepository
 from app.services.articles.tags import TagRepository
 from app.services.articles.usecases.create_article import CreateArticleUseCase

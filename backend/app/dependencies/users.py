@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.config import get_settings
 from app.database import get_session
 from app.models.user import User, UserRole
+from app.services.experts.repo import ExpertApplicationRepository
 from app.services.security.tokens import read_user_id
 from app.services.users.repo import UserRepository
 from app.services.users.usecases.login import LoginUserUseCase
@@ -33,10 +34,11 @@ def get_register_usecase(
 
 def get_login_usecase(
     users: UserRepository = Depends(get_user_repository),
+    session: AsyncSession = Depends(get_session),
 ) -> LoginUserUseCase:
-    """Сценарий входа."""
+    """Сценарий входа. Репозиторий заявок нужен, чтобы отличить ожидающего эксперта."""
 
-    return LoginUserUseCase(users)
+    return LoginUserUseCase(users, ExpertApplicationRepository(session))
 
 
 def set_auth_cookie(response: Response, token: str) -> None:
