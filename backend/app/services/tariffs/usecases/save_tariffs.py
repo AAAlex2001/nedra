@@ -14,10 +14,15 @@ class SaveTariffsUseCase:
         self.tariffs = tariffs
 
     async def execute(self, items: list[TariffInSchema]) -> list[Tariff]:
-        """Обновить, добавить или удалить тарифы. Бросает InvalidTariffError."""
+        """Обновить, добавить или удалить тарифы. Бросает InvalidTariffError.
+
+        Пара проверяется только при назначении цены: удалить тариф по паре,
+        которой в справочнике уже нет, должно быть можно.
+        """
 
         for item in items:
-            self.validate_pair(item.area_code, item.object_code)
+            if item.price is not None:
+                self.validate_pair(item.area_code, item.object_code)
 
         for item in items:
             existing = await self.tariffs.get(item.area_code, item.object_code)

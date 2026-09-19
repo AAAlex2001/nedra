@@ -1,6 +1,7 @@
 "use client";
 
 import { useReducer } from "react";
+import type { ExpertCatalog } from "@/entities/expert";
 import { tariffKey, type Tariff } from "@/entities/tariff";
 import { keepDigits } from "@/shared/lib/text";
 import { saveTariffs, type TariffChange } from "../api/tariffs";
@@ -17,24 +18,35 @@ const toValues = (tariffs: Tariff[]): Record<string, string> => {
   return values;
 };
 
-const toChanges = (values: Record<string, string>): TariffChange[] => {
+const isAllowed = (catalog: ExpertCatalog, areaCode: string, objectCode: string): boolean => {
+  const area = catalog.areas.find((item) => item.code === areaCode);
+
+  return area !== undefined && area.objects.includes(objectCode);
+};
+
+const toChanges = (values: Record<string, string>, catalog: ExpertCatalog): TariffChange[] => {
   const changes: TariffChange[] = [];
 
   for (const key of Object.keys(values)) {
     const [areaCode, objectCode] = key.split(":");
     const price = values[key];
+    const stale = !isAllowed(catalog, areaCode, objectCode);
 
     changes.push({
       area_code: areaCode,
       object_code: objectCode,
-      price: price === "" ? null : price,
+      price: price === "" || stale ? null : price,
     });
   }
 
   return changes;
 };
 
-export const useTariffGrid = (initialTariffs: Tariff[], basePath: string) => {
+export const useTariffGrid = (
+  initialTariffs: Tariff[],
+  catalog: ExpertCatalog,
+  basePath: string,
+) => {
   const [state, dispatch] = useReducer(tariffGridReducer, {
     values: toValues(initialTariffs),
     dirty: false,
@@ -49,7 +61,7 @@ export const useTariffGrid = (initialTariffs: Tariff[], basePath: string) => {
     dispatch({ type: "save/start" });
 
     try {
-      const tariffs = await saveTariffs(basePath, toChanges(state.values));
+      const tariffs = await saveTariffs(basePath, toChanges(state.values, catalog));
       dispatch({ type: "save/success", values: toValues(tariffs) });
     } catch (error) {
       const message =

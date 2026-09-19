@@ -82,6 +82,18 @@ def test_save_rejects_unknown_pair() -> None:
         )
 
 
+def test_removing_stale_pair_is_allowed() -> None:
+    repo = FakeTariffRepository()
+    repo.items[("Э1", "kl")] = Tariff(area_code="Э1", object_code="kl", price=Decimal("5000"))
+    usecase = SaveTariffsUseCase(repo)
+
+    result = asyncio.run(
+        usecase.execute([TariffInSchema(area_code="Э1", object_code="kl", price=None)])
+    )
+
+    assert result == []
+
+
 def test_removing_missing_tariff_is_noop() -> None:
     repo = FakeTariffRepository()
     usecase = SaveTariffsUseCase(repo)

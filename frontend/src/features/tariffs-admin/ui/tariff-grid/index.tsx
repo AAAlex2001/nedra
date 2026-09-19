@@ -13,7 +13,7 @@ type TariffGridProps = {
 };
 
 const TariffGrid = ({ catalog, initialTariffs, basePath }: TariffGridProps) => {
-  const { state, changeCell, save } = useTariffGrid(initialTariffs, basePath);
+  const { state, changeCell, save } = useTariffGrid(initialTariffs, catalog, basePath);
 
   return (
     <div className={styles.root}>
