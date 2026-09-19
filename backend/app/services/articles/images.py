@@ -1,4 +1,4 @@
-"""Сохранение загруженных изображений в каталог media."""
+"""Сохранение картинок статей в каталог media."""
 
 from pathlib import Path
 from uuid import uuid4

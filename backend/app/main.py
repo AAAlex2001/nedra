@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
-from app.routers import admin_articles, articles, request
+from app.routers import admin_articles, articles, auth, payments, requests
 
 settings = get_settings()
 
@@ -30,7 +30,9 @@ async def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-app.include_router(request.router, prefix="/api/v1")
+app.include_router(auth.router, prefix="/api/v1")
+app.include_router(payments.router, prefix="/api/v1")
+app.include_router(requests.router, prefix="/api/v1")
 app.include_router(articles.router, prefix="/api/v1")
 app.include_router(admin_articles.router, prefix="/api/v1")
 

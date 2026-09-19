@@ -1,7 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, Query
 
-from app.dependencies import get_article_service, get_visitor_id
-from app.schemas.articles import (
+from app.dependencies.articles import (
+    get_article_repository,
+    get_published_article,
+    get_register_view_usecase,
+    get_remove_reaction_usecase,
+    get_set_reaction_usecase,
+    get_tag_repository,
+)
+from app.dependencies.visitor import get_visitor_id
+from app.models.article import Article
+from app.schemas.article import (
     ArticleCardSchema,
     ArticleListSchema,
     ArticleSchema,
@@ -10,8 +19,11 @@ from app.schemas.articles import (
     Section,
     TagSchema,
 )
-from app.services.articles import ArticleService
-from app.services.exceptions import ArticleNotFoundError
+from app.services.articles.repo import ArticleRepository
+from app.services.articles.tags import TagRepository
+from app.services.articles.usecases.register_view import RegisterViewUseCase
+from app.services.articles.usecases.remove_reaction import RemoveReactionUseCase
+from app.services.articles.usecases.set_reaction import SetReactionUseCase
 
 
 router = APIRouter(tags=["articles"])
@@ -23,14 +35,14 @@ async def get_articles(
     tag: str | None = Query(None, description="Slug тега для фильтрации"),
     limit: int = Query(12, ge=1, le=50),
     offset: int = Query(0, ge=0),
-    service: ArticleService = Depends(get_article_service),
+    articles: ArticleRepository = Depends(get_article_repository),
 ) -> ArticleListSchema:
     """Список опубликованных статей."""
 
-    articles, total = await service.list_published(section, tag, limit, offset)
+    items, total = await articles.list_published(section, tag, limit, offset)
 
     return ArticleListSchema(
-        articles=[ArticleCardSchema.model_validate(article) for article in articles],
+        articles=[ArticleCardSchema.model_validate(item) for item in items],
         total=total,
     )
 
@@ -38,101 +50,72 @@ async def get_articles(
 @router.get("/tags")
 async def get_tags(
     section: Section | None = Query(None, description="Раздел: только теги его опубликованных статей"),
-    service: ArticleService = Depends(get_article_service),
+    tags: TagRepository = Depends(get_tag_repository),
 ) -> list[TagSchema]:
     """Теги для фильтра списка статей."""
 
-    tags = await service.list_tags(section)
+    items = await tags.list(section)
 
-    return [TagSchema.model_validate(tag) for tag in tags]
+    return [TagSchema.model_validate(item) for item in items]
 
 
 @router.get("/articles/{slug}")
 async def get_article(
-    slug: str,
-    service: ArticleService = Depends(get_article_service),
+    article: Article = Depends(get_published_article),
 ) -> ArticleSchema:
     """Статья целиком."""
-
-    try:
-        article = await service.get_published(slug)
-    except ArticleNotFoundError as error:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
 
     return ArticleSchema.model_validate(article)
 
 
 @router.get("/articles/{slug}/related")
 async def get_related_articles(
-    slug: str,
     limit: int = Query(10, ge=1, le=20),
-    service: ArticleService = Depends(get_article_service),
+    article: Article = Depends(get_published_article),
+    articles: ArticleRepository = Depends(get_article_repository),
 ) -> list[ArticleCardSchema]:
     """Блок «Смотрите также»."""
 
-    try:
-        article = await service.get_published(slug)
-    except ArticleNotFoundError as error:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
-
-    related = await service.get_related(article, limit)
+    related = await articles.get_related(article, limit)
 
     return [ArticleCardSchema.model_validate(item) for item in related]
 
 
 @router.post("/articles/{slug}/view")
 async def register_view(
-    slug: str,
+    article: Article = Depends(get_published_article),
     visitor_id: str = Depends(get_visitor_id),
-    service: ArticleService = Depends(get_article_service),
+    usecase: RegisterViewUseCase = Depends(get_register_view_usecase),
 ) -> ArticleStatsSchema:
     """Засчитать просмотр и вернуть актуальные счётчики."""
 
-    try:
-        article = await service.get_published(slug)
-    except ArticleNotFoundError as error:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
-
-    await service.register_view(article, visitor_id)
-    stats = await service.get_stats(article.id, visitor_id)
+    stats = await usecase.execute(article, visitor_id)
 
     return ArticleStatsSchema.model_validate(stats)
 
 
 @router.put("/articles/{slug}/reaction")
 async def set_reaction(
-    slug: str,
     payload: ReactionInSchema,
+    article: Article = Depends(get_published_article),
     visitor_id: str = Depends(get_visitor_id),
-    service: ArticleService = Depends(get_article_service),
+    usecase: SetReactionUseCase = Depends(get_set_reaction_usecase),
 ) -> ArticleStatsSchema:
     """Поставить лайк или дизлайк."""
 
-    try:
-        article = await service.get_published(slug)
-    except ArticleNotFoundError as error:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
-
-    await service.set_reaction(article, visitor_id, payload.value)
-    stats = await service.get_stats(article.id, visitor_id)
+    stats = await usecase.execute(article, visitor_id, payload.value)
 
     return ArticleStatsSchema.model_validate(stats)
 
 
 @router.delete("/articles/{slug}/reaction")
 async def remove_reaction(
-    slug: str,
+    article: Article = Depends(get_published_article),
     visitor_id: str = Depends(get_visitor_id),
-    service: ArticleService = Depends(get_article_service),
+    usecase: RemoveReactionUseCase = Depends(get_remove_reaction_usecase),
 ) -> ArticleStatsSchema:
     """Снять свою реакцию."""
 
-    try:
-        article = await service.get_published(slug)
-    except ArticleNotFoundError as error:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
-
-    await service.remove_reaction(article, visitor_id)
-    stats = await service.get_stats(article.id, visitor_id)
+    stats = await usecase.execute(article, visitor_id)
 
     return ArticleStatsSchema.model_validate(stats)

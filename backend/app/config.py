@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -19,6 +20,13 @@ class Settings(BaseSettings):
     admin_api_token: str | None = None
     media_dir: str = "media"
     cookie_secure: bool = True
+
+    jwt_secret: str = Field(min_length=32)
+    jwt_expires_days: int = 7
+
+    yookassa_shop_id: str | None = None
+    yookassa_secret_key: str | None = None
+    payment_return_url: str | None = None
 
 
 @lru_cache

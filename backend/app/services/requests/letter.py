@@ -1,17 +1,16 @@
-import logging
-from email.message import EmailMessage
+"""Письмо менеджерам о новой заявке."""
+
 from html import escape
 
-import aiosmtplib
-
 from app.config import get_settings
-from app.schemas.request import RequestOutSchema
-from app.services.requestDTO import ACTIVITY_TITLES, DIRECTION_TITLES
+from app.models.request import Request
+from app.services.mail.sender import send_email
+from app.services.requests.catalog import ACTIVITY_TITLES, DIRECTION_TITLES
 
-logger = logging.getLogger(__name__)
 
+def build_fields(request: Request) -> list[tuple[str, str]]:
+    """Пары «подпись — значение» в том порядке, в каком они идут в письме."""
 
-def build_fields(request: RequestOutSchema) -> list[tuple[str, str]]:
     return [
         ("Направление", DIRECTION_TITLES.get(request.direction, "—")),
         ("Услуга", ACTIVITY_TITLES.get(request.activity, "—")),
@@ -20,18 +19,22 @@ def build_fields(request: RequestOutSchema) -> list[tuple[str, str]]:
         ("Email", request.email),
         ("Организация", request.company_name or "—"),
         ("ИНН", request.inn or "—"),
-        ("Задача", request.comment),
+        ("Задача", request.comment or "—"),
         ("Дата", request.created_at.strftime("%d.%m.%Y %H:%M")),
     ]
 
 
-def build_text(request: RequestOutSchema) -> str:
+def build_text(request: Request) -> str:
+    """Текстовая версия письма для почтовых клиентов без HTML."""
+
     lines = [f"{label}: {value}" for label, value in build_fields(request)]
 
     return "Новая заявка с сайта\n\n" + "\n".join(lines)
 
 
-def build_html(request: RequestOutSchema) -> str:
+def build_html(request: Request) -> str:
+    """HTML-версия письма: таблица с полями заявки."""
+
     rows = "".join(
         f"""
         <tr>
@@ -55,7 +58,7 @@ def build_html(request: RequestOutSchema) -> str:
           <tr>
             <td colspan="2" style="padding:20px 16px;background:#f69827;
                                    color:#fff;font-size:18px;font-weight:bold;">
-              Заявка №{request.request_id} с сайта
+              Заявка №{request.id} с сайта
             </td>
           </tr>
           {rows}
@@ -65,34 +68,16 @@ def build_html(request: RequestOutSchema) -> str:
     """
 
 
-async def send_new_request(request: RequestOutSchema) -> None:
+async def send_new_request_letter(request: Request) -> None:
+    """Отправить менеджерам письмо о заявке. Адреса — из NOTIFY_EMAILS."""
+
     settings = get_settings()
-
-    if not settings.smtp_host or not settings.smtp_user or not settings.notify_emails:
-        logger.warning("Уведомления по почте не настроены, письмо не отправлено")
-        return
-
     direction = DIRECTION_TITLES.get(request.direction, "Заявка")
 
-    message = EmailMessage()
-    message["From"] = settings.smtp_user
-    message["To"] = ", ".join(settings.notify_emails)
-    message["Reply-To"] = request.email
-    message["Subject"] = f"Заявка №{request.request_id} — {direction}"
-
-    message.set_content(build_text(request))
-    message.add_alternative(build_html(request), subtype="html")
-
-    try:
-        await aiosmtplib.send(
-            message,
-            recipients=settings.notify_emails,
-            hostname=settings.smtp_host,
-            port=settings.smtp_port,
-            use_tls=True,
-            username=settings.smtp_user,
-            password=settings.smtp_password,
-            timeout=15,
-        )
-    except Exception:
-        logger.exception("Не удалось отправить письмо о заявке %s", request.request_id)
+    await send_email(
+        recipients=settings.notify_emails,
+        subject=f"Заявка №{request.id} — {direction}",
+        text=build_text(request),
+        html=build_html(request),
+        reply_to=request.email,
+    )
