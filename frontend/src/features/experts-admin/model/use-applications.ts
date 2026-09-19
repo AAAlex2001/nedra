@@ -2,7 +2,12 @@
 
 import { useReducer } from "react";
 import type { ExpertApplicationRecord } from "@/entities/expert";
-import { approveApplication, fetchApplications, rejectApplication } from "../api/applications";
+import {
+  approveApplication,
+  deleteExpert,
+  fetchApplications,
+  rejectApplication,
+} from "../api/applications";
 import { applicationsReducer } from "./reducer";
 import type { StatusFilter } from "./types";
 
@@ -47,6 +52,21 @@ export const useApplications = (initialItems: ExpertApplicationRecord[], basePat
     }
   };
 
+  const removeExpert = async (application: ExpertApplicationRecord) => {
+    if (application.user_id === null) return;
+
+    dispatch({ type: "review/start", id: application.id });
+
+    try {
+      await deleteExpert(basePath, application.user_id);
+      const items = await fetchApplications(basePath);
+      dispatch({ type: "refresh/success", items });
+      dispatch({ type: "review/done" });
+    } catch (error) {
+      dispatch({ type: "review/error", message: describe(error, "Не удалось удалить эксперта") });
+    }
+  };
+
   const refresh = async () => {
     dispatch({ type: "refresh/start" });
 
@@ -58,5 +78,5 @@ export const useApplications = (initialItems: ExpertApplicationRecord[], basePat
     }
   };
 
-  return { state, visibleItems, setFilter, approve, reject, refresh };
+  return { state, visibleItems, setFilter, approve, reject, removeExpert, refresh };
 };

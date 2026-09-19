@@ -37,6 +37,9 @@ export const submitExpertApplication = async (
   return created;
 };
 
+export const myCertificateScanUrl = (certificateId: number): string =>
+  `${API_URL}/v1/experts/me/certificates/${certificateId}/scan`;
+
 export const fetchExpertProfile = async (): Promise<ExpertProfile> => {
   const response = await fetch(`${API_URL}/v1/experts/me`, {
     credentials: "include",

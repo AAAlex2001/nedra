@@ -2,6 +2,7 @@
 
 import { formatRequestDate, type RequestRecord } from "@/entities/request";
 import { findByActivity } from "@/entities/service";
+import Spinner from "@/shared/ui/spinner";
 import styles from "./style.module.scss";
 
 type RequestCardProps = {
@@ -35,7 +36,7 @@ const RequestCard = ({ request, pending, onDelete }: RequestCardProps) => {
           disabled={pending}
           onClick={handleDelete}
         >
-          {pending ? "Удаляем…" : "Удалить"}
+          {pending ? <Spinner size={14} /> : "Удалить"}
         </button>
       </header>
 

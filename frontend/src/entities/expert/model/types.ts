@@ -7,6 +7,7 @@ export type ExpertiseObject = {
   code: string;
   label: string;
   title: string;
+  description: string;
 };
 
 export type AttestationArea = {
@@ -15,11 +16,17 @@ export type AttestationArea = {
   objects: string[];
 };
 
+export type HazardClass = {
+  hazard_class: number;
+  category: number;
+};
+
 export type ExpertCatalog = {
   directions: Direction[];
   areas: AttestationArea[];
   objects: ExpertiseObject[];
   categories: number[];
+  hazard_classes: HazardClass[];
 };
 
 export type Certificate = {
@@ -47,6 +54,7 @@ export type ExpertApplicationRecord = {
   directions: string[];
   status: ApplicationStatus;
   admin_comment: string | null;
+  user_id: number | null;
   created_at: string;
   reviewed_at: string | null;
   certificates: Certificate[];

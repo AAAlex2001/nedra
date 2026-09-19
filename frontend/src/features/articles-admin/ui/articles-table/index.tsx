@@ -5,6 +5,7 @@ import Link from "next/link";
 import { SECTION_TITLE, type ArticleAdminCard } from "@/entities/article";
 import { formatDate, isFutureDate } from "@/shared/lib/date";
 import { EyeIcon, ThumbDownIcon, ThumbUpIcon } from "@/shared/ui/icons";
+import Spinner from "@/shared/ui/spinner";
 import { useArticlesList } from "../../model/use-articles-list";
 import styles from "./style.module.scss";
 
@@ -98,7 +99,7 @@ const ArticlesTable = ({ basePath, initialItems }: ArticlesTableProps) => {
                     }
                   }}
                 >
-                  {pending ? "Удаляем…" : "Удалить"}
+                  {pending ? <Spinner size={14} /> : "Удалить"}
                 </button>
               </div>
             </li>

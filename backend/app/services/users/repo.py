@@ -30,6 +30,12 @@ class UserRepository:
 
         return result.scalar_one_or_none()
 
+    async def delete(self, user: User) -> None:
+        """Удалить пользователя. Профиль, удостоверения и уведомления база удалит каскадом."""
+
+        await self.db.delete(user)
+        await self.db.commit()
+
     async def add(self, user: User) -> User:
         """Сохранить нового пользователя.
 

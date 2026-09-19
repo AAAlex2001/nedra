@@ -7,16 +7,17 @@ type ChipProps = {
   children: ReactNode;
   disabled?: boolean;
   title?: string;
+  className?: string;
 };
 
-const Chip = ({ active, onClick, children, disabled, title }: ChipProps) => (
+const Chip = ({ active, onClick, children, disabled, title, className }: ChipProps) => (
   <button
     type="button"
     role="checkbox"
     aria-checked={active}
     title={title}
     disabled={disabled}
-    className={`${styles.chip} ${active ? styles.active : ""}`}
+    className={`${styles.chip} ${active ? styles.active : ""} ${className ?? ""}`}
     onClick={onClick}
   >
     {children}

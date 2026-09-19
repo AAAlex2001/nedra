@@ -11,6 +11,7 @@ import {
 } from "@/entities/expert";
 import { formatRequestDate } from "@/entities/request";
 import { formatDate } from "@/shared/lib/date";
+import Spinner from "@/shared/ui/spinner";
 import { scanUrl } from "../../api/applications";
 import styles from "./style.module.scss";
 
@@ -21,6 +22,7 @@ type ApplicationCardProps = {
   pending: boolean;
   onApprove: (id: number) => void;
   onReject: (id: number, comment: string) => void;
+  onDeleteExpert: (application: ExpertApplicationRecord) => void;
 };
 
 const STATUS_CLASS = {
@@ -36,6 +38,7 @@ const ApplicationCard = ({
   pending,
   onApprove,
   onReject,
+  onDeleteExpert,
 }: ApplicationCardProps) => {
   const handleApprove = () => {
     if (window.confirm(`Одобрить заявку №${application.id} и создать аккаунт эксперта?`)) {
@@ -49,6 +52,18 @@ const ApplicationCard = ({
       onReject(application.id, comment.trim());
     }
   };
+
+  const handleDeleteExpert = () => {
+    if (
+      window.confirm(
+        `Удалить аккаунт эксперта ${application.full_name}? Удостоверения и доступ в кабинет пропадут.`,
+      )
+    ) {
+      onDeleteExpert(application);
+    }
+  };
+
+  const canDeleteExpert = application.status === "approved" && application.user_id !== null;
 
   return (
     <article className={`${styles.card} ${pending ? styles.cardPending : ""}`}>
@@ -71,7 +86,7 @@ const ApplicationCard = ({
               disabled={pending}
               onClick={handleApprove}
             >
-              {pending ? "Сохраняем…" : "Одобрить"}
+              {pending ? <Spinner size={14} tone="light" /> : "Одобрить"}
             </button>
             <button
               type="button"
@@ -80,6 +95,19 @@ const ApplicationCard = ({
               onClick={handleReject}
             >
               Отклонить
+            </button>
+          </div>
+        )}
+
+        {canDeleteExpert && (
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.reject}
+              disabled={pending}
+              onClick={handleDeleteExpert}
+            >
+              {pending ? <Spinner size={14} /> : "Удалить эксперта"}
             </button>
           </div>
         )}

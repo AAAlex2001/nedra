@@ -21,6 +21,9 @@ export const applicationsReducer = (
     case "review/error":
       return { ...state, pendingId: null, error: action.message };
 
+    case "review/done":
+      return { ...state, pendingId: null };
+
     case "refresh/start":
       return { ...state, refreshing: true, error: null };
 

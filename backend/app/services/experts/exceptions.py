@@ -27,3 +27,7 @@ class ApplicationAlreadyReviewedError(Exception):
 
 class CertificateNotFoundError(LookupError):
     """Удостоверения с таким идентификатором нет в этой заявке."""
+
+
+class ExpertNotFoundError(LookupError):
+    """Пользователя с такой ролью эксперта нет."""

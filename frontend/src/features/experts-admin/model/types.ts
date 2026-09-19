@@ -15,6 +15,7 @@ export type ApplicationsAction =
   | { type: "review/start"; id: number }
   | { type: "review/success"; item: ExpertApplicationRecord }
   | { type: "review/error"; message: string }
+  | { type: "review/done" }
   | { type: "refresh/start" }
   | { type: "refresh/success"; items: ExpertApplicationRecord[] }
   | { type: "refresh/error"; message: string };

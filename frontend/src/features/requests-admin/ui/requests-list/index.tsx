@@ -19,8 +19,8 @@ const RequestsList = ({ initialItems, basePath }: RequestsListProps) => {
       <div className={styles.toolbar}>
         <span className={styles.count}>Всего заявок: {state.items.length}</span>
 
-        <Button onClick={() => void refresh()} disabled={state.refreshing}>
-          {state.refreshing ? "Обновляем…" : "Обновить"}
+        <Button onClick={() => void refresh()} loading={state.refreshing}>
+          Обновить
         </Button>
       </div>
 

@@ -22,10 +22,8 @@ const FILTERS: { value: StatusFilter; label: string }[] = [
 ];
 
 const ApplicationsList = ({ initialItems, catalog, basePath }: ApplicationsListProps) => {
-  const { state, visibleItems, setFilter, approve, reject, refresh } = useApplications(
-    initialItems,
-    basePath,
-  );
+  const { state, visibleItems, setFilter, approve, reject, removeExpert, refresh } =
+    useApplications(initialItems, basePath);
 
   return (
     <div className={styles.root}>
@@ -42,8 +40,8 @@ const ApplicationsList = ({ initialItems, catalog, basePath }: ApplicationsListP
           ))}
         </div>
 
-        <Button onClick={() => void refresh()} disabled={state.refreshing}>
-          {state.refreshing ? "Обновляем…" : "Обновить"}
+        <Button onClick={() => void refresh()} loading={state.refreshing}>
+          Обновить
         </Button>
       </div>
 
@@ -62,6 +60,7 @@ const ApplicationsList = ({ initialItems, catalog, basePath }: ApplicationsListP
                 pending={state.pendingId === item.id}
                 onApprove={(id) => void approve(id)}
                 onReject={(id, comment) => void reject(id, comment)}
+                onDeleteExpert={(application) => void removeExpert(application)}
               />
             </li>
           ))}

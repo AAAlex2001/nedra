@@ -11,6 +11,7 @@ import {
   type TagAdmin,
 } from "@/entities/article";
 import Button from "@/shared/ui/button";
+import Spinner from "@/shared/ui/spinner";
 import TextField from "@/shared/ui/text-field";
 import { useArticleEditor } from "../../model/use-article-editor";
 import styles from "./style.module.scss";
@@ -126,7 +127,7 @@ const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => 
             </div>
 
             <label className={styles.upload}>
-              {uploading ? "Загружаем…" : "Загрузить файл"}
+              {uploading ? <Spinner size={14} /> : "Загрузить файл"}
               <input
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
@@ -238,8 +239,8 @@ const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => 
       {error && <p className={styles.error}>{error}</p>}
 
       <div className={styles.actions}>
-        <Button type="submit" disabled={status === "saving" || uploading}>
-          {status === "saving" ? "Сохраняем…" : article ? "Сохранить" : "Создать статью"}
+        <Button type="submit" disabled={uploading} loading={status === "saving"}>
+          {article ? "Сохранить" : "Создать статью"}
         </Button>
 
         {status === "saved" && <span className={styles.saved}>Сохранено</span>}

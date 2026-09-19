@@ -1,4 +1,5 @@
 .button {
+  position: relative;
   box-sizing: border-box;
 
   display: inline-flex;
@@ -24,6 +25,23 @@
     opacity: 0.6;
     cursor: default;
   }
+
+  &.loading {
+    opacity: 1;
+  }
+
+  &.loading .text {
+    visibility: hidden;
+  }
+}
+
+.spinner {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .text {

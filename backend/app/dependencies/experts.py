@@ -10,6 +10,7 @@ from app.database import get_session
 from app.dependencies.users import get_user_repository
 from app.services.experts.repo import ExpertApplicationRepository, ExpertProfileRepository
 from app.services.experts.usecases.approve_application import ApproveExpertApplicationUseCase
+from app.services.experts.usecases.delete_expert import DeleteExpertUseCase
 from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
 from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
 from app.services.files.storage import PrivateStorage
@@ -55,6 +56,15 @@ def get_approve_application_usecase(
     """Сценарий одобрения заявки."""
 
     return ApproveExpertApplicationUseCase(applications, users)
+
+
+def get_delete_expert_usecase(
+    users: UserRepository = Depends(get_user_repository),
+    applications: ExpertApplicationRepository = Depends(get_application_repository),
+) -> DeleteExpertUseCase:
+    """Сценарий удаления эксперта."""
+
+    return DeleteExpertUseCase(users, applications)
 
 
 def get_reject_application_usecase(

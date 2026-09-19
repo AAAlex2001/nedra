@@ -9,6 +9,7 @@ export const tariffGridReducer = (
       return {
         ...state,
         values: { ...state.values, [action.key]: action.value },
+        dirty: true,
         status: "idle",
         error: null,
       };
@@ -17,7 +18,7 @@ export const tariffGridReducer = (
       return { ...state, status: "saving", error: null };
 
     case "save/success":
-      return { ...state, status: "saved", values: action.values, saved: action.values };
+      return { ...state, status: "saved", values: action.values, dirty: false };
 
     case "save/error":
       return { ...state, status: "error", error: action.message };

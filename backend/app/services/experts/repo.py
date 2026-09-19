@@ -32,6 +32,14 @@ class ExpertApplicationRepository:
 
         return await self.db.get(ExpertApplication, application_id)
 
+    async def get_by_user_id(self, user_id: int) -> ExpertApplication | None:
+        """Заявка, из которой был создан этот пользователь-эксперт, или None."""
+
+        stmt = select(ExpertApplication).where(ExpertApplication.user_id == user_id)
+        result = await self.db.execute(stmt)
+
+        return result.scalar_one_or_none()
+
     async def has_pending(self, email: str) -> bool:
         """Есть ли по этому email заявка, которая ещё ждёт проверки."""
 

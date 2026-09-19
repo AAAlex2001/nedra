@@ -11,10 +11,12 @@ from app.schemas.expert import CertificateInSchema, ExpertApplicationInSchema
 from app.services.experts.exceptions import (
     ApplicationAlreadyPendingError,
     ApplicationAlreadyReviewedError,
+    ExpertNotFoundError,
     InvalidCertificateError,
     InvalidDirectionError,
 )
 from app.services.experts.usecases.approve_application import ApproveExpertApplicationUseCase
+from app.services.experts.usecases.delete_expert import DeleteExpertUseCase
 from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
 from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
 from app.services.experts.validators import validate_certificate, validate_directions
@@ -24,9 +26,20 @@ from app.services.users.exceptions import EmailAlreadyTakenError
 class FakeUserRepository:
     def __init__(self) -> None:
         self.users: dict[str, User] = {}
+        self.deleted: list[User] = []
 
     async def get_by_email(self, email: str) -> User | None:
         return self.users.get(email)
+
+    async def get_by_id(self, user_id: int) -> User | None:
+        for user in self.users.values():
+            if user.id == user_id:
+                return user
+        return None
+
+    async def delete(self, user: User) -> None:
+        self.deleted.append(user)
+        del self.users[user.email]
 
 
 class FakeApplicationRepository:
@@ -37,6 +50,12 @@ class FakeApplicationRepository:
     async def get_by_id(self, application_id: int) -> ExpertApplication | None:
         for item in self.items:
             if item.id == application_id:
+                return item
+        return None
+
+    async def get_by_user_id(self, user_id: int) -> ExpertApplication | None:
+        for item in self.items:
+            if item.user_id == user_id:
                 return item
         return None
 
@@ -190,6 +209,26 @@ def test_approve_creates_expert_user() -> None:
 
     with pytest.raises(ApplicationAlreadyReviewedError):
         asyncio.run(usecase.execute(1))
+
+
+def test_delete_expert_marks_application_rejected() -> None:
+    applications = FakeApplicationRepository()
+    users = FakeUserRepository()
+    asyncio.run(make_usecase(applications, users).execute(make_payload(), []))
+    asyncio.run(ApproveExpertApplicationUseCase(applications, users).execute(1))
+    expert = applications.approved[0][1]
+    users.users[expert.email] = expert
+
+    asyncio.run(DeleteExpertUseCase(users, applications).execute(expert.id))
+
+    application = applications.items[0]
+    assert users.deleted == [expert]
+    assert application.status == ApplicationStatus.REJECTED
+    assert application.user_id is None
+    assert application.admin_comment == "Аккаунт эксперта удалён администратором"
+
+    with pytest.raises(ExpertNotFoundError):
+        asyncio.run(DeleteExpertUseCase(users, applications).execute(expert.id))
 
 
 def test_reject_stores_comment() -> None:

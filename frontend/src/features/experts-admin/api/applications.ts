@@ -57,5 +57,16 @@ export const rejectApplication = async (
   return updated;
 };
 
+export const deleteExpert = async (basePath: string, userId: number): Promise<void> => {
+  const response = await fetch(`${basePath}/api/experts/${userId}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    const message = await readErrorMessage(response);
+    throw new Error(message);
+  }
+};
+
 export const scanUrl = (basePath: string, applicationId: number, certificateId: number) =>
   `${basePath}/api/experts/applications/${applicationId}/certificates/${certificateId}/scan`;

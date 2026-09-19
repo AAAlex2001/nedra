@@ -5,6 +5,7 @@ from app.dependencies.admin import require_admin
 from app.dependencies.experts import (
     get_application_repository,
     get_approve_application_usecase,
+    get_delete_expert_usecase,
     get_private_storage,
     get_reject_application_usecase,
 )
@@ -13,10 +14,12 @@ from app.schemas.expert import ExpertApplicationOutSchema, RejectApplicationSche
 from app.services.experts.exceptions import (
     ApplicationAlreadyReviewedError,
     ApplicationNotFoundError,
+    ExpertNotFoundError,
 )
 from app.services.experts.letters import send_application_approved, send_application_rejected
 from app.services.experts.repo import ExpertApplicationRepository
 from app.services.experts.usecases.approve_application import ApproveExpertApplicationUseCase
+from app.services.experts.usecases.delete_expert import DeleteExpertUseCase
 from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
 from app.services.files.storage import PrivateStorage
 from app.services.users.exceptions import EmailAlreadyTakenError
@@ -110,6 +113,19 @@ async def reject_application(
     background_tasks.add_task(send_application_rejected, application)
 
     return ExpertApplicationOutSchema.model_validate(application)
+
+
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_expert(
+    user_id: int,
+    usecase: DeleteExpertUseCase = Depends(get_delete_expert_usecase),
+) -> None:
+    """Удалить аккаунт эксперта. Его заявка остаётся в истории как отклонённая."""
+
+    try:
+        await usecase.execute(user_id)
+    except ExpertNotFoundError as error:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
 
 
 @router.get("/applications/{application_id}/certificates/{certificate_id}/scan")

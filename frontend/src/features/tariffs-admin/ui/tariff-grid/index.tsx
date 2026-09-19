@@ -13,22 +13,17 @@ type TariffGridProps = {
 };
 
 const TariffGrid = ({ catalog, initialTariffs, basePath }: TariffGridProps) => {
-  const { state, changedKeys, changeCell, save } = useTariffGrid(initialTariffs, basePath);
+  const { state, changeCell, save } = useTariffGrid(initialTariffs, basePath);
 
   return (
     <div className={styles.root}>
       <div className={styles.toolbar}>
         <span className={styles.count}>
-          {changedKeys.length === 0
-            ? "Изменений нет"
-            : `Изменено ячеек: ${changedKeys.length}`}
+          {state.dirty ? "Есть несохранённые изменения" : "Изменений нет"}
         </span>
 
-        <Button
-          onClick={() => void save()}
-          disabled={changedKeys.length === 0 || state.status === "saving"}
-        >
-          {state.status === "saving" ? "Сохраняем…" : "Сохранить"}
+        <Button onClick={() => void save()} disabled={!state.dirty} loading={state.status === "saving"}>
+          Сохранить
         </Button>
       </div>
 
@@ -57,13 +52,12 @@ const TariffGrid = ({ catalog, initialTariffs, basePath }: TariffGridProps) => {
                 {catalog.objects.map((item) => {
                   const key = tariffKey(area.code, item.code);
                   const allowed = area.objects.includes(item.code);
-                  const changed = changedKeys.includes(key);
 
                   return (
                     <td key={item.code} className={styles.cell}>
                       {allowed ? (
                         <input
-                          className={`${styles.input} ${changed ? styles.inputChanged : ""}`}
+                          className={styles.input}
                           inputMode="numeric"
                           placeholder="—"
                           aria-label={`${area.code}, ${item.label}`}

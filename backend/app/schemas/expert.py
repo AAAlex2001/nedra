@@ -93,6 +93,7 @@ class ExpertApplicationOutSchema(BaseModel):
     directions: list[str]
     status: ApplicationStatus
     admin_comment: str | None
+    user_id: int | None
     created_at: datetime
     reviewed_at: datetime | None
     certificates: list[CertificateOutSchema]

@@ -7,6 +7,7 @@ export type {
   ExpertCatalog,
   ExpertiseObject,
   ExpertProfile,
+  HazardClass,
 } from "./model/types";
 export { APPLICATION_STATUS_LABELS } from "./model/types";
 export {
@@ -19,6 +20,7 @@ export {
 export {
   fetchExpertCatalog,
   fetchExpertProfile,
+  myCertificateScanUrl,
   submitExpertApplication,
   type ApplicationCreated,
 } from "./api/experts";

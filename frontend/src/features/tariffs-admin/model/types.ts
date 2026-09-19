@@ -2,7 +2,7 @@ export type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 export type TariffGridState = {
   values: Record<string, string>;
-  saved: Record<string, string>;
+  dirty: boolean;
   status: SaveStatus;
   error: string | null;
 };
