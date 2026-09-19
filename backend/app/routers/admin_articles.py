@@ -116,7 +116,7 @@ async def list_tags(
 ) -> list[TagAdminSchema]:
     """Все теги с идентификаторами."""
 
-    items = await tags.list(None)
+    items = await tags.list_all(None)
 
     return [TagAdminSchema.model_validate(item) for item in items]
 

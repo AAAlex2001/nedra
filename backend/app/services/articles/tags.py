@@ -14,7 +14,7 @@ class TagRepository:
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
-    async def list(self, section: str | None) -> list[Tag]:
+    async def list_all(self, section: str | None) -> list[Tag]:
         """Теги по алфавиту.
 
         Если передан section — только теги, которыми отмечена хотя бы одна

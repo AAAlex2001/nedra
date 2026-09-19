@@ -54,7 +54,7 @@ async def get_tags(
 ) -> list[TagSchema]:
     """Теги для фильтра списка статей."""
 
-    items = await tags.list(section)
+    items = await tags.list_all(section)
 
     return [TagSchema.model_validate(item) for item in items]
 
