@@ -1,6 +1,5 @@
 """Репозитории экспертов: заявки на регистрацию и профили."""
 
-from dataclasses import dataclass
 from datetime import date
 
 from sqlalchemy import select
@@ -8,15 +7,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.expert import ApplicationStatus, ExpertApplication, ExpertCertificate, ExpertProfile
 from app.models.user import User
-
-
-@dataclass(frozen=True)
-class PublicExpert:
-    """Одобренный эксперт с действующими удостоверениями для публичного каталога."""
-
-    user: User
-    profile: ExpertProfile
-    certificates: list[ExpertCertificate]
 
 
 class ExpertApplicationRepository:
@@ -119,17 +109,6 @@ class ExpertProfileRepository:
 
         return list(result.scalars().all())
 
-    async def get_certificate(self, user_id: int, certificate_id: int) -> ExpertCertificate | None:
-        """Удостоверение эксперта по id, только если принадлежит этому эксперту."""
-
-        stmt = select(ExpertCertificate).where(
-            ExpertCertificate.id == certificate_id,
-            ExpertCertificate.user_id == user_id,
-        )
-        result = await self.db.execute(stmt)
-
-        return result.scalar_one_or_none()
-
     async def list_certified(
         self, object_code: str, area_code: str, max_category: int
     ) -> list[User]:
@@ -152,49 +131,3 @@ class ExpertProfileRepository:
         result = await self.db.execute(stmt)
 
         return list(result.scalars().all())
-
-    async def list_public(self) -> list[PublicExpert]:
-        """Все одобренные эксперты с действующими удостоверениями, по алфавиту.
-
-        Просроченные удостоверения не показываем: по ним эксперт не имеет
-        права выдавать заключение. Эксперт без единого действующего
-        удостоверения в каталог не попадает.
-        """
-
-        today = date.today()
-
-        certificates_stmt = (
-            select(ExpertCertificate)
-            .where(
-                ExpertCertificate.user_id.is_not(None),
-                ExpertCertificate.valid_until >= today,
-            )
-            .order_by(ExpertCertificate.area_code, ExpertCertificate.object_code)
-        )
-        certificates_result = await self.db.execute(certificates_stmt)
-        certificates = list(certificates_result.scalars().all())
-
-        by_user: dict[int, list[ExpertCertificate]] = {}
-        for certificate in certificates:
-            if certificate.user_id is None:
-                continue
-            by_user.setdefault(certificate.user_id, []).append(certificate)
-
-        if not by_user:
-            return []
-
-        experts_stmt = (
-            select(User, ExpertProfile)
-            .join(ExpertProfile, ExpertProfile.user_id == User.id)
-            .where(User.id.in_(by_user.keys()))
-            .order_by(User.full_name)
-        )
-        experts_result = await self.db.execute(experts_stmt)
-
-        experts: list[PublicExpert] = []
-        for user, profile in experts_result.all():
-            experts.append(
-                PublicExpert(user=user, profile=profile, certificates=by_user[user.id])
-            )
-
-        return experts
