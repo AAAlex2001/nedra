@@ -1,7 +1,12 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi.responses import FileResponse
 from pydantic import ValidationError
 
-from app.dependencies.experts import get_profile_repository, get_submit_application_usecase
+from app.dependencies.experts import (
+    get_private_storage,
+    get_profile_repository,
+    get_submit_application_usecase,
+)
 from app.dependencies.users import require_expert
 from app.models.user import User
 from app.schemas.expert import (
@@ -25,7 +30,7 @@ from app.services.experts.exceptions import (
 from app.services.experts.letters import send_application_received
 from app.services.experts.repo import ExpertProfileRepository
 from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
-from app.services.files.storage import UploadError
+from app.services.files.storage import PrivateStorage, UploadError
 from app.services.users.exceptions import EmailAlreadyTakenError, InvalidPhoneError, WeakPasswordError
 
 
@@ -75,6 +80,33 @@ async def get_directory(
         )
         for expert in experts
     ]
+
+
+@router.get("/directory/{expert_id}/certificates/{certificate_id}/scan")
+async def get_certificate_scan(
+    expert_id: int,
+    certificate_id: int,
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+    storage: PrivateStorage = Depends(get_private_storage),
+) -> FileResponse:
+    """Скан удостоверения одобренного эксперта. Открывается в браузере, а не скачивается."""
+
+    certificate = await profiles.get_certificate(expert_id, certificate_id)
+    if certificate is None or certificate.scan_path is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Скан не найден",
+        )
+
+    try:
+        path = storage.resolve(certificate.scan_path)
+    except FileNotFoundError as error:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Файл скана отсутствует",
+        ) from error
+
+    return FileResponse(path, content_disposition_type="inline")
 
 
 @router.post("/applications", status_code=status.HTTP_201_CREATED)

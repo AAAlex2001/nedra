@@ -112,14 +112,16 @@ class ExpertProfileOutSchema(BaseModel):
 
 
 class PublicCertificateSchema(BaseModel):
-    """Удостоверение в публичном каталоге: без сканов и внутренних полей."""
+    """Удостоверение в публичном каталоге. scan_name говорит, есть ли скан для просмотра."""
 
     model_config = ConfigDict(from_attributes=True)
 
+    id: int
     area_code: str
     object_code: str
     category: int
     valid_until: date
+    scan_name: str | None
 
 
 class PublicExpertSchema(BaseModel):
