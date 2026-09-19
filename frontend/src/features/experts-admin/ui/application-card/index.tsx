@@ -1,0 +1,162 @@
+"use client";
+
+import {
+  APPLICATION_STATUS_LABELS,
+  areaTitle,
+  directionTitle,
+  formatCategory,
+  objectLabel,
+  type ExpertApplicationRecord,
+  type ExpertCatalog,
+} from "@/entities/expert";
+import { formatRequestDate } from "@/entities/request";
+import { formatDate } from "@/shared/lib/date";
+import { scanUrl } from "../../api/applications";
+import styles from "./style.module.scss";
+
+type ApplicationCardProps = {
+  application: ExpertApplicationRecord;
+  catalog: ExpertCatalog | null;
+  basePath: string;
+  pending: boolean;
+  onApprove: (id: number) => void;
+  onReject: (id: number, comment: string) => void;
+};
+
+const STATUS_CLASS = {
+  pending: "statusPending",
+  approved: "statusApproved",
+  rejected: "statusRejected",
+} as const;
+
+const ApplicationCard = ({
+  application,
+  catalog,
+  basePath,
+  pending,
+  onApprove,
+  onReject,
+}: ApplicationCardProps) => {
+  const handleApprove = () => {
+    if (window.confirm(`Одобрить заявку №${application.id} и создать аккаунт эксперта?`)) {
+      onApprove(application.id);
+    }
+  };
+
+  const handleReject = () => {
+    const comment = window.prompt("Причина отклонения. Её увидит эксперт в письме:");
+    if (comment && comment.trim().length >= 3) {
+      onReject(application.id, comment.trim());
+    }
+  };
+
+  return (
+    <article className={`${styles.card} ${pending ? styles.cardPending : ""}`}>
+      <header className={styles.head}>
+        <div className={styles.headMain}>
+          <span className={styles.id}>№{application.id}</span>
+          <time className={styles.date} dateTime={application.created_at}>
+            {formatRequestDate(application.created_at)}
+          </time>
+          <span className={`${styles.status} ${styles[STATUS_CLASS[application.status]]}`}>
+            {APPLICATION_STATUS_LABELS[application.status]}
+          </span>
+        </div>
+
+        {application.status === "pending" && (
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.approve}
+              disabled={pending}
+              onClick={handleApprove}
+            >
+              {pending ? "Сохраняем…" : "Одобрить"}
+            </button>
+            <button
+              type="button"
+              className={styles.reject}
+              disabled={pending}
+              onClick={handleReject}
+            >
+              Отклонить
+            </button>
+          </div>
+        )}
+      </header>
+
+      <dl className={styles.details}>
+        <div className={styles.detail}>
+          <dt className={styles.term}>Эксперт</dt>
+          <dd className={styles.value}>{application.full_name}</dd>
+        </div>
+        <div className={styles.detail}>
+          <dt className={styles.term}>Email</dt>
+          <dd className={styles.value}>
+            <a className={styles.link} href={`mailto:${application.email}`}>
+              {application.email}
+            </a>
+          </dd>
+        </div>
+        <div className={styles.detail}>
+          <dt className={styles.term}>Телефон</dt>
+          <dd className={styles.value}>
+            <a className={styles.link} href={`tel:${application.phone}`}>
+              {application.phone}
+            </a>
+          </dd>
+        </div>
+      </dl>
+
+      <div className={styles.block}>
+        <span className={styles.blockTitle}>Направления</span>
+        <div className={styles.tags}>
+          {application.directions.map((code) => (
+            <span key={code} className={styles.tag}>
+              {catalog ? directionTitle(catalog, code) : code}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className={styles.block}>
+        <span className={styles.blockTitle}>Удостоверения</span>
+        <ul className={styles.certificates}>
+          {application.certificates.map((item) => (
+            <li key={item.id} className={styles.certificate}>
+              <div className={styles.certificateHead}>
+                <span className={styles.code}>{item.area_code}</span>
+                <span className={styles.object}>
+                  {catalog ? objectLabel(catalog, item.object_code) : item.object_code}
+                </span>
+                <span className={styles.meta}>{formatCategory(item.category)}</span>
+                <span className={styles.meta}>до {formatDate(item.valid_until)}</span>
+                {item.scan_name ? (
+                  <a
+                    className={styles.scanLink}
+                    href={scanUrl(basePath, application.id, item.id)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Скан
+                  </a>
+                ) : (
+                  <span className={styles.noScan}>без скана</span>
+                )}
+              </div>
+              {catalog && (
+                <p className={styles.certificateTitle}>{areaTitle(catalog, item.area_code)}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {application.admin_comment && (
+        <p className={styles.comment}>Причина отклонения: {application.admin_comment}</p>
+      )}
+    </article>
+  );
+};
+
+export default ApplicationCard;

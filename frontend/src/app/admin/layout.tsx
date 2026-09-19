@@ -20,6 +20,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <Link href={`${basePath}/articles`} className={styles.link}>
           Статьи
         </Link>
+        <Link href={`${basePath}/experts`} className={styles.link}>
+          Эксперты
+        </Link>
+        <Link href={`${basePath}/tariffs`} className={styles.link}>
+          Тарифы
+        </Link>
       </nav>
 
       {children}

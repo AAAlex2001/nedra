@@ -1,0 +1,302 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 18px;
+
+  transition: opacity 0.2s ease;
+}
+
+.cardPending {
+  opacity: 0.5;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.headMain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.id {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+.date {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+
+  color: #7b8190;
+}
+
+.status {
+  padding: 5px 10px;
+
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+
+  border-radius: 100px;
+}
+
+.statusPending {
+  color: #8a4c00;
+  background: #fdf3e6;
+}
+
+.statusApproved {
+  color: #1f6b3a;
+  background: #e6f6ec;
+}
+
+.statusRejected {
+  color: #b23b2c;
+  background: #fdeceb;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.approve,
+.reject {
+  padding: 8px 16px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.approve {
+  color: #fff;
+  background: #f69827;
+  border: 1px solid #f69827;
+}
+
+.approve:hover:not(:disabled) {
+  background: #e9850f;
+}
+
+.reject {
+  color: #b23b2c;
+  background: #fdeceb;
+  border: 1px solid #f6d5d1;
+}
+
+.reject:hover:not(:disabled) {
+  background: #f9d9d6;
+}
+
+.approve:disabled,
+.reject:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.term {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #9aa0ad;
+}
+
+.value {
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #0b0b0b;
+  word-break: break-word;
+}
+
+.link {
+  color: #0b0b0b;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #f69827;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+
+  border-top: 1px solid #f0f2f6;
+}
+
+.blockTitle {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #9aa0ad;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 6px 12px;
+
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #4a5060;
+  background: #f2f4f8;
+  border-radius: 999px;
+}
+
+.certificates {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  list-style: none;
+}
+
+.certificate {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+
+  background: #f5f6f8;
+  border-radius: 12px;
+}
+
+.certificateHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.code {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.object {
+  padding: 4px 10px;
+
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b86108;
+  background: #fff2e2;
+  border-radius: 100px;
+}
+
+.meta {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #0b0b0b;
+}
+
+.scanLink {
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #f69827;
+}
+
+.noScan {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #9aa0ad;
+}
+
+.certificateTitle {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #6c7078;
+}
+
+.comment {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+}
+
+@media (min-width: 768px) {
+  .head {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .details {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}

@@ -1,0 +1,55 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  list-style: none;
+}
+
+.error {
+  padding: 14px 16px;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+  background: #fdeceb;
+  border-radius: 12px;
+}
+
+.empty {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+
+  color: #7b8190;
+}
+
+@media (min-width: 768px) {
+  .toolbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

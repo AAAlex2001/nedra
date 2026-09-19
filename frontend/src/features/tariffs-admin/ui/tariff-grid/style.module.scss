@@ -1,0 +1,167 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.count {
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #6c7078;
+}
+
+.saved {
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #1f6b3a;
+}
+
+.error {
+  padding: 14px 16px;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+  background: #fdeceb;
+  border-radius: 12px;
+}
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+
+  border: 1px solid #eceef3;
+  border-radius: 14px;
+}
+
+.table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.headArea,
+.headObject {
+  padding: 12px 14px;
+
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: left;
+
+  color: #6c7078;
+  background: #f5f6f8;
+  border-bottom: 1px solid #eceef3;
+}
+
+.headObject {
+  text-align: center;
+}
+
+.area {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+
+  min-width: 220px;
+  max-width: 320px;
+
+  text-align: left;
+
+  border-bottom: 1px solid #f0f2f6;
+}
+
+.areaCode {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #0b0b0b;
+}
+
+.areaTitle {
+  overflow: hidden;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #7b8190;
+}
+
+.cell {
+  padding: 6px 8px;
+
+  text-align: center;
+
+  border-bottom: 1px solid #f0f2f6;
+}
+
+.input {
+  width: 96px;
+  padding: 8px 10px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: right;
+
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 10px;
+
+  transition: border-color 0.15s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #f69827;
+}
+
+.inputChanged {
+  border-color: #f69827;
+  background: #fff9f2;
+}
+
+.na {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+
+  color: #c9ced8;
+}
+
+.hint {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}

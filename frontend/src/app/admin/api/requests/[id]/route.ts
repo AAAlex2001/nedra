@@ -7,7 +7,7 @@ type RouteContext = {
   params: Promise<{ id: string }>;
 };
 
-export async function DELETE(_request: Request, context: RouteContext) {
+export async function DELETE(request: Request, context: RouteContext) {
   const id = parseId((await context.params).id);
 
   if (id === null) {
