@@ -9,6 +9,7 @@ from app.models.expert import (
     ExpertCertificate,
     ExpertProfile,
 )
+from app.models.tariff import Tariff
 
 __all__ = [
     "Base",
@@ -25,4 +26,5 @@ __all__ = [
     "ExpertApplication",
     "ExpertCertificate",
     "ExpertProfile",
+    "Tariff",
 ]

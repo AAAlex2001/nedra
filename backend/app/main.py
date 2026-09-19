@@ -13,6 +13,7 @@ from app.routers import (
     experts,
     payments,
     requests,
+    tariffs,
 )
 
 settings = get_settings()
@@ -42,6 +43,7 @@ app.include_router(auth.router, prefix="/api/v1")
 app.include_router(payments.router, prefix="/api/v1")
 app.include_router(experts.router, prefix="/api/v1")
 app.include_router(admin_experts.router, prefix="/api/v1")
+app.include_router(tariffs.router, prefix="/api/v1")
 app.include_router(requests.router, prefix="/api/v1")
 app.include_router(articles.router, prefix="/api/v1")
 app.include_router(admin_articles.router, prefix="/api/v1")
