@@ -80,7 +80,7 @@ def make_payload(email: str = "Expert@Example.com") -> ExpertApplicationInSchema
         directions=["industrial_safety", "sms_audit"],
         certificates=[
             CertificateInSchema(
-                area_code="Э1", object_code="kl_tp", category=2, valid_until=date(2028, 1, 1)
+                area_code="Э1", object_code="kl", category=2, valid_until=date(2028, 1, 1)
             )
         ],
     )
@@ -94,13 +94,14 @@ def make_usecase(
 
 def test_validate_certificate_combinations() -> None:
     validate_certificate("Э4", "kl", 1)
-    validate_certificate("Э1", "kl_tp", 3)
-
-    with pytest.raises(InvalidCertificateError):
-        validate_certificate("Э1", "kl", 1)
+    validate_certificate("Э1", "tp", 3)
+    validate_certificate("Э2", "d", 2)
 
     with pytest.raises(InvalidCertificateError):
         validate_certificate("Э1", "d", 1)
+
+    with pytest.raises(InvalidCertificateError):
+        validate_certificate("Э1", "kl_tp", 1)
 
     with pytest.raises(InvalidCertificateError):
         validate_certificate("Э99", "tu", 1)

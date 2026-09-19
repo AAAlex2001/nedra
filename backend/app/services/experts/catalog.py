@@ -52,16 +52,14 @@ DIRECTIONS: list[Direction] = [
 OBJECTS: list[ExpertiseObject] = [
     ExpertiseObject("kl", "КЛ", "Документация на консервацию и ликвидацию"),
     ExpertiseObject("tp", "ТП", "Документация на техническое перевооружение"),
-    ExpertiseObject("kl_tp", "КЛ/ТП", "Документация на консервацию, ликвидацию и техническое перевооружение"),
     ExpertiseObject("zs", "ЗС", "Здания и сооружения"),
     ExpertiseObject("tu", "ТУ", "Технические устройства"),
     ExpertiseObject("d", "Д", "Декларация промышленной безопасности"),
     ExpertiseObject("ob", "ОБ", "Обоснование безопасности"),
 ]
 
-SPLIT_DOCS = ("kl", "tp", "tu", "zs", "d", "ob")
-JOINED_DOCS_WITH_DECLARATION = ("kl_tp", "tu", "zs", "d", "ob")
-JOINED_DOCS_NO_DECLARATION = ("kl_tp", "tu", "zs", "ob")
+WITH_DECLARATION = ("kl", "tp", "tu", "zs", "d", "ob")
+NO_DECLARATION = ("kl", "tp", "tu", "zs", "ob")
 
 AREAS: list[AttestationArea] = [
     AttestationArea(
