@@ -109,6 +109,17 @@ class ExpertProfileRepository:
 
         return list(result.scalars().all())
 
+    async def get_certificate(self, user_id: int, certificate_id: int) -> ExpertCertificate | None:
+        """Удостоверение эксперта по id, только если принадлежит этому эксперту."""
+
+        stmt = select(ExpertCertificate).where(
+            ExpertCertificate.id == certificate_id,
+            ExpertCertificate.user_id == user_id,
+        )
+        result = await self.db.execute(stmt)
+
+        return result.scalar_one_or_none()
+
     async def list_certified(
         self, object_code: str, area_code: str, max_category: int
     ) -> list[User]:
