@@ -17,6 +17,18 @@
   display: none;
 }
 
+.stretched {
+  align-self: stretch;
+
+  width: 100%;
+}
+
+.stretched .tab {
+  flex: 1;
+
+  text-align: center;
+}
+
 .tab {
   padding: 12px 18px;
 

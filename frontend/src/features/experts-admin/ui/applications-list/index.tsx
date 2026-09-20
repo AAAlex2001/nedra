@@ -36,7 +36,13 @@ const ApplicationsList = ({ initialItems, catalog, basePath }: ApplicationsListP
   return (
     <div className={styles.root}>
       <div className={styles.toolbar}>
-        <Tabs items={tabs} active={state.filter} onSelect={selectFilter} label="Статус заявки" />
+        <Tabs
+          items={tabs}
+          active={state.filter}
+          onSelect={selectFilter}
+          label="Статус заявки"
+          stretch
+        />
 
         <Button onClick={() => void refresh()} loading={state.refreshing}>
           Обновить

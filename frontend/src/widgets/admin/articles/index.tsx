@@ -43,7 +43,7 @@ const AdminArticles = ({ basePath, articles, tags, section, error }: AdminArticl
         <OutlineButton href={newHref}>Новая статья</OutlineButton>
       </div>
 
-      <TabLinks items={tabs} active={section ?? "all"} label="Раздел" />
+      <TabLinks items={tabs} active={section ?? "all"} label="Раздел" stretch />
 
       {error ? (
         <p className={styles.error}>{error}</p>

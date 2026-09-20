@@ -17,16 +17,22 @@ type TabsProps = {
   active: string;
   onSelect: (key: string) => void;
   label: string;
+  stretch?: boolean;
 };
 
 type TabLinksProps = {
   items: TabLinkItem[];
   active: string;
   label: string;
+  stretch?: boolean;
 };
 
-export const Tabs = ({ items, active, onSelect, label }: TabsProps) => (
-  <div className={styles.tabs} role="tablist" aria-label={label}>
+export const Tabs = ({ items, active, onSelect, label, stretch }: TabsProps) => (
+  <div
+    className={`${styles.tabs} ${stretch ? styles.stretched : ""}`}
+    role="tablist"
+    aria-label={label}
+  >
     {items.map((item) => (
       <button
         key={item.key}
@@ -42,8 +48,8 @@ export const Tabs = ({ items, active, onSelect, label }: TabsProps) => (
   </div>
 );
 
-export const TabLinks = ({ items, active, label }: TabLinksProps) => (
-  <nav className={styles.tabs} aria-label={label}>
+export const TabLinks = ({ items, active, label, stretch }: TabLinksProps) => (
+  <nav className={`${styles.tabs} ${stretch ? styles.stretched : ""}`} aria-label={label}>
     {items.map((item) => (
       <Link
         key={item.key}

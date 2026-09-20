@@ -28,7 +28,12 @@ const AdminNav = ({ basePath }: AdminNavProps) => {
 
   return (
     <div className={styles.nav}>
-      <TabLinks items={items} active={findActive(pathname, basePath)} label="Разделы админки" />
+      <TabLinks
+        items={items}
+        active={findActive(pathname, basePath)}
+        label="Разделы админки"
+        stretch
+      />
     </div>
   );
 };
