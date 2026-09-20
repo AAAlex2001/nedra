@@ -1,5 +1,7 @@
 """Счета и акты для заказчика: реквизиты, выставление счёта, печать PDF."""
 
+from urllib.parse import quote
+
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 
 from app.dependencies.billing import (
@@ -74,12 +76,14 @@ def to_invoice_schema(invoice: Invoice) -> InvoiceOutSchema:
 
 
 def pdf_response(content: bytes, filename: str) -> Response:
-    """Отдать PDF на скачивание."""
+    """Отдать PDF на скачивание. Кириллицу в имени файла кодируем по RFC 5987."""
+
+    encoded = quote(filename)
 
     return Response(
         content=content,
         media_type=PDF_MEDIA_TYPE,
-        headers={"Content-Disposition": f'attachment; filename*=UTF-8\'\'{filename}'},
+        headers={"Content-Disposition": f"attachment; filename*=UTF-8''{encoded}"},
     )
 
 

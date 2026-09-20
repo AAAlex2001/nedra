@@ -10,6 +10,7 @@ from app.models.billing import CustomerCompany, Invoice, InvoiceStage
 from app.models.expertise import Expertise, ExpertiseStatus
 from app.models.notification import Notification
 from app.models.user import User, UserRole
+from app.routers.billing import pdf_response
 from app.schemas.billing import CompanyInSchema
 from app.services.billing.exceptions import (
     CompanyRequiredError,
@@ -257,6 +258,13 @@ def test_money_words_and_format() -> None:
         "Одна тысяча двести тридцать четыре рубля 56 копеек"
     )
     assert amount_in_words(Decimal("0.01")) == "Ноль рублей 01 копейка"
+
+
+def test_pdf_filename_survives_http_headers() -> None:
+    response = pdf_response(b"%PDF", "Счёт 2026-0001.pdf")
+    disposition = response.headers["content-disposition"]
+
+    assert disposition == "attachment; filename*=UTF-8''%D0%A1%D1%87%D1%91%D1%82%202026-0001.pdf"
 
 
 def test_vat_is_included_in_price() -> None:
