@@ -4,13 +4,12 @@ import type { Certificate } from "@/entities/expert";
 import { objectLabel } from "@/entities/expert";
 import Chip from "@/shared/ui/chip";
 import Loader from "@/shared/ui/loader";
-import type { useIncomingExpertises } from "../../model/use-incoming-expertises";
+import { useIncomingExpertises } from "../../model/use-incoming-expertises";
 import ExpertiseCard from "../expertise-card";
 import styles from "./style.module.scss";
 
 type IncomingExpertisesProps = {
   certificates: Certificate[];
-  incoming: ReturnType<typeof useIncomingExpertises>;
 };
 
 const unique = (values: string[]): string[] => {
@@ -21,9 +20,9 @@ const unique = (values: string[]): string[] => {
   return seen;
 };
 
-const IncomingExpertises = ({ certificates, incoming }: IncomingExpertisesProps) => {
+const IncomingExpertises = ({ certificates }: IncomingExpertisesProps) => {
   const { state, visibleItems, objectCode, areaCode, setObjectCode, setAreaCode, replace } =
-    incoming;
+    useIncomingExpertises();
 
   const objectCodes = unique(certificates.map((item) => item.object_code));
   const areaCodes = unique(certificates.map((item) => item.area_code));

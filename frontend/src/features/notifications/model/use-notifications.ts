@@ -47,20 +47,7 @@ export const useNotifications = () => {
   }, []);
 
   const items = state.status === "ready" ? state.items : [];
-  const unreadItems = items.filter((item) => item.read_at === null);
-  const unread = unreadItems.length;
-
-  const linkedIds: number[] = [];
-  for (const item of unreadItems) {
-    if (item.expertise_id !== null && !linkedIds.includes(item.expertise_id)) {
-      linkedIds.push(item.expertise_id);
-    }
-  }
-
-  const unreadFor = (expertiseIds: number[]): number =>
-    unreadItems.filter(
-      (item) => item.expertise_id !== null && expertiseIds.includes(item.expertise_id),
-    ).length;
+  const unread = items.filter((item) => item.read_at === null).length;
 
   const markRead = async (id: number) => {
     if (state.status !== "ready") return;
@@ -73,14 +60,13 @@ export const useNotifications = () => {
     }
   };
 
-  const markAllRead = async (expertiseIds?: number[]) => {
-    const target = expertiseIds === undefined ? unread : unreadFor(expertiseIds);
-    if (state.status !== "ready" || target === 0) return;
+  const markAllRead = async () => {
+    if (state.status !== "ready" || unread === 0) return;
 
     setPending(true);
 
     try {
-      setState({ status: "ready", items: await markAllNotificationsRead(expertiseIds) });
+      setState({ status: "ready", items: await markAllNotificationsRead() });
     } catch {
       return;
     } finally {
@@ -88,5 +74,5 @@ export const useNotifications = () => {
     }
   };
 
-  return { state, items, unread, linkedIds, unreadFor, pending, markRead, markAllRead };
+  return { state, items, unread, pending, markRead, markAllRead };
 };

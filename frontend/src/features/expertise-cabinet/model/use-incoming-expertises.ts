@@ -61,5 +61,5 @@ export const useIncomingExpertises = () => {
     setState({ ...state, items: next });
   };
 
-  return { state, items, visibleItems, objectCode, areaCode, setObjectCode, setAreaCode, replace };
+  return { state, visibleItems, objectCode, areaCode, setObjectCode, setAreaCode, replace };
 };

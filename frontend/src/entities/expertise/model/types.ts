@@ -79,6 +79,20 @@ export const EXPERTISE_STATUS_LABELS: Record<ExpertiseStatus, string> = {
   accepted: "Работа принята",
 };
 
+export type ExpertiseStatusTone = "wait" | "work" | "alert" | "review" | "done";
+
+export const EXPERTISE_STATUS_TONES: Record<ExpertiseStatus, ExpertiseStatusTone> = {
+  new: "wait",
+  expert_ready: "work",
+  contract: "work",
+  in_progress: "work",
+  remarks: "alert",
+  conclusion_ready: "work",
+  paid: "work",
+  sent: "review",
+  accepted: "done",
+};
+
 export const EXPERTISE_RESULT_LABELS: Record<ExpertiseResult, string> = {
   positive: "Положительное",
   negative: "Отрицательное",

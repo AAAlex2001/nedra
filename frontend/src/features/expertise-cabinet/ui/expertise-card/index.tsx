@@ -9,6 +9,7 @@ import {
 import {
   EXPERTISE_RESULT_LABELS,
   EXPERTISE_STATUS_LABELS,
+  EXPERTISE_STATUS_TONES,
   expertiseDocumentUrl,
   type Expertise,
   type ExpertiseDocument,
@@ -54,6 +55,29 @@ const FilesList = ({ expertiseId, documents }: FilesListProps) => (
   </ul>
 );
 
+type MessageProps = {
+  expertiseId: number;
+  author: "Эксперт" | "Заказчик";
+  date: string;
+  text: string | null;
+  documents: ExpertiseDocument[];
+};
+
+const Message = ({ expertiseId, author, date, text, documents }: MessageProps) => {
+  const tone = author === "Эксперт" ? styles.fromExpert : styles.fromCustomer;
+  const fallback = documents.length === 0 ? "Исправленная документация отправлена повторно" : null;
+
+  return (
+    <div className={`${styles.message} ${tone}`}>
+      <p className={styles.messageMeta}>
+        <span className={styles.author}>{author}</span> · {formatRequestDate(date)}
+      </p>
+      {(text ?? fallback) && <p className={styles.messageText}>{text ?? fallback}</p>}
+      {documents.length > 0 && <FilesList expertiseId={expertiseId} documents={documents} />}
+    </div>
+  );
+};
+
 const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProps) => {
   const documents = expertise.documents ?? [];
   const remarks = expertise.remarks ?? [];
@@ -66,6 +90,9 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
   );
   const conclusion = documents.filter((item) => item.kind === "conclusion");
 
+  const lastRemark = remarks[remarks.length - 1];
+  const remarksResolved = lastRemark !== undefined && lastRemark.resolved_at !== null;
+
   return (
     <article className={styles.card}>
       <div className={styles.head}>
@@ -76,7 +103,9 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
             Заявка №{expertise.id} · {formatRequestDate(expertise.created_at)}
           </p>
         </div>
-        <span className={styles.status}>{EXPERTISE_STATUS_LABELS[expertise.status]}</span>
+        <span className={`${styles.status} ${styles[EXPERTISE_STATUS_TONES[expertise.status]]}`}>
+          {EXPERTISE_STATUS_LABELS[expertise.status]}
+        </span>
       </div>
 
       <ExpertiseProgress status={expertise.status} />
@@ -119,41 +148,40 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
       </DetailsTable>
 
       {remarks.length > 0 && (
-        <div className={styles.remarks}>
-          <p className={styles.remarksTitle}>
-            Рекомендации по приведению объекта экспертизы в соответствие с требованиями
-            промышленной безопасности
-          </p>
+        <section className={styles.remarks}>
+          <header className={styles.remarksHead}>
+            <h4 className={styles.remarksTitle}>
+              Рекомендации по приведению объекта экспертизы в соответствие с требованиями
+              промышленной безопасности
+            </h4>
+            <span className={remarksResolved ? styles.remarksDone : styles.remarksWait}>
+              {remarksResolved ? "Исправления отправлены" : "Ждём исправления"}
+            </span>
+          </header>
 
-          {remarks.map((remark) => {
-            const remarkFiles = remark.documents.filter((item) => item.kind === "remarks");
-            const revisionFiles = remark.documents.filter((item) => item.kind === "revision");
-
-            return (
-              <div key={remark.id} className={styles.remark}>
-                <p className={styles.remarkDate}>{formatRequestDate(remark.created_at)}</p>
-                {remark.text && <p className={styles.remarkText}>{remark.text}</p>}
-                {remarkFiles.length > 0 && (
-                  <FilesList expertiseId={expertise.id} documents={remarkFiles} />
-                )}
-
+          <ol className={styles.thread}>
+            {remarks.map((remark) => (
+              <li key={remark.id} className={styles.round}>
+                <Message
+                  expertiseId={expertise.id}
+                  author="Эксперт"
+                  date={remark.created_at}
+                  text={remark.text}
+                  documents={remark.documents.filter((item) => item.kind === "remarks")}
+                />
                 {remark.resolved_at && (
-                  <div className={styles.remarkResponse}>
-                    <p className={styles.remarkResponseLabel}>
-                      Ответ заказчика · {formatRequestDate(remark.resolved_at)}
-                    </p>
-                    {remark.response_text && (
-                      <p className={styles.remarkText}>{remark.response_text}</p>
-                    )}
-                    {revisionFiles.length > 0 && (
-                      <FilesList expertiseId={expertise.id} documents={revisionFiles} />
-                    )}
-                  </div>
+                  <Message
+                    expertiseId={expertise.id}
+                    author="Заказчик"
+                    date={remark.resolved_at}
+                    text={remark.response_text}
+                    documents={remark.documents.filter((item) => item.kind === "revision")}
+                  />
                 )}
-              </div>
-            );
-          })}
-        </div>
+              </li>
+            ))}
+          </ol>
+        </section>
       )}
 
       <ExpertiseActions expertise={expertise} role={role} onChange={onChange} />

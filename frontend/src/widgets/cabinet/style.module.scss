@@ -213,4 +213,8 @@
     align-items: center;
     justify-content: space-between;
   }
+
+  .toolbar > a {
+    flex: none;
+  }
 }

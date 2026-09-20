@@ -1,16 +1,12 @@
 "use client";
 
 import Loader from "@/shared/ui/loader";
-import type { useAssignedExpertises } from "../../model/use-assigned-expertises";
+import { useAssignedExpertises } from "../../model/use-assigned-expertises";
 import ExpertiseCard from "../expertise-card";
 import styles from "./style.module.scss";
 
-type AssignedExpertisesProps = {
-  assigned: ReturnType<typeof useAssignedExpertises>;
-};
-
-const AssignedExpertises = ({ assigned }: AssignedExpertisesProps) => {
-  const { state, replace } = assigned;
+const AssignedExpertises = () => {
+  const { state, replace } = useAssignedExpertises();
 
   if (state.status === "loading") {
     return <Loader />;

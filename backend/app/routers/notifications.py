@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from app.dependencies.expertise import get_notification_repository
 from app.dependencies.users import get_current_user
 from app.models.user import User
-from app.schemas.notification import NotificationSchema, NotificationsReadSchema
+from app.schemas.notification import NotificationSchema
 from app.services.notifications.repo import NotificationRepository
 
 
@@ -25,14 +25,12 @@ async def list_notifications(
 
 @router.post("/read-all")
 async def read_all_notifications(
-    payload: NotificationsReadSchema | None = None,
     user: User = Depends(get_current_user),
     notifications: NotificationRepository = Depends(get_notification_repository),
 ) -> list[NotificationSchema]:
-    """Отметить уведомления прочитанными — все или по заявкам — и вернуть обновлённый список."""
+    """Отметить все уведомления прочитанными и вернуть обновлённый список."""
 
-    expertise_ids = payload.expertise_ids if payload else None
-    await notifications.mark_all_read(user.id, expertise_ids)
+    await notifications.mark_all_read(user.id)
     items = await notifications.list_for_user(user.id, 50)
 
     return [NotificationSchema.model_validate(item) for item in items]

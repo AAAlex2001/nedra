@@ -70,9 +70,32 @@
   line-height: 15px;
   white-space: nowrap;
 
+  border-radius: 100px;
+}
+
+.wait {
+  color: #5b6070;
+  background: #f0f1f4;
+}
+
+.work {
   color: #8a4c00;
   background: #fdf3e6;
-  border-radius: 100px;
+}
+
+.alert {
+  color: #b23b2c;
+  background: #fdeceb;
+}
+
+.review {
+  color: #1f5f9e;
+  background: #e8f1fb;
+}
+
+.done {
+  color: #2f7a4d;
+  background: #e6f4ec;
 }
 
 .code {
@@ -88,12 +111,18 @@
 .remarks {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
+  gap: 16px;
+  padding: 18px;
 
-  background: #fff9f2;
-  border: 1px solid #ffe3c2;
-  border-radius: 14px;
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 16px;
+}
+
+.remarksHead {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .remarksTitle {
@@ -105,25 +134,86 @@
   color: #0b0b0b;
 }
 
-.remark {
+.remarksWait,
+.remarksDone {
+  align-self: flex-start;
+  padding: 5px 10px;
+
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  white-space: nowrap;
+
+  border-radius: 100px;
+}
+
+.remarksWait {
+  color: #b23b2c;
+  background: #fdeceb;
+}
+
+.remarksDone {
+  color: #2f7a4d;
+  background: #e6f4ec;
+}
+
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  list-style: none;
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 16px;
+
+  border-top: 1px solid #f0f1f4;
+}
+
+.round:first-child {
+  padding-top: 0;
+
+  border-top: none;
+}
+
+.message {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding-top: 12px;
+  padding-left: 14px;
 
-  border-top: 1px solid #ffe3c2;
+  border-left: 2px solid;
 }
 
-.remarkDate {
+.fromExpert {
+  border-color: #f69827;
+}
+
+.fromCustomer {
+  border-color: #2f7a4d;
+}
+
+.messageMeta {
   font-family: "Gilroy";
-  font-weight: 500;
+  font-weight: 400;
   font-size: 12px;
   line-height: 15px;
 
-  color: #8a4c00;
+  color: #7b8190;
 }
 
-.remarkText {
+.author {
+  font-weight: 700;
+
+  color: #0b0b0b;
+}
+
+.messageText {
   font-family: "Gilroy";
   font-weight: 400;
   font-size: 14px;
@@ -131,27 +221,6 @@
   white-space: pre-line;
 
   color: #2b2f3a;
-}
-
-.remarkResponse {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 4px;
-  padding: 12px;
-
-  background: #fff;
-  border: 1px solid #ffe3c2;
-  border-radius: 10px;
-}
-
-.remarkResponseLabel {
-  font-family: "Gilroy";
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 15px;
-
-  color: #2f7a4d;
 }
 
 .files {
@@ -223,5 +292,17 @@
   .status {
     grid-column: auto;
     justify-self: auto;
+  }
+
+  .remarksHead {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .remarksWait,
+  .remarksDone {
+    flex: none;
+    align-self: auto;
   }
 }

@@ -5,10 +5,12 @@ export type {
   ExpertiseRemark,
   ExpertiseResult,
   ExpertiseStatus,
+  ExpertiseStatusTone,
 } from "./model/types";
 export {
   EXPERTISE_RESULT_LABELS,
   EXPERTISE_STATUS_LABELS,
+  EXPERTISE_STATUS_TONES,
   EXPERTISE_STEPS,
   hasPendingPayment,
   stepIndex,
