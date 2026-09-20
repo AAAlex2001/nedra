@@ -54,8 +54,6 @@ def build_invoice_pdf(invoice: Invoice, subject: str, company: CompanyRequisites
     payer_kpp = invoice.payer_kpp or "—"
 
     flow = [
-        Paragraph("Образец заполнения платёжного поручения", SMALL),
-        Spacer(1, 4),
         requisites_table(
             [
                 ("Банк получателя", company.bank),
@@ -92,8 +90,6 @@ def build_invoice_pdf(invoice: Invoice, subject: str, company: CompanyRequisites
         ),
         Spacer(1, 18),
         signature_line("Руководитель", company.director),
-        Spacer(1, 12),
-        signature_line("Главный бухгалтер", company.director),
     ]
 
     document.build(flow)
