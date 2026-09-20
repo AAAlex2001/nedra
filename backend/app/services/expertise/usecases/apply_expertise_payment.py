@@ -1,11 +1,11 @@
-"""Реакция экспертизы на оплаченный платёж: аванс запускает работу, остаток открывает отправку."""
+"""Реакция экспертизы на оплаченный платёж ЮKassa."""
 
-from datetime import datetime, timezone
-
-from app.models.expertise import Expertise, ExpertiseStatus
+from app.models.billing import InvoiceStage
+from app.models.expertise import Expertise
 from app.models.notification import Notification
 from app.models.payment import Payment, PaymentStatus
 from app.services.expertise.repo import ExpertiseRepository
+from app.services.expertise.stages import mark_stage_paid
 from app.services.notifications.repo import NotificationRepository
 
 
@@ -32,17 +32,12 @@ class ApplyExpertisePaymentUseCase:
         if expertise is None or expertise.expert_id is None:
             return None
 
-        now = datetime.now(timezone.utc)
+        stage = self.stage_of(expertise, payment)
+        if stage is None:
+            return expertise
 
-        if payment.id == expertise.advance_payment_id and expertise.status == ExpertiseStatus.CONTRACT:
-            expertise.advance_paid_at = now
-            expertise.status = ExpertiseStatus.IN_PROGRESS
-            text = f"Заказчик оплатил аванс по заявке №{expertise.id}, можно приступать к работе"
-        elif payment.id == expertise.final_payment_id and expertise.status == ExpertiseStatus.CONCLUSION_READY:
-            expertise.final_paid_at = now
-            expertise.status = ExpertiseStatus.PAID
-            text = f"Заказчик оплатил остаток по заявке №{expertise.id}, отправьте заключение"
-        else:
+        text = mark_stage_paid(expertise, stage)
+        if text is None:
             return expertise
 
         self.notifications.add_all(
@@ -50,3 +45,15 @@ class ApplyExpertisePaymentUseCase:
         )
 
         return await self.expertises.save(expertise)
+
+    @staticmethod
+    def stage_of(expertise: Expertise, payment: Payment) -> InvoiceStage | None:
+        """За какой этап этот платёж."""
+
+        if payment.id == expertise.advance_payment_id:
+            return InvoiceStage.ADVANCE
+
+        if payment.id == expertise.final_payment_id:
+            return InvoiceStage.FINAL
+
+        return None

@@ -45,8 +45,16 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
           Проверить оплату
         </button>
       )}
+      <button
+        type="button"
+        className={styles.secondary}
+        disabled={actions.pending}
+        onClick={() => void actions.requestInvoice()}
+      >
+        Счёт для юрлица
+      </button>
       <Button loading={actions.pending} onClick={() => void actions.pay()}>
-        Оплатить {half}
+        Картой {half}
       </Button>
     </>
   );

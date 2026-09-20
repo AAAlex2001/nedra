@@ -1,0 +1,123 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  list-style: none;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  grid-template-areas:
+    "tile body"
+    "side side"
+    "download download";
+  gap: 12px 14px;
+  align-items: center;
+  padding: 16px;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 16px;
+}
+
+.tile {
+  grid-area: tile;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+
+  background: #fff2e2;
+  border: 1px solid #ffe3c2;
+  border-radius: 12px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.body {
+  grid-area: body;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.title {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.meta {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}
+
+.side {
+  grid-area: side;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.amount {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  white-space: nowrap;
+
+  color: #0b0b0b;
+}
+
+.download {
+  grid-area: download;
+
+  padding: 12px 18px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #f69827;
+  border-radius: 100px;
+
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.download:hover {
+  color: #fff;
+  background: #f69827;
+}
+
+@media (min-width: 768px) {
+  .item {
+    grid-template-columns: 44px 1fr auto auto;
+    grid-template-areas: "tile body side download";
+    gap: 16px;
+  }
+}

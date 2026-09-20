@@ -1,0 +1,76 @@
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 14px;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.caption {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.remove {
+  padding: 15px 20px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  white-space: nowrap;
+
+  color: #b23b2c;
+  background: #fff;
+  border: 1px solid #f3cfcb;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: border-color 0.15s ease;
+}
+
+.remove:hover:not(:disabled) {
+  border-color: #b23b2c;
+}
+
+.remove:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.error {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #b23b2c;
+}
+
+@media (min-width: 768px) {
+  .fields {
+    grid-template-columns: 1fr 1fr 110px 190px;
+    gap: 16px;
+    align-items: end;
+  }
+}

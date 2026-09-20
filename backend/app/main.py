@@ -7,10 +7,12 @@ from fastapi.staticfiles import StaticFiles
 from app.config import get_settings
 from app.routers import (
     admin_articles,
+    admin_billing,
     admin_experts,
     admin_expertise,
     articles,
     auth,
+    billing,
     experts,
     expertise,
     notifications,
@@ -49,6 +51,8 @@ app.include_router(admin_experts.router, prefix="/api/v1")
 app.include_router(tariffs.router, prefix="/api/v1")
 app.include_router(expertise.router, prefix="/api/v1")
 app.include_router(admin_expertise.router, prefix="/api/v1")
+app.include_router(billing.router, prefix="/api/v1")
+app.include_router(admin_billing.router, prefix="/api/v1")
 app.include_router(notifications.router, prefix="/api/v1")
 app.include_router(requests.router, prefix="/api/v1")
 app.include_router(articles.router, prefix="/api/v1")

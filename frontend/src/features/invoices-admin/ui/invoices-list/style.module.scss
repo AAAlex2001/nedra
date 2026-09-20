@@ -1,0 +1,132 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.count {
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #5b6070;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 16px;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.number {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #0b0b0b;
+}
+
+.paid,
+.waiting {
+  padding: 5px 10px;
+
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  white-space: nowrap;
+
+  border-radius: 100px;
+}
+
+.paid {
+  color: #2f7a4d;
+  background: #e6f4ec;
+}
+
+.waiting {
+  color: #8a4c00;
+  background: #fdf3e6;
+}
+
+.meta,
+.payer {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}
+
+.payer {
+  color: #2b2f3a;
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.amount {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+.error {
+  padding: 14px 16px;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+  background: #fdeceb;
+  border-radius: 12px;
+}
+
+.empty {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+
+  color: #7b8190;
+}

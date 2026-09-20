@@ -15,6 +15,8 @@ backend/
 │   │   ├── requests/      repo, catalog, letter, usecases/
 │   │   ├── users/         repo, validators, usecases/
 │   │   ├── payments/      repo, gateway (ЮKassa), usecases/
+│   │   ├── billing/       счета для юрлиц: repo, validators, usecases/
+│   │   ├── documents/     сборка PDF счёта и акта (reportlab)
 │   │   ├── mail/          send_email — единственное место с SMTP
 │   │   └── security/      bcrypt для паролей, JWT для токенов
 │   ├── dependencies/      зависимости роутеров, файл на домен
@@ -167,14 +169,57 @@ multipart: поле `payload` с JSON и файлы `scans`), админ про�
 берём из тела только id и запрашиваем платёж через API.
 
 К каждому платежу прикладывается чек по 54-ФЗ: одна позиция «услуга»
-на всю сумму, email плательщика из аккаунта. Ставка НДС в чеке —
-`YOOKASSA_VAT_CODE` (по умолчанию 1, «без НДС»; 2 — 0 %, 3 — 10 %, 4 — 20 %).
+на всю сумму, email плательщика из аккаунта. Ставку НДС задаёт одна
+переменная `COMPANY_VAT_RATE` (проценты: 0, 5, 7, 10, 20) — из неё
+`config.VAT_CODES` собирает код ставки для чека, так что ставка в чеке
+и в печатных документах не могут разойтись.
 
 Ручки: `POST /payments`, `GET /payments/{id}`, `POST /payments/{id}/refresh`,
 `POST /payments/yookassa/webhook`. Переменные: `YOOKASSA_SHOP_ID`,
-`YOOKASSA_SECRET_KEY`, `PAYMENT_RETURN_URL`, `YOOKASSA_VAT_CODE`. В кабинете ЮKassa указать адрес
+`YOOKASSA_SECRET_KEY`, `PAYMENT_RETURN_URL`. В кабинете ЮKassa указать адрес
 уведомлений `https://nedra-npi.ru/api/v1/payments/yookassa/webhook`
 и включить события `payment.succeeded` и `payment.canceled`.
+
+## Оплата по счёту и документы
+
+Заказчик-юрлицо платит не картой, а по счёту. Реквизиты своей компании он
+сохраняет один раз (`GET|PUT /me/company`), ИНН и КПП проверяет
+`services/billing/validators.py`. На текущем этапе оплаты он выставляет счёт
+(`POST /expertise/{id}/invoice`): сценарий берёт этап из
+`services/expertise/stages.py`, сумму — из `money.split_price`, и замораживает
+в счёте реквизиты плательщика на момент выставления. Неоплаченный счёт по
+тому же этапу переиспользуется, а не плодится.
+
+Деньги приходят на расчётный счёт мимо сайта, поэтому оплату подтверждает
+админ: `POST /admin/invoices/{id}/pay` ставит `paid_at` и вызывает
+`mark_stage_paid` — ту же функцию, что и вебхук ЮKassa, так что заявка
+двигается по статусам одинаково при любом способе оплаты.
+
+| Ручка | Что отдаёт |
+|---|---|
+| `GET /invoices` | счета заказчика |
+| `GET /invoices/{id}/pdf` | PDF счёта на оплату |
+| `GET /acts` | акты по принятым работам |
+| `GET /acts/{expertise_id}/pdf` | PDF акта выполненных работ |
+| `GET /admin/invoices` | все счета для админки |
+
+PDF собирает `services/documents/` на reportlab: `layout.py` — общие стили,
+таблицы и сумма прописью, `invoice_pdf.py` и `act_pdf.py` — сами документы,
+`company.py` — наши реквизиты из окружения (`COMPANY_NAME`, `COMPANY_INN`,
+`COMPANY_KPP`, `COMPANY_ADDRESS`, `COMPANY_BANK`, `COMPANY_BIC`,
+`COMPANY_ACCOUNT`, `COMPANY_CORR_ACCOUNT`, `COMPANY_DIRECTOR`,
+`COMPANY_VAT_RATE`). Пока не заполнены ИНН, адрес, банк, БИК, оба счёта и
+руководитель, документы не выдаются — ручка отвечает 503 и перечисляет,
+чего не хватает.
+
+Цена в тарифе — конечная, налог из неё выделяется: `layout.vat_included`
+считает НДС «в том числе», и в счёте появляется строка
+«В том числе НДС 7 % — 1 308,41». При `COMPANY_VAT_RATE=0` печатается
+«без НДС».
+
+Кириллицу печатает TTF-шрифт: `fonts.py` перебирает кандидатов (DejaVu из
+пакета `fonts-dejavu-core` в образе, Arial локально), `PDF_FONT_PATH`
+задаёт шрифт явно.
 
 ## Транзакции
 

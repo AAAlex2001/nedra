@@ -9,6 +9,7 @@ from app.models.expert import (
     ExpertCertificate,
     ExpertProfile,
 )
+from app.models.billing import CustomerCompany, Invoice, InvoiceStage
 from app.models.tariff import Tariff
 from app.models.expertise import (
     Expertise,
@@ -34,6 +35,9 @@ __all__ = [
     "ExpertApplication",
     "ExpertCertificate",
     "ExpertProfile",
+    "CustomerCompany",
+    "Invoice",
+    "InvoiceStage",
     "Tariff",
     "Expertise",
     "ExpertiseDocument",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { invoicePdfUrl, issueInvoice } from "@/entities/billing";
 import {
   acceptExpertise,
   acceptWork,
@@ -46,6 +47,21 @@ export const useExpertiseActions = (expertise: Expertise, onChange: (item: Exper
   const submitRevision = (formData: FormData) =>
     run(() => resubmitDocumentation(expertise.id, formData));
 
+  const requestInvoice = async () => {
+    setPending(true);
+    setError(null);
+
+    try {
+      const invoice = await issueInvoice(expertise.id);
+      window.open(invoicePdfUrl(invoice.id), "_blank", "noreferrer");
+    } catch (caught) {
+      const message = caught instanceof Error && caught.message ? caught.message : ACTION_FAILED;
+      setError(message);
+    } finally {
+      setPending(false);
+    }
+  };
+
   const pay = async () => {
     setPending(true);
     setError(null);
@@ -74,6 +90,7 @@ export const useExpertiseActions = (expertise: Expertise, onChange: (item: Exper
     accept,
     confirm,
     pay,
+    requestInvoice,
     refresh,
     conclusionReady,
     submitConclusion,

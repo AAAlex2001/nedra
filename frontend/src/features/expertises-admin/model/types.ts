@@ -15,3 +15,7 @@ export type ExpertiseAdminRecord = {
   price: string | null;
   created_at: string;
 };
+
+export type StatusGroup = "waiting" | "work" | "done";
+
+export type StatusFilter = StatusGroup | "all";

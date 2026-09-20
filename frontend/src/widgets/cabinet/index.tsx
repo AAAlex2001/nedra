@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ROLE_LABELS, useSession, type User } from "@/entities/user";
 import { useAuthModal, useLogout } from "@/features/auth";
+import { ActsTab, CompanyForm, InvoicesTab } from "@/features/billing";
 import { ExpertAttestation, useExpertProfile } from "@/features/expert-profile";
 import {
   AssignedExpertises,
@@ -61,6 +62,8 @@ const EXPERT_TABS = [
 
 const CUSTOMER_TABS = [
   { key: "mine", label: "Мои экспертизы" },
+  { key: "invoices", label: "Счета" },
+  { key: "acts", label: "Акты" },
   { key: "account", label: "Мои данные" },
 ];
 
@@ -110,7 +113,14 @@ const CustomerCabinet = ({ user }: CabinetPanelProps) => {
 
       <section className={styles.panel}>
         {tab === "mine" && <MyExpertises />}
-        {tab === "account" && <AccountDetails user={user} />}
+        {tab === "invoices" && <InvoicesTab />}
+        {tab === "acts" && <ActsTab />}
+        {tab === "account" && (
+          <>
+            <AccountDetails user={user} />
+            <CompanyForm />
+          </>
+        )}
       </section>
     </>
   );

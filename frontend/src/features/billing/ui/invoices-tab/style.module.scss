@@ -1,0 +1,62 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 28px 24px;
+
+  background: #fff;
+  border: 1px dashed #c9ced8;
+  border-radius: 18px;
+}
+
+.emptyTitle {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+.emptyText {
+  max-width: 620px;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+
+  color: #6c7078;
+}
+
+.paid,
+.waiting {
+  padding: 5px 10px;
+
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  white-space: nowrap;
+
+  border-radius: 100px;
+}
+
+.paid {
+  color: #2f7a4d;
+  background: #e6f4ec;
+}
+
+.waiting {
+  color: #8a4c00;
+  background: #fdf3e6;
+}
+
+.error {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+}

@@ -3,6 +3,8 @@ from functools import lru_cache
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+VAT_CODES = {0: 1, 5: 7, 7: 8, 10: 3, 20: 4}
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
@@ -28,7 +30,24 @@ class Settings(BaseSettings):
     yookassa_shop_id: str | None = None
     yookassa_secret_key: str | None = None
     payment_return_url: str | None = None
-    yookassa_vat_code: int = 1
+
+    company_name: str = "ООО «НПИ «Недра»"
+    company_inn: str | None = None
+    company_kpp: str | None = None
+    company_address: str | None = None
+    company_bank: str | None = None
+    company_bic: str | None = None
+    company_account: str | None = None
+    company_corr_account: str | None = None
+    company_director: str | None = None
+    company_vat_rate: int = 0
+    pdf_font_path: str | None = None
+
+    @property
+    def yookassa_vat_code(self) -> int:
+        """Код ставки НДС для чека ЮKassa. Неизвестная ставка — как без НДС."""
+
+        return VAT_CODES.get(self.company_vat_rate, 1)
 
 
 @lru_cache

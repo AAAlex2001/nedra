@@ -1,0 +1,64 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+
+  background: #f5f6f8;
+  border-radius: 14px;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel {
+  padding: 15px 20px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  white-space: nowrap;
+
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #fff;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.cancel:hover:not(:disabled) {
+  color: #b86108;
+  border-color: #f69827;
+}
+
+.cancel:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@media (min-width: 768px) {
+  .fields {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .fields > * {
+    flex: 1;
+  }
+}

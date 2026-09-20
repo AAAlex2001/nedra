@@ -3,16 +3,23 @@
 import { useState } from "react";
 import type { ExpertiseStatus } from "@/entities/expertise";
 import { deleteExpertise, fetchExpertises, updateExpertise } from "../api/expertises";
-import type { ExpertiseAdminRecord } from "./types";
+import { matchesFilter } from "./groups";
+import type { ExpertiseAdminRecord, StatusFilter } from "./types";
 
 const describe = (error: unknown, fallback: string): string =>
   error instanceof Error && error.message ? error.message : fallback;
 
 export const useExpertises = (initialItems: ExpertiseAdminRecord[], basePath: string) => {
   const [items, setItems] = useState(initialItems);
+  const [filter, setFilter] = useState<StatusFilter>("all");
   const [pendingId, setPendingId] = useState<number | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const visibleItems = items.filter((item) => matchesFilter(item.status, filter));
+
+  const countFor = (value: StatusFilter): number =>
+    items.filter((item) => matchesFilter(item.status, value)).length;
 
   const save = async (id: number, status: ExpertiseStatus, price: string | null) => {
     setPendingId(id);
@@ -55,5 +62,16 @@ export const useExpertises = (initialItems: ExpertiseAdminRecord[], basePath: st
     }
   };
 
-  return { items, pendingId, refreshing, error, save, remove, refresh };
+  return {
+    visibleItems,
+    filter,
+    pendingId,
+    refreshing,
+    error,
+    countFor,
+    setFilter,
+    save,
+    remove,
+    refresh,
+  };
 };
