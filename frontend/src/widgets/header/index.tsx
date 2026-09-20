@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useSession } from "@/entities/user";
 import { BurgerIcon, CloseIcon, NedraLogo } from "@/shared/ui/icons";
+import AuthModal from "@/widgets/auth-modal";
 import { DESKTOP_NAV, HEADER_NAV } from "./data";
+import AuthControls from "./ui/auth-controls";
 import BurgerMenu from "./ui/burger-menu";
 import styles from "./style.module.scss";
 
 const Header = () => {
+  const session = useSession();
   const [open, setOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -93,9 +97,13 @@ const Header = () => {
           </nav>
 
           <div className={styles.controls}>
-            <Link className={styles.contactChip} href="/#contacts">
-              Контакты
-            </Link>
+            {session.status === "anonymous" && (
+              <Link className={styles.contactChip} href="/#contacts">
+                Контакты
+              </Link>
+            )}
+
+            <AuthControls />
 
             <button
               type="button"
@@ -114,11 +122,9 @@ const Header = () => {
         </div>
       </header>
 
-      <BurgerMenu
-        open={open}
-        nav={HEADER_NAV.filter((item) => item.label !== "Контакты")}
-        onClose={() => setOpen(false)}
-      />
+      <BurgerMenu open={open} nav={HEADER_NAV} onClose={() => setOpen(false)} />
+
+      <AuthModal />
     </>
   );
 };

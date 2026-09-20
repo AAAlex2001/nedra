@@ -1,0 +1,206 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 16px;
+}
+
+.head {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 8px 14px;
+  align-items: center;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 13px;
+  text-align: center;
+
+  color: #b86108;
+  background: #fff2e2;
+  border-radius: 14px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.title {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #0b0b0b;
+}
+
+.meta {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}
+
+.status {
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 5px 10px;
+
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  white-space: nowrap;
+
+  color: #8a4c00;
+  background: #fdf3e6;
+  border-radius: 100px;
+}
+
+.code {
+  margin-right: 8px;
+
+  font-weight: 700;
+}
+
+.comment {
+  white-space: pre-line;
+}
+
+.remarks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+
+  background: #fff9f2;
+  border: 1px solid #ffe3c2;
+  border-radius: 14px;
+}
+
+.remarksTitle {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.remark {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+
+  border-top: 1px solid #ffe3c2;
+}
+
+.remarkDate {
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #8a4c00;
+}
+
+.remarkText {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  white-space: pre-line;
+
+  color: #2b2f3a;
+}
+
+.files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  list-style: none;
+}
+
+.file {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+
+  text-decoration: none;
+}
+
+.fileTile {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+
+  background: #fff2e2;
+  border: 1px solid #ffe3c2;
+  border-radius: 12px;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.file:hover .fileTile {
+  background: #ffe3c2;
+  border-color: #f69827;
+}
+
+.fileIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.fileName {
+  overflow: hidden;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #f69827;
+}
+
+.file:hover .fileName {
+  color: #b86108;
+}
+
+@media (min-width: 768px) {
+  .head {
+    grid-template-columns: 48px 1fr auto;
+  }
+
+  .status {
+    grid-column: auto;
+    justify-self: auto;
+  }
+}

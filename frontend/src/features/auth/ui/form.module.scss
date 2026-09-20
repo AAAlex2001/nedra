@@ -1,0 +1,118 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  width: 100%;
+}
+
+.hint {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}
+
+.error {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+}
+
+.submit {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.consent {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}
+
+.consentLink {
+  color: #f69827;
+}
+
+.notice {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+
+  background: #f5f6f8;
+  border-radius: 14px;
+}
+
+.noticeTitle {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #0b0b0b;
+}
+
+.noticeText {
+  margin-bottom: 6px;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #6c7078;
+}
+
+.switch {
+  padding-top: 12px;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 19px;
+  text-align: center;
+
+  color: #6c7078;
+  border-top: 1px solid #eceef3;
+}
+
+.switchLink {
+  padding: 0;
+
+  font: inherit;
+  font-weight: 500;
+
+  color: #f69827;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  transition: color 0.15s ease;
+}
+
+.switchLink:hover {
+  color: #b86108;
+}
+
+@media (min-width: 768px) {
+  .row {
+    flex-direction: row;
+  }
+}

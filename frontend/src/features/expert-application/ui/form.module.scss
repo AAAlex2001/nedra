@@ -1,0 +1,93 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  width: 100%;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionTitle {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+
+  color: #0b0b0b;
+}
+
+.sectionText {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+
+  color: #6c7078;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  width: 100%;
+}
+
+.hint {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}
+
+.error {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+}
+
+.submit {
+  width: 100%;
+}
+
+.consent {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}
+
+.consentLink {
+  color: #f69827;
+}
+
+.successText {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+@media (min-width: 768px) {
+  .row {
+    flex-direction: row;
+  }
+
+  .submit {
+    width: auto;
+  }
+}

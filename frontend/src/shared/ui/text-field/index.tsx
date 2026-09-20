@@ -5,10 +5,13 @@ type TextFieldProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  type?: "text" | "tel" | "email" | "datetime-local";
+  type?: "text" | "tel" | "email" | "password" | "date" | "datetime-local";
   required?: boolean;
+  minLength?: number;
   maxLength?: number;
+  min?: string;
   inputMode?: "text" | "numeric" | "tel" | "email";
+  autoComplete?: string;
   multiline?: boolean;
   rows?: number;
 };
@@ -20,8 +23,11 @@ const TextField = ({
   placeholder,
   type = "text",
   required,
+  minLength,
   maxLength,
+  min,
   inputMode,
+  autoComplete,
   multiline,
   rows = 4,
 }: TextFieldProps) => (
@@ -46,10 +52,13 @@ const TextField = ({
         className={styles.input}
         type={type}
         inputMode={inputMode}
+        autoComplete={autoComplete}
         placeholder={placeholder}
         value={value}
         required={required}
+        minLength={minLength}
         maxLength={maxLength}
+        min={min}
         onChange={(event) => onChange(event.target.value)}
       />
     )}

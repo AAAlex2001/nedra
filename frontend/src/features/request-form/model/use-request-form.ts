@@ -2,7 +2,6 @@
 
 import { useReducer } from "react";
 import type { DirectionOption } from "@/entities/service";
-import { ApiError } from "@/shared/api";
 import { createRequest } from "../api/create-request";
 import { INITIAL_STATE, requestFormReducer } from "./reducer";
 import type { RequestFields } from "./types";
@@ -42,7 +41,7 @@ export const useRequestForm = (directions: DirectionOption[]) => {
       dispatch({
         type: "submit/error",
         message:
-          error instanceof ApiError
+          error instanceof Error
             ? error.message
             : "Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.",
       });

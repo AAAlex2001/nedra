@@ -1,0 +1,70 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.switch {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  padding: 4px;
+
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 100px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  padding: 8px 14px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 14px;
+  white-space: nowrap;
+
+  color: #6c7078;
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.option:hover:not(:disabled) {
+  color: #0b0b0b;
+}
+
+.optionActive,
+.optionActive:hover:not(:disabled) {
+  font-weight: 700;
+
+  color: #fff;
+  background: #f69827;
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.option:focus-visible {
+  outline: 2px solid #f69827;
+  outline-offset: 2px;
+}
+
+.error {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b23b2c;
+}

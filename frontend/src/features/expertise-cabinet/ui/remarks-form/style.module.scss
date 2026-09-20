@@ -1,0 +1,66 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+
+  background: #fff;
+  border-radius: 12px;
+}
+
+.title {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+
+  color: #0b0b0b;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.buttons > * {
+  width: 100%;
+}
+
+.cancel {
+  padding: 15px 20px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+
+  color: #6c7078;
+  background: #f5f6f8;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: color 0.15s ease;
+}
+
+.cancel:hover:not(:disabled) {
+  color: #0b0b0b;
+}
+
+.cancel:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@media (min-width: 768px) {
+  .buttons {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .buttons > * {
+    width: auto;
+  }
+}

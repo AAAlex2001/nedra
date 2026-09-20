@@ -141,8 +141,8 @@ const RequestForm = ({ directions, onDirectionChange }: RequestFormProps) => {
 
       {state.error && <p className={styles.error}>{state.error}</p>}
 
-      <Button type="submit" disabled={!service || state.status === "loading"}>
-        {state.status === "loading" ? "Отправляем…" : "Отправить заявку"}
+      <Button type="submit" disabled={!service} loading={state.status === "loading"}>
+        Отправить заявку
       </Button>
 
       <p className={styles.consent}>

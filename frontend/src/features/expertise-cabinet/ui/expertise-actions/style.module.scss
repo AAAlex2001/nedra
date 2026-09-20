@@ -1,0 +1,112 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 14px 16px;
+
+  background: #f5f6f8;
+  border-radius: 14px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #6c7078;
+}
+
+.textDone {
+  color: #2f9e5b;
+}
+
+.icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.buttons > * {
+  width: 100%;
+}
+
+.secondary {
+  padding: 15px 20px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  white-space: nowrap;
+
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #fff;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.secondary:hover:not(:disabled) {
+  color: #b86108;
+  border-color: #f69827;
+}
+
+.secondary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.error {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #b23b2c;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    padding: 12px 12px 12px 20px;
+  }
+
+  .row {
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .buttons {
+    flex: none;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .buttons > * {
+    width: auto;
+  }
+}

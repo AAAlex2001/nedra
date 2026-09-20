@@ -1,0 +1,42 @@
+.page {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.body {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 25px 20px 50px;
+}
+
+.intro {
+  max-width: 760px;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+
+  color: #0b0b0b;
+}
+
+@media (min-width: 1440px) {
+  .page {
+    max-width: 1440px;
+  }
+
+  .body {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 25px 50px 50px;
+  }
+}

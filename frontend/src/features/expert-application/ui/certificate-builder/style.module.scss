@@ -1,0 +1,96 @@
+.builder {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 18px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #0b0b0b;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.areaTitle {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.note {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.add {
+  align-self: flex-start;
+  padding: 14px 24px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 16px;
+
+  color: #0b0b0b;
+  background: transparent;
+  border: 1px solid #f69827;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.add:hover:not(:disabled) {
+  color: #fff;
+  background: #f69827;
+}
+
+.add:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+@media (min-width: 768px) {
+  .builder {
+    padding: 24px;
+  }
+
+  .row {
+    flex-direction: row;
+  }
+}

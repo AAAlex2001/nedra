@@ -1,0 +1,168 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  width: 100%;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #0b0b0b;
+}
+
+.required {
+  color: #f69827;
+}
+
+.segments {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  padding: 4px;
+
+  background: #f5f6f8;
+  border-radius: 100px;
+}
+
+.segment {
+  flex: 1;
+  padding: 12px 6px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+
+  color: #6c7078;
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.segment:hover {
+  color: #0b0b0b;
+}
+
+.segmentActive,
+.segmentActive:hover {
+  font-weight: 700;
+
+  color: #0b0b0b;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(11, 11, 11, 0.08);
+}
+
+.segment:focus-visible {
+  outline: 2px solid #f69827;
+  outline-offset: 2px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.rowChip {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 6px;
+
+  font-size: 13px;
+  text-align: center;
+}
+
+.areaSelect {
+  display: block;
+}
+
+.areaChips {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.note {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #6c7078;
+}
+
+.error {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+}
+
+.submit {
+  width: 100%;
+}
+
+.successText {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+.successLink {
+  color: #f69827;
+}
+
+@media (min-width: 768px) {
+  .segment {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+
+  .row {
+    gap: 8px;
+  }
+
+  .rowChip {
+    flex: none;
+    padding: 10px 16px;
+
+    font-size: 14px;
+  }
+
+  .areaSelect {
+    display: none;
+  }
+
+  .areaChips {
+    display: flex;
+  }
+}
