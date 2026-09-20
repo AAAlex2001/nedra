@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { SECTION_TITLE, type ArticleAdminCard, type ArticleSection, type TagAdmin } from "@/entities/article";
 import { ArticlesTable, TagManager } from "@/features/articles-admin";
 import AccentLine from "@/shared/ui/accent-line";
 import OutlineButton from "@/shared/ui/outline-button";
+import { TabLinks } from "@/shared/ui/tabs";
 import styles from "./style.module.scss";
 
 type AdminArticlesProps = {
@@ -21,6 +21,12 @@ const AdminArticles = ({ basePath, articles, tags, section, error }: AdminArticl
   let newHref = `${listPath}/new`;
   if (section) newHref = `${listPath}/new?section=${section}`;
 
+  const tabs = FILTERS.map((item) => ({
+    key: item ?? "all",
+    label: item ? SECTION_TITLE[item] : "Все",
+    href: item ? `${listPath}?section=${item}` : listPath,
+  }));
+
   return (
     <section className={styles.section}>
       <div className={styles.head}>
@@ -37,17 +43,7 @@ const AdminArticles = ({ basePath, articles, tags, section, error }: AdminArticl
         <OutlineButton href={newHref}>Новая статья</OutlineButton>
       </div>
 
-      <nav className={styles.filters} aria-label="Раздел">
-        {FILTERS.map((item) => (
-          <Link
-            key={item ?? "all"}
-            href={item ? `${listPath}?section=${item}` : listPath}
-            className={`${styles.pill} ${item === section ? styles.pillActive : ""}`}
-          >
-            {item ? SECTION_TITLE[item] : "Все"}
-          </Link>
-        ))}
-      </nav>
+      <TabLinks items={tabs} active={section ?? "all"} label="Раздел" />
 
       {error ? (
         <p className={styles.error}>{error}</p>

@@ -1,0 +1,58 @@
+.tabs {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  gap: 4px;
+  padding: 4px;
+
+  max-width: 100%;
+
+  background: #f5f6f8;
+  border-radius: 100px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  padding: 12px 18px;
+
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 16px;
+  text-decoration: none;
+  white-space: nowrap;
+
+  color: #6c7078;
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tab:hover {
+  color: #0b0b0b;
+}
+
+.tabActive,
+.tabActive:hover {
+  font-weight: 700;
+
+  color: #0b0b0b;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(11, 11, 11, 0.08);
+}
+
+.tab:focus-visible {
+  outline: 2px solid #f69827;
+  outline-offset: 2px;
+}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { adminBasePath } from "@/shared/api/server";
+import AdminNav from "@/widgets/admin/nav";
 import styles from "./layout.module.scss";
 
 export const metadata: Metadata = {
@@ -8,25 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const basePath = adminBasePath();
-
   return (
     <div className={styles.admin}>
-      <nav className={styles.nav} aria-label="Разделы админки">
-        <span className={styles.brand}>Админка</span>
-        <Link href={basePath} className={styles.link}>
-          Заявки
-        </Link>
-        <Link href={`${basePath}/articles`} className={styles.link}>
-          Статьи
-        </Link>
-        <Link href={`${basePath}/experts`} className={styles.link}>
-          Эксперты
-        </Link>
-        <Link href={`${basePath}/tariffs`} className={styles.link}>
-          Тарифы
-        </Link>
-      </nav>
+      <AdminNav basePath={adminBasePath()} />
 
       {children}
     </div>

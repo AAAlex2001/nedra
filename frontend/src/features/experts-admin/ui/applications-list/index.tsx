@@ -2,7 +2,7 @@
 
 import type { ExpertApplicationRecord, ExpertCatalog } from "@/entities/expert";
 import Button from "@/shared/ui/button";
-import Chip from "@/shared/ui/chip";
+import { Tabs } from "@/shared/ui/tabs";
 import { useApplications } from "../../model/use-applications";
 import type { StatusFilter } from "../../model/types";
 import ApplicationCard from "../application-card";
@@ -25,20 +25,18 @@ const ApplicationsList = ({ initialItems, catalog, basePath }: ApplicationsListP
   const { state, visibleItems, setFilter, approve, reject, removeExpert, refresh } =
     useApplications(initialItems, basePath);
 
+  const tabs = FILTERS.map((filter) => ({ key: filter.value, label: filter.label }));
+
+  const selectFilter = (key: string) => {
+    const chosen = FILTERS.find((filter) => filter.value === key);
+
+    if (chosen) setFilter(chosen.value);
+  };
+
   return (
     <div className={styles.root}>
       <div className={styles.toolbar}>
-        <div className={styles.filters}>
-          {FILTERS.map((filter) => (
-            <Chip
-              key={filter.value}
-              active={state.filter === filter.value}
-              onClick={() => setFilter(filter.value)}
-            >
-              {filter.label}
-            </Chip>
-          ))}
-        </div>
+        <Tabs items={tabs} active={state.filter} onSelect={selectFilter} label="Статус заявки" />
 
         <Button onClick={() => void refresh()} loading={state.refreshing}>
           Обновить
