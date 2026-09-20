@@ -1,4 +1,5 @@
 import type { ExpertCatalog } from "@/entities/expert";
+import { hasSessionCookie } from "@/entities/user/api/session-server";
 import { internalFetch } from "@/shared/api/server";
 import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
@@ -26,6 +27,7 @@ const loadCatalog = async (): Promise<ExpertCatalog | null> => {
 
 export default async function BlitzExpertPage() {
   const catalog = await loadCatalog();
+  const guest = !(await hasSessionCookie());
 
   return (
     <main className={styles.page}>
@@ -36,7 +38,7 @@ export default async function BlitzExpertPage() {
         ]}
       />
 
-      <div className={styles.body}>
+      <div className={`${styles.body} ${guest ? styles.bodyGuest : ""}`}>
         <SectionHeading title="Блиц-эксперт" />
         <p className={styles.intro}>
           Экспертиза промышленной безопасности за 1–5 дней. Выберите, что проверяем, укажите

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { hasSessionCookie } from "@/entities/user/api/session-server";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import SectionHeading from "@/shared/ui/section-heading";
 import Cabinet from "@/widgets/cabinet";
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function CabinetPage() {
+export default async function CabinetPage() {
+  const guest = !(await hasSessionCookie());
+
   return (
     <main className={styles.page}>
       <Breadcrumbs
@@ -19,7 +22,7 @@ export default function CabinetPage() {
         ]}
       />
 
-      <div className={styles.body}>
+      <div className={`${styles.body} ${guest ? styles.bodyGuest : ""}`}>
         <SectionHeading title="Личный кабинет" />
         <Cabinet />
       </div>

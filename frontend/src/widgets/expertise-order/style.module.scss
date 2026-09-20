@@ -1,11 +1,12 @@
 .locked {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
   padding: 24px 20px;
 
-  max-width: 560px;
+  width: 100%;
 
   background: #f5f6f8;
   border-radius: 18px;
@@ -21,6 +22,7 @@
 }
 
 .lockedText {
+  max-width: 620px;
   margin-bottom: 8px;
 
   font-family: "Gilroy";
