@@ -30,6 +30,18 @@ class ExpertiseDocumentSchema(BaseModel):
     created_at: datetime
 
 
+class ExpertiseRemarkSchema(BaseModel):
+    """Замечания эксперта: текст, файлы и дата, когда заказчик прислал исправления."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    text: str | None
+    created_at: datetime
+    resolved_at: datetime | None
+    documents: list[ExpertiseDocumentSchema]
+
+
 class ExpertisePaymentSchema(BaseModel):
     """Платёж по этапу экспертизы: сумма, статус и ссылка на оплату, пока она есть."""
 
@@ -71,3 +83,4 @@ class ExpertiseOutSchema(BaseModel):
     sent_at: datetime | None
     accepted_at: datetime | None
     documents: list[ExpertiseDocumentSchema]
+    remarks: list[ExpertiseRemarkSchema]

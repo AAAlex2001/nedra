@@ -10,7 +10,13 @@ from app.models.expert import (
     ExpertProfile,
 )
 from app.models.tariff import Tariff
-from app.models.expertise import Expertise, ExpertiseDocument, ExpertiseStatus
+from app.models.expertise import (
+    Expertise,
+    ExpertiseDocument,
+    ExpertiseRemark,
+    ExpertiseResult,
+    ExpertiseStatus,
+)
 from app.models.notification import Notification
 
 __all__ = [
@@ -31,6 +37,8 @@ __all__ = [
     "Tariff",
     "Expertise",
     "ExpertiseDocument",
+    "ExpertiseRemark",
+    "ExpertiseResult",
     "ExpertiseStatus",
     "Notification",
 ]

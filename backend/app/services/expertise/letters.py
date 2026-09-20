@@ -86,6 +86,35 @@ async def send_advance_paid_letter(expertise: Expertise, expert: User) -> None:
     )
 
 
+async def send_remarks_letter(expertise: Expertise, customer: User, text: str | None) -> None:
+    """Заказчику: по документации есть замечания, нужно исправить и прислать повторно."""
+
+    body = f"Замечания:\n{text}\n\n" if text else ""
+
+    await send_email(
+        recipients=[customer.email],
+        subject=f"Замечания по экспертизе №{expertise.id} — НПИ «Недра»",
+        text=(
+            f"{customer.full_name}, эксперт подготовил рекомендации по приведению объекта "
+            f"экспертизы в соответствие с требованиями промышленной безопасности.\n\n{body}"
+            f"Внесите изменения в документацию и отправьте её повторно.\n{CABINET_LINE}"
+        ),
+    )
+
+
+async def send_revision_letter(expertise: Expertise, expert: User) -> None:
+    """Эксперту: заказчик прислал исправленную документацию."""
+
+    await send_email(
+        recipients=[expert.email],
+        subject=f"Исправленная документация по экспертизе №{expertise.id} — НПИ «Недра»",
+        text=(
+            f"{expert.full_name}, заказчик исправил замечания по заявке №{expertise.id} "
+            f"и прислал документацию повторно.\n\n{CABINET_LINE}"
+        ),
+    )
+
+
 async def send_conclusion_ready_letter(expertise: Expertise, customer: User) -> None:
     """Заказчику: заключение готово, оплатите остаток."""
 
@@ -94,7 +123,9 @@ async def send_conclusion_ready_letter(expertise: Expertise, customer: User) -> 
         subject=f"Заключение по экспертизе №{expertise.id} готово — НПИ «Недра»",
         text=(
             f"{customer.full_name}, эксперт подготовил заключение по заявке №{expertise.id}. "
-            f"Оплатите оставшиеся 50 %, и эксперт отправит подписанное заключение.\n\n{CABINET_LINE}"
+            "Замечаний нет, документация соответствует требованиям промышленной безопасности.\n\n"
+            f"Требуется полная оплата: внесите оставшиеся 50 %, и эксперт отправит "
+            f"подписанное заключение.\n\n{CABINET_LINE}"
         ),
     )
 

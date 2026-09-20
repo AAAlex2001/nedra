@@ -20,7 +20,9 @@ from app.services.expertise.usecases.confirm_expertise import ConfirmExpertiseUs
 from app.services.expertise.usecases.create_expertise import CreateExpertiseUseCase
 from app.services.expertise.usecases.create_expertise_payment import CreateExpertisePaymentUseCase
 from app.services.expertise.usecases.mark_conclusion_ready import MarkConclusionReadyUseCase
+from app.services.expertise.usecases.resubmit_documentation import ResubmitDocumentationUseCase
 from app.services.expertise.usecases.send_conclusion import SendConclusionUseCase
+from app.services.expertise.usecases.send_remarks import SendRemarksUseCase
 from app.services.files.storage import PrivateStorage
 from app.services.notifications.repo import NotificationRepository
 from app.services.payments.repo import PaymentRepository
@@ -101,6 +103,26 @@ def get_mark_conclusion_ready_usecase(
     """Сценарий «заключение готово»."""
 
     return MarkConclusionReadyUseCase(expertises, notifications)
+
+
+def get_send_remarks_usecase(
+    expertises: ExpertiseRepository = Depends(get_expertise_repository),
+    notifications: NotificationRepository = Depends(get_notification_repository),
+    storage: PrivateStorage = Depends(get_private_storage),
+) -> SendRemarksUseCase:
+    """Сценарий выдачи замечаний по документации."""
+
+    return SendRemarksUseCase(expertises, notifications, storage)
+
+
+def get_resubmit_documentation_usecase(
+    expertises: ExpertiseRepository = Depends(get_expertise_repository),
+    notifications: NotificationRepository = Depends(get_notification_repository),
+    storage: PrivateStorage = Depends(get_private_storage),
+) -> ResubmitDocumentationUseCase:
+    """Сценарий повторной подачи исправленной документации."""
+
+    return ResubmitDocumentationUseCase(expertises, notifications, storage)
 
 
 def get_send_conclusion_usecase(

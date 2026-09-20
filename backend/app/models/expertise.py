@@ -15,6 +15,7 @@ class ExpertiseStatus(StrEnum):
     expert_ready — эксперт готов провести экспертизу, ждём согласия заказчика;
     contract — обе стороны согласились, договор считается заключённым, ждём аванс;
     in_progress — аванс оплачен, эксперт работает;
+    remarks — эксперт выдал замечания, ждём исправленную документацию;
     conclusion_ready — эксперт сообщил, что заключение готово, ждём остаток;
     paid — остаток оплачен, эксперт подписывает заключение и отправляет;
     sent — заключение отправлено заказчику;
@@ -25,6 +26,7 @@ class ExpertiseStatus(StrEnum):
     EXPERT_READY = "expert_ready"
     CONTRACT = "contract"
     IN_PROGRESS = "in_progress"
+    REMARKS = "remarks"
     CONCLUSION_READY = "conclusion_ready"
     PAID = "paid"
     SENT = "sent"
@@ -94,6 +96,45 @@ class Expertise(Base):
         order_by="ExpertiseDocument.id",
     )
 
+    remarks: Mapped[list["ExpertiseRemark"]] = relationship(
+        back_populates="expertise",
+        lazy="selectin",
+        cascade="all, delete-orphan",
+        order_by="ExpertiseRemark.id",
+    )
+
+
+class ExpertiseRemark(Base):
+    """Замечания эксперта по документации: рекомендации по приведению объекта в соответствие.
+
+    Эксперт пишет текст, прикладывает файл или делает и то и другое. Заказчик
+    исправляет документацию и отправляет её повторно, тогда замечание считается
+    закрытым. Раундов замечаний может быть несколько, поэтому храним их списком.
+    """
+
+    __tablename__ = "expertise_remarks"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+    expertise_id: Mapped[int] = mapped_column(
+        ForeignKey("expertises.id", ondelete="CASCADE"), index=True
+    )
+
+    text: Mapped[str | None] = mapped_column(Text)
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    resolved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+    expertise: Mapped["Expertise"] = relationship(back_populates="remarks")
+
+    documents: Mapped[list["ExpertiseDocument"]] = relationship(
+        back_populates="remark",
+        lazy="selectin",
+        order_by="ExpertiseDocument.id",
+    )
+
 
 class ExpertiseDocument(Base):
     """Файл, приложенный к экспертизе: документация заказчика или заключение эксперта."""
@@ -104,6 +145,9 @@ class ExpertiseDocument(Base):
 
     expertise_id: Mapped[int] = mapped_column(
         ForeignKey("expertises.id", ondelete="CASCADE"), index=True
+    )
+    remark_id: Mapped[int | None] = mapped_column(
+        ForeignKey("expertise_remarks.id", ondelete="CASCADE")
     )
     uploaded_by: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="RESTRICT"))
 
@@ -118,3 +162,4 @@ class ExpertiseDocument(Base):
     )
 
     expertise: Mapped["Expertise"] = relationship(back_populates="documents")
+    remark: Mapped["ExpertiseRemark | None"] = relationship(back_populates="documents")

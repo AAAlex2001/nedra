@@ -25,7 +25,9 @@ from app.dependencies.expertise import (
     get_create_expertise_usecase,
     get_expertise_repository,
     get_mark_conclusion_ready_usecase,
+    get_resubmit_documentation_usecase,
     get_send_conclusion_usecase,
+    get_send_remarks_usecase,
     get_visible_expertise,
 )
 from app.dependencies.payments import get_payment_repository, get_sync_payment_usecase
@@ -50,6 +52,8 @@ from app.services.expertise.letters import (
     send_expert_ready_letter,
     send_final_paid_letter,
     send_new_expertise_letters,
+    send_remarks_letter,
+    send_revision_letter,
     send_work_accepted_letter,
 )
 from app.services.expertise.repo import ExpertiseRepository
@@ -60,7 +64,9 @@ from app.services.expertise.usecases.confirm_expertise import ConfirmExpertiseUs
 from app.services.expertise.usecases.create_expertise import CreateExpertiseUseCase
 from app.services.expertise.usecases.create_expertise_payment import CreateExpertisePaymentUseCase
 from app.services.expertise.usecases.mark_conclusion_ready import MarkConclusionReadyUseCase
+from app.services.expertise.usecases.resubmit_documentation import ResubmitDocumentationUseCase
 from app.services.expertise.usecases.send_conclusion import SendConclusionUseCase
+from app.services.expertise.usecases.send_remarks import SendRemarksUseCase
 from app.services.files.storage import PrivateStorage, UploadError
 from app.services.payments.exceptions import PaymentGatewayError
 from app.services.payments.repo import PaymentRepository
@@ -113,6 +119,7 @@ async def to_schema(
         sent_at=expertise.sent_at,
         accepted_at=expertise.accepted_at,
         documents=expertise.documents,
+        remarks=expertise.remarks,
     )
 
 
@@ -376,6 +383,55 @@ async def mark_conclusion_ready(
     customer = await users.get_by_id(updated.customer_id)
     if customer is not None:
         background_tasks.add_task(send_conclusion_ready_letter, updated, customer)
+
+    return await to_schema(updated, users, payments)
+
+
+@router.post("/{expertise_id}/remarks")
+async def send_remarks(
+    background_tasks: BackgroundTasks,
+    text: str | None = Form(None, description="Текст замечаний"),
+    files: list[UploadFile] = File(default=[], description="Файл с замечаниями: PDF или Word"),
+    expertise: Expertise = Depends(get_visible_expertise),
+    expert: User = Depends(require_expert),
+    usecase: SendRemarksUseCase = Depends(get_send_remarks_usecase),
+    users: UserRepository = Depends(get_user_repository),
+    payments: PaymentRepository = Depends(get_payment_repository),
+) -> ExpertiseOutSchema:
+    """Шаг 8а: эксперт выдаёт замечания вместо готового заключения."""
+
+    try:
+        updated = await usecase.execute(expert, expertise, text, files)
+    except (ExpertiseStateError, ExpertiseAccessError, InvalidExpertiseError, UploadError) as error:
+        raise_for_flow_error(error)
+
+    customer = await users.get_by_id(updated.customer_id)
+    if customer is not None:
+        background_tasks.add_task(send_remarks_letter, updated, customer, text)
+
+    return await to_schema(updated, users, payments)
+
+
+@router.post("/{expertise_id}/revision")
+async def resubmit_documentation(
+    background_tasks: BackgroundTasks,
+    files: list[UploadFile] = File(default=[], description="Исправленная документация"),
+    expertise: Expertise = Depends(get_visible_expertise),
+    customer: User = Depends(require_customer),
+    usecase: ResubmitDocumentationUseCase = Depends(get_resubmit_documentation_usecase),
+    users: UserRepository = Depends(get_user_repository),
+    payments: PaymentRepository = Depends(get_payment_repository),
+) -> ExpertiseOutSchema:
+    """Шаг 8б: заказчик исправил замечания и отправляет документацию повторно."""
+
+    try:
+        updated = await usecase.execute(customer, expertise, files)
+    except (ExpertiseStateError, ExpertiseAccessError, InvalidExpertiseError, UploadError) as error:
+        raise_for_flow_error(error)
+
+    expert = await users.get_by_id(updated.expert_id) if updated.expert_id else None
+    if expert is not None:
+        background_tasks.add_task(send_revision_letter, updated, expert)
 
     return await to_schema(updated, users, payments)
 

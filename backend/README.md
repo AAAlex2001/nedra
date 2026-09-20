@@ -132,10 +132,16 @@ multipart: поле `payload` с JSON и файлы `scans`), админ про�
 | `expert_ready` | эксперт | `POST /expertise/{id}/accept` | первый готовый эксперт закрепляется за заявкой, заказчику уведомление и письмо |
 | `contract` | заказчик | `POST /expertise/{id}/confirm` | вторая галочка — договор заключён |
 | `in_progress` | заказчик | `POST /expertise/{id}/payment` | аванс 50 % через ЮKassa; статус двигает вебхук или `POST /expertise/{id}/payment/refresh` |
-| `conclusion_ready` | эксперт | `POST /expertise/{id}/conclusion-ready` | заключение готово, заказчику письмо про остаток |
+| `remarks` | эксперт | `POST /expertise/{id}/remarks` | multipart: `text`, `files` или и то и другое — рекомендации по приведению объекта в соответствие |
+| `in_progress` | заказчик | `POST /expertise/{id}/revision` | исправленная документация, экспертиза возвращается в работу |
+| `conclusion_ready` | эксперт | `POST /expertise/{id}/conclusion-ready` | заключение готово, заказчику письмо про полную оплату |
 | `paid` | заказчик | `POST /expertise/{id}/payment` | остаток 50 % |
 | `sent` | эксперт | `POST /expertise/{id}/conclusion` | multipart: `result` (positive/negative/remarks) и файлы заключения, подписанные ЭЦП |
 | `accepted` | заказчик | `POST /expertise/{id}/accept-work` | работа принята |
+
+Цикл замечаний повторяется сколько нужно: каждый раунд это строка в
+`expertise_remarks` с текстом и файлами (`expertise_documents.remark_id`),
+повторная подача закрывает его датой и возвращает статус `in_progress`.
 
 Сумму этапов считает `services/expertise/money.py`: 50/50, копейка при
 нечётной сумме уходит в остаток. `ApplyExpertisePaymentUseCase` идемпотентен:

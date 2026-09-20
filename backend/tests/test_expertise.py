@@ -29,7 +29,9 @@ from app.services.expertise.usecases.confirm_expertise import ConfirmExpertiseUs
 from app.services.expertise.usecases.create_expertise import CreateExpertiseUseCase
 from app.services.expertise.usecases.create_expertise_payment import CreateExpertisePaymentUseCase
 from app.services.expertise.usecases.mark_conclusion_ready import MarkConclusionReadyUseCase
+from app.services.expertise.usecases.resubmit_documentation import ResubmitDocumentationUseCase
 from app.services.expertise.usecases.send_conclusion import SendConclusionUseCase
+from app.services.expertise.usecases.send_remarks import SendRemarksUseCase
 from app.services.expertise.validators import resolve_category, validate_pair
 from app.services.files.storage import StoredFile
 
@@ -374,6 +376,50 @@ def test_apply_payment_moves_status_once() -> None:
     assert updated is not None
     assert updated.status == ExpertiseStatus.PAID
     assert updated.final_paid_at is not None
+
+
+def test_remarks_cycle_returns_expertise_to_work() -> None:
+    expertise = make_expertise(ExpertiseStatus.IN_PROGRESS)
+    expertise.expert_id = 10
+    expert = make_user(10, UserRole.EXPERT)
+    customer = make_user(1, UserRole.CUSTOMER)
+    notifications = FakeNotificationRepository()
+    repo = FakeExpertiseRepository()
+
+    remarks = SendRemarksUseCase(repo, notifications, FakeStorage())
+    revision = ResubmitDocumentationUseCase(repo, notifications, FakeStorage())
+
+    with pytest.raises(ExpertiseAccessError):
+        asyncio.run(remarks.execute(make_user(11, UserRole.EXPERT), expertise, "текст", []))
+
+    with pytest.raises(InvalidExpertiseError):
+        asyncio.run(remarks.execute(expert, expertise, "   ", []))
+
+    asyncio.run(remarks.execute(expert, expertise, "  Уточните раздел 3  ", [FakeUpload("r.pdf")]))
+
+    assert expertise.status == ExpertiseStatus.REMARKS
+    assert len(expertise.remarks) == 1
+    assert expertise.remarks[0].text == "Уточните раздел 3"
+    assert expertise.remarks[0].documents[0].kind == "remarks"
+    assert notifications.added[0].user_id == 1
+
+    with pytest.raises(InvalidExpertiseError):
+        asyncio.run(revision.execute(customer, expertise, []))
+
+    asyncio.run(revision.execute(customer, expertise, [FakeUpload("fixed.pdf")]))
+
+    assert expertise.status == ExpertiseStatus.IN_PROGRESS
+    assert expertise.remarks[0].resolved_at is not None
+    assert expertise.documents[-1].kind == "revision"
+    assert notifications.added[1].user_id == 10
+
+    with pytest.raises(ExpertiseStateError):
+        asyncio.run(revision.execute(customer, expertise, [FakeUpload("again.pdf")]))
+
+    asyncio.run(remarks.execute(expert, expertise, None, [FakeUpload("r2.pdf")]))
+
+    assert len(expertise.remarks) == 2
+    assert expertise.remarks[1].text is None
 
 
 def test_conclusion_ready_send_and_accept_work() -> None:
