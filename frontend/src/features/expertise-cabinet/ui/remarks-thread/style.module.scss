@@ -1,0 +1,150 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 16px;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.wait,
+.done {
+  align-self: flex-start;
+  padding: 5px 10px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  white-space: nowrap;
+
+  border-radius: 100px;
+}
+
+.wait {
+  color: #b23b2c;
+  background: #fdeceb;
+}
+
+.done {
+  color: #2f7a4d;
+  background: #e6f4ec;
+}
+
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  list-style: none;
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 16px;
+
+  border-top: 1px solid #f0f1f4;
+}
+
+.round:first-child {
+  padding-top: 0;
+
+  border-top: none;
+}
+
+.message {
+  display: flex;
+  gap: 10px;
+}
+
+.avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 12px;
+
+  border-radius: 100px;
+}
+
+.fromExpert {
+  color: #b86108;
+  background: #fff2e2;
+}
+
+.fromCustomer {
+  color: #2f7a4d;
+  background: #e6f4ec;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding-top: 3px;
+}
+
+.meta {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #7b8190;
+}
+
+.author {
+  font-weight: 700;
+
+  color: #0b0b0b;
+}
+
+.text {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  white-space: pre-line;
+
+  color: #2b2f3a;
+}
+
+@media (min-width: 768px) {
+  .head {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .wait,
+  .done {
+    flex: none;
+    align-self: auto;
+  }
+}

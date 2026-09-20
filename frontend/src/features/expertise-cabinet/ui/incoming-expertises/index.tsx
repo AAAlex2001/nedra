@@ -1,69 +1,55 @@
 "use client";
 
-import type { Certificate } from "@/entities/expert";
-import { objectLabel } from "@/entities/expert";
-import Chip from "@/shared/ui/chip";
+import { objectLabel, type Certificate } from "@/entities/expert";
 import Loader from "@/shared/ui/loader";
 import { useIncomingExpertises } from "../../model/use-incoming-expertises";
 import ExpertiseCard from "../expertise-card";
+import FilterChips from "../filter-chips";
 import styles from "./style.module.scss";
 
 type IncomingExpertisesProps = {
   certificates: Certificate[];
 };
 
-const unique = (values: string[]): string[] => {
-  const seen: string[] = [];
-  for (const value of values) {
-    if (!seen.includes(value)) seen.push(value);
-  }
-  return seen;
-};
-
 const IncomingExpertises = ({ certificates }: IncomingExpertisesProps) => {
-  const { state, visibleItems, objectCode, areaCode, setObjectCode, setAreaCode, replace } =
-    useIncomingExpertises();
+  const incoming = useIncomingExpertises(certificates);
+  const { state } = incoming;
 
-  const objectCodes = unique(certificates.map((item) => item.object_code));
-  const areaCodes = unique(certificates.map((item) => item.area_code));
-  const showFilters = state.status === "ready" && (objectCodes.length > 1 || areaCodes.length > 1);
+  if (state.status === "loading") {
+    return <Loader />;
+  }
+
+  if (state.status === "error") {
+    return <p className={styles.error}>{state.message}</p>;
+  }
+
+  const hasFilters = incoming.objectCodes.length > 1 || incoming.areaCodes.length > 1;
 
   return (
     <div className={styles.root}>
-      {showFilters && state.status === "ready" && (
+      {hasFilters && (
         <div className={styles.filters}>
-          {objectCodes.length > 1 && (
-            <div className={styles.chips} role="group" aria-label="Объект">
-              <Chip active={objectCode === ""} onClick={() => setObjectCode("")}>
-                Все объекты
-              </Chip>
-              {objectCodes.map((code) => (
-                <Chip key={code} active={objectCode === code} onClick={() => setObjectCode(code)}>
-                  {objectLabel(state.catalog, code)}
-                </Chip>
-              ))}
-            </div>
-          )}
-
-          {areaCodes.length > 1 && (
-            <div className={styles.chips} role="group" aria-label="Область">
-              <Chip active={areaCode === ""} onClick={() => setAreaCode("")}>
-                Все области
-              </Chip>
-              {areaCodes.map((code) => (
-                <Chip key={code} active={areaCode === code} onClick={() => setAreaCode(code)}>
-                  {code}
-                </Chip>
-              ))}
-            </div>
-          )}
+          <FilterChips
+            label="Объект"
+            allLabel="Все объекты"
+            options={incoming.objectCodes.map((code) => ({
+              value: code,
+              label: objectLabel(state.catalog, code),
+            }))}
+            value={incoming.objectCode}
+            onSelect={incoming.setObjectCode}
+          />
+          <FilterChips
+            label="Область"
+            allLabel="Все области"
+            options={incoming.areaCodes.map((code) => ({ value: code, label: code }))}
+            value={incoming.areaCode}
+            onSelect={incoming.setAreaCode}
+          />
         </div>
       )}
 
-      {state.status === "loading" && <Loader />}
-      {state.status === "error" && <p className={styles.error}>{state.message}</p>}
-
-      {state.status === "ready" && visibleItems.length === 0 && (
+      {incoming.visibleItems.length === 0 ? (
         <div className={styles.empty}>
           <p className={styles.emptyTitle}>Новых заявок нет</p>
           <p className={styles.emptyText}>
@@ -71,17 +57,15 @@ const IncomingExpertises = ({ certificates }: IncomingExpertisesProps) => {
             О новой заявке сообщим уведомлением и письмом.
           </p>
         </div>
-      )}
-
-      {state.status === "ready" && visibleItems.length > 0 && (
+      ) : (
         <div className={styles.list}>
-          {visibleItems.map((item) => (
+          {incoming.visibleItems.map((item) => (
             <ExpertiseCard
               key={item.id}
               expertise={item}
               catalog={state.catalog}
               role="expert"
-              onChange={replace}
+              onChange={incoming.replace}
             />
           ))}
         </div>

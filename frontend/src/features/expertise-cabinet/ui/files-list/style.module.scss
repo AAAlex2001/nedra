@@ -1,0 +1,60 @@
+.files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  list-style: none;
+}
+
+.file {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+
+  text-decoration: none;
+}
+
+.tile {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+
+  background: #fff2e2;
+  border: 1px solid #ffe3c2;
+  border-radius: 12px;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.file:hover .tile {
+  background: #ffe3c2;
+  border-color: #f69827;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.name {
+  overflow: hidden;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #f69827;
+}
+
+.file:hover .name {
+  color: #b86108;
+}

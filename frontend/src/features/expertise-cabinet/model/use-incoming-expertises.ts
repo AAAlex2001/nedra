@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchExpertCatalog, type ExpertCatalog } from "@/entities/expert";
+import { fetchExpertCatalog, type Certificate, type ExpertCatalog } from "@/entities/expert";
 import { fetchIncomingExpertises, type Expertise } from "@/entities/expertise";
 
 const POLL_INTERVAL = 60_000;
@@ -11,7 +11,10 @@ type IncomingState =
   | { status: "error"; message: string }
   | { status: "ready"; items: Expertise[]; catalog: ExpertCatalog };
 
-export const useIncomingExpertises = () => {
+const unique = (values: string[]): string[] =>
+  values.filter((value, index) => values.indexOf(value) === index);
+
+export const useIncomingExpertises = (certificates: Certificate[]) => {
   const [objectCode, setObjectCode] = useState("");
   const [areaCode, setAreaCode] = useState("");
   const [state, setState] = useState<IncomingState>({ status: "loading" });
@@ -44,6 +47,9 @@ export const useIncomingExpertises = () => {
     };
   }, []);
 
+  const objectCodes = unique(certificates.map((item) => item.object_code));
+  const areaCodes = unique(certificates.map((item) => item.area_code));
+
   const items = state.status === "ready" ? state.items : [];
 
   const visibleItems = items.filter(
@@ -61,5 +67,15 @@ export const useIncomingExpertises = () => {
     setState({ ...state, items: next });
   };
 
-  return { state, visibleItems, objectCode, areaCode, setObjectCode, setAreaCode, replace };
+  return {
+    state,
+    visibleItems,
+    objectCodes,
+    areaCodes,
+    objectCode,
+    areaCode,
+    setObjectCode,
+    setAreaCode,
+    replace,
+  };
 };

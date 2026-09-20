@@ -10,12 +10,6 @@
   gap: 8px;
 }
 
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
 .list {
   display: flex;
   flex-direction: column;
@@ -45,15 +39,6 @@
 .emptyText {
   max-width: 560px;
 
-  font-family: "Manrope";
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 20px;
-
-  color: #6c7078;
-}
-
-.muted {
   font-family: "Manrope";
   font-weight: 400;
   font-size: 15px;
