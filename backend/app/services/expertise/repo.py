@@ -2,9 +2,20 @@
 
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.models.expert import ExpertCertificate
-from app.models.expertise import Expertise, ExpertiseDocument, ExpertiseStatus
+from app.models.expertise import (
+    Expertise,
+    ExpertiseDocument,
+    ExpertiseRemark,
+    ExpertiseStatus,
+)
+
+RELATIONS = (
+    selectinload(Expertise.documents),
+    selectinload(Expertise.remarks).selectinload(ExpertiseRemark.documents),
+)
 
 
 class ExpertiseRepository:
@@ -118,17 +129,32 @@ class ExpertiseRepository:
 
         self.db.add(expertise)
         await self.db.commit()
-        await self.db.refresh(expertise)
 
-        return expertise
+        return await self.reload(expertise)
 
     async def save(self, expertise: Expertise) -> Expertise:
         """Сохранить изменения экспертизы и всё, что сценарий добавил в сессию."""
 
         await self.db.commit()
-        await self.db.refresh(expertise)
 
-        return expertise
+        return await self.reload(expertise)
+
+    async def reload(self, expertise: Expertise) -> Expertise:
+        """Перечитать экспертизу со связями: после коммита они протухают.
+
+        Обычный refresh обновляет только верхний уровень, поэтому файлы внутри
+        замечаний остаются незагруженными и схема падает на ленивом запросе.
+        """
+
+        stmt = (
+            select(Expertise)
+            .where(Expertise.id == expertise.id)
+            .options(*RELATIONS)
+            .execution_options(populate_existing=True)
+        )
+        result = await self.db.execute(stmt)
+
+        return result.scalar_one()
 
 
 def certificate_fits(certificates: list[ExpertCertificate], expertise: Expertise) -> bool:
