@@ -40,6 +40,5 @@ export { ThumbUpIcon } from "./thumb-up-icon";
 export { ThumbDownIcon } from "./thumb-down-icon";
 export { EyeIcon } from "./eye-icon";
 export { ArrowRightIcon } from "./arrow-right-icon";
-export { BellIcon } from "./bell-icon";
 
 //коммент

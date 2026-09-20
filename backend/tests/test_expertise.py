@@ -404,17 +404,19 @@ def test_remarks_cycle_returns_expertise_to_work() -> None:
     assert notifications.added[0].user_id == 1
 
     with pytest.raises(InvalidExpertiseError):
-        asyncio.run(revision.execute(customer, expertise, []))
+        asyncio.run(revision.execute(customer, expertise, None, []))
 
-    asyncio.run(revision.execute(customer, expertise, [FakeUpload("fixed.pdf")]))
+    asyncio.run(revision.execute(customer, expertise, "  Исправил раздел 3  ", [FakeUpload("fixed.pdf")]))
 
     assert expertise.status == ExpertiseStatus.IN_PROGRESS
     assert expertise.remarks[0].resolved_at is not None
+    assert expertise.remarks[0].response_text == "Исправил раздел 3"
     assert expertise.documents[-1].kind == "revision"
+    assert expertise.remarks[0].documents[-1].kind == "revision"
     assert notifications.added[1].user_id == 10
 
     with pytest.raises(ExpertiseStateError):
-        asyncio.run(revision.execute(customer, expertise, [FakeUpload("again.pdf")]))
+        asyncio.run(revision.execute(customer, expertise, None, [FakeUpload("again.pdf")]))
 
     asyncio.run(remarks.execute(expert, expertise, None, [FakeUpload("r2.pdf")]))
 

@@ -2,7 +2,7 @@
 
 from datetime import datetime, timezone
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.notification import Notification
@@ -50,3 +50,21 @@ class NotificationRepository:
         await self.db.refresh(notification)
 
         return notification
+
+    async def mark_all_read(self, user_id: int, expertise_ids: list[int] | None = None) -> None:
+        """Отметить прочитанными непрочитанные уведомления пользователя.
+
+        Без expertise_ids читаем всё, с ним — только уведомления по этим заявкам:
+        так кабинет гасит бейдж вкладки, когда пользователь её открыл.
+        """
+
+        stmt = (
+            update(Notification)
+            .where(Notification.user_id == user_id, Notification.read_at.is_(None))
+            .values(read_at=datetime.now(timezone.utc))
+        )
+        if expertise_ids is not None:
+            stmt = stmt.where(Notification.expertise_id.in_(expertise_ids))
+
+        await self.db.execute(stmt)
+        await self.db.commit()

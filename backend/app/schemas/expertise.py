@@ -62,6 +62,7 @@ class ExpertiseRemarkSchema(BaseModel):
 
     id: int
     text: str | None
+    response_text: str | None
     created_at: datetime
     resolved_at: datetime | None
     documents: list[ExpertiseDocumentSchema]

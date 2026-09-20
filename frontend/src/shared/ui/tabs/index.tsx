@@ -4,6 +4,7 @@ import styles from "./style.module.scss";
 type TabItem = {
   key: string;
   label: string;
+  badge?: number;
 };
 
 type TabLinkItem = {
@@ -27,6 +28,12 @@ type TabLinksProps = {
   stretch?: boolean;
 };
 
+const Badge = ({ count }: { count: number }) => (
+  <span className={styles.badge} aria-label={`новых: ${count}`}>
+    {count > 99 ? "99+" : count}
+  </span>
+);
+
 export const Tabs = ({ items, active, onSelect, label, stretch }: TabsProps) => (
   <div
     className={`${styles.tabs} ${stretch ? styles.stretched : ""}`}
@@ -43,6 +50,7 @@ export const Tabs = ({ items, active, onSelect, label, stretch }: TabsProps) => 
         onClick={() => onSelect(item.key)}
       >
         {item.label}
+        {item.badge !== undefined && item.badge > 0 && <Badge count={item.badge} />}
       </button>
     ))}
   </div>

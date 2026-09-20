@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useSession } from "@/entities/user";
 import { useAuthModal } from "@/features/auth";
 import Button from "@/shared/ui/button";
-import NotificationsBell from "../notifications-bell";
 import styles from "./style.module.scss";
 
 const initials = (fullName: string): string => {
@@ -27,16 +26,12 @@ const AuthControls = () => {
   }
 
   return (
-    <div className={styles.account}>
-      <NotificationsBell />
-
-      <Link href="/kabinet" className={styles.user} title="Личный кабинет">
-        <span className={styles.avatar} aria-hidden="true">
-          {initials(session.user.full_name)}
-        </span>
-        <span className={styles.name}>Личный кабинет</span>
-      </Link>
-    </div>
+    <Link href="/kabinet" className={styles.user} title="Личный кабинет">
+      <span className={styles.avatar} aria-hidden="true">
+        {initials(session.user.full_name)}
+      </span>
+      <span className={styles.name}>Личный кабинет</span>
+    </Link>
   );
 };
 

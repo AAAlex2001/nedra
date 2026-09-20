@@ -58,8 +58,12 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
   const documents = expertise.documents ?? [];
   const remarks = expertise.remarks ?? [];
 
+  const shownInRemarks = new Set(remarks.flatMap((remark) => remark.documents.map((item) => item.id)));
+
   const documentation = documents.filter((item) => item.kind === "documentation");
-  const revisions = documents.filter((item) => item.kind === "revision");
+  const revisions = documents.filter(
+    (item) => item.kind === "revision" && !shownInRemarks.has(item.id),
+  );
   const conclusion = documents.filter((item) => item.kind === "conclusion");
 
   return (
@@ -121,18 +125,34 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
             промышленной безопасности
           </p>
 
-          {remarks.map((remark) => (
-            <div key={remark.id} className={styles.remark}>
-              <p className={styles.remarkDate}>
-                {formatRequestDate(remark.created_at)}
-                {remark.resolved_at && " · исправления получены"}
-              </p>
-              {remark.text && <p className={styles.remarkText}>{remark.text}</p>}
-              {remark.documents.length > 0 && (
-                <FilesList expertiseId={expertise.id} documents={remark.documents} />
-              )}
-            </div>
-          ))}
+          {remarks.map((remark) => {
+            const remarkFiles = remark.documents.filter((item) => item.kind === "remarks");
+            const revisionFiles = remark.documents.filter((item) => item.kind === "revision");
+
+            return (
+              <div key={remark.id} className={styles.remark}>
+                <p className={styles.remarkDate}>{formatRequestDate(remark.created_at)}</p>
+                {remark.text && <p className={styles.remarkText}>{remark.text}</p>}
+                {remarkFiles.length > 0 && (
+                  <FilesList expertiseId={expertise.id} documents={remarkFiles} />
+                )}
+
+                {remark.resolved_at && (
+                  <div className={styles.remarkResponse}>
+                    <p className={styles.remarkResponseLabel}>
+                      Ответ заказчика · {formatRequestDate(remark.resolved_at)}
+                    </p>
+                    {remark.response_text && (
+                      <p className={styles.remarkText}>{remark.response_text}</p>
+                    )}
+                    {revisionFiles.length > 0 && (
+                      <FilesList expertiseId={expertise.id} documents={revisionFiles} />
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 

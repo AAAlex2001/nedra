@@ -4,12 +4,13 @@ import type { Certificate } from "@/entities/expert";
 import { objectLabel } from "@/entities/expert";
 import Chip from "@/shared/ui/chip";
 import Loader from "@/shared/ui/loader";
-import { useIncomingExpertises } from "../../model/use-incoming-expertises";
+import type { useIncomingExpertises } from "../../model/use-incoming-expertises";
 import ExpertiseCard from "../expertise-card";
 import styles from "./style.module.scss";
 
 type IncomingExpertisesProps = {
   certificates: Certificate[];
+  incoming: ReturnType<typeof useIncomingExpertises>;
 };
 
 const unique = (values: string[]): string[] => {
@@ -20,9 +21,9 @@ const unique = (values: string[]): string[] => {
   return seen;
 };
 
-const IncomingExpertises = ({ certificates }: IncomingExpertisesProps) => {
-  const { state, objectCode, areaCode, setObjectCode, setAreaCode, replace } =
-    useIncomingExpertises();
+const IncomingExpertises = ({ certificates, incoming }: IncomingExpertisesProps) => {
+  const { state, visibleItems, objectCode, areaCode, setObjectCode, setAreaCode, replace } =
+    incoming;
 
   const objectCodes = unique(certificates.map((item) => item.object_code));
   const areaCodes = unique(certificates.map((item) => item.area_code));
@@ -63,7 +64,7 @@ const IncomingExpertises = ({ certificates }: IncomingExpertisesProps) => {
       {state.status === "loading" && <Loader />}
       {state.status === "error" && <p className={styles.error}>{state.message}</p>}
 
-      {state.status === "ready" && state.items.length === 0 && (
+      {state.status === "ready" && visibleItems.length === 0 && (
         <div className={styles.empty}>
           <p className={styles.emptyTitle}>Новых заявок нет</p>
           <p className={styles.emptyText}>
@@ -73,9 +74,9 @@ const IncomingExpertises = ({ certificates }: IncomingExpertisesProps) => {
         </div>
       )}
 
-      {state.status === "ready" && state.items.length > 0 && (
+      {state.status === "ready" && visibleItems.length > 0 && (
         <div className={styles.list}>
-          {state.items.map((item) => (
+          {visibleItems.map((item) => (
             <ExpertiseCard
               key={item.id}
               expertise={item}

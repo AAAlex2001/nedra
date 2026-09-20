@@ -1,2 +1,6 @@
 export type { Notification } from "./model/types";
-export { fetchNotifications, markNotificationRead } from "./api/notifications";
+export {
+  fetchNotifications,
+  markAllNotificationsRead,
+  markNotificationRead,
+} from "./api/notifications";

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { fetchExpertCatalog, type ExpertCatalog } from "@/entities/expert";
 import { fetchIncomingExpertises, type Expertise } from "@/entities/expertise";
 
+const POLL_INTERVAL = 60_000;
+
 type IncomingState =
   | { status: "loading" }
   | { status: "error"; message: string }
@@ -19,7 +21,7 @@ export const useIncomingExpertises = () => {
 
     const load = async () => {
       try {
-        const items = await fetchIncomingExpertises(objectCode, areaCode);
+        const items = await fetchIncomingExpertises("", "");
         const catalog = await fetchExpertCatalog();
         if (cancelled) return;
 
@@ -34,20 +36,30 @@ export const useIncomingExpertises = () => {
     };
 
     void load();
+    const timer = window.setInterval(() => void load(), POLL_INTERVAL);
 
     return () => {
       cancelled = true;
+      window.clearInterval(timer);
     };
-  }, [objectCode, areaCode]);
+  }, []);
+
+  const items = state.status === "ready" ? state.items : [];
+
+  const visibleItems = items.filter(
+    (item) =>
+      (objectCode === "" || item.object_code === objectCode) &&
+      (areaCode === "" || item.area_code === areaCode),
+  );
 
   const replace = (updated: Expertise) => {
     if (state.status !== "ready") return;
 
-    const items = state.items
+    const next = state.items
       .map((item) => (item.id === updated.id ? updated : item))
       .filter((item) => item.status === "new");
-    setState({ ...state, items });
+    setState({ ...state, items: next });
   };
 
-  return { state, objectCode, areaCode, setObjectCode, setAreaCode, replace };
+  return { state, items, visibleItems, objectCode, areaCode, setObjectCode, setAreaCode, replace };
 };

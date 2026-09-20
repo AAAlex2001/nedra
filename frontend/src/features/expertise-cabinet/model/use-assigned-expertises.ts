@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { fetchExpertCatalog, type ExpertCatalog } from "@/entities/expert";
 import { fetchAssignedExpertises, type Expertise } from "@/entities/expertise";
 
+const POLL_INTERVAL = 60_000;
+
 type AssignedState =
   | { status: "loading" }
   | { status: "error"; message: string }
@@ -32,18 +34,22 @@ export const useAssignedExpertises = () => {
     };
 
     void load();
+    const timer = window.setInterval(() => void load(), POLL_INTERVAL);
 
     return () => {
       cancelled = true;
+      window.clearInterval(timer);
     };
   }, []);
+
+  const items = state.status === "ready" ? state.items : [];
 
   const replace = (updated: Expertise) => {
     if (state.status !== "ready") return;
 
-    const items = state.items.map((item) => (item.id === updated.id ? updated : item));
-    setState({ ...state, items });
+    const next = state.items.map((item) => (item.id === updated.id ? updated : item));
+    setState({ ...state, items: next });
   };
 
-  return { state, replace };
+  return { state, items, replace };
 };

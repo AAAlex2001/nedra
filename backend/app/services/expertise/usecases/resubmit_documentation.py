@@ -37,7 +37,11 @@ class ResubmitDocumentationUseCase:
         self.storage = storage
 
     async def execute(
-        self, customer: User, expertise: Expertise, files: list[UploadFile]
+        self,
+        customer: User,
+        expertise: Expertise,
+        text: str | None,
+        files: list[UploadFile],
     ) -> Expertise:
         """Бросает ExpertiseStateError, ExpertiseAccessError, InvalidExpertiseError, UploadError."""
 
@@ -50,21 +54,26 @@ class ResubmitDocumentationUseCase:
         if not files:
             raise InvalidExpertiseError("Приложите исправленную документацию")
 
+        open_remark = next((remark for remark in expertise.remarks if remark.resolved_at is None), None)
+        comment = text.strip() if text else None
+
         for file in files:
             stored = await self.storage.save(file, REVISIONS_FOLDER, DOCUMENTATION_MAX_SIZE_BYTES)
-            expertise.documents.append(
-                ExpertiseDocument(
-                    uploaded_by=customer.id,
-                    kind="revision",
-                    file_path=stored.path,
-                    original_name=stored.original_name,
-                    size=stored.size,
-                    content_type=stored.content_type,
-                )
+            document = ExpertiseDocument(
+                uploaded_by=customer.id,
+                kind="revision",
+                file_path=stored.path,
+                original_name=stored.original_name,
+                size=stored.size,
+                content_type=stored.content_type,
             )
+            expertise.documents.append(document)
+            if open_remark is not None:
+                open_remark.documents.append(document)
 
         for remark in expertise.remarks:
             if remark.resolved_at is None:
+                remark.response_text = comment
                 remark.resolved_at = datetime.now(timezone.utc)
 
         expertise.status = ExpertiseStatus.IN_PROGRESS

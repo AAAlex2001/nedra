@@ -102,15 +102,17 @@ async def send_remarks_letter(expertise: Expertise, customer: User, text: str | 
     )
 
 
-async def send_revision_letter(expertise: Expertise, expert: User) -> None:
+async def send_revision_letter(expertise: Expertise, expert: User, text: str | None) -> None:
     """Эксперту: заказчик прислал исправленную документацию."""
+
+    body = f"Комментарий заказчика:\n{text}\n\n" if text else ""
 
     await send_email(
         recipients=[expert.email],
         subject=f"Исправленная документация по экспертизе №{expertise.id} — НПИ «Недра»",
         text=(
             f"{expert.full_name}, заказчик исправил замечания по заявке №{expertise.id} "
-            f"и прислал документацию повторно.\n\n{CABINET_LINE}"
+            f"и прислал документацию повторно.\n\n{body}{CABINET_LINE}"
         ),
     )
 

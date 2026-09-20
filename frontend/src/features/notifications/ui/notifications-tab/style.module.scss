@@ -1,0 +1,152 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.count {
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #5b6070;
+}
+
+.readAll,
+.read {
+  font-family: "Gilroy";
+  font-weight: 500;
+  white-space: nowrap;
+
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #f69827;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.readAll {
+  padding: 10px 16px;
+
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.read {
+  padding: 6px 12px;
+
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.readAll:hover:not(:disabled),
+.read:hover {
+  color: #fff;
+  background: #f69827;
+}
+
+.readAll:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+
+  background: #f5f6f8;
+  border: 1px solid transparent;
+  border-radius: 14px;
+}
+
+.itemUnread {
+  background: #fff9f2;
+  border-color: #ffe3c2;
+}
+
+.text {
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.date {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #7b8190;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 28px 24px;
+
+  background: #fff;
+  border: 1px dashed #c9ced8;
+  border-radius: 18px;
+}
+
+.emptyTitle {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+.emptyText {
+  max-width: 560px;
+
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+
+  color: #6c7078;
+}
+
+.error {
+  font-family: "Gilroy";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+}

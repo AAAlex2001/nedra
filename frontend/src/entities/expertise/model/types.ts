@@ -33,6 +33,7 @@ export type ExpertiseDocument = {
 export type ExpertiseRemark = {
   id: number;
   text: string | null;
+  response_text: string | null;
   created_at: string;
   resolved_at: string | null;
   documents: ExpertiseDocument[];

@@ -133,6 +133,27 @@
   color: #2b2f3a;
 }
 
+.remarkResponse {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 12px;
+
+  background: #fff;
+  border: 1px solid #ffe3c2;
+  border-radius: 10px;
+}
+
+.remarkResponseLabel {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #2f7a4d;
+}
+
 .files {
   display: flex;
   flex-direction: column;

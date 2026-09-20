@@ -9,7 +9,10 @@ import {
   AssignedExpertises,
   IncomingExpertises,
   MyExpertises,
+  useAssignedExpertises,
+  useIncomingExpertises,
 } from "@/features/expertise-cabinet";
+import { NotificationsTab, useNotifications } from "@/features/notifications";
 import Button from "@/shared/ui/button";
 import Loader from "@/shared/ui/loader";
 import Spinner from "@/shared/ui/spinner";
@@ -23,6 +26,8 @@ const initials = (fullName: string): string => {
 
   return letters.join("");
 };
+
+const ids = (items: { id: number }[]): number[] => items.map((item) => item.id);
 
 type ProfileBarProps = {
   user: User;
@@ -54,19 +59,6 @@ const ProfileBar = ({ user, pending, onLogout }: ProfileBarProps) => (
   </div>
 );
 
-const EXPERT_TABS = [
-  { key: "incoming", label: "Входящие заявки" },
-  { key: "assigned", label: "В работе" },
-  { key: "account", label: "Мои данные" },
-];
-
-const CUSTOMER_TABS = [
-  { key: "mine", label: "Мои экспертизы" },
-  { key: "invoices", label: "Счета" },
-  { key: "acts", label: "Акты" },
-  { key: "account", label: "Мои данные" },
-];
-
 type CabinetPanelProps = {
   user: User;
 };
@@ -74,6 +66,18 @@ type CabinetPanelProps = {
 const ExpertCabinet = ({ user }: CabinetPanelProps) => {
   const [tab, setTab] = useState("incoming");
   const state = useExpertProfile();
+  const incoming = useIncomingExpertises();
+  const assigned = useAssignedExpertises();
+  const notifications = useNotifications();
+
+  const incomingIds = ids(incoming.items);
+  const assignedIds = ids(assigned.items);
+
+  const selectTab = (next: string) => {
+    if (next === "incoming") void notifications.markAllRead(incomingIds);
+    if (next === "assigned") void notifications.markAllRead(assignedIds);
+    setTab(next);
+  };
 
   if (state.status === "loading") {
     return <Loader />;
@@ -83,13 +87,23 @@ const ExpertCabinet = ({ user }: CabinetPanelProps) => {
     return <p className={styles.error}>{state.message}</p>;
   }
 
+  const tabs = [
+    { key: "incoming", label: "Входящие заявки", badge: notifications.unreadFor(incomingIds) },
+    { key: "assigned", label: "В работе", badge: notifications.unreadFor(assignedIds) },
+    { key: "notifications", label: "Уведомления", badge: notifications.unread },
+    { key: "account", label: "Мои данные" },
+  ];
+
   return (
     <>
-      <Tabs items={EXPERT_TABS} active={tab} onSelect={setTab} label="Разделы кабинета" />
+      <Tabs items={tabs} active={tab} onSelect={selectTab} label="Разделы кабинета" />
 
       <section className={styles.panel}>
-        {tab === "incoming" && <IncomingExpertises certificates={state.profile.certificates} />}
-        {tab === "assigned" && <AssignedExpertises />}
+        {tab === "incoming" && (
+          <IncomingExpertises certificates={state.profile.certificates} incoming={incoming} />
+        )}
+        {tab === "assigned" && <AssignedExpertises assigned={assigned} />}
+        {tab === "notifications" && <NotificationsTab notifications={notifications} />}
         {tab === "account" && (
           <>
             <AccountDetails user={user} />
@@ -103,11 +117,25 @@ const ExpertCabinet = ({ user }: CabinetPanelProps) => {
 
 const CustomerCabinet = ({ user }: CabinetPanelProps) => {
   const [tab, setTab] = useState("mine");
+  const notifications = useNotifications();
+
+  const selectTab = (next: string) => {
+    if (next === "mine") void notifications.markAllRead(notifications.linkedIds);
+    setTab(next);
+  };
+
+  const tabs = [
+    { key: "mine", label: "Мои экспертизы", badge: notifications.unreadFor(notifications.linkedIds) },
+    { key: "invoices", label: "Счета" },
+    { key: "acts", label: "Акты" },
+    { key: "notifications", label: "Уведомления", badge: notifications.unread },
+    { key: "account", label: "Мои данные" },
+  ];
 
   return (
     <>
       <div className={styles.toolbar}>
-        <Tabs items={CUSTOMER_TABS} active={tab} onSelect={setTab} label="Разделы кабинета" />
+        <Tabs items={tabs} active={tab} onSelect={selectTab} label="Разделы кабинета" />
         {tab === "mine" && <Button href="/blits-ekspert">Новая заявка</Button>}
       </div>
 
@@ -115,6 +143,7 @@ const CustomerCabinet = ({ user }: CabinetPanelProps) => {
         {tab === "mine" && <MyExpertises />}
         {tab === "invoices" && <InvoicesTab />}
         {tab === "acts" && <ActsTab />}
+        {tab === "notifications" && <NotificationsTab notifications={notifications} />}
         {tab === "account" && (
           <>
             <AccountDetails user={user} />

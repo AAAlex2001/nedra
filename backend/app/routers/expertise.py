@@ -415,6 +415,7 @@ async def send_remarks(
 @router.post("/{expertise_id}/revision")
 async def resubmit_documentation(
     background_tasks: BackgroundTasks,
+    text: str | None = Form(None, description="Комментарий заказчика к исправленной документации"),
     files: list[UploadFile] = File(default=[], description="Исправленная документация"),
     expertise: Expertise = Depends(get_visible_expertise),
     customer: User = Depends(require_customer),
@@ -425,13 +426,13 @@ async def resubmit_documentation(
     """Шаг 8б: заказчик исправил замечания и отправляет документацию повторно."""
 
     try:
-        updated = await usecase.execute(customer, expertise, files)
+        updated = await usecase.execute(customer, expertise, text, files)
     except (ExpertiseStateError, ExpertiseAccessError, InvalidExpertiseError, UploadError) as error:
         raise_for_flow_error(error)
 
     expert = await users.get_by_id(updated.expert_id) if updated.expert_id else None
     if expert is not None:
-        background_tasks.add_task(send_revision_letter, updated, expert)
+        background_tasks.add_task(send_revision_letter, updated, expert, text)
 
     return await to_schema(updated, users, payments)
 
