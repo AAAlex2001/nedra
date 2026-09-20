@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import type { ExpertCatalog } from "@/entities/expert";
-import type { User } from "@/entities/user";
 import Button from "@/shared/ui/button";
 import Modal from "@/shared/ui/modal";
 import TextField from "@/shared/ui/text-field";
@@ -16,10 +15,9 @@ const PASSWORD_MIN_LENGTH = 8;
 
 type ExpertApplicationFormProps = {
   catalog: ExpertCatalog;
-  account: User | null;
 };
 
-const ExpertApplicationForm = ({ catalog, account }: ExpertApplicationFormProps) => {
+const ExpertApplicationForm = ({ catalog }: ExpertApplicationFormProps) => {
   const {
     state,
     area,
@@ -37,7 +35,7 @@ const ExpertApplicationForm = ({ catalog, account }: ExpertApplicationFormProps)
     removeCertificate,
     closeSuccess,
     submit,
-  } = useExpertApplication(catalog, account !== null);
+  } = useExpertApplication(catalog);
 
   return (
     <form
@@ -50,22 +48,10 @@ const ExpertApplicationForm = ({ catalog, account }: ExpertApplicationFormProps)
       <Modal open={state.status === "success"} title="Заявка отправлена" onClose={closeSuccess}>
         <p className={styles.successText}>
           Мы проверим удостоверения и свяжемся с вами по почте. Обычно это занимает
-          до двух рабочих дней.{" "}
-          {account
-            ? "После одобрения в кабинете появится переключатель роли «Эксперт»."
-            : "После одобрения войдите с email и паролем из заявки."}
+          до двух рабочих дней. После одобрения войдите с email и паролем из заявки.
         </p>
       </Modal>
 
-      {account ? (
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Заявка от вашего аккаунта</h2>
-          <p className={styles.sectionText}>
-            {account.full_name} · {account.email} · {account.phone}. Пароль останется прежним,
-            после одобрения роль эксперта включится в кабинете.
-          </p>
-        </section>
-      ) : (
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Контактные данные</h2>
 
@@ -121,7 +107,6 @@ const ExpertApplicationForm = ({ catalog, account }: ExpertApplicationFormProps)
           одобрения заявки.
         </p>
       </section>
-      )}
 
       <section className={styles.section}>
         <DirectionsPicker

@@ -1,7 +1,6 @@
 import type { RegisterFormAction, RegisterFormState } from "./types";
 
 export const INITIAL_REGISTER: RegisterFormState = {
-  role: "customer",
   fields: { fullName: "", email: "", phone: "", password: "" },
   status: "idle",
   error: null,
@@ -12,9 +11,6 @@ export const registerReducer = (
   action: RegisterFormAction,
 ): RegisterFormState => {
   switch (action.type) {
-    case "role/select":
-      return { ...state, role: action.role, error: null };
-
     case "field/change":
       return {
         ...state,

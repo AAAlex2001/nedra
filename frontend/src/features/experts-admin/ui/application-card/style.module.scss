@@ -79,7 +79,8 @@
 }
 
 .approve,
-.reject {
+.reject,
+.edit {
   padding: 8px 16px;
 
   font-family: "Gilroy";
@@ -113,8 +114,19 @@
   background: #f9d9d6;
 }
 
+.edit {
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #f69827;
+}
+
+.edit:hover:not(:disabled) {
+  background: #fff2e2;
+}
+
 .approve:disabled,
-.reject:disabled {
+.reject:disabled,
+.edit:disabled {
   cursor: default;
   opacity: 0.6;
 }

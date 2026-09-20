@@ -1,7 +1,7 @@
 "use client";
 
 import { useReducer } from "react";
-import { registerUser, useSession, type UserRole } from "@/entities/user";
+import { registerUser, useSession } from "@/entities/user";
 import { describeError } from "./describe-error";
 import { INITIAL_REGISTER, registerReducer } from "./register-reducer";
 import type { RegisterFields } from "./types";
@@ -11,8 +11,6 @@ const REGISTER_FAILED = "Не удалось зарегистрироватьс�
 export const useRegisterForm = (onSuccess: () => void) => {
   const session = useSession();
   const [state, dispatch] = useReducer(registerReducer, INITIAL_REGISTER);
-
-  const selectRole = (role: UserRole) => dispatch({ type: "role/select", role });
 
   const changeField = (field: keyof RegisterFields, value: string) =>
     dispatch({ type: "field/change", field, value });
@@ -26,7 +24,6 @@ export const useRegisterForm = (onSuccess: () => void) => {
         email: state.fields.email.trim(),
         phone: state.fields.phone.trim(),
         password: state.fields.password,
-        role: state.role,
       });
 
       session.signIn(user);
@@ -37,5 +34,5 @@ export const useRegisterForm = (onSuccess: () => void) => {
     }
   };
 
-  return { state, selectRole, changeField, submit };
+  return { state, changeField, submit };
 };

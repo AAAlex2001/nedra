@@ -30,6 +30,31 @@ class ExpertiseDocumentSchema(BaseModel):
     created_at: datetime
 
 
+class ExpertiseAdminSchema(BaseModel):
+    """Заявка в админке: коротко и с именами сторон."""
+
+    id: int
+    customer_id: int
+    customer_name: str
+    expert_id: int | None
+    expert_name: str | None
+    object_code: str
+    area_code: str
+    hazard_class: int | None
+    expert_category: int
+    comment: str | None
+    status: ExpertiseStatus
+    price: Decimal | None
+    created_at: datetime
+
+
+class ExpertiseAdminUpdateSchema(BaseModel):
+    """Что админ правит в заявке: статус и стоимость."""
+
+    status: ExpertiseStatus
+    price: Decimal | None = Field(None, gt=0, max_digits=10, decimal_places=2)
+
+
 class ExpertiseRemarkSchema(BaseModel):
     """Замечания эксперта: текст, файлы и дата, когда заказчик прислал исправления."""
 

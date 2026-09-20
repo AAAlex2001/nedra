@@ -13,6 +13,11 @@ from app.services.experts.usecases.approve_application import ApproveExpertAppli
 from app.services.experts.usecases.delete_expert import DeleteExpertUseCase
 from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
 from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
+from app.services.experts.usecases.update_expert import (
+    DeleteCertificateUseCase,
+    UpdateCertificateUseCase,
+    UpdateExpertUseCase,
+)
 from app.services.files.storage import PrivateStorage
 from app.services.users.repo import UserRepository
 
@@ -42,22 +47,20 @@ def get_private_storage() -> PrivateStorage:
 def get_submit_application_usecase(
     applications: ExpertApplicationRepository = Depends(get_application_repository),
     users: UserRepository = Depends(get_user_repository),
-    profiles: ExpertProfileRepository = Depends(get_profile_repository),
     storage: PrivateStorage = Depends(get_private_storage),
 ) -> SubmitExpertApplicationUseCase:
     """Сценарий подачи заявки."""
 
-    return SubmitExpertApplicationUseCase(applications, users, profiles, storage)
+    return SubmitExpertApplicationUseCase(applications, users, storage)
 
 
 def get_approve_application_usecase(
     applications: ExpertApplicationRepository = Depends(get_application_repository),
     users: UserRepository = Depends(get_user_repository),
-    profiles: ExpertProfileRepository = Depends(get_profile_repository),
 ) -> ApproveExpertApplicationUseCase:
     """Сценарий одобрения заявки."""
 
-    return ApproveExpertApplicationUseCase(applications, users, profiles)
+    return ApproveExpertApplicationUseCase(applications, users)
 
 
 def get_delete_expert_usecase(
@@ -68,6 +71,32 @@ def get_delete_expert_usecase(
     """Сценарий снятия роли эксперта."""
 
     return DeleteExpertUseCase(users, applications, profiles)
+
+
+def get_update_expert_usecase(
+    users: UserRepository = Depends(get_user_repository),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+    applications: ExpertApplicationRepository = Depends(get_application_repository),
+) -> UpdateExpertUseCase:
+    """Сценарий правки данных эксперта."""
+
+    return UpdateExpertUseCase(users, profiles, applications)
+
+
+def get_update_certificate_usecase(
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> UpdateCertificateUseCase:
+    """Сценарий правки удостоверения."""
+
+    return UpdateCertificateUseCase(profiles)
+
+
+def get_delete_certificate_usecase(
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> DeleteCertificateUseCase:
+    """Сценарий удаления удостоверения."""
+
+    return DeleteCertificateUseCase(profiles)
 
 
 def get_reject_application_usecase(

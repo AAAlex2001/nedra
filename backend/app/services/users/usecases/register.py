@@ -2,7 +2,7 @@
 
 import asyncio
 
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.schemas.user import RegisterSchema
 from app.services.users.exceptions import EmailAlreadyTakenError
 from app.services.security.passwords import hash_password
@@ -15,7 +15,11 @@ from app.services.users.validators import (
 
 
 class RegisterUserUseCase:
-    """Проверить данные, убедиться, что email свободен, захешировать пароль и сохранить."""
+    """Проверить данные, убедиться, что email свободен, захешировать пароль и сохранить.
+
+    Через регистрацию появляются только заказчики. Эксперт подаёт заявку,
+    и его аккаунт создаёт админ при одобрении.
+    """
 
     def __init__(self, users: UserRepository) -> None:
         self.users = users
@@ -38,7 +42,7 @@ class RegisterUserUseCase:
             password_hash=password_hash,
             full_name=payload.full_name.strip(),
             phone=phone,
-            role=payload.role,
+            role=UserRole.CUSTOMER,
         )
 
         return await self.users.add(user)

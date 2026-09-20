@@ -5,24 +5,45 @@ from app.dependencies.admin import require_admin
 from app.dependencies.experts import (
     get_application_repository,
     get_approve_application_usecase,
+    get_delete_certificate_usecase,
     get_delete_expert_usecase,
     get_private_storage,
+    get_profile_repository,
     get_reject_application_usecase,
+    get_update_certificate_usecase,
+    get_update_expert_usecase,
 )
+from app.dependencies.users import get_user_repository
 from app.models.expert import ApplicationStatus, ExpertApplication
-from app.schemas.expert import ExpertApplicationOutSchema, RejectApplicationSchema
+from app.schemas.expert import (
+    CertificateOutSchema,
+    CertificateUpdateSchema,
+    ExpertApplicationOutSchema,
+    ExpertOutSchema,
+    ExpertUpdateSchema,
+    RejectApplicationSchema,
+)
 from app.services.experts.exceptions import (
-    AlreadyExpertError,
     ApplicationAlreadyReviewedError,
     ApplicationNotFoundError,
+    CertificateNotFoundError,
     ExpertNotFoundError,
+    InvalidCertificateError,
+    InvalidDirectionError,
 )
 from app.services.experts.letters import send_application_approved, send_application_rejected
-from app.services.experts.repo import ExpertApplicationRepository
+from app.services.experts.repo import ExpertApplicationRepository, ExpertProfileRepository
 from app.services.experts.usecases.approve_application import ApproveExpertApplicationUseCase
 from app.services.experts.usecases.delete_expert import DeleteExpertUseCase
 from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
+from app.services.experts.usecases.update_expert import (
+    DeleteCertificateUseCase,
+    UpdateCertificateUseCase,
+    UpdateExpertUseCase,
+)
 from app.services.files.storage import PrivateStorage
+from app.services.users.exceptions import EmailAlreadyTakenError, InvalidPhoneError
+from app.services.users.repo import UserRepository
 
 
 router = APIRouter(
@@ -81,7 +102,7 @@ async def approve_application(
         application = await usecase.execute(application_id)
     except ApplicationNotFoundError as error:
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
-    except (ApplicationAlreadyReviewedError, AlreadyExpertError) as error:
+    except (ApplicationAlreadyReviewedError, EmailAlreadyTakenError) as error:
         raise HTTPException(status.HTTP_409_CONFLICT, str(error)) from error
 
     background_tasks.add_task(send_application_approved, application)
@@ -108,6 +129,93 @@ async def reject_application(
     background_tasks.add_task(send_application_rejected, application)
 
     return ExpertApplicationOutSchema.model_validate(application)
+
+
+@router.get("")
+async def list_experts(
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> list[ExpertOutSchema]:
+    """Одобренные эксперты с направлениями и удостоверениями."""
+
+    items = await profiles.list_experts()
+    experts: list[ExpertOutSchema] = []
+
+    for user, profile in items:
+        certificates = await profiles.list_certificates(user.id)
+        experts.append(
+            ExpertOutSchema(
+                user_id=user.id,
+                email=user.email,
+                full_name=user.full_name,
+                phone=user.phone,
+                directions=profile.directions,
+                approved_at=profile.approved_at,
+                certificates=[CertificateOutSchema.model_validate(item) for item in certificates],
+            )
+        )
+
+    return experts
+
+
+@router.patch("/{user_id}")
+async def update_expert(
+    user_id: int,
+    payload: ExpertUpdateSchema,
+    usecase: UpdateExpertUseCase = Depends(get_update_expert_usecase),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+    users: UserRepository = Depends(get_user_repository),
+) -> ExpertOutSchema:
+    """Поменять имя, телефон и направления эксперта."""
+
+    try:
+        user, profile = await usecase.execute(user_id, payload)
+    except ExpertNotFoundError as error:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
+    except (InvalidDirectionError, InvalidPhoneError) as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+
+    certificates = await profiles.list_certificates(user.id)
+
+    return ExpertOutSchema(
+        user_id=user.id,
+        email=user.email,
+        full_name=user.full_name,
+        phone=user.phone,
+        directions=profile.directions,
+        approved_at=profile.approved_at,
+        certificates=[CertificateOutSchema.model_validate(item) for item in certificates],
+    )
+
+
+@router.patch("/{user_id}/certificates/{certificate_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def update_certificate(
+    user_id: int,
+    certificate_id: int,
+    payload: CertificateUpdateSchema,
+    usecase: UpdateCertificateUseCase = Depends(get_update_certificate_usecase),
+) -> None:
+    """Поменять область, объект, категорию или срок удостоверения."""
+
+    try:
+        await usecase.execute(user_id, certificate_id, payload)
+    except CertificateNotFoundError as error:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
+    except InvalidCertificateError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+
+
+@router.delete("/{user_id}/certificates/{certificate_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_certificate(
+    user_id: int,
+    certificate_id: int,
+    usecase: DeleteCertificateUseCase = Depends(get_delete_certificate_usecase),
+) -> None:
+    """Убрать удостоверение у эксперта."""
+
+    try:
+        await usecase.execute(user_id, certificate_id)
+    except CertificateNotFoundError as error:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)

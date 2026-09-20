@@ -63,7 +63,6 @@ def make_register_payload(email: str = "Ivan@Example.com") -> RegisterSchema:
         password="secret123",
         full_name="  Иван Иванов ",
         phone="+7 (999) 000-00-00",
-        role=UserRole.CUSTOMER,
     )
 
 

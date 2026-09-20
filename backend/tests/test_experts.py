@@ -9,7 +9,6 @@ from app.models.expert import ApplicationStatus, ExpertApplication, ExpertProfil
 from app.models.user import User, UserRole
 from app.schemas.expert import CertificateInSchema, ExpertApplicationInSchema
 from app.services.experts.exceptions import (
-    AlreadyExpertError,
     ApplicationAlreadyPendingError,
     ApplicationAlreadyReviewedError,
     ContactsRequiredError,
@@ -22,8 +21,7 @@ from app.services.experts.usecases.delete_expert import DeleteExpertUseCase
 from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
 from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
 from app.services.experts.validators import validate_certificate, validate_directions
-from app.services.users.exceptions import EmailAlreadyTakenError, RoleNotAvailableError
-from app.services.users.usecases.switch_role import SwitchRoleUseCase
+from app.services.users.exceptions import EmailAlreadyTakenError
 
 
 class FakeUserRepository:
@@ -42,6 +40,9 @@ class FakeUserRepository:
 
     async def save(self, user: User) -> User:
         return user
+
+    async def delete(self, user: User) -> None:
+        del self.users[user.email]
 
     def put(self, user: User) -> User:
         user.id = self.next_id
@@ -122,12 +123,10 @@ class World:
         self.applications = FakeApplicationRepository(self.users, self.profiles)
 
     def submit(self) -> SubmitExpertApplicationUseCase:
-        return SubmitExpertApplicationUseCase(
-            self.applications, self.users, self.profiles, FakeStorage()
-        )
+        return SubmitExpertApplicationUseCase(self.applications, self.users, FakeStorage())
 
     def approve(self) -> ApproveExpertApplicationUseCase:
-        return ApproveExpertApplicationUseCase(self.applications, self.users, self.profiles)
+        return ApproveExpertApplicationUseCase(self.applications, self.users)
 
     def delete_expert(self) -> DeleteExpertUseCase:
         return DeleteExpertUseCase(self.users, self.applications, self.profiles)
@@ -181,10 +180,10 @@ def test_validate_directions() -> None:
         validate_directions(["unknown"])
 
 
-def test_guest_submit_creates_pending_application() -> None:
+def test_submit_creates_pending_application() -> None:
     world = World()
 
-    application = asyncio.run(world.submit().execute(make_payload(), [], None))
+    application = asyncio.run(world.submit().execute(make_payload(), []))
 
     assert application.id == 1
     assert application.email == "expert@example.com"
@@ -196,39 +195,27 @@ def test_guest_submit_creates_pending_application() -> None:
     assert len(application.certificates) == 1
 
 
-def test_guest_submit_requires_contacts() -> None:
+def test_submit_requires_contacts() -> None:
     world = World()
 
     with pytest.raises(ContactsRequiredError):
-        asyncio.run(world.submit().execute(make_payload(email=None), [], None))
+        asyncio.run(world.submit().execute(make_payload(email=None), []))
 
 
-def test_guest_submit_rejects_existing_account_email() -> None:
+def test_submit_rejects_existing_account_email() -> None:
     world = World()
     make_customer(world, "expert@example.com")
 
     with pytest.raises(EmailAlreadyTakenError):
-        asyncio.run(world.submit().execute(make_payload(), [], None))
+        asyncio.run(world.submit().execute(make_payload(), []))
 
 
 def test_submit_rejects_second_pending_application() -> None:
     world = World()
-    asyncio.run(world.submit().execute(make_payload(), [], None))
+    asyncio.run(world.submit().execute(make_payload(), []))
 
     with pytest.raises(ApplicationAlreadyPendingError):
-        asyncio.run(world.submit().execute(make_payload("expert@example.com"), [], None))
-
-
-def test_logged_in_customer_submits_from_account() -> None:
-    world = World()
-    customer = make_customer(world)
-
-    application = asyncio.run(world.submit().execute(make_payload(email=None), [], customer))
-
-    assert application.user_id == customer.id
-    assert application.email == customer.email
-    assert application.password_hash == customer.password_hash
-    assert application.full_name == customer.full_name
+        asyncio.run(world.submit().execute(make_payload("expert@example.com"), []))
 
 
 def test_submit_rejects_missing_scan() -> None:
@@ -237,12 +224,12 @@ def test_submit_rejects_missing_scan() -> None:
     payload.certificates[0].scan_index = 0
 
     with pytest.raises(InvalidCertificateError):
-        asyncio.run(world.submit().execute(payload, [], None))
+        asyncio.run(world.submit().execute(payload, []))
 
 
-def test_approve_creates_new_expert_user() -> None:
+def test_approve_creates_expert_account() -> None:
     world = World()
-    asyncio.run(world.submit().execute(make_payload(), [], None))
+    asyncio.run(world.submit().execute(make_payload(), []))
 
     application = asyncio.run(world.approve().execute(1))
 
@@ -258,48 +245,18 @@ def test_approve_creates_new_expert_user() -> None:
         asyncio.run(world.approve().execute(1))
 
 
-def test_approve_attaches_profile_to_existing_customer() -> None:
+def test_approve_rejects_taken_email() -> None:
     world = World()
-    customer = make_customer(world)
-    asyncio.run(world.submit().execute(make_payload(email=None), [], customer))
+    asyncio.run(world.submit().execute(make_payload(), []))
+    make_customer(world, "expert@example.com")
 
-    asyncio.run(world.approve().execute(1))
-
-    assert customer.role == UserRole.CUSTOMER
-    assert customer.password_hash == "hash"
-    assert world.profiles.profiles[customer.id] is not None
-    assert len(world.users.users) == 1
+    with pytest.raises(EmailAlreadyTakenError):
+        asyncio.run(world.approve().execute(1))
 
 
-def test_approve_rejects_second_profile() -> None:
+def test_delete_expert_removes_account() -> None:
     world = World()
-    customer = make_customer(world)
-    asyncio.run(world.submit().execute(make_payload(email=None), [], customer))
-    asyncio.run(world.approve().execute(1))
-
-    with pytest.raises(AlreadyExpertError):
-        asyncio.run(world.submit().execute(make_payload(email=None), [], customer))
-
-
-def test_switch_role_requires_profile() -> None:
-    world = World()
-    customer = make_customer(world)
-    usecase = SwitchRoleUseCase(world.users, world.profiles)
-
-    with pytest.raises(RoleNotAvailableError):
-        asyncio.run(usecase.execute(customer, UserRole.EXPERT))
-
-    world.profiles.profiles[customer.id] = ExpertProfile(user_id=customer.id, directions=[])
-    switched = asyncio.run(usecase.execute(customer, UserRole.EXPERT))
-    assert switched.role == UserRole.EXPERT
-
-    switched = asyncio.run(usecase.execute(customer, UserRole.CUSTOMER))
-    assert switched.role == UserRole.CUSTOMER
-
-
-def test_delete_expert_keeps_account_as_customer() -> None:
-    world = World()
-    asyncio.run(world.submit().execute(make_payload(), [], None))
+    asyncio.run(world.submit().execute(make_payload(), []))
     asyncio.run(world.approve().execute(1))
     user = world.users.users["expert@example.com"]
 
@@ -307,9 +264,9 @@ def test_delete_expert_keeps_account_as_customer() -> None:
 
     application = world.applications.items[0]
     assert world.profiles.removed == [user.id]
-    assert user.role == UserRole.CUSTOMER
-    assert "expert@example.com" in world.users.users
+    assert "expert@example.com" not in world.users.users
     assert application.status == ApplicationStatus.REJECTED
+    assert application.user_id is None
     assert application.admin_comment == "Профиль эксперта удалён администратором"
 
     with pytest.raises(ExpertNotFoundError):
@@ -318,7 +275,7 @@ def test_delete_expert_keeps_account_as_customer() -> None:
 
 def test_reject_stores_comment() -> None:
     world = World()
-    asyncio.run(world.submit().execute(make_payload(), [], None))
+    asyncio.run(world.submit().execute(make_payload(), []))
     usecase = RejectExpertApplicationUseCase(world.applications)
 
     application = asyncio.run(usecase.execute(1, "  Удостоверение просрочено "))

@@ -118,6 +118,35 @@ class RejectApplicationSchema(BaseModel):
     comment: str = Field(..., min_length=3, max_length=1000)
 
 
+class ExpertUpdateSchema(BaseModel):
+    """Что админ правит у эксперта. Email не меняем: по нему человек входит."""
+
+    full_name: str = Field(..., min_length=2, max_length=255)
+    phone: str = Field(..., min_length=10, max_length=32)
+    directions: list[str] = Field(..., min_length=1, description="Коды направлений работы")
+
+
+class CertificateUpdateSchema(BaseModel):
+    """Правка удостоверения из админки. Скан не трогаем."""
+
+    area_code: str = Field(..., max_length=8)
+    object_code: str = Field(..., max_length=8)
+    category: int = Field(..., ge=1, le=3)
+    valid_until: date
+
+
+class ExpertOutSchema(BaseModel):
+    """Эксперт в админке: аккаунт, направления и удостоверения."""
+
+    user_id: int
+    email: EmailStr
+    full_name: str
+    phone: str
+    directions: list[str]
+    approved_at: datetime
+    certificates: list[CertificateOutSchema]
+
+
 class ExpertProfileOutSchema(BaseModel):
     """Профиль эксперта для личного кабинета."""
 

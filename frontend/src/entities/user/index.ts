@@ -5,7 +5,6 @@ export {
   loginUser,
   logoutUser,
   registerUser,
-  switchRole,
   type LoginPayload,
   type RegisterPayload,
 } from "./api/auth";

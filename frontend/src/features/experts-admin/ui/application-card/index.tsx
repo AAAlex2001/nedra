@@ -9,10 +9,12 @@ import {
   type ExpertApplicationRecord,
   type ExpertCatalog,
 } from "@/entities/expert";
+import { useState } from "react";
 import { formatRequestDate } from "@/entities/request";
 import { formatDate } from "@/shared/lib/date";
 import Spinner from "@/shared/ui/spinner";
 import { scanUrl } from "../../api/applications";
+import ExpertEditor from "../expert-editor";
 import styles from "./style.module.scss";
 
 type ApplicationCardProps = {
@@ -23,6 +25,7 @@ type ApplicationCardProps = {
   onApprove: (id: number) => void;
   onReject: (id: number, comment: string) => void;
   onDeleteExpert: (application: ExpertApplicationRecord) => void;
+  onUpdated: () => void;
 };
 
 const STATUS_CLASS = {
@@ -39,7 +42,10 @@ const ApplicationCard = ({
   onApprove,
   onReject,
   onDeleteExpert,
+  onUpdated,
 }: ApplicationCardProps) => {
+  const [editing, setEditing] = useState(false);
+
   const handleApprove = () => {
     if (window.confirm(`Одобрить заявку №${application.id} и создать аккаунт эксперта?`)) {
       onApprove(application.id);
@@ -101,6 +107,14 @@ const ApplicationCard = ({
 
         {canDeleteExpert && (
           <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.edit}
+              disabled={pending}
+              onClick={() => setEditing(!editing)}
+            >
+              {editing ? "Скрыть правку" : "Изменить"}
+            </button>
             <button
               type="button"
               className={styles.reject}
@@ -179,6 +193,19 @@ const ApplicationCard = ({
           ))}
         </ul>
       </div>
+
+      {editing && application.user_id !== null && (
+        <ExpertEditor
+          userId={application.user_id}
+          fullName={application.full_name}
+          phone={application.phone}
+          directions={application.directions}
+          certificates={application.certificates}
+          catalog={catalog}
+          basePath={basePath}
+          onUpdated={onUpdated}
+        />
+      )}
 
       {application.admin_comment && (
         <p className={styles.comment}>Причина отклонения: {application.admin_comment}</p>

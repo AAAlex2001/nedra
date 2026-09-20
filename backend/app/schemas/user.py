@@ -20,7 +20,6 @@ class RegisterSchema(BaseModel):
     )
     full_name: str = Field(..., min_length=2, max_length=255, description="Имя и фамилия")
     phone: str = Field(..., min_length=10, max_length=32, description="Телефон для связи")
-    role: UserRole = Field(..., description="Кто регистрируется: заказчик или эксперт")
 
 
 class LoginSchema(BaseModel):
@@ -33,8 +32,8 @@ class LoginSchema(BaseModel):
 class UserOutSchema(BaseModel):
     """Публичные данные пользователя. Хеш пароля наружу не отдаём.
 
-    role — активная роль, по ней работают права. is_expert — есть ли у аккаунта
-    одобренный профиль эксперта, то есть можно ли переключиться на эту роль.
+    Роль у аккаунта одна и задаётся при создании: заказчик регистрируется сам,
+    эксперт появляется после одобрения заявки.
     """
 
     model_config = ConfigDict(from_attributes=True)
@@ -43,12 +42,5 @@ class UserOutSchema(BaseModel):
     email: EmailStr = Field(..., description="Email")
     full_name: str = Field(..., description="Имя и фамилия")
     phone: str = Field(..., description="Телефон")
-    role: UserRole = Field(..., description="Активная роль")
-    is_expert: bool = Field(..., description="Есть одобренный профиль эксперта")
+    role: UserRole = Field(..., description="Роль аккаунта")
     created_at: datetime = Field(..., description="Когда зарегистрирован")
-
-
-class RoleSwitchSchema(BaseModel):
-    """Смена активной роли."""
-
-    role: UserRole

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { ROLE_LABELS, useSession, type User } from "@/entities/user";
 import { useAuthModal, useLogout } from "@/features/auth";
@@ -10,7 +9,6 @@ import {
   IncomingExpertises,
   MyExpertises,
 } from "@/features/expertise-cabinet";
-import { RoleSwitch } from "@/features/role-switch";
 import Button from "@/shared/ui/button";
 import Loader from "@/shared/ui/loader";
 import Spinner from "@/shared/ui/spinner";
@@ -40,7 +38,7 @@ const ProfileBar = ({ user, pending, onLogout }: ProfileBarProps) => (
     <div className={styles.identity}>
       <div className={styles.nameRow}>
         <span className={styles.name}>{user.full_name}</span>
-        {!user.is_expert && <span className={styles.role}>{ROLE_LABELS[user.role]}</span>}
+        <span className={styles.role}>{ROLE_LABELS[user.role]}</span>
       </div>
       <span className={styles.contacts}>
         {user.email} · {user.phone}
@@ -48,14 +46,6 @@ const ProfileBar = ({ user, pending, onLogout }: ProfileBarProps) => (
     </div>
 
     <div className={styles.controls}>
-      {user.is_expert ? (
-        <RoleSwitch active={user.role} />
-      ) : (
-        <Link href="/registratsiya-eksperta" className={styles.becomeExpert}>
-          Стать экспертом
-        </Link>
-      )}
-
       <button type="button" className={styles.logout} disabled={pending} onClick={onLogout}>
         {pending ? <Spinner size={14} /> : "Выйти"}
       </button>

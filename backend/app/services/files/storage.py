@@ -112,6 +112,14 @@ class PrivateStorage:
             content_type=content_type,
         )
 
+    def remove(self, relative_path: str) -> None:
+        """Удалить файл. Если его уже нет на диске, молчим: цель достигнута."""
+
+        try:
+            self.resolve(relative_path).unlink()
+        except FileNotFoundError:
+            return
+
     def resolve(self, relative_path: str) -> Path:
         """Абсолютный путь к файлу. Путь за пределами хранилища считается ошибкой."""
 

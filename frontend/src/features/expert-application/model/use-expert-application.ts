@@ -59,7 +59,7 @@ const buildFormData = (
   return formData;
 };
 
-export const useExpertApplication = (catalog: ExpertCatalog, fromAccount: boolean) => {
+export const useExpertApplication = (catalog: ExpertCatalog) => {
   const [state, dispatch] = useReducer(applicationFormReducer, INITIAL_STATE);
 
   const area = catalog.areas.find((item) => item.code === state.draft.areaCode) ?? null;
@@ -94,8 +94,7 @@ export const useExpertApplication = (catalog: ExpertCatalog, fromAccount: boolea
     dispatch({ type: "submit/start" });
 
     try {
-      const fields = fromAccount ? null : state.fields;
-      const formData = buildFormData(fields, state.directions, state.certificates);
+      const formData = buildFormData(state.fields, state.directions, state.certificates);
       await submitExpertApplication(formData);
       dispatch({ type: "submit/success" });
     } catch (error) {

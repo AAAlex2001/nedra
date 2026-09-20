@@ -31,6 +31,20 @@ class ExpertiseRepository:
 
         return result.scalar_one_or_none()
 
+    async def list_all(self) -> list[Expertise]:
+        """Все заявки для админки, новые первыми."""
+
+        stmt = select(Expertise).order_by(Expertise.created_at.desc())
+        result = await self.db.execute(stmt)
+
+        return list(result.scalars().all())
+
+    async def remove(self, expertise: Expertise) -> None:
+        """Удалить заявку. Документы и замечания уйдут каскадом."""
+
+        await self.db.delete(expertise)
+        await self.db.commit()
+
     async def list_for_customer(self, customer_id: int) -> list[Expertise]:
         """Экспертизы заказчика, новые первыми."""
 

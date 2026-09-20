@@ -33,9 +33,5 @@ class ExpertNotFoundError(LookupError):
     """У пользователя нет профиля эксперта."""
 
 
-class AlreadyExpertError(Exception):
-    """У аккаунта уже есть одобренный профиль эксперта, вторая заявка не нужна."""
-
-
 class ContactsRequiredError(ValueError):
-    """Заявка без входа должна содержать имя, email, телефон и пароль."""
+    """В заявке должны быть имя, email, телефон и пароль будущего эксперта."""

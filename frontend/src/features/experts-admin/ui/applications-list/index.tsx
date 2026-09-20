@@ -65,6 +65,7 @@ const ApplicationsList = ({ initialItems, catalog, basePath }: ApplicationsListP
                 onApprove={(id) => void approve(id)}
                 onReject={(id, comment) => void reject(id, comment)}
                 onDeleteExpert={(application) => void removeExpert(application)}
+                onUpdated={() => void refresh()}
               />
             </li>
           ))}

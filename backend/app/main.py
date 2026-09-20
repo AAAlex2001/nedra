@@ -8,6 +8,7 @@ from app.config import get_settings
 from app.routers import (
     admin_articles,
     admin_experts,
+    admin_expertise,
     articles,
     auth,
     experts,
@@ -47,6 +48,7 @@ app.include_router(experts.router, prefix="/api/v1")
 app.include_router(admin_experts.router, prefix="/api/v1")
 app.include_router(tariffs.router, prefix="/api/v1")
 app.include_router(expertise.router, prefix="/api/v1")
+app.include_router(admin_expertise.router, prefix="/api/v1")
 app.include_router(notifications.router, prefix="/api/v1")
 app.include_router(requests.router, prefix="/api/v1")
 app.include_router(articles.router, prefix="/api/v1")

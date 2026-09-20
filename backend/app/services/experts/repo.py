@@ -117,6 +117,29 @@ class ExpertProfileRepository:
 
         return list(result.scalars().all())
 
+    async def list_experts(self) -> list[tuple[User, ExpertProfile]]:
+        """Все эксперты с профилями, по алфавиту."""
+
+        stmt = (
+            select(User, ExpertProfile)
+            .join(ExpertProfile, ExpertProfile.user_id == User.id)
+            .order_by(User.full_name)
+        )
+        result = await self.db.execute(stmt)
+
+        return [(user, profile) for user, profile in result.all()]
+
+    async def save(self) -> None:
+        """Зафиксировать правки профиля, удостоверения или аккаунта эксперта."""
+
+        await self.db.commit()
+
+    async def remove_certificate(self, certificate: ExpertCertificate) -> None:
+        """Удалить одно удостоверение эксперта."""
+
+        await self.db.delete(certificate)
+        await self.db.commit()
+
     async def remove(self, profile: ExpertProfile) -> None:
         """Удалить профиль и удостоверения эксперта одной транзакцией."""
 

@@ -1,5 +1,3 @@
-import type { UserRole } from "@/entities/user";
-
 export type AuthMode = "login" | "register";
 
 export type SubmitStatus = "idle" | "loading" | "error";
@@ -29,14 +27,12 @@ export type RegisterFields = {
 };
 
 export type RegisterFormState = {
-  role: UserRole;
   fields: RegisterFields;
   status: SubmitStatus;
   error: string | null;
 };
 
 export type RegisterFormAction =
-  | { type: "role/select"; role: UserRole }
   | { type: "field/change"; field: keyof RegisterFields; value: string }
   | { type: "submit/start" }
   | { type: "submit/error"; message: string }

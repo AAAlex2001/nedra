@@ -1,9 +1,8 @@
-"""Сценарий снятия роли эксперта администратором."""
+"""Сценарий удаления эксперта администратором."""
 
 from datetime import datetime, timezone
 
 from app.models.expert import ApplicationStatus
-from app.models.user import UserRole
 from app.services.experts.exceptions import ExpertNotFoundError
 from app.services.experts.repo import ExpertApplicationRepository, ExpertProfileRepository
 from app.services.users.repo import UserRepository
@@ -12,10 +11,10 @@ DELETED_COMMENT = "Профиль эксперта удалён админист
 
 
 class DeleteExpertUseCase:
-    """Убрать у аккаунта профиль эксперта и удостоверения, оставив его заказчиком.
+    """Убрать профиль эксперта, удостоверения и сам аккаунт.
 
-    Сам аккаунт не удаляем: у человека может быть роль заказчика с заявками.
-    Его заявка эксперта остаётся в истории как отклонённая с пометкой.
+    Аккаунт эксперта нужен только для работы по заявкам, поэтому без профиля
+    он не нужен. Заявка остаётся в истории как отклонённая с пометкой.
     """
 
     def __init__(
@@ -29,7 +28,7 @@ class DeleteExpertUseCase:
         self.profiles = profiles
 
     async def execute(self, user_id: int) -> None:
-        """Снять роль эксперта. Бросает ExpertNotFoundError."""
+        """Снять профиль и удалить аккаунт. Бросает ExpertNotFoundError."""
 
         user = await self.users.get_by_id(user_id)
         profile = await self.profiles.get_by_user(user_id)
@@ -41,7 +40,7 @@ class DeleteExpertUseCase:
             application.status = ApplicationStatus.REJECTED
             application.admin_comment = DELETED_COMMENT
             application.reviewed_at = datetime.now(timezone.utc)
-
-        user.role = UserRole.CUSTOMER
+            application.user_id = None
 
         await self.profiles.remove(profile)
+        await self.users.delete(user)

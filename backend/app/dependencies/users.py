@@ -6,12 +6,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.config import get_settings
 from app.database import get_session
 from app.models.user import User, UserRole
-from app.services.experts.repo import ExpertApplicationRepository, ExpertProfileRepository
+from app.services.experts.repo import ExpertApplicationRepository
 from app.services.security.tokens import read_user_id
 from app.services.users.repo import UserRepository
 from app.services.users.usecases.login import LoginUserUseCase
 from app.services.users.usecases.register import RegisterUserUseCase
-from app.services.users.usecases.switch_role import SwitchRoleUseCase
 
 AUTH_COOKIE = "access_token"
 SECONDS_IN_DAY = 60 * 60 * 24
@@ -40,15 +39,6 @@ def get_login_usecase(
     """Сценарий входа. Репозиторий заявок нужен, чтобы отличить ожидающего эксперта."""
 
     return LoginUserUseCase(users, ExpertApplicationRepository(session))
-
-
-def get_switch_role_usecase(
-    users: UserRepository = Depends(get_user_repository),
-    session: AsyncSession = Depends(get_session),
-) -> SwitchRoleUseCase:
-    """Сценарий переключения роли."""
-
-    return SwitchRoleUseCase(users, ExpertProfileRepository(session))
 
 
 def set_auth_cookie(response: Response, token: str) -> None:

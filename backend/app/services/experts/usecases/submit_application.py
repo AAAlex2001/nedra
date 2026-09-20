@@ -5,15 +5,13 @@ import asyncio
 from fastapi import UploadFile
 
 from app.models.expert import ApplicationStatus, ExpertApplication, ExpertCertificate
-from app.models.user import User
 from app.schemas.expert import ExpertApplicationInSchema
 from app.services.experts.exceptions import (
-    AlreadyExpertError,
     ApplicationAlreadyPendingError,
     ContactsRequiredError,
     InvalidCertificateError,
 )
-from app.services.experts.repo import ExpertApplicationRepository, ExpertProfileRepository
+from app.services.experts.repo import ExpertApplicationRepository
 from app.services.experts.validators import validate_certificate, validate_directions
 from app.services.files.storage import PrivateStorage
 from app.services.security.passwords import hash_password
@@ -27,26 +25,25 @@ SCANS_FOLDER = "expert-certificates"
 class SubmitExpertApplicationUseCase:
     """Проверить данные по справочнику, сохранить сканы и создать заявку.
 
-    Заявку может подать новый человек, тогда нужны контакты и пароль,
-    или уже вошедший заказчик, тогда заявка привязывается к его аккаунту.
+    Аккаунт эксперта появляется только после одобрения, поэтому в заявке
+    нужны контакты и пароль. Email должен быть свободен: один аккаунт —
+    одна роль, заказчик не может стать экспертом на том же адресе.
     """
 
     def __init__(
         self,
         applications: ExpertApplicationRepository,
         users: UserRepository,
-        profiles: ExpertProfileRepository,
         storage: PrivateStorage,
     ) -> None:
         self.applications = applications
         self.users = users
-        self.profiles = profiles
         self.storage = storage
 
     async def execute(
-        self, data: ExpertApplicationInSchema, scans: list[UploadFile], user: User | None
+        self, data: ExpertApplicationInSchema, scans: list[UploadFile]
     ) -> ExpertApplication:
-        """Создать заявку. Бросает ошибки валидации, EmailAlreadyTakenError, ApplicationAlreadyPendingError, AlreadyExpertError, UploadError."""
+        """Создать заявку. Бросает ошибки валидации, EmailAlreadyTakenError, ApplicationAlreadyPendingError, UploadError."""
 
         validate_directions(data.directions)
 
@@ -56,10 +53,7 @@ class SubmitExpertApplicationUseCase:
             if certificate.scan_index is not None and certificate.scan_index >= len(scans):
                 raise InvalidCertificateError("Скан удостоверения не приложен")
 
-        if user is None:
-            application = await self.build_for_guest(data)
-        else:
-            application = await self.build_for_user(user)
+        application = await self.build_application(data)
 
         if await self.applications.has_pending(application.email):
             raise ApplicationAlreadyPendingError(f"Заявка от {application.email} уже на рассмотрении")
@@ -89,8 +83,8 @@ class SubmitExpertApplicationUseCase:
 
         return await self.applications.add(application)
 
-    async def build_for_guest(self, data: ExpertApplicationInSchema) -> ExpertApplication:
-        """Заявка от нового человека: проверяем контакты и что email свободен."""
+    async def build_application(self, data: ExpertApplicationInSchema) -> ExpertApplication:
+        """Заявка с контактами будущего эксперта. Email должен быть свободен."""
 
         if not data.email or not data.password or not data.full_name or not data.phone:
             raise ContactsRequiredError("Укажите имя, email, телефон и пароль")
@@ -110,19 +104,4 @@ class SubmitExpertApplicationUseCase:
             password_hash=password_hash,
             full_name=data.full_name.strip(),
             phone=phone,
-        )
-
-    async def build_for_user(self, user: User) -> ExpertApplication:
-        """Заявка от вошедшего заказчика: контакты из аккаунта, профиля эксперта быть не должно."""
-
-        profile = await self.profiles.get_by_user(user.id)
-        if profile is not None:
-            raise AlreadyExpertError("У аккаунта уже есть профиль эксперта")
-
-        return ExpertApplication(
-            email=user.email,
-            password_hash=user.password_hash,
-            full_name=user.full_name,
-            phone=user.phone,
-            user_id=user.id,
         )

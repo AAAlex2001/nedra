@@ -36,13 +36,13 @@ const ExpertiseOrder = ({ catalog }: ExpertiseOrderProps) => {
   if (session.user.role === "expert") {
     return (
       <div className={styles.locked}>
-        <p className={styles.lockedTitle}>Сейчас активна роль эксперта</p>
+        <p className={styles.lockedTitle}>Вы вошли как эксперт</p>
         <p className={styles.lockedText}>
-          Документацию отправляют заказчики. Переключите роль в{" "}
+          Документацию отправляют заказчики. Входящие заявки по вашей аттестации ждут в{" "}
           <Link href="/kabinet" className={styles.link}>
             личном кабинете
           </Link>
-          , там же входящие заявки.
+          .
         </p>
       </div>
     );

@@ -6,7 +6,6 @@ export type User = {
   full_name: string;
   phone: string;
   role: UserRole;
-  is_expert: boolean;
   created_at: string;
 };
 
