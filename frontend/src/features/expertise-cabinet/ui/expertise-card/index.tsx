@@ -68,12 +68,18 @@ const Message = ({ expertiseId, author, date, text, documents }: MessageProps) =
   const fallback = documents.length === 0 ? "Исправленная документация отправлена повторно" : null;
 
   return (
-    <div className={`${styles.message} ${tone}`}>
-      <p className={styles.messageMeta}>
-        <span className={styles.author}>{author}</span> · {formatRequestDate(date)}
-      </p>
-      {(text ?? fallback) && <p className={styles.messageText}>{text ?? fallback}</p>}
-      {documents.length > 0 && <FilesList expertiseId={expertiseId} documents={documents} />}
+    <div className={styles.message}>
+      <span className={`${styles.avatar} ${tone}`} aria-hidden="true">
+        {author[0]}
+      </span>
+
+      <div className={styles.messageBody}>
+        <p className={styles.messageMeta}>
+          <span className={styles.author}>{author}</span> · {formatRequestDate(date)}
+        </p>
+        {(text ?? fallback) && <p className={styles.messageText}>{text ?? fallback}</p>}
+        {documents.length > 0 && <FilesList expertiseId={expertiseId} documents={documents} />}
+      </div>
     </div>
   );
 };

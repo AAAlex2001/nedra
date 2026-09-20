@@ -183,19 +183,41 @@
 
 .message {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-left: 14px;
+  gap: 10px;
+}
 
-  border-left: 2px solid;
+.avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 12px;
+
+  border-radius: 100px;
 }
 
 .fromExpert {
-  border-color: #f69827;
+  color: #b86108;
+  background: #fff2e2;
 }
 
 .fromCustomer {
-  border-color: #2f7a4d;
+  color: #2f7a4d;
+  background: #e6f4ec;
+}
+
+.messageBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding-top: 3px;
 }
 
 .messageMeta {
