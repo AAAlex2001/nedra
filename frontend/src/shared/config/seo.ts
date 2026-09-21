@@ -66,6 +66,7 @@ export const SITE_KEYWORDS = [
 type PageSeo = {
   title: string;
   description: string;
+  image?: string;
 };
 
 /** Единый источник заголовков и описаний для всех страниц. */
@@ -90,9 +91,10 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       "Новости НПИ «Недра»: новые требования Ростехнадзора, изменения в промышленной безопасности, проектировании, экологии и экспертизе. Разбираем, что делать предприятиям.",
   },
   "/blits-ekspert": {
-    title: "Блиц-эксперт — экспертиза промышленной безопасности от 1 дня",
+    title: "Экспертиза промышленной безопасности онлайн от 1 дня — Блиц-эксперт",
     description:
-      "Блиц-эксперт НПИ «Недра»: быстрая экспертиза промышленной безопасности онлайн. Стоимость по объектам экспертизы и областям аттестации: технические устройства, здания и сооружения, декларации, обоснования безопасности.",
+      "Экспертиза промышленной безопасности (ЭПБ) онлайн в НПИ «Недра»: технические устройства, здания и сооружения, документация на техперевооружение, консервацию и ликвидацию, декларация и обоснование безопасности. Заявку берут эксперты, аттестованные по областям Э1–Э15. Заключение с ЭЦП, оплата картой или по счёту для юрлиц, срок от 1 дня.",
+    image: "/blitz/18.png",
   },
   "/registratsiya-eksperta": {
     title: "Регистрация эксперта промышленной безопасности",
@@ -187,6 +189,7 @@ export function buildMetadata(path: string): Metadata {
 
   const url = `${SITE_URL}${path}`;
   const ogTitle = `${page.title} | ${SITE_NAME}`;
+  const image = page.image ?? OG_IMAGE;
 
   return {
     title: page.title,
@@ -199,13 +202,13 @@ export function buildMetadata(path: string): Metadata {
       locale: "ru_RU",
       title: ogTitle,
       description: page.description,
-      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: SITE_NAME }],
+      images: [{ url: image, width: 1200, height: 630, alt: SITE_NAME }],
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
       description: page.description,
-      images: [OG_IMAGE],
+      images: [image],
     },
   };
 }

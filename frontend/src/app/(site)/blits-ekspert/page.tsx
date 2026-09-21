@@ -1,9 +1,11 @@
 import type { ExpertCatalog } from "@/entities/expert";
+import type { Tariff } from "@/entities/tariff";
 import { hasSessionCookie } from "@/entities/user/api/session-server";
 import { internalFetch } from "@/shared/api/server";
 import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import SectionHeading from "@/shared/ui/section-heading";
+import BlitsEkspertLanding from "@/widgets/blits-ekspert";
 import ExpertiseOrder from "@/widgets/expertise-order";
 import styles from "./page.module.scss";
 
@@ -25,9 +27,29 @@ const loadCatalog = async (): Promise<ExpertCatalog | null> => {
   }
 };
 
+const loadTariffs = async (): Promise<Tariff[]> => {
+  try {
+    const response = await internalFetch("/v1/tariffs", { cache: "no-store" });
+
+    if (!response.ok) return [];
+
+    const items: Tariff[] = await response.json();
+
+    return items;
+  } catch {
+    return [];
+  }
+};
+
 export default async function BlitzExpertPage() {
   const catalog = await loadCatalog();
   const guest = !(await hasSessionCookie());
+
+  if (guest) {
+    const tariffs = await loadTariffs();
+
+    return <BlitsEkspertLanding catalog={catalog} tariffs={tariffs} />;
+  }
 
   return (
     <main className={styles.page}>
@@ -38,7 +60,7 @@ export default async function BlitzExpertPage() {
         ]}
       />
 
-      <div className={`${styles.body} ${guest ? styles.bodyGuest : ""}`}>
+      <div className={styles.body}>
         <SectionHeading title="Блиц-эксперт" />
         <p className={styles.intro}>
           Экспертиза промышленной безопасности от 1 дня. Выберите, что проверяем, укажите

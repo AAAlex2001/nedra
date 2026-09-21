@@ -4,6 +4,7 @@ import { PAGE_SEO, SITE_URL } from "@/shared/config/seo";
 
 const WEEKLY_PATHS = new Set(["/", "/blog", "/novosti"]);
 const IMPORTANT_PATHS = new Set(["/svedeniya", "/blog", "/novosti"]);
+const KEY_PATHS = new Set(["/blits-ekspert"]);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
@@ -11,6 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages: MetadataRoute.Sitemap = Object.keys(PAGE_SEO).map((path) => {
     let priority = 0.6;
     if (path === "/") priority = 1;
+    else if (KEY_PATHS.has(path)) priority = 0.9;
     else if (IMPORTANT_PATHS.has(path)) priority = 0.8;
 
     return {

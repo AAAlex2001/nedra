@@ -1,0 +1,43 @@
+.page {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+
+  background: #fff;
+}
+
+.inner {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 16px 20px 130px;
+
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    gap: 56px;
+    padding: 20px 40px 130px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .page {
+    max-width: 1440px;
+  }
+
+  .inner {
+    gap: 64px;
+    padding: 24px 50px 150px;
+
+    max-width: 1168px;
+  }
+}

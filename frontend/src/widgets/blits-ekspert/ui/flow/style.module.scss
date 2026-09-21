@@ -1,0 +1,189 @@
+.flow {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 20px;
+
+  width: 100%;
+
+  background: #f5f6f8;
+  border-radius: 28px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 34px;
+  text-align: center;
+  letter-spacing: -0.02em;
+
+  color: #0b0b0b;
+}
+
+.lead {
+  max-width: 620px;
+
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25px;
+  text-align: center;
+
+  color: #6b6f78;
+}
+
+.viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.card {
+  box-sizing: border-box;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 16px 22px;
+
+  width: 340px !important;
+  max-width: 340px;
+
+  background: #fff;
+  border-radius: 24px;
+}
+
+.image {
+  display: block;
+
+  width: 100%;
+  height: auto;
+  margin-bottom: 8px;
+
+  border-radius: 18px;
+}
+
+.number {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  color: #f69827;
+}
+
+.cardTitle {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+
+  color: #0b0b0b;
+}
+
+.cardText {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+
+  color: #6b6f78;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+
+  background: #dfe3ea;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+
+.dotActive {
+  width: 24px;
+
+  background: #f69827;
+}
+
+.arrows {
+  display: flex;
+  flex: none;
+  gap: 10px;
+}
+
+.button {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  color: #f69827;
+  background: #fff;
+  border: 2px solid #f69827;
+  border-radius: 12px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.button:hover {
+  color: #fff;
+  background: #f69827;
+}
+
+@media (min-width: 768px) {
+  .flow {
+    padding: 48px 40px;
+  }
+
+  .title {
+    font-size: 36px;
+    line-height: 42px;
+  }
+
+
+  .cardTitle {
+    font-size: 19px;
+    line-height: 25px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .flow {
+    padding: 56px;
+  }
+}

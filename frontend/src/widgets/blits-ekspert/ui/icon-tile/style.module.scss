@@ -1,0 +1,16 @@
+.tile {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+
+  background: #fff2e2;
+  border-radius: 14px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}

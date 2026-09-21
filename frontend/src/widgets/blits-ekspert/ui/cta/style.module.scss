@@ -1,0 +1,193 @@
+.cta {
+  width: 100%;
+}
+
+.card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+
+  width: 100%;
+
+  background: #f5f6f8;
+  border-radius: 32px;
+}
+
+.media {
+  overflow: hidden;
+
+  border-radius: 26px 26px 0 0;
+}
+
+.image {
+  display: block;
+
+  width: 100%;
+  height: 180px;
+
+  object-fit: cover;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: -28px;
+  padding: 24px 20px 28px;
+
+  background: #fff;
+  border-radius: 26px;
+}
+
+.decor {
+  display: none;
+}
+
+.decorImage {
+  position: absolute;
+
+  width: 90px;
+  height: 90px;
+
+  border-radius: 20px;
+}
+
+.badge {
+  padding: 7px 14px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #d9740c;
+  background: #fff2e2;
+  border-radius: 100px;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 33px;
+  letter-spacing: -0.02em;
+
+  color: #0b0b0b;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  list-style: none;
+}
+
+.point {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.pointIcon {
+  flex: none;
+
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+.pointText {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+
+  color: #4a5060;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .image {
+    height: 300px;
+  }
+
+  .content {
+    margin-top: -40px;
+    padding: 36px 40px 40px;
+  }
+
+  .title {
+    max-width: 620px;
+
+    font-size: 34px;
+    line-height: 42px;
+  }
+
+  .buttons {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+
+    width: auto;
+  }
+}
+
+@media (min-width: 1440px) {
+  .image {
+    height: 360px;
+  }
+
+  .content {
+    margin-top: -48px;
+    padding: 44px 48px 48px;
+  }
+
+  .decor {
+    display: block;
+
+    pointer-events: none;
+  }
+
+  .decorImage:nth-child(1) {
+    top: 40px;
+    right: 250px;
+
+    transform: rotate(-6deg);
+  }
+
+  .decorImage:nth-child(2) {
+    top: 108px;
+    right: 64px;
+
+    transform: rotate(5deg);
+  }
+
+  .decorImage:nth-child(3) {
+    right: 236px;
+    bottom: 100px;
+
+    transform: rotate(4deg);
+  }
+
+  .decorImage:nth-child(4) {
+    right: 60px;
+    bottom: 44px;
+
+    transform: rotate(-5deg);
+  }
+}

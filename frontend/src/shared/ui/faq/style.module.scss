@@ -1,0 +1,136 @@
+.faq {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 34px;
+  text-align: center;
+  letter-spacing: -0.02em;
+
+  color: #0b0b0b;
+}
+
+.card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 20px;
+
+  width: 100%;
+
+  background: #f5f6f8;
+  border-radius: 28px;
+}
+
+.item {
+  interpolate-size: allow-keywords;
+
+  border-bottom: 1px solid #e3e6ec;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item::details-content {
+  block-size: 0;
+  overflow: hidden;
+  opacity: 0;
+
+  transition:
+    block-size 0.45s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.35s ease,
+    content-visibility 0.45s allow-discrete;
+}
+
+.item[open]::details-content {
+  block-size: auto;
+  opacity: 1;
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 0;
+
+  cursor: pointer;
+  list-style: none;
+}
+
+.question::-webkit-details-marker {
+  display: none;
+}
+
+.questionText {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+
+  color: #0b0b0b;
+
+  transition: color 0.25s ease;
+}
+
+.question:hover .questionText {
+  color: #b86108;
+}
+
+.chevron {
+  flex: none;
+
+  color: #0b0b0b;
+
+  transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.item[open] .chevron {
+  transform: rotate(180deg);
+}
+
+.answer {
+  padding: 0 0 22px;
+
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 25px;
+
+  color: #4a5060;
+}
+
+@media (min-width: 768px) {
+  .faq {
+    gap: 32px;
+  }
+
+  .title {
+    font-size: 36px;
+    line-height: 42px;
+  }
+
+  .card {
+    padding: 8px 32px;
+  }
+
+  .questionText {
+    font-size: 17px;
+    line-height: 24px;
+  }
+
+  .answer {
+    padding-right: 40px;
+  }
+}
