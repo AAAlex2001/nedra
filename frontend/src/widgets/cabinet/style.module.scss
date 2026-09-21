@@ -134,6 +134,7 @@
 .toolbar {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 12px;
 }
 
@@ -207,7 +208,9 @@
     flex-wrap: nowrap;
     justify-self: end;
   }
+}
 
+@media (min-width: 1440px) {
   .toolbar {
     flex-direction: row;
     align-items: center;

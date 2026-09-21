@@ -13,6 +13,7 @@ export {
   EXPERTISE_STATUS_LABELS,
   EXPERTISE_STATUS_TONES,
   hasPendingPayment,
+  isFinished,
 } from "./model/types";
 export type { ExpertiseStage, StageState } from "./model/stages";
 export { buildStages, currentStage, doneCount } from "./model/stages";

@@ -107,6 +107,8 @@ export const EXPERTISE_RESULT_LABELS: Record<ExpertiseResult, string> = {
   negative: "Отрицательное",
 };
 
+export const isFinished = (expertise: Expertise): boolean => expertise.status === "accepted";
+
 export const hasPendingPayment = (expertise: Expertise): boolean => {
   const payments = [expertise.advance_payment, expertise.final_payment];
 

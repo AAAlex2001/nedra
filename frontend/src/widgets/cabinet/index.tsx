@@ -105,7 +105,8 @@ const CustomerCabinet = ({ user }: CabinetPanelProps) => {
   const notifications = useNotifications();
 
   const tabs = [
-    { key: "mine", label: "Мои экспертизы" },
+    { key: "mine", label: "В работе" },
+    { key: "finished", label: "Завершённые" },
     { key: "invoices", label: "Счета" },
     { key: "acts", label: "Акты" },
     { key: "notifications", label: "Уведомления", badge: notifications.unread },
@@ -120,7 +121,8 @@ const CustomerCabinet = ({ user }: CabinetPanelProps) => {
       </div>
 
       <section className={styles.panel}>
-        {tab === "mine" && <MyExpertises />}
+        {tab === "mine" && <MyExpertises kind="active" />}
+        {tab === "finished" && <MyExpertises kind="finished" />}
         {tab === "invoices" && <InvoicesTab />}
         {tab === "acts" && <ActsTab />}
         {tab === "notifications" && <NotificationsTab notifications={notifications} />}

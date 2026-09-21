@@ -1,6 +1,6 @@
 "use client";
 
-import type { Expertise } from "@/entities/expertise";
+import { isFinished } from "@/entities/expertise";
 import Loader from "@/shared/ui/loader";
 import { useAssignedExpertises } from "../../model/use-assigned-expertises";
 import ExpertiseCard from "../expertise-card";
@@ -20,8 +20,6 @@ const EMPTY_TEXT = {
     text: "Сюда переезжают заявки, по которым заказчик принял работу. Документы и переписка остаются доступны.",
   },
 };
-
-const isFinished = (expertise: Expertise): boolean => expertise.status === "accepted";
 
 const AssignedExpertises = ({ kind }: AssignedExpertisesProps) => {
   const { state, replace } = useAssignedExpertises();
