@@ -34,6 +34,13 @@ const InvoiceRow = ({ invoice, pending, onConfirm }: InvoiceRowProps) => {
         </span>
       </div>
 
+      {invoice.paid_at === null && invoice.reported_at !== null && (
+        <p className={styles.reported}>
+          Заказчик сообщил об оплате {formatRequestDate(invoice.reported_at)} — проверьте
+          поступление на расчётный счёт
+        </p>
+      )}
+
       <p className={styles.meta}>
         Заявка №{invoice.expertise_id} · {INVOICE_STAGE_LABELS[invoice.stage]} ·{" "}
         {formatRequestDate(invoice.created_at)}

@@ -7,5 +7,6 @@ export {
   fetchInvoices,
   invoicePdfUrl,
   issueInvoice,
+  reportInvoicePaid,
   saveCompany,
 } from "./api/billing";

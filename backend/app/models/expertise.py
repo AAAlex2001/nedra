@@ -1,11 +1,15 @@
 from datetime import datetime
 from decimal import Decimal
 from enum import StrEnum
+from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Integer, Numeric, SmallInteger, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
+
+if TYPE_CHECKING:
+    from app.models.billing import Invoice
 
 
 class ExpertiseStatus(StrEnum):
@@ -34,11 +38,13 @@ class ExpertiseStatus(StrEnum):
 
 
 class ExpertiseResult(StrEnum):
-    """Исход экспертизы, который эксперт указывает при отправке заключения."""
+    """Исход экспертизы: заключение бывает только положительным или отрицательным.
+
+    Замечания — это отдельный этап до заключения, а не его исход.
+    """
 
     POSITIVE = "positive"
     NEGATIVE = "negative"
-    REMARKS = "remarks"
 
 
 class Expertise(Base):
@@ -101,6 +107,13 @@ class Expertise(Base):
         lazy="selectin",
         cascade="all, delete-orphan",
         order_by="ExpertiseRemark.id",
+    )
+
+    invoices: Mapped[list["Invoice"]] = relationship(
+        back_populates="expertise",
+        lazy="selectin",
+        cascade="all, delete-orphan",
+        order_by="Invoice.id",
     )
 
 

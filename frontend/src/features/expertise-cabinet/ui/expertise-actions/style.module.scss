@@ -51,12 +51,16 @@
 }
 
 .secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 15px 20px;
 
   font-family: "Manrope";
   font-weight: 500;
   font-size: 14px;
   line-height: 14px;
+  text-decoration: none;
   white-space: nowrap;
 
   color: #0b0b0b;
@@ -78,6 +82,19 @@
 .secondary:disabled {
   opacity: 0.6;
   cursor: default;
+}
+
+.note {
+  padding: 10px 14px;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+
+  color: #1f5f9e;
+  background: #e8f1fb;
+  border-radius: 12px;
 }
 
 .error {

@@ -20,6 +20,7 @@ from app.services.billing.exceptions import (
 )
 from app.services.billing.usecases.confirm_invoice import ConfirmInvoiceUseCase
 from app.services.billing.usecases.issue_invoice import IssueInvoiceUseCase
+from app.services.billing.usecases.report_payment import ReportInvoicePaidUseCase
 from app.services.billing.usecases.save_company import SaveCustomerCompanyUseCase
 from app.services.billing.validators import normalize_inn, normalize_kpp
 from app.services.documents.act_pdf import build_act_pdf
@@ -258,6 +259,31 @@ def test_money_words_and_format() -> None:
         "Одна тысяча двести тридцать четыре рубля 56 копеек"
     )
     assert amount_in_words(Decimal("0.01")) == "Ноль рублей 01 копейка"
+
+
+def test_customer_reports_payment_once() -> None:
+    expertise = make_expertise(ExpertiseStatus.CONTRACT)
+    invoices = FakeInvoiceRepository()
+    customer = make_customer()
+
+    issue = IssueInvoiceUseCase(invoices, FakeCompanyRepository(make_company()))
+    invoice = asyncio.run(issue.execute(customer, expertise))
+
+    usecase = ReportInvoicePaidUseCase(invoices, FakeExpertiseRepository(expertise))
+
+    with pytest.raises(InvoiceNotFoundError):
+        asyncio.run(usecase.execute(customer, 404))
+
+    reported = asyncio.run(usecase.execute(customer, invoice.id))
+    assert reported.reported_at is not None
+
+    first = reported.reported_at
+    again = asyncio.run(usecase.execute(customer, invoice.id))
+    assert again.reported_at == first
+
+    invoice.paid_at = datetime.now(timezone.utc)
+    with pytest.raises(InvoiceAlreadyPaidError):
+        asyncio.run(usecase.execute(customer, invoice.id))
 
 
 def test_pdf_filename_survives_http_headers() -> None:

@@ -1,6 +1,7 @@
 export type {
   Expertise,
   ExpertiseDocument,
+  ExpertiseInvoice,
   ExpertisePayment,
   ExpertiseRemark,
   ExpertiseResult,

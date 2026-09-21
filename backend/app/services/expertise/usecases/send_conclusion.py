@@ -48,7 +48,7 @@ class SendConclusionUseCase:
             raise ExpertiseStateError("Отправить заключение можно после оплаты остатка")
 
         if result not in ExpertiseResult:
-            raise InvalidExpertiseError("Укажите исход экспертизы: положительное, отрицательное или замечания")
+            raise InvalidExpertiseError("Укажите исход экспертизы: положительное или отрицательное")
 
         if not files:
             raise InvalidExpertiseError("Приложите файл заключения")

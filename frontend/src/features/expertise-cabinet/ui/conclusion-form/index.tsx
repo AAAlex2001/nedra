@@ -7,7 +7,7 @@ import Chip from "@/shared/ui/chip";
 import FilesField from "@/shared/ui/files-field";
 import styles from "./style.module.scss";
 
-const RESULTS: ExpertiseResult[] = ["positive", "negative", "remarks"];
+const RESULTS: ExpertiseResult[] = ["positive", "negative"];
 const ACCEPT = ".pdf,.doc,.docx,.sig,.p7s";
 
 type ConclusionFormProps = {

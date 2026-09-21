@@ -9,6 +9,7 @@ type DocumentItem = {
   amount: string;
   href: string;
   status?: ReactNode;
+  action?: ReactNode;
 };
 
 type DocumentListProps = {
@@ -33,9 +34,12 @@ const DocumentList = ({ items }: DocumentListProps) => (
           {item.status}
         </div>
 
-        <a className={styles.download} href={item.href} target="_blank" rel="noreferrer">
-          Скачать PDF
-        </a>
+        <div className={styles.actions}>
+          <a className={styles.download} href={item.href} target="_blank" rel="noreferrer">
+            Скачать PDF
+          </a>
+          {item.action}
+        </div>
       </li>
     ))}
   </ul>

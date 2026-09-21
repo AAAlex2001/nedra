@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { invoicePdfUrl } from "@/entities/billing";
 import type { Expertise } from "@/entities/expertise";
 import { formatRequestDate } from "@/entities/request";
 import { formatRub, halfOf } from "@/shared/lib/money";
@@ -32,6 +33,7 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
 
   const half = formatRub(halfOf(expertise.price));
   const price = formatRub(expertise.price);
+  const invoice = expertise.invoice;
 
   const payButtons = (hasPayment: boolean) => (
     <>
@@ -45,14 +47,38 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
           Проверить оплату
         </button>
       )}
-      <button
-        type="button"
-        className={styles.secondary}
-        disabled={actions.pending}
-        onClick={() => void actions.requestInvoice()}
-      >
-        Счёт для юрлица
-      </button>
+
+      {invoice === null ? (
+        <button
+          type="button"
+          className={styles.secondary}
+          disabled={actions.pending}
+          onClick={() => void actions.requestInvoice()}
+        >
+          Счёт для юрлица
+        </button>
+      ) : (
+        <a
+          className={styles.secondary}
+          href={invoicePdfUrl(invoice.id)}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Счёт № {invoice.number}
+        </a>
+      )}
+
+      {invoice !== null && invoice.reported_at === null && (
+        <button
+          type="button"
+          className={styles.secondary}
+          disabled={actions.pending}
+          onClick={() => void actions.reportPaid()}
+        >
+          Я оплатил
+        </button>
+      )}
+
       <Button loading={actions.pending} onClick={() => void actions.pay()}>
         Картой {half}
       </Button>
@@ -195,6 +221,13 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
       </div>
 
       {step.form}
+
+      {role === "customer" && invoice !== null && invoice.reported_at !== null && (
+        <p className={styles.note}>
+          Вы сообщили об оплате счёта № {invoice.number} {when(invoice.reported_at)}. Администратор
+          проверит поступление на расчётный счёт и подтвердит оплату
+        </p>
+      )}
 
       {actions.error && <p className={styles.error}>{actions.error}</p>}
     </div>

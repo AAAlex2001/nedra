@@ -448,9 +448,9 @@ def test_conclusion_ready_send_and_accept_work() -> None:
     with pytest.raises(InvalidExpertiseError):
         asyncio.run(send.execute(expert, expertise, ExpertiseResult.POSITIVE, []))
 
-    asyncio.run(send.execute(expert, expertise, ExpertiseResult.REMARKS, [FakeUpload("c.pdf")]))
+    asyncio.run(send.execute(expert, expertise, ExpertiseResult.NEGATIVE, [FakeUpload("c.pdf")]))
     assert expertise.status == ExpertiseStatus.SENT
-    assert expertise.result == ExpertiseResult.REMARKS
+    assert expertise.result == ExpertiseResult.NEGATIVE
     assert expertise.documents[0].kind == "conclusion"
 
     accept = AcceptWorkUseCase(repo, notifications)

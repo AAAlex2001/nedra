@@ -68,6 +68,18 @@ class ExpertiseRemarkSchema(BaseModel):
     documents: list[ExpertiseDocumentSchema]
 
 
+class ExpertiseInvoiceSchema(BaseModel):
+    """Неоплаченный счёт заявки: по нему заказчик жмёт «Я оплатил» прямо в карточке."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    number: str
+    amount: Decimal
+    reported_at: datetime | None
+    paid_at: datetime | None
+
+
 class ExpertisePaymentSchema(BaseModel):
     """Платёж по этапу экспертизы: сумма, статус и ссылка на оплату, пока она есть."""
 
@@ -100,6 +112,7 @@ class ExpertiseOutSchema(BaseModel):
     price: Decimal | None
     advance_payment: ExpertisePaymentSchema | None
     final_payment: ExpertisePaymentSchema | None
+    invoice: ExpertiseInvoiceSchema | None
     created_at: datetime
     expert_ready_at: datetime | None
     contract_at: datetime | None

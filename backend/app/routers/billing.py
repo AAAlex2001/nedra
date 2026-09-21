@@ -2,12 +2,13 @@
 
 from urllib.parse import quote
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Response, status
 
 from app.dependencies.billing import (
     get_company_repository,
     get_invoice_repository,
     get_issue_invoice_usecase,
+    get_report_payment_usecase,
     get_save_company_usecase,
 )
 from app.dependencies.expertise import get_expertise_repository, get_visible_expertise
@@ -21,9 +22,16 @@ from app.schemas.billing import (
     CompanyOutSchema,
     InvoiceOutSchema,
 )
-from app.services.billing.exceptions import CompanyRequiredError, InvalidCompanyError
+from app.services.billing.exceptions import (
+    CompanyRequiredError,
+    InvalidCompanyError,
+    InvoiceAlreadyPaidError,
+    InvoiceNotFoundError,
+)
+from app.services.billing.letters import send_invoice_reported_letter
 from app.services.billing.repo import CustomerCompanyRepository, InvoiceRepository
 from app.services.billing.usecases.issue_invoice import IssueInvoiceUseCase
+from app.services.billing.usecases.report_payment import ReportInvoicePaidUseCase
 from app.services.billing.usecases.save_company import SaveCustomerCompanyUseCase
 from app.services.documents.act_pdf import act_filename, act_number, build_act_pdf
 from app.services.documents.company import (
@@ -71,6 +79,7 @@ def to_invoice_schema(invoice: Invoice) -> InvoiceOutSchema:
         payer_name=invoice.payer_name,
         payer_inn=invoice.payer_inn,
         created_at=invoice.created_at,
+        reported_at=invoice.reported_at,
         paid_at=invoice.paid_at,
     )
 
@@ -155,6 +164,27 @@ async def issue_invoice(
         raise HTTPException(status.HTTP_409_CONFLICT, str(error)) from error
     except (PriceMissingError, CompanyRequiredError) as error:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+
+    return to_invoice_schema(invoice)
+
+
+@router.post("/invoices/{invoice_id}/paid")
+async def report_invoice_paid(
+    invoice_id: int,
+    background_tasks: BackgroundTasks,
+    customer: User = Depends(require_customer),
+    usecase: ReportInvoicePaidUseCase = Depends(get_report_payment_usecase),
+) -> InvoiceOutSchema:
+    """Заказчик сообщает, что оплатил счёт. Администратор получает письмо и метку в админке."""
+
+    try:
+        invoice = await usecase.execute(customer, invoice_id)
+    except InvoiceNotFoundError as error:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
+    except InvoiceAlreadyPaidError as error:
+        raise HTTPException(status.HTTP_409_CONFLICT, str(error)) from error
+
+    background_tasks.add_task(send_invoice_reported_letter, invoice, invoice_number(invoice))
 
     return to_invoice_schema(invoice)
 

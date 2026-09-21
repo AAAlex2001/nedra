@@ -19,7 +19,6 @@ type StageRow = {
 const conclusionLabel = (result: ExpertiseResult | null): string => {
   if (result === "positive") return "Заключение отправлено: положительное";
   if (result === "negative") return "Заключение отправлено: отрицательное";
-  if (result === "remarks") return "Заключение отправлено: с замечаниями";
 
   return "Заключение отправлено";
 };

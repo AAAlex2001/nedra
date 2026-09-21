@@ -8,6 +8,7 @@ from app.dependencies.expertise import get_expertise_repository, get_notificatio
 from app.services.billing.repo import CustomerCompanyRepository, InvoiceRepository
 from app.services.billing.usecases.confirm_invoice import ConfirmInvoiceUseCase
 from app.services.billing.usecases.issue_invoice import IssueInvoiceUseCase
+from app.services.billing.usecases.report_payment import ReportInvoicePaidUseCase
 from app.services.billing.usecases.save_company import SaveCustomerCompanyUseCase
 from app.services.expertise.repo import ExpertiseRepository
 from app.services.notifications.repo import NotificationRepository
@@ -44,6 +45,15 @@ def get_issue_invoice_usecase(
     """Сценарий выставления счёта."""
 
     return IssueInvoiceUseCase(invoices, companies)
+
+
+def get_report_payment_usecase(
+    invoices: InvoiceRepository = Depends(get_invoice_repository),
+    expertises: ExpertiseRepository = Depends(get_expertise_repository),
+) -> ReportInvoicePaidUseCase:
+    """Сценарий «заказчик сообщил об оплате счёта»."""
+
+    return ReportInvoicePaidUseCase(invoices, expertises)
 
 
 def get_confirm_invoice_usecase(

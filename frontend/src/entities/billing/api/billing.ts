@@ -67,6 +67,22 @@ export const issueInvoice = async (expertiseId: number): Promise<Invoice> => {
   return invoice;
 };
 
+export const reportInvoicePaid = async (invoiceId: number): Promise<Invoice> => {
+  const response = await fetch(`${API_URL}/v1/invoices/${invoiceId}/paid`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const message = await readErrorMessage(response);
+    throw new Error(message);
+  }
+
+  const invoice: Invoice = await response.json();
+
+  return invoice;
+};
+
 export const fetchActs = async (): Promise<Act[]> => {
   const response = await fetch(`${API_URL}/v1/acts`, {
     credentials: "include",

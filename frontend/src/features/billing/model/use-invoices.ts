@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchInvoices, type Invoice } from "@/entities/billing";
+import { fetchInvoices, reportInvoicePaid, type Invoice } from "@/entities/billing";
 
 type InvoicesState =
   | { status: "loading" }
@@ -10,6 +10,8 @@ type InvoicesState =
 
 export const useInvoices = () => {
   const [state, setState] = useState<InvoicesState>({ status: "loading" });
+  const [pendingId, setPendingId] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -20,11 +22,11 @@ export const useInvoices = () => {
         if (cancelled) return;
 
         setState({ status: "ready", items });
-      } catch (error) {
+      } catch (caught) {
         if (cancelled) return;
 
         const message =
-          error instanceof Error && error.message ? error.message : "Не удалось загрузить счета";
+          caught instanceof Error && caught.message ? caught.message : "Не удалось загрузить счета";
         setState({ status: "error", message });
       }
     };
@@ -36,5 +38,26 @@ export const useInvoices = () => {
     };
   }, []);
 
-  return state;
+  const report = async (id: number) => {
+    if (state.status !== "ready") return;
+
+    setPendingId(id);
+    setError(null);
+
+    try {
+      const updated = await reportInvoicePaid(id);
+      const items = state.items.map((item) => (item.id === id ? updated : item));
+      setState({ status: "ready", items });
+    } catch (caught) {
+      const message =
+        caught instanceof Error && caught.message
+          ? caught.message
+          : "Не удалось сообщить об оплате";
+      setError(message);
+    } finally {
+      setPendingId(null);
+    }
+  };
+
+  return { state, pendingId, error, report };
 };

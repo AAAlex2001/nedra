@@ -15,6 +15,7 @@ from app.models.expertise import (
 RELATIONS = (
     selectinload(Expertise.documents),
     selectinload(Expertise.remarks).selectinload(ExpertiseRemark.documents),
+    selectinload(Expertise.invoices),
 )
 
 

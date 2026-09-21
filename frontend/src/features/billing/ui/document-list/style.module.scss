@@ -86,9 +86,15 @@
   color: #0b0b0b;
 }
 
-.download {
+.actions {
   grid-area: download;
 
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.download {
   padding: 12px 18px;
 
   font-family: "Manrope";
@@ -112,6 +118,33 @@
 .download:hover {
   color: #fff;
   background: #f69827;
+}
+
+.actions > button {
+  padding: 12px 18px;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  white-space: nowrap;
+
+  color: #fff;
+  background: #f69827;
+  border: 1px solid #f69827;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.actions > button:hover:not(:disabled) {
+  background: #e9850f;
+}
+
+.actions > button:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 
 @media (min-width: 768px) {

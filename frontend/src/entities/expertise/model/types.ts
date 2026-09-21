@@ -9,7 +9,7 @@ export type ExpertiseStatus =
   | "sent"
   | "accepted";
 
-export type ExpertiseResult = "positive" | "negative" | "remarks";
+export type ExpertiseResult = "positive" | "negative";
 
 export type PaymentStatus = "pending" | "waiting_for_capture" | "succeeded" | "canceled";
 
@@ -39,6 +39,14 @@ export type ExpertiseRemark = {
   documents: ExpertiseDocument[];
 };
 
+export type ExpertiseInvoice = {
+  id: number;
+  number: string;
+  amount: string;
+  reported_at: string | null;
+  paid_at: string | null;
+};
+
 export type Expertise = {
   id: number;
   customer_id: number;
@@ -55,6 +63,7 @@ export type Expertise = {
   price: string | null;
   advance_payment: ExpertisePayment | null;
   final_payment: ExpertisePayment | null;
+  invoice: ExpertiseInvoice | null;
   created_at: string;
   expert_ready_at: string | null;
   contract_at: string | null;
@@ -96,7 +105,6 @@ export const EXPERTISE_STATUS_TONES: Record<ExpertiseStatus, ExpertiseStatusTone
 export const EXPERTISE_RESULT_LABELS: Record<ExpertiseResult, string> = {
   positive: "Положительное",
   negative: "Отрицательное",
-  remarks: "С замечаниями",
 };
 
 export const hasPendingPayment = (expertise: Expertise): boolean => {

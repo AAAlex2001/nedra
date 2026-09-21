@@ -35,7 +35,14 @@ from app.dependencies.users import get_user_repository, require_customer, requir
 from app.models.expertise import Expertise
 from app.models.payment import PaymentStatus
 from app.models.user import User
-from app.schemas.expertise import ExpertiseInSchema, ExpertiseOutSchema, ExpertisePaymentSchema
+from app.models.billing import Invoice
+from app.schemas.expertise import (
+    ExpertiseInSchema,
+    ExpertiseInvoiceSchema,
+    ExpertiseOutSchema,
+    ExpertisePaymentSchema,
+)
+from app.services.documents.invoice_pdf import invoice_number
 from app.schemas.payment import PaymentOutSchema
 from app.services.experts.repo import ExpertProfileRepository
 from app.services.expertise.exceptions import (
@@ -78,6 +85,26 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/expertise", tags=["expertise"])
 
 
+def pending_invoice(expertise: Expertise) -> Invoice | None:
+    """Последний неоплаченный счёт заявки: по нему заказчик сообщает об оплате."""
+
+    unpaid = [item for item in expertise.invoices if item.paid_at is None]
+
+    return unpaid[-1] if unpaid else None
+
+
+def to_invoice_schema(invoice: Invoice) -> ExpertiseInvoiceSchema:
+    """Счёт для карточки заявки вместе с человеческим номером."""
+
+    return ExpertiseInvoiceSchema(
+        id=invoice.id,
+        number=invoice_number(invoice),
+        amount=invoice.amount,
+        reported_at=invoice.reported_at,
+        paid_at=invoice.paid_at,
+    )
+
+
 async def to_schema(
     expertise: Expertise, users: UserRepository, payments: PaymentRepository
 ) -> ExpertiseOutSchema:
@@ -93,6 +120,8 @@ async def to_schema(
     final = None
     if expertise.final_payment_id is not None:
         final = await payments.get_by_id(expertise.final_payment_id)
+
+    unpaid = pending_invoice(expertise)
 
     return ExpertiseOutSchema(
         id=expertise.id,
@@ -110,6 +139,7 @@ async def to_schema(
         price=expertise.price,
         advance_payment=ExpertisePaymentSchema.model_validate(advance) if advance else None,
         final_payment=ExpertisePaymentSchema.model_validate(final) if final else None,
+        invoice=to_invoice_schema(unpaid) if unpaid else None,
         created_at=expertise.created_at,
         expert_ready_at=expertise.expert_ready_at,
         contract_at=expertise.contract_at,

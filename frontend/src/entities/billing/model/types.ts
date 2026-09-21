@@ -24,6 +24,7 @@ export type Invoice = {
   payer_name: string;
   payer_inn: string;
   created_at: string;
+  reported_at: string | null;
   paid_at: string | null;
 };
 
