@@ -86,8 +86,9 @@
   gap: 6px;
 }
 
-.more {
-  margin-top: 8px;
+.arrows .more {
+  margin-right: 6px;
+  padding: 12px 22px;
 }
 
 .dot {
@@ -114,6 +115,7 @@
 .arrows {
   display: flex;
   flex: none;
+  align-items: center;
   gap: 10px;
 }
 

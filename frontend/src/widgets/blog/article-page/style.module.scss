@@ -230,10 +230,6 @@
   width: 100%;
 }
 
-.asideSpacer {
-  display: none;
-}
-
 .middle {
   margin: 0 -20px;
 }
@@ -319,15 +315,8 @@
     top: 120px;
   }
 
-  .asideSpacer {
-    display: block;
-    order: 2;
-    flex: none;
-    width: 320px;
-  }
-
   .middle {
-    margin: 0 -50px;
+    margin: 0;
   }
 
   .content {

@@ -67,6 +67,10 @@ const Articles = ({ items }: ArticlesProps) => {
         </div>
 
         <div className={styles.arrows}>
+          <Button className={styles.more} href="/novosti">
+            Все материалы
+          </Button>
+
           <button
             type="button"
             className={styles.button}
@@ -85,10 +89,6 @@ const Articles = ({ items }: ArticlesProps) => {
           </button>
         </div>
       </div>
-
-      <Button className={styles.more} href="/novosti">
-        Все материалы
-      </Button>
     </section>
   );
 };

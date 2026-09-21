@@ -103,15 +103,9 @@ const ArticlePage = ({ article, middle, promo }: ArticlePageProps) => {
               dangerouslySetInnerHTML={{ __html: afterPromo }}
             />
           )}
-        </div>
-      </div>
 
-      {middle && <div className={styles.middle}>{middle}</div>}
+          {middle && <div className={styles.middle}>{middle}</div>}
 
-      <div className={styles.layout}>
-        {article.toc.length > 0 && <div className={styles.asideSpacer} />}
-
-        <div className={styles.main}>
           {secondPart && (
             <div
               className={styles.content}
