@@ -1,7 +1,6 @@
 "use client";
 
 import { isFinished } from "@/entities/expertise";
-import Button from "@/shared/ui/button";
 import Loader from "@/shared/ui/loader";
 import { useMyExpertises } from "../../model/use-my-expertises";
 import ExpertiseCard from "../expertise-card";
@@ -46,7 +45,6 @@ const MyExpertises = ({ kind }: MyExpertisesProps) => {
           Отправьте документацию на экспертизу: укажите объект, класс опасности и отрасль,
           приложите файлы. Эксперты по вашей области получат уведомление сразу.
         </p>
-        <Button href="/blits-ekspert">Отправить документацию</Button>
       </div>
     );
   }
