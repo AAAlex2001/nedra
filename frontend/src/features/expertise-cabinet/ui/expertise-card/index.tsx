@@ -55,7 +55,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
         </span>
       </div>
 
-      <ExpertiseProgress status={expertise.status} />
+      <ExpertiseProgress expertise={expertise} />
 
       <DetailsTable>
         <DetailsRow label="Область аттестации">

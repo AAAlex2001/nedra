@@ -11,10 +11,10 @@ export {
   EXPERTISE_RESULT_LABELS,
   EXPERTISE_STATUS_LABELS,
   EXPERTISE_STATUS_TONES,
-  EXPERTISE_STEPS,
   hasPendingPayment,
-  stepIndex,
 } from "./model/types";
+export type { ExpertiseStage, StageState } from "./model/stages";
+export { buildStages, currentStage, doneCount } from "./model/stages";
 export {
   acceptExpertise,
   acceptWork,

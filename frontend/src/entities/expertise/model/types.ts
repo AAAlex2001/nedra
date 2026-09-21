@@ -99,25 +99,6 @@ export const EXPERTISE_RESULT_LABELS: Record<ExpertiseResult, string> = {
   remarks: "С замечаниями",
 };
 
-export const EXPERTISE_STEPS: { status: ExpertiseStatus; label: string }[] = [
-  { status: "new", label: "Заявка" },
-  { status: "expert_ready", label: "Эксперт" },
-  { status: "contract", label: "Договор" },
-  { status: "in_progress", label: "Аванс" },
-  { status: "conclusion_ready", label: "Заключение" },
-  { status: "paid", label: "Остаток" },
-  { status: "sent", label: "Отправлено" },
-  { status: "accepted", label: "Принято" },
-];
-
-export const stepIndex = (status: ExpertiseStatus): number => {
-  if (status === "remarks") {
-    return EXPERTISE_STEPS.findIndex((step) => step.status === "in_progress");
-  }
-
-  return EXPERTISE_STEPS.findIndex((step) => step.status === status);
-};
-
 export const hasPendingPayment = (expertise: Expertise): boolean => {
   const payments = [expertise.advance_payment, expertise.final_payment];
 

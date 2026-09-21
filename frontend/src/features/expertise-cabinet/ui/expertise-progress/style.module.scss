@@ -1,96 +1,185 @@
-.steps {
+.summary {
   display: flex;
-  flex-direction: row;
-  gap: 0;
-  padding: 0;
-
-  list-style: none;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.step {
-  position: relative;
-
-  display: flex;
-  flex: 1 0 64px;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 16px;
+
+  text-align: left;
+
+  background: #f9fafb;
+  border: 1px solid #eceef3;
+  border-radius: 14px;
+  cursor: pointer;
+
+  transition: border-color 0.15s ease;
 }
 
-.step::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  right: 50%;
-  left: -50%;
-  z-index: 0;
-
-  height: 2px;
-
-  background: #eceef3;
-}
-
-.step:first-child::before {
-  display: none;
-}
-
-.done::before,
-.active::before {
-  background: #f69827;
-}
-
-.dot {
-  position: relative;
-  z-index: 1;
-
-  width: 12px;
-  height: 12px;
-
-  background: #fff;
-  border: 2px solid #d9dde5;
-  border-radius: 100px;
-}
-
-.done .dot {
-  background: #f69827;
+.summary:hover {
   border-color: #f69827;
 }
 
-.active .dot {
-  border-color: #f69827;
-  box-shadow: 0 0 0 3px #fff2e2;
+.summary:focus-visible {
+  outline: 2px solid #f69827;
+  outline-offset: 2px;
 }
 
-.label {
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.status {
   font-family: "Manrope";
-  font-weight: 500;
-  font-size: 11px;
-  line-height: 13px;
-  text-align: center;
-  white-space: nowrap;
-
-  color: #9aa0ad;
-}
-
-.done .label {
-  color: #4a5060;
-}
-
-.active .label {
   font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
 
   color: #0b0b0b;
 }
 
-@media (min-width: 768px) {
-  .step {
-    flex-basis: 0;
-  }
+.counter {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
 
-  .label {
-    font-size: 12px;
-    line-height: 14px;
-  }
+  color: #7b8190;
+}
+
+.bar {
+  display: flex;
+  gap: 4px;
+}
+
+.segment {
+  flex: 1;
+  height: 5px;
+
+  background: #e6e9ef;
+  border-radius: 100px;
+}
+
+.segment.done,
+.segment.current {
+  background: #f69827;
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.since {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #7b8190;
+}
+
+.more {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #f69827;
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+
+  list-style: none;
+}
+
+.row {
+  position: relative;
+
+  display: flex;
+  gap: 12px;
+  padding-bottom: 20px;
+}
+
+.row:last-child {
+  padding-bottom: 0;
+}
+
+.row::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  bottom: 0;
+  left: 9px;
+
+  width: 2px;
+
+  background: #eceef3;
+}
+
+.row:last-child::before {
+  display: none;
+}
+
+.marker {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.markerIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.markerFuture {
+  width: 12px;
+  height: 12px;
+
+  background: #fff;
+  border: 2px solid #e0e3ea;
+  border-radius: 100px;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.label {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.row.future .label {
+  font-weight: 500;
+
+  color: #9aa0ad;
+}
+
+.period {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
 }
