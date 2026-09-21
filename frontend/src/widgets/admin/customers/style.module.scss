@@ -61,40 +61,6 @@
   border-radius: 14px;
 }
 
-.stats {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 18px 20px;
-
-  background: #f5f6f8;
-  border-radius: 16px;
-}
-
-.statLabel {
-  font-family: "Manrope";
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 17px;
-
-  color: #6b6f78;
-}
-
-.statValue {
-  font-family: "Manrope";
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 32px;
-
-  color: #0b0b0b;
-}
-
 .tableWrap {
   width: 100%;
   overflow-x: auto;
@@ -180,15 +146,5 @@
 @media (min-width: 768px) {
   .section {
     padding: 80px 50px 120px;
-  }
-
-  .stats {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1100px) {
-  .stats {
-    grid-template-columns: repeat(5, 1fr);
   }
 }
