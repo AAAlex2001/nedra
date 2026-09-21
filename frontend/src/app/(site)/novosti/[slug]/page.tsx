@@ -13,6 +13,7 @@ import ArticlePage from "@/widgets/blog/article-page";
 import RelatedArticles from "@/widgets/blog/related-articles";
 import InstituteServices from "@/widgets/landing/institute-services";
 import RequestSection from "@/widgets/landing/request-form";
+import ServicesPromo from "@/widgets/services-promo";
 import styles from "../../articles-page.module.scss";
 
 export const dynamic = "force-dynamic";
@@ -51,11 +52,13 @@ export default async function NewsArticleRoute({ params }: { params: Params }) {
         <div className={styles.body}>
           <ArticlePage
             article={article}
-            middle={<InstituteServices />}
             promo={<BlitsPromo />}
+            middle={<ServicesPromo />}
           />
         </div>
       </main>
+
+      <InstituteServices />
 
       <RequestSection />
 

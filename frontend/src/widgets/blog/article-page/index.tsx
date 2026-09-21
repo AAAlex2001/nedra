@@ -7,8 +7,7 @@ import {
   buildArticleJsonLd,
   buildFaqJsonLd,
   isOptimizableCover,
-  splitBeforeFirstHeading,
-  splitContent,
+  splitAtHeadings,
   type Article,
 } from "@/entities/article";
 import { ReactionBar } from "@/features/article-reactions";
@@ -18,14 +17,13 @@ import styles from "./style.module.scss";
 
 type ArticlePageProps = {
   article: Article;
-  middle?: ReactNode;
   promo?: ReactNode;
+  middle?: ReactNode;
 };
 
-const ArticlePage = ({ article, middle, promo }: ArticlePageProps) => {
+const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
   const sectionPath = SECTION_PATH[article.section];
-  const [firstPart, secondPart] = middle ? splitContent(article) : [article.content, ""];
-  const [beforePromo, afterPromo] = promo ? splitBeforeFirstHeading(firstPart) : [firstPart, ""];
+  const [beforePromo, betweenBlocks, afterServices] = splitAtHeadings(article.content, [1, 3]);
 
   const jsonLd = buildArticleJsonLd(article);
   const faqJsonLd = buildFaqJsonLd(article);
@@ -97,19 +95,19 @@ const ArticlePage = ({ article, middle, promo }: ArticlePageProps) => {
 
           {promo}
 
-          {afterPromo && (
+          {betweenBlocks && (
             <div
               className={styles.content}
-              dangerouslySetInnerHTML={{ __html: afterPromo }}
+              dangerouslySetInnerHTML={{ __html: betweenBlocks }}
             />
           )}
 
-          {middle && <div className={styles.middle}>{middle}</div>}
+          {middle}
 
-          {secondPart && (
+          {afterServices && (
             <div
               className={styles.content}
-              dangerouslySetInnerHTML={{ __html: secondPart }}
+              dangerouslySetInnerHTML={{ __html: afterServices }}
             />
           )}
 

@@ -27,6 +27,11 @@ const images = [
     quality: 82,
     maxWidth: 1600,
   })),
+  { source: "services/1.png", quality: 82, maxWidth: 1600 },
+  ...Array.from({ length: 9 }, (_, index) => ({
+    source: `services/${index + 2}.png`,
+    quality: 82,
+  })),
   ...Array.from({ length: 6 }, (_, index) => ({
     source: `what_is_this/what_is_this_${index + 1}.png`,
     quality: 82,

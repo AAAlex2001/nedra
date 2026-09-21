@@ -1,21 +1,21 @@
-import type { Article } from "../model/types";
+const HEADING = /<h2[^>]*>/g;
 
-export const splitContent = (article: Article): [string, string] => {
-  if (article.toc.length < 2) return [article.content, ""];
+export const splitAtHeadings = (content: string, positions: number[]): string[] => {
+  const starts = Array.from(content.matchAll(HEADING)).map((match) => match.index ?? 0);
 
-  const middle = article.toc[Math.floor(article.toc.length / 2)];
-  const marker = `<h2 id="${middle.id}"`;
-  const index = article.content.indexOf(marker);
+  const cuts = positions
+    .map((position) => starts[position - 1])
+    .filter((index): index is number => index !== undefined && index > 0);
 
-  if (index <= 0) return [article.content, ""];
+  const parts: string[] = [];
+  let from = 0;
 
-  return [article.content.slice(0, index), article.content.slice(index)];
-};
+  for (const cut of cuts) {
+    parts.push(content.slice(from, cut));
+    from = cut;
+  }
 
-export const splitBeforeFirstHeading = (content: string): [string, string] => {
-  const index = content.indexOf("<h2");
+  parts.push(content.slice(from));
 
-  if (index <= 0) return [content, ""];
-
-  return [content.slice(0, index), content.slice(index)];
+  return parts;
 };
