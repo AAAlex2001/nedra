@@ -15,7 +15,7 @@ const Check = () => (
   </svg>
 );
 
-const DECOR = ["/blitz/24.png", "/blitz/25.png", "/blitz/26.png", "/blitz/27.png"];
+const DECOR = ["/blitz/24.webp", "/blitz/25.webp", "/blitz/26.webp", "/blitz/27.webp"];
 
 const POINTS = [
   "Заявку сразу видят эксперты с нужной аттестацией",
@@ -29,7 +29,7 @@ const BlitsPromo = () => (
       <div className={styles.media}>
         <Image
           className={styles.image}
-          src="/blitz/23.png"
+          src="/blitz/23.webp"
           alt="Документация, заключение с электронной подписью и технические устройства опасного производственного объекта"
           width={1600}
           height={700}

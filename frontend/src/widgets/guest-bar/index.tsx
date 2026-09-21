@@ -20,7 +20,7 @@ const GuestBar = () => {
       <div className={styles.spacer} aria-hidden="true" />
 
       <aside className={styles.bar}>
-        <Image className={styles.icon} src="/blitz/20.png" alt="" width={120} height={120} />
+        <Image className={styles.icon} src="/blitz/20.webp" alt="" width={120} height={120} />
 
         <div className={styles.text}>
           <span className={styles.title}>Экспертиза промышленной безопасности от 1 дня</span>

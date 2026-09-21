@@ -9,7 +9,7 @@ const POINTS = [
   "Заключение с ЭЦП, счёт и акт — в личном кабинете",
 ];
 
-const DECOR = ["/blitz/19.png", "/blitz/20.png", "/blitz/21.png", "/blitz/22.png"];
+const DECOR = ["/blitz/19.webp", "/blitz/20.webp", "/blitz/21.webp", "/blitz/22.webp"];
 
 const Cta = () => (
   <section className={styles.cta}>
@@ -17,7 +17,7 @@ const Cta = () => (
       <div className={styles.media}>
         <Image
           className={styles.image}
-          src="/blitz/18.png"
+          src="/blitz/18.webp"
           alt="Документация, заключение с электронной подписью и технические устройства опасного производственного объекта"
           width={1600}
           height={700}

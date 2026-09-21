@@ -22,6 +22,11 @@ const images = [
   { source: "partners/bashmed.jpg", quality: 88, maxWidth: 250 },
   { source: "partners/stroyservice.png", quality: 90, maxWidth: 600 },
   { source: "partners/volkovskiygok.jpg", quality: 88, maxWidth: 200 },
+  ...Array.from({ length: 27 }, (_, index) => ({
+    source: `blitz/${index + 1}.png`,
+    quality: 82,
+    maxWidth: 1600,
+  })),
   ...Array.from({ length: 6 }, (_, index) => ({
     source: `what_is_this/what_is_this_${index + 1}.png`,
     quality: 82,

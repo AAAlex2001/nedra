@@ -1,4 +1,4 @@
-import { getArticles, type ArticleCardData } from "@/entities/article";
+import { getArticle, type ArticleCardData } from "@/entities/article";
 import type { ExpertCatalog } from "@/entities/expert";
 import type { Tariff } from "@/entities/tariff";
 import { getCurrentUser } from "@/entities/user/api/session-server";
@@ -43,17 +43,9 @@ const loadTariffs = async (): Promise<Tariff[]> => {
 };
 
 const loadArticles = async (): Promise<ArticleCardData[]> => {
-  const { articles } = await getArticles({
-    section: "news",
-    tag: "Промышленная безопасность",
-    page: 10,
-  });
+  const found = await Promise.all(ARTICLE_SLUGS.map((slug) => getArticle(slug)));
 
-  const picked = ARTICLE_SLUGS.flatMap((slug) =>
-    articles.filter((article) => article.slug === slug),
-  );
-
-  return picked.length > 0 ? picked : articles.slice(0, ARTICLE_SLUGS.length);
+  return found.filter((article) => article !== null);
 };
 
 export default async function BlitzExpertPage() {
