@@ -75,6 +75,7 @@ const ExpertCabinet = ({ user }: CabinetPanelProps) => {
   const tabs = [
     { key: "incoming", label: "Входящие заявки" },
     { key: "assigned", label: "В работе" },
+    { key: "finished", label: "Завершённые" },
     { key: "notifications", label: "Уведомления", badge: notifications.unread },
     { key: "account", label: "Мои данные" },
   ];
@@ -85,7 +86,8 @@ const ExpertCabinet = ({ user }: CabinetPanelProps) => {
 
       <section className={styles.panel}>
         {tab === "incoming" && <IncomingExpertises certificates={state.profile.certificates} />}
-        {tab === "assigned" && <AssignedExpertises />}
+        {tab === "assigned" && <AssignedExpertises kind="active" />}
+        {tab === "finished" && <AssignedExpertises kind="finished" />}
         {tab === "notifications" && <NotificationsTab notifications={notifications} />}
         {tab === "account" && (
           <>
