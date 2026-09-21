@@ -35,20 +35,22 @@ const Articles = ({ items }: ArticlesProps) => {
 
   return (
     <section className={styles.articles}>
-      <div className={styles.heading}>
-        <h2 className={styles.title}>Разбираем экспертизу по шагам</h2>
-        <p className={styles.lead}>
-          Сроки, штрафы, документы и требования Ростехнадзора — без канцелярита,
-          со ссылками на первоисточники.
-        </p>
-      </div>
+      <div className={styles.panel}>
+        <div className={styles.heading}>
+          <h2 className={styles.title}>Разбираем экспертизу по шагам</h2>
+          <p className={styles.lead}>
+            Сроки, штрафы, документы и требования Ростехнадзора — без канцелярита,
+            со ссылками на первоисточники.
+          </p>
+        </div>
 
-      <div ref={sliderRef} className={`keen-slider ${styles.viewport}`}>
-        {items.map((item) => (
-          <div key={item.slug} className={`keen-slider__slide ${styles.slide}`}>
-            <ArticleCard article={item} />
-          </div>
-        ))}
+        <div ref={sliderRef} className={`keen-slider ${styles.viewport}`}>
+          {items.map((item) => (
+            <div key={item.slug} className={`keen-slider__slide ${styles.slide}`}>
+              <ArticleCard article={item} />
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className={styles.controls}>

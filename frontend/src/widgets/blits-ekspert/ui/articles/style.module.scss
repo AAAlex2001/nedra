@@ -1,4 +1,13 @@
 .articles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  width: 100%;
+}
+
+.panel {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -77,12 +86,16 @@
   gap: 6px;
 }
 
+.more {
+  margin-top: 8px;
+}
+
 .dot {
   width: 8px;
   height: 8px;
   padding: 0;
 
-  background: #f2dcc0;
+  background: #e0e3ea;
   border: none;
   border-radius: 100px;
   cursor: pointer;
@@ -114,7 +127,7 @@
   height: 46px;
 
   color: #f69827;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.7);
   border: 2px solid #f69827;
   border-radius: 12px;
   cursor: pointer;
@@ -130,7 +143,7 @@
 }
 
 @media (min-width: 768px) {
-  .articles {
+  .panel {
     gap: 32px;
     padding: 48px 40px;
   }
@@ -142,7 +155,7 @@
 }
 
 @media (min-width: 1440px) {
-  .articles {
+  .panel {
     padding: 56px;
   }
 }
