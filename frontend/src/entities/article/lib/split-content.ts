@@ -11,3 +11,11 @@ export const splitContent = (article: Article): [string, string] => {
 
   return [article.content.slice(0, index), article.content.slice(index)];
 };
+
+export const splitBeforeFirstHeading = (content: string): [string, string] => {
+  const index = content.indexOf("<h2");
+
+  if (index <= 0) return [content, ""];
+
+  return [content.slice(0, index), content.slice(index)];
+};

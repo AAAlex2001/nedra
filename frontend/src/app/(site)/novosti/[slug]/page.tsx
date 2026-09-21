@@ -8,6 +8,7 @@ import {
   getRelatedArticles,
 } from "@/entities/article";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
+import BlitsPromo from "@/widgets/blits-promo";
 import ArticlePage from "@/widgets/blog/article-page";
 import RelatedArticles from "@/widgets/blog/related-articles";
 import InstituteServices from "@/widgets/landing/institute-services";
@@ -48,7 +49,11 @@ export default async function NewsArticleRoute({ params }: { params: Params }) {
         />
 
         <div className={styles.body}>
-          <ArticlePage article={article} middle={<InstituteServices />} />
+          <ArticlePage
+            article={article}
+            middle={<InstituteServices />}
+            promo={<BlitsPromo />}
+          />
         </div>
       </main>
 

@@ -1,6 +1,6 @@
 import type { ExpertCatalog } from "@/entities/expert";
 import type { Tariff } from "@/entities/tariff";
-import { hasSessionCookie } from "@/entities/user/api/session-server";
+import { getCurrentUser } from "@/entities/user/api/session-server";
 import { internalFetch } from "@/shared/api/server";
 import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
@@ -43,9 +43,10 @@ const loadTariffs = async (): Promise<Tariff[]> => {
 
 export default async function BlitzExpertPage() {
   const catalog = await loadCatalog();
-  const guest = !(await hasSessionCookie());
+  const user = await getCurrentUser();
+  const showLanding = user === null || user.role === "expert";
 
-  if (guest) {
+  if (showLanding) {
     const tariffs = await loadTariffs();
 
     return <BlitsEkspertLanding catalog={catalog} tariffs={tariffs} />;

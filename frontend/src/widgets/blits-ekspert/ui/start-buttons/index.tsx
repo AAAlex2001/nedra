@@ -1,7 +1,7 @@
 "use client";
 
-import { useAuthModal } from "@/features/auth";
 import Button from "@/shared/ui/button";
+import { useStartAction } from "../../model/use-start-action";
 import styles from "./style.module.scss";
 
 type StartButtonsProps = {
@@ -10,11 +10,11 @@ type StartButtonsProps = {
 };
 
 const StartButtons = ({ secondaryHref, secondaryText }: StartButtonsProps) => {
-  const { openModal } = useAuthModal();
+  const start = useStartAction();
 
   return (
     <>
-      <Button onClick={openModal}>Отправить документацию</Button>
+      <Button onClick={start}>Отправить документацию</Button>
       <a className={styles.secondary} href={secondaryHref}>
         {secondaryText}
       </a>

@@ -7,6 +7,7 @@ import {
   buildArticleJsonLd,
   buildFaqJsonLd,
   isOptimizableCover,
+  splitBeforeFirstHeading,
   splitContent,
   type Article,
 } from "@/entities/article";
@@ -18,11 +19,13 @@ import styles from "./style.module.scss";
 type ArticlePageProps = {
   article: Article;
   middle?: ReactNode;
+  promo?: ReactNode;
 };
 
-const ArticlePage = ({ article, middle }: ArticlePageProps) => {
+const ArticlePage = ({ article, middle, promo }: ArticlePageProps) => {
   const sectionPath = SECTION_PATH[article.section];
   const [firstPart, secondPart] = middle ? splitContent(article) : [article.content, ""];
+  const [beforePromo, afterPromo] = promo ? splitBeforeFirstHeading(firstPart) : [firstPart, ""];
 
   const jsonLd = buildArticleJsonLd(article);
   const faqJsonLd = buildFaqJsonLd(article);
@@ -89,8 +92,17 @@ const ArticlePage = ({ article, middle }: ArticlePageProps) => {
         <div className={styles.main}>
           <div
             className={styles.content}
-            dangerouslySetInnerHTML={{ __html: firstPart }}
+            dangerouslySetInnerHTML={{ __html: beforePromo }}
           />
+
+          {promo}
+
+          {afterPromo && (
+            <div
+              className={styles.content}
+              dangerouslySetInnerHTML={{ __html: afterPromo }}
+            />
+          )}
         </div>
       </div>
 

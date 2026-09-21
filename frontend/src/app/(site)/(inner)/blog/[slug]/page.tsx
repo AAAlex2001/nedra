@@ -8,6 +8,7 @@ import {
   getRelatedArticles,
 } from "@/entities/article";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
+import BlitsPromo from "@/widgets/blits-promo";
 import ArticlePage from "@/widgets/blog/article-page";
 import RelatedArticles from "@/widgets/blog/related-articles";
 import styles from "../../../articles-page.module.scss";
@@ -45,7 +46,7 @@ export default async function BlogArticleRoute({ params }: { params: Params }) {
       />
 
       <div className={styles.body}>
-        <ArticlePage article={article} />
+        <ArticlePage article={article} promo={<BlitsPromo />} />
         {related.length > 0 && <RelatedArticles articles={related} />}
       </div>
     </main>

@@ -3,12 +3,12 @@
 import { useState } from "react";
 import type { ExpertCatalog } from "@/entities/expert";
 import { tariffKey, type Tariff } from "@/entities/tariff";
-import { useAuthModal } from "@/features/auth";
 import { formatRub, halfOf } from "@/shared/lib/money";
 import Button from "@/shared/ui/button";
 import { CheckIcon } from "@/shared/ui/icons";
 import SelectField from "@/shared/ui/select-field";
 import { Tabs } from "@/shared/ui/tabs";
+import { useStartAction } from "../../model/use-start-action";
 import styles from "./style.module.scss";
 
 type CalculatorProps = {
@@ -23,7 +23,7 @@ const NOTES = [
 ];
 
 const Calculator = ({ catalog, tariffs }: CalculatorProps) => {
-  const { openModal } = useAuthModal();
+  const start = useStartAction();
   const [objectCode, setObjectCode] = useState(catalog.objects[0].code);
   const [areaCode, setAreaCode] = useState("");
 
@@ -113,7 +113,7 @@ const Calculator = ({ catalog, tariffs }: CalculatorProps) => {
             </div>
           </dl>
 
-          <Button className={styles.submit} onClick={openModal}>
+          <Button className={styles.submit} onClick={start}>
             Отправить документацию
           </Button>
         </aside>

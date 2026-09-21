@@ -1,0 +1,135 @@
+.spacer {
+  height: 88px;
+}
+
+.bar {
+  position: fixed;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 40;
+
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 10px;
+
+  width: min(728px, calc(100% - 40px));
+
+  transform: translateX(-50%);
+
+  background: #fff;
+  border: 1px solid #e9ecf1;
+  border-radius: 100px;
+  box-shadow: 0 14px 36px rgba(11, 11, 11, 0.16);
+}
+
+.icon {
+  flex: none;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 10px;
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #0b0b0b;
+}
+
+.subtitle {
+  display: none;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: #6b6f78;
+}
+
+.bar .button {
+  flex: none;
+  padding: 10px 14px;
+}
+
+@media (max-width: 767px) {
+  .text {
+    max-width: 260px;
+  }
+
+  .bar .button {
+    margin-left: auto;
+  }
+
+  .bar .button span {
+    font-size: 13px;
+    line-height: 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .spacer {
+    height: 108px;
+  }
+
+  .bar {
+    bottom: 20px;
+
+    gap: 16px;
+    padding: 12px 12px 12px 16px;
+  }
+
+  .bar .button {
+    padding: 14px 24px;
+  }
+
+  .icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .subtitle {
+    display: block;
+  }
+}
+
+@media (min-width: 1440px) {
+  .spacer {
+    height: 120px;
+  }
+
+  .bar {
+    bottom: 28px;
+
+    gap: 20px;
+    padding: 14px 20px;
+
+    width: min(860px, calc(100% - 100px));
+  }
+
+  .icon {
+    width: 56px;
+    height: 56px;
+  }
+}
