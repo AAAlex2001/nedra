@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.services.users.exceptions import EmailAlreadyTakenError
 
 
@@ -29,6 +29,14 @@ class UserRepository:
         result = await self.db.execute(stmt)
 
         return result.scalar_one_or_none()
+
+    async def list_by_role(self, role: UserRole) -> list[User]:
+        """Все пользователи с ролью, новые сверху. Колонка role проиндексирована."""
+
+        stmt = select(User).where(User.role == role).order_by(User.created_at.desc())
+        result = await self.db.execute(stmt)
+
+        return list(result.scalars().all())
 
     async def save(self, user: User) -> User:
         """Сохранить изменения существующего пользователя."""

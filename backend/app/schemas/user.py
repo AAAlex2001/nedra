@@ -44,3 +44,16 @@ class UserOutSchema(BaseModel):
     phone: str = Field(..., description="Телефон")
     role: UserRole = Field(..., description="Роль аккаунта")
     created_at: datetime = Field(..., description="Когда зарегистрирован")
+
+
+class CustomerOutSchema(BaseModel):
+    """Заказчик в админке: аккаунт, реквизиты организации и число заявок."""
+
+    user_id: int = Field(..., description="ID пользователя")
+    email: EmailStr = Field(..., description="Email")
+    full_name: str = Field(..., description="Имя и фамилия")
+    phone: str = Field(..., description="Телефон")
+    created_at: datetime = Field(..., description="Когда зарегистрирован")
+    company_name: str | None = Field(None, description="Название организации, если заполнена")
+    company_inn: str | None = Field(None, description="ИНН организации, если заполнен")
+    expertises_count: int = Field(..., description="Сколько заявок на экспертизу подано")
