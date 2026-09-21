@@ -44,6 +44,91 @@
   color: #6b6f78;
 }
 
+.viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slide {
+  box-sizing: border-box;
+  flex: none;
+  display: flex;
+
+  width: 340px !important;
+  max-width: 340px;
+}
+
+.slide > * {
+  width: 100%;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  width: 100%;
+}
+
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+
+  background: #f2dcc0;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+
+.dotActive {
+  width: 24px;
+
+  background: #f69827;
+}
+
+.arrows {
+  display: flex;
+  flex: none;
+  gap: 10px;
+}
+
+.button {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  color: #f69827;
+  background: #fff;
+  border: 2px solid #f69827;
+  border-radius: 12px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.button:hover {
+  color: #fff;
+  background: #f69827;
+}
+
 @media (min-width: 768px) {
   .articles {
     gap: 32px;
