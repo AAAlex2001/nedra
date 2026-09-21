@@ -8,6 +8,19 @@ export type FeatureCard = {
   icon: IconKey;
 };
 
+export const ARTICLE_SLUGS = [
+  "skolko-stoit-ekspertiza-promyshlennoy-bezopasnosti-v-2026-godu",
+  "ekspertiza-promyshlennoy-bezopasnosti-za-1-den-kak-uskorit",
+  "shtraf-za-ekspluataciyu-obekta-bez-ekspertizy-promyshlennoy-bezopasnosti",
+  "kakie-dokumenty-nuzhny-dlya-ekspertizy-promyshlennoy-bezopasnosti",
+  "kak-proverit-attestaciyu-eksperta-promyshlennoy-bezopasnosti",
+  "skolko-deystvuet-zaklyuchenie-ekspertizy-promyshlennoy-bezopasnosti",
+  "otricatelnoe-zaklyuchenie-ekspertizy-promyshlennoy-bezopasnosti-chto-delat",
+  "ekspertiza-promyshlennoy-bezopasnosti-dlya-yuridicheskih-lic-oplata-po-schetu",
+  "registraciya-zaklyucheniya-epb-v-reestre-rostehnadzora",
+  "pochemu-ekspertiza-promyshlennoy-bezopasnosti-zatyagivaetsya",
+];
+
 export const OBJECT_IMAGES: Record<string, string> = {
   kl: "/blitz/4.png",
   tp: "/blitz/5.png",

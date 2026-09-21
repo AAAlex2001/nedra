@@ -1,11 +1,13 @@
+import type { ArticleCardData } from "@/entities/article";
 import type { ExpertCatalog } from "@/entities/expert";
 import type { Tariff } from "@/entities/tariff";
 import { PAGE_SEO } from "@/shared/config/seo";
 import { buildBreadcrumbsJsonLd, buildFaqJsonLd, buildServiceJsonLd } from "@/shared/lib/json-ld";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import Faq from "@/shared/ui/faq";
-import { FAQ_ITEMS } from "./data";
+import { ARTICLE_SLUGS, FAQ_ITEMS } from "./data";
 import AreasList from "./ui/areas-list";
+import Articles from "./ui/articles";
 import Calculator from "./ui/calculator";
 import Cta from "./ui/cta";
 import Features from "./ui/features";
@@ -19,6 +21,7 @@ import styles from "./style.module.scss";
 type BlitsEkspertLandingProps = {
   catalog: ExpertCatalog | null;
   tariffs: Tariff[];
+  articles: ArticleCardData[];
 };
 
 const PAGE_PATH = "/blits-ekspert";
@@ -37,7 +40,7 @@ const buildJsonLd = (tariffs: Tariff[]) => [
   buildFaqJsonLd(FAQ_ITEMS),
 ];
 
-const BlitsEkspertLanding = ({ catalog, tariffs }: BlitsEkspertLandingProps) => (
+const BlitsEkspertLanding = ({ catalog, tariffs, articles }: BlitsEkspertLandingProps) => (
   <main className={styles.page}>
     <script
       type="application/ld+json"
@@ -64,6 +67,8 @@ const BlitsEkspertLanding = ({ catalog, tariffs }: BlitsEkspertLandingProps) => 
 
       {catalog && <AreasList catalog={catalog} />}
 
+      {articles.length > 0 && <Articles items={articles} />}
+
       <Faq items={FAQ_ITEMS} title="Частые вопросы" />
 
       <Cta />
@@ -72,5 +77,7 @@ const BlitsEkspertLanding = ({ catalog, tariffs }: BlitsEkspertLandingProps) => 
     <StickyCta />
   </main>
 );
+
+export { ARTICLE_SLUGS };
 
 export default BlitsEkspertLanding;

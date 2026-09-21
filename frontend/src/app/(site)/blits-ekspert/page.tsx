@@ -1,3 +1,4 @@
+import { getArticles, type ArticleCardData } from "@/entities/article";
 import type { ExpertCatalog } from "@/entities/expert";
 import type { Tariff } from "@/entities/tariff";
 import { getCurrentUser } from "@/entities/user/api/session-server";
@@ -5,7 +6,7 @@ import { internalFetch } from "@/shared/api/server";
 import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import SectionHeading from "@/shared/ui/section-heading";
-import BlitsEkspertLanding from "@/widgets/blits-ekspert";
+import BlitsEkspertLanding, { ARTICLE_SLUGS } from "@/widgets/blits-ekspert";
 import ExpertiseOrder from "@/widgets/expertise-order";
 import styles from "./page.module.scss";
 
@@ -41,6 +42,20 @@ const loadTariffs = async (): Promise<Tariff[]> => {
   }
 };
 
+const loadArticles = async (): Promise<ArticleCardData[]> => {
+  const { articles } = await getArticles({
+    section: "news",
+    tag: "Промышленная безопасность",
+    page: 10,
+  });
+
+  const picked = ARTICLE_SLUGS.flatMap((slug) =>
+    articles.filter((article) => article.slug === slug),
+  );
+
+  return picked.length > 0 ? picked : articles.slice(0, ARTICLE_SLUGS.length);
+};
+
 export default async function BlitzExpertPage() {
   const catalog = await loadCatalog();
   const user = await getCurrentUser();
@@ -48,8 +63,9 @@ export default async function BlitzExpertPage() {
 
   if (showLanding) {
     const tariffs = await loadTariffs();
+    const articles = await loadArticles();
 
-    return <BlitsEkspertLanding catalog={catalog} tariffs={tariffs} />;
+    return <BlitsEkspertLanding catalog={catalog} tariffs={tariffs} articles={articles} />;
   }
 
   return (
