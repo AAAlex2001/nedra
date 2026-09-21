@@ -1,7 +1,7 @@
 "use client";
 
 import "keen-slider/keen-slider.min.css";
-import { useKeenSlider } from "keen-slider/react";
+import { useKeenSlider, type KeenSliderInstance } from "keen-slider/react";
 import Image from "next/image";
 import { useState, type ReactNode } from "react";
 import { HERO, SLIDES } from "../../data";
@@ -24,14 +24,51 @@ const Chevron = ({ direction }: { direction: "left" | "right" }) => (
   </svg>
 );
 
+const AUTOPLAY_DELAY = 3000;
+
+const autoplay = (slider: KeenSliderInstance) => {
+  let timer = 0;
+  let paused = false;
+
+  const stop = () => window.clearTimeout(timer);
+
+  const plan = () => {
+    stop();
+
+    if (paused) return;
+
+    timer = window.setTimeout(() => slider.next(), AUTOPLAY_DELAY);
+  };
+
+  slider.on("created", () => {
+    slider.container.addEventListener("mouseenter", () => {
+      paused = true;
+      stop();
+    });
+    slider.container.addEventListener("mouseleave", () => {
+      paused = false;
+      plan();
+    });
+    plan();
+  });
+
+  slider.on("dragStarted", stop);
+  slider.on("animationEnded", plan);
+  slider.on("updated", plan);
+  slider.on("destroyed", stop);
+};
+
 const Hero = ({ action }: HeroProps) => {
   const [active, setActive] = useState(0);
 
-  const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
-    loop: true,
-    slides: { perView: 1 },
-    slideChanged: (instance) => setActive(instance.track.details.rel),
-  });
+  const [sliderRef, slider] = useKeenSlider<HTMLDivElement>(
+    {
+      loop: true,
+      slides: { perView: 1 },
+      slideChanged: (instance) => setActive(instance.track.details.rel),
+    },
+    [autoplay],
+  );
 
   return (
     <section className={styles.hero}>

@@ -11,6 +11,7 @@ type AdminNavProps = {
 const findActive = (pathname: string, basePath: string): string => {
   if (pathname.startsWith(`${basePath}/articles`)) return "articles";
   if (pathname.startsWith(`${basePath}/experts`)) return "experts";
+  if (pathname.startsWith(`${basePath}/customers`)) return "customers";
   if (pathname.startsWith(`${basePath}/expertises`)) return "expertises";
   if (pathname.startsWith(`${basePath}/invoices`)) return "invoices";
   if (pathname.startsWith(`${basePath}/tariffs`)) return "tariffs";
@@ -25,6 +26,7 @@ const AdminNav = ({ basePath }: AdminNavProps) => {
     { key: "requests", label: "Заявки", href: basePath },
     { key: "articles", label: "Статьи", href: `${basePath}/articles` },
     { key: "experts", label: "Эксперты", href: `${basePath}/experts` },
+    { key: "customers", label: "Заказчики", href: `${basePath}/customers` },
     { key: "expertises", label: "Экспертизы", href: `${basePath}/expertises` },
     { key: "invoices", label: "Счета", href: `${basePath}/invoices` },
     { key: "tariffs", label: "Тарифы", href: `${basePath}/tariffs` },

@@ -21,7 +21,6 @@
   background: #fff;
   border: 1px solid #e9ecf1;
   border-radius: 100px;
-  box-shadow: 0 14px 36px rgba(11, 11, 11, 0.16);
 }
 
 .icon {
@@ -91,6 +90,8 @@
 
     gap: 16px;
     padding: 12px 12px 12px 16px;
+
+    box-shadow: 0 14px 36px rgba(11, 11, 11, 0.16);
   }
 
   .bar .button {
