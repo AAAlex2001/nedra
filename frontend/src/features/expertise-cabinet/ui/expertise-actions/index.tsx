@@ -79,7 +79,11 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
         </button>
       )}
 
-      <Button loading={actions.pending} onClick={() => void actions.pay()}>
+      <Button
+        className={styles.primary}
+        loading={actions.pending}
+        onClick={() => void actions.pay()}
+      >
         Картой {half}
       </Button>
     </>
