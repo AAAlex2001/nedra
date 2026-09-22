@@ -4,6 +4,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 Section = Literal["blog", "news"]
+ArticleSort = Literal["new", "views", "likes", "dislikes"]
 
 #123
 class TagSchema(BaseModel):

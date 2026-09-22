@@ -17,7 +17,7 @@ const describe = (error: unknown, fallback: string): string =>
 export const useApplications = (initialItems: ExpertApplicationRecord[], basePath: string) => {
   const [state, dispatch] = useReducer(applicationsReducer, {
     items: initialItems,
-    filter: "pending",
+    filter: "all",
     pendingId: null,
     refreshing: false,
     error: null,

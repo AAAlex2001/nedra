@@ -10,6 +10,13 @@ PUBLISHED = and_(
     Article.published_at <= func.now(),
 )
 
+ADMIN_SORTS = {
+    "new": Article.created_at,
+    "views": Article.views_count,
+    "likes": Article.likes_count,
+    "dislikes": Article.dislikes_count,
+}
+
 
 class ArticleRepository:
     """Доступ к таблице articles. Сессию получает снаружи, коммитит сам."""
@@ -72,10 +79,17 @@ class ArticleRepository:
 
         return list(result.scalars().all())
 
-    async def list_all(self, section: str | None) -> list[Article]:
-        """Все статьи для админки, включая черновики, новые первыми."""
+    async def list_all(self, section: str | None, sort: str = "new") -> list[Article]:
+        """Все статьи для админки, включая черновики.
 
-        stmt = select(Article).order_by(Article.created_at.desc())
+        По умолчанию новые первыми. Сортировка по просмотрам, лайкам или
+        дизлайкам ставит первыми статьи с наибольшим счётчиком, при равных
+        значениях свежие идут выше.
+        """
+
+        column = ADMIN_SORTS.get(sort, Article.created_at)
+
+        stmt = select(Article).order_by(column.desc(), Article.created_at.desc())
 
         if section:
             stmt = stmt.where(Article.section == section)

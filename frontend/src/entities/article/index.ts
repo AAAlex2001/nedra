@@ -6,6 +6,7 @@ export type {
   ArticleList,
   ArticlePayload,
   ArticleSection,
+  ArticleSort,
   ArticleStats,
   Tag,
   TagAdmin,

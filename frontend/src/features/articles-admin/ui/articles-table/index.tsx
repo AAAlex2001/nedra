@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { SECTION_TITLE, type ArticleAdminCard } from "@/entities/article";
+import { SECTION_TITLE, articlePath, type ArticleAdminCard } from "@/entities/article";
 import { formatDate, isFutureDate } from "@/shared/lib/date";
 import { EyeIcon, ThumbDownIcon, ThumbUpIcon } from "@/shared/ui/icons";
 import Spinner from "@/shared/ui/spinner";
@@ -32,12 +32,14 @@ const ArticlesTable = ({ basePath, initialItems }: ArticlesTableProps) => {
 
           let statusClass = styles.statusDraft;
           let statusText = "Черновик";
+          let published = false;
           if (isFutureDate(article.published_at)) {
             statusClass = styles.statusScheduled;
             statusText = "Запланирована";
           } else if (article.published_at) {
             statusClass = styles.statusPublished;
             statusText = "Опубликована";
+            published = true;
           }
 
           return (
@@ -89,6 +91,16 @@ const ArticlesTable = ({ basePath, initialItems }: ArticlesTableProps) => {
                 <Link href={editHref} className={styles.edit}>
                   Редактировать
                 </Link>
+                {published && (
+                  <Link
+                    href={articlePath(article)}
+                    className={styles.view}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Перейти
+                  </Link>
+                )}
                 <button
                   type="button"
                   className={styles.delete}

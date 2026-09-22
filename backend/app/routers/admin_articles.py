@@ -14,6 +14,7 @@ from app.schemas.article import (
     ArticleAdminCardSchema,
     ArticleAdminSchema,
     ArticleCreateSchema,
+    ArticleSort,
     ArticleUpdateSchema,
     Section,
     TagAdminSchema,
@@ -40,11 +41,12 @@ router = APIRouter(
 @router.get("/articles")
 async def list_articles(
     section: Section | None = Query(None, description="Раздел: blog или news"),
+    sort: ArticleSort = Query("new", description="Сортировка: new, views, likes или dislikes"),
     articles: ArticleRepository = Depends(get_article_repository),
 ) -> list[ArticleAdminCardSchema]:
     """Все статьи, включая черновики."""
 
-    items = await articles.list_all(section)
+    items = await articles.list_all(section, sort)
 
     return [ArticleAdminCardSchema.model_validate(item) for item in items]
 

@@ -15,10 +15,10 @@ type ApplicationsListProps = {
 };
 
 const FILTERS: { value: StatusFilter; label: string }[] = [
+  { value: "all", label: "Все" },
   { value: "pending", label: "На проверке" },
   { value: "approved", label: "Одобрены" },
   { value: "rejected", label: "Отклонены" },
-  { value: "all", label: "Все" },
 ];
 
 const ApplicationsList = ({ initialItems, catalog, basePath }: ApplicationsListProps) => {

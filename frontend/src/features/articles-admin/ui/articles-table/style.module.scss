@@ -160,6 +160,7 @@
 }
 
 .edit,
+.view,
 .delete {
   padding: 8px 16px;
 
@@ -184,6 +185,17 @@
 .edit:hover {
   color: #fff;
   background: #f69827;
+}
+
+.view {
+  color: #5b6070;
+  background: #f5f6f8;
+  border: 1px solid #eceef3;
+}
+
+.view:hover {
+  color: #0b0b0b;
+  background: #eceef3;
 }
 
 .delete {

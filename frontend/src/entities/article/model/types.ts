@@ -1,5 +1,7 @@
 export type ArticleSection = "blog" | "news";
 
+export type ArticleSort = "new" | "views" | "likes" | "dislikes";
+
 export type Tag = {
   slug: string;
   title: string;

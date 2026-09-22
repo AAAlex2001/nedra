@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { ArticleAdminCard, ArticleSection, TagAdmin } from "@/entities/article";
+import type { ArticleAdminCard, ArticleSection, ArticleSort, TagAdmin } from "@/entities/article";
 import { adminBasePath, loadAdmin } from "@/shared/api/server";
 import AdminArticles from "@/widgets/admin/articles";
 
@@ -9,20 +9,29 @@ export const metadata: Metadata = {
   title: "Статьи",
 };
 
-type SearchParams = Promise<{ section?: string }>;
+type SearchParams = Promise<{ section?: string; sort?: string }>;
 
 export default async function AdminArticlesPage({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
-  const { section } = await searchParams;
+  const { section, sort } = await searchParams;
 
   let activeSection: ArticleSection | null = null;
   if (section === "blog" || section === "news") activeSection = section;
 
+  let activeSort: ArticleSort = "new";
+  if (sort === "views" || sort === "likes" || sort === "dislikes") activeSort = sort;
+
+  const params = new URLSearchParams();
+  if (activeSection) params.set("section", activeSection);
+  if (activeSort !== "new") params.set("sort", activeSort);
+
+  const query = params.toString();
+
   let listPath = "/v1/admin/articles";
-  if (activeSection) listPath = `${listPath}?section=${activeSection}`;
+  if (query) listPath = `${listPath}?${query}`;
 
   const [articles, tags] = await Promise.all([
     loadAdmin<ArticleAdminCard[]>(listPath, []),
@@ -35,6 +44,7 @@ export default async function AdminArticlesPage({
       articles={articles.data}
       tags={tags.data}
       section={activeSection}
+      sort={activeSort}
       error={articles.error ?? tags.error}
     />
   );
