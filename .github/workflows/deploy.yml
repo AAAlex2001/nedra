@@ -28,7 +28,7 @@ jobs:
   deploy:
     name: Build and deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     env:
       DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
@@ -151,6 +151,11 @@ jobs:
 
           echo "Загрузка новостей из content/news"
           docker compose exec -T backend sh -c \
-            'python scripts/news/seed.py --api http://127.0.0.1:8000 --token "$ADMIN_API_TOKEN"' \
+            'python scripts/news/seed.py --api http://127.0.0.1:8000 --token "$ADMIN_API_TOKEN" --update' \
             || echo "::warning::Загрузка новостей не удалась, сайт при этом задеплоен"
+
+          echo "Проверка статей и обложек"
+          docker compose exec -T backend sh -c \
+            'python scripts/news/report.py --api http://127.0.0.1:8000 --token "$ADMIN_API_TOKEN"' \
+            || echo "::warning::Не удалось получить сводку по статьям"
           REMOTE_SCRIPT
