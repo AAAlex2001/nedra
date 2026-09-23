@@ -4,6 +4,7 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_session
+from app.dependencies.experts import get_private_storage
 from app.dependencies.expertise import get_expertise_repository, get_notification_repository
 from app.services.billing.repo import CustomerCompanyRepository, InvoiceRepository
 from app.services.billing.usecases.confirm_invoice import ConfirmInvoiceUseCase
@@ -11,6 +12,7 @@ from app.services.billing.usecases.issue_invoice import IssueInvoiceUseCase
 from app.services.billing.usecases.report_payment import ReportInvoicePaidUseCase
 from app.services.billing.usecases.save_company import SaveCustomerCompanyUseCase
 from app.services.expertise.repo import ExpertiseRepository
+from app.services.files.storage import PrivateStorage
 from app.services.notifications.repo import NotificationRepository
 
 
@@ -50,10 +52,12 @@ def get_issue_invoice_usecase(
 def get_report_payment_usecase(
     invoices: InvoiceRepository = Depends(get_invoice_repository),
     expertises: ExpertiseRepository = Depends(get_expertise_repository),
+    storage: PrivateStorage = Depends(get_private_storage),
+    notifications: NotificationRepository = Depends(get_notification_repository),
 ) -> ReportInvoicePaidUseCase:
     """Сценарий «заказчик сообщил об оплате счёта»."""
 
-    return ReportInvoicePaidUseCase(invoices, expertises)
+    return ReportInvoicePaidUseCase(invoices, expertises, storage, notifications)
 
 
 def get_confirm_invoice_usecase(

@@ -23,6 +23,7 @@ from app.services.billing.usecases.issue_invoice import IssueInvoiceUseCase
 from app.services.billing.usecases.report_payment import ReportInvoicePaidUseCase
 from app.services.billing.usecases.save_company import SaveCustomerCompanyUseCase
 from app.services.billing.validators import normalize_inn, normalize_kpp
+from app.services.files.storage import StoredFile
 from app.services.documents.act_pdf import build_act_pdf
 from app.services.documents.company import CompanyRequisites
 from app.services.documents.fonts import register_fonts
@@ -77,6 +78,24 @@ class FakeExpertiseRepository:
     async def get_by_id(self, expertise_id: int) -> Expertise | None:
         return self.expertise if self.expertise.id == expertise_id else None
 
+    async def save(self, expertise: Expertise) -> Expertise:
+        return expertise
+
+
+class FakeStorage:
+    async def save(self, file, folder: str, max_size_bytes: int, allowed_types=None) -> StoredFile:
+        return StoredFile(
+            path=f"{folder}/fake.pdf",
+            original_name=file.name,
+            size=100,
+            content_type="application/pdf",
+        )
+
+
+class FakeUpload:
+    def __init__(self, name: str) -> None:
+        self.name = name
+
 
 class FakeNotificationRepository:
     def __init__(self) -> None:
@@ -103,7 +122,7 @@ def make_expertise(status: ExpertiseStatus, price: Decimal | None = Decimal("200
         customer_id=1,
         expert_id=10,
         object_code="kl",
-        area_code="Э4",
+        area_code="Р­4",
         expert_category=2,
         status=status,
         price=price,
@@ -220,7 +239,7 @@ def test_documents_build_pdf() -> None:
         pytest.skip("на этой машине нет шрифта с кириллицей")
 
     company = CompanyRequisites(
-        name="ООО «НПИ «Недра»",
+        name="РћРћРћ В«РќРџР В«РќРµРґСЂР°В»",
         inn="5400000000",
         kpp="540001001",
         address="Новосибирск",
@@ -228,7 +247,7 @@ def test_documents_build_pdf() -> None:
         bic="040000000",
         account="40702810000000000000",
         corr_account="30101810000000000000",
-        director="Иванов И. И.",
+        director="РРІР°РЅРѕРІ Р. Р.",
         vat_rate=7,
     )
     expertise = make_expertise(ExpertiseStatus.ACCEPTED)
@@ -269,7 +288,9 @@ def test_customer_reports_payment_once() -> None:
     issue = IssueInvoiceUseCase(invoices, FakeCompanyRepository(make_company()))
     invoice = asyncio.run(issue.execute(customer, expertise))
 
-    usecase = ReportInvoicePaidUseCase(invoices, FakeExpertiseRepository(expertise))
+    usecase = ReportInvoicePaidUseCase(
+        invoices, FakeExpertiseRepository(expertise), FakeStorage(), FakeNotificationRepository()
+    )
 
     with pytest.raises(InvoiceNotFoundError):
         asyncio.run(usecase.execute(customer, 404))
@@ -280,6 +301,44 @@ def test_customer_reports_payment_once() -> None:
     first = reported.reported_at
     again = asyncio.run(usecase.execute(customer, invoice.id))
     assert again.reported_at == first
+
+
+def test_customer_attaches_guarantee_letter() -> None:
+    expertise = make_expertise(ExpertiseStatus.CONTRACT)
+    invoices = FakeInvoiceRepository()
+    customer = make_customer()
+
+    issue = IssueInvoiceUseCase(invoices, FakeCompanyRepository(make_company()))
+    invoice = asyncio.run(issue.execute(customer, expertise))
+
+    usecase = ReportInvoicePaidUseCase(
+        invoices, FakeExpertiseRepository(expertise), FakeStorage(), FakeNotificationRepository()
+    )
+
+    asyncio.run(
+        usecase.execute(customer, invoice.id, FakeUpload("letter.pdf"), "guarantee_letter")
+    )
+
+    attached = expertise.documents[-1]
+    assert attached.kind == "guarantee_letter"
+    assert attached.original_name == "letter.pdf"
+
+
+def test_payment_document_kind_defaults_to_payment_order() -> None:
+    expertise = make_expertise(ExpertiseStatus.CONTRACT)
+    invoices = FakeInvoiceRepository()
+    customer = make_customer()
+
+    issue = IssueInvoiceUseCase(invoices, FakeCompanyRepository(make_company()))
+    invoice = asyncio.run(issue.execute(customer, expertise))
+
+    usecase = ReportInvoicePaidUseCase(
+        invoices, FakeExpertiseRepository(expertise), FakeStorage(), FakeNotificationRepository()
+    )
+
+    asyncio.run(usecase.execute(customer, invoice.id, FakeUpload("order.pdf"), "что-то своё"))
+
+    assert expertise.documents[-1].kind == "payment_order"
 
     invoice.paid_at = datetime.now(timezone.utc)
     with pytest.raises(InvoiceAlreadyPaidError):
@@ -300,3 +359,4 @@ def test_vat_is_included_in_price() -> None:
 
     assert vat_text(Decimal("20000.00"), 7) == "В том числе НДС 7 % — 1 308,41"
     assert vat_text(Decimal("20000.00"), 0) == "Без НДС"
+

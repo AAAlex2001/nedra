@@ -57,7 +57,7 @@ class ExpertiseAdminSchema(BaseModel):
     area_code: str | None
     hazard_class: int | None
     expert_category: int | None
-    deadline: Deadline | None
+    deadline: Deadline | None = None
     comment: str | None
     status: ExpertiseStatus
     price: Decimal | None
@@ -122,7 +122,7 @@ class ExpertiseOutSchema(BaseModel):
     area_code: str | None
     hazard_class: int | None
     expert_category: int | None
-    deadline: Deadline | None
+    deadline: Deadline | None = None
     comment: str | None
     status: ExpertiseStatus
     result: ExpertiseResult | None

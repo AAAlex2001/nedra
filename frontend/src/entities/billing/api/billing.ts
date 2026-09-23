@@ -1,5 +1,11 @@
 import { API_URL, readErrorMessage } from "@/shared/api";
-import type { Act, Company, CompanyDraft, Invoice } from "../model/types";
+import type {
+  Act,
+  Company,
+  CompanyDraft,
+  Invoice,
+  PaymentDocumentKind,
+} from "../model/types";
 
 export const fetchCompany = async (): Promise<Company | null> => {
   const response = await fetch(`${API_URL}/v1/me/company`, {
@@ -67,10 +73,22 @@ export const issueInvoice = async (expertiseId: number): Promise<Invoice> => {
   return invoice;
 };
 
-export const reportInvoicePaid = async (invoiceId: number): Promise<Invoice> => {
+export const reportInvoicePaid = async (
+  invoiceId: number,
+  document: File | null = null,
+  documentKind: PaymentDocumentKind = "payment_order",
+): Promise<Invoice> => {
+  const formData = new FormData();
+  formData.append("document_kind", documentKind);
+
+  if (document) {
+    formData.append("document", document);
+  }
+
   const response = await fetch(`${API_URL}/v1/invoices/${invoiceId}/paid`, {
     method: "POST",
     credentials: "include",
+    body: formData,
   });
 
   if (!response.ok) {

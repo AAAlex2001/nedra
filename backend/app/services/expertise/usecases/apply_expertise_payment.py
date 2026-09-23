@@ -5,7 +5,7 @@ from app.models.expertise import Expertise
 from app.models.notification import Notification
 from app.models.payment import Payment, PaymentStatus
 from app.services.expertise.repo import ExpertiseRepository
-from app.services.expertise.stages import mark_stage_paid
+from app.services.expertise.stages import mark_stage_paid, stage_notification_kind
 from app.services.notifications.repo import NotificationRepository
 
 
@@ -41,7 +41,14 @@ class ApplyExpertisePaymentUseCase:
             return expertise
 
         self.notifications.add_all(
-            [Notification(user_id=expertise.expert_id, expertise_id=expertise.id, text=text)]
+            [
+                Notification(
+                    user_id=expertise.expert_id,
+                    expertise_id=expertise.id,
+                    kind=stage_notification_kind(expertise),
+                    text=text,
+                )
+            ]
         )
 
         return await self.expertises.save(expertise)

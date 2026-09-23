@@ -19,11 +19,26 @@ STAGE_BY_STATUS = {
     ExpertiseStatus.CONCLUSION_READY: InvoiceStage.FINAL,
 }
 
+SIGN_CONCLUSION = "sign_conclusion"
+
 
 def current_stage(expertise: Expertise) -> InvoiceStage | None:
     """Этап, который заказчик оплачивает прямо сейчас, или None."""
 
     return STAGE_BY_STATUS.get(ExpertiseStatus(expertise.status))
+
+
+def stage_notification_kind(expertise: Expertise) -> str | None:
+    """Тип уведомления эксперту после оплаты этапа.
+
+    Оплаченный остаток означает, что пора подписать заключение ЭЦП и отправить
+    его заказчику — такое уведомление кабинет показывает всплывающим окном.
+    """
+
+    if expertise.status == ExpertiseStatus.PAID:
+        return SIGN_CONCLUSION
+
+    return None
 
 
 def mark_stage_paid(expertise: Expertise, stage: InvoiceStage) -> str | None:

@@ -19,6 +19,7 @@ class Notification(Base):
         ForeignKey("expertises.id", ondelete="CASCADE")
     )
 
+    kind: Mapped[str | None] = mapped_column(String(32))
     text: Mapped[str] = mapped_column(String(500))
 
     created_at: Mapped[datetime] = mapped_column(

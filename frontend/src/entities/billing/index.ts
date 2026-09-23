@@ -1,4 +1,11 @@
-export type { Act, Company, CompanyDraft, Invoice, InvoiceStage } from "./model/types";
+export type {
+  Act,
+  Company,
+  CompanyDraft,
+  Invoice,
+  InvoiceStage,
+  PaymentDocumentKind,
+} from "./model/types";
 export { INVOICE_STAGE_LABELS } from "./model/types";
 export {
   actPdfUrl,

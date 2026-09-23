@@ -2,8 +2,19 @@
 
 from urllib.parse import quote
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Response, status
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    Response,
+    UploadFile,
+    status,
+)
 
+from app.services.files.storage import UploadError
 from app.dependencies.billing import (
     get_company_repository,
     get_invoice_repository,
@@ -184,17 +195,29 @@ async def issue_invoice(
 async def report_invoice_paid(
     invoice_id: int,
     background_tasks: BackgroundTasks,
+    document: UploadFile | None = File(
+        default=None, description="Платёжное поручение или гарантийное письмо"
+    ),
+    document_kind: str = Form(
+        default="payment_order", description="payment_order или guarantee_letter"
+    ),
     customer: User = Depends(require_customer),
     usecase: ReportInvoicePaidUseCase = Depends(get_report_payment_usecase),
 ) -> InvoiceOutSchema:
-    """Заказчик сообщает, что оплатил счёт. Администратор получает письмо и метку в админке."""
+    """Заказчик сообщает, что оплатил счёт. Администратор получает письмо и метку в админке.
+
+    К заявлению можно приложить платёжное поручение, а если предоплату внести
+    нечем — гарантийное письмо.
+    """
 
     try:
-        invoice = await usecase.execute(customer, invoice_id)
+        invoice = await usecase.execute(customer, invoice_id, document, document_kind)
     except InvoiceNotFoundError as error:
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
     except InvoiceAlreadyPaidError as error:
         raise HTTPException(status.HTTP_409_CONFLICT, str(error)) from error
+    except UploadError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
 
     background_tasks.add_task(send_invoice_reported_letter, invoice, invoice_number(invoice))
 

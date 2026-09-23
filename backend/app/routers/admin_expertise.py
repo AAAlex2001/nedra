@@ -41,6 +41,7 @@ async def to_admin_schema(expertise: Expertise, users: UserRepository) -> Expert
         area_code=expertise.area_code,
         hazard_class=expertise.hazard_class,
         expert_category=expertise.expert_category,
+        deadline=expertise.deadline,
         comment=expertise.comment,
         status=expertise.status,
         price=expertise.price,

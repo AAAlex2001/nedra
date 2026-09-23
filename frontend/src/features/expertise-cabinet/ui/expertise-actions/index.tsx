@@ -9,6 +9,7 @@ import Button from "@/shared/ui/button";
 import { CheckIcon, ClockIcon } from "@/shared/ui/icons";
 import { useExpertiseActions } from "../../model/use-expertise-actions";
 import ConclusionForm from "../conclusion-form";
+import PaymentProofForm from "../payment-proof-form";
 import RemarksForm from "../remarks-form";
 import RevisionForm from "../revision-form";
 import styles from "./style.module.scss";
@@ -30,6 +31,7 @@ const when = (value: string | null): string => (value ? formatRequestDate(value)
 const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) => {
   const actions = useExpertiseActions(expertise, onChange);
   const [remarksOpen, setRemarksOpen] = useState(false);
+  const [proofOpen, setProofOpen] = useState(false);
 
   const half = formatRub(halfOf(expertise.price));
   const price = formatRub(expertise.price);
@@ -73,7 +75,7 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
           type="button"
           className={styles.secondary}
           disabled={actions.pending}
-          onClick={() => void actions.reportPaid()}
+          onClick={() => setProofOpen(!proofOpen)}
         >
           Я оплатил
         </button>
@@ -86,6 +88,18 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
       >
         Картой {half}
       </Button>
+
+      {proofOpen && invoice !== null && invoice.reported_at === null && (
+        <div className={styles.proof}>
+          <PaymentProofForm
+            pending={actions.pending}
+            onSubmit={(document, kind) => {
+              setProofOpen(false);
+              void actions.reportPaid(document, kind);
+            }}
+          />
+        </div>
+      )}
     </>
   );
 

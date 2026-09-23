@@ -7,7 +7,7 @@ from app.models.notification import Notification
 from app.services.billing.exceptions import InvoiceAlreadyPaidError, InvoiceNotFoundError
 from app.services.billing.repo import InvoiceRepository
 from app.services.expertise.repo import ExpertiseRepository
-from app.services.expertise.stages import mark_stage_paid
+from app.services.expertise.stages import mark_stage_paid, stage_notification_kind
 from app.services.notifications.repo import NotificationRepository
 
 
@@ -50,6 +50,7 @@ class ConfirmInvoiceUseCase:
                         Notification(
                             user_id=expertise.expert_id,
                             expertise_id=expertise.id,
+                            kind=stage_notification_kind(expertise),
                             text=text,
                         )
                     ]

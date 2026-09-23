@@ -1,5 +1,7 @@
 export type InvoiceStage = "advance" | "final";
 
+export type PaymentDocumentKind = "payment_order" | "guarantee_letter";
+
 export type Company = {
   name: string;
   inn: string;

@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { invoicePdfUrl, issueInvoice, reportInvoicePaid } from "@/entities/billing";
+import {
+  invoicePdfUrl,
+  issueInvoice,
+  reportInvoicePaid,
+  type PaymentDocumentKind,
+} from "@/entities/billing";
 import {
   acceptExpertise,
   acceptWork,
@@ -62,7 +67,10 @@ export const useExpertiseActions = (expertise: Expertise, onChange: (item: Exper
     }
   };
 
-  const reportPaid = async () => {
+  const reportPaid = async (
+    document: File | null = null,
+    documentKind: PaymentDocumentKind = "payment_order",
+  ) => {
     const invoice = expertise.invoice;
 
     if (invoice === null) return;
@@ -71,7 +79,7 @@ export const useExpertiseActions = (expertise: Expertise, onChange: (item: Exper
     setError(null);
 
     try {
-      const updated = await reportInvoicePaid(invoice.id);
+      const updated = await reportInvoicePaid(invoice.id, document, documentKind);
       onChange({ ...expertise, invoice: { ...invoice, reported_at: updated.reported_at } });
     } catch (caught) {
       const message = caught instanceof Error && caught.message ? caught.message : ACTION_FAILED;
