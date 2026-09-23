@@ -59,12 +59,24 @@ PDF_MEDIA_TYPE = "application/pdf"
 
 
 def describe_expertise(expertise: Expertise) -> str:
-    """Предмет работ для счёта и акта."""
+    """Предмет работ для счёта и акта.
 
-    object_title = OBJECT_BY_CODE[expertise.object_code].title
-    area = AREA_BY_CODE[expertise.area_code]
+    Заказчик мог не знать объект и область — тогда в счёт идёт то, что известно.
+    К моменту выставления счёта эксперт обычно уже уточнил их в заявке.
+    """
 
-    return f"{object_title}, область аттестации {area.code}"
+    parts = []
+
+    if expertise.object_code in OBJECT_BY_CODE:
+        parts.append(OBJECT_BY_CODE[expertise.object_code].title)
+
+    if expertise.area_code in AREA_BY_CODE:
+        parts.append(f"область аттестации {AREA_BY_CODE[expertise.area_code].code}")
+
+    if not parts:
+        return "Экспертиза промышленной безопасности"
+
+    return ", ".join(parts)
 
 
 def to_invoice_schema(invoice: Invoice) -> InvoiceOutSchema:

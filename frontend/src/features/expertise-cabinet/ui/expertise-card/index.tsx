@@ -7,6 +7,7 @@ import {
   type ExpertCatalog,
 } from "@/entities/expert";
 import {
+  DEADLINE_LABELS,
   EXPERTISE_RESULT_LABELS,
   EXPERTISE_STATUS_LABELS,
   EXPERTISE_STATUS_TONES,
@@ -43,9 +44,15 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
   return (
     <article className={styles.card}>
       <div className={styles.head}>
-        <span className={styles.badge}>{objectLabel(catalog, expertise.object_code)}</span>
+        <span className={styles.badge}>
+          {expertise.object_code ? objectLabel(catalog, expertise.object_code) : "—"}
+        </span>
         <div className={styles.heading}>
-          <h3 className={styles.title}>{objectTitle(catalog, expertise.object_code)}</h3>
+          <h3 className={styles.title}>
+            {expertise.object_code
+              ? objectTitle(catalog, expertise.object_code)
+              : "Объект определит эксперт"}
+          </h3>
           <p className={styles.meta}>
             Заявка №{expertise.id} · {formatRequestDate(expertise.created_at)}
           </p>
@@ -59,13 +66,24 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
 
       <DetailsTable>
         <DetailsRow label="Область аттестации">
-          <span className={styles.code}>{expertise.area_code}</span>
-          {areaTitle(catalog, expertise.area_code)}
+          {expertise.area_code ? (
+            <>
+              <span className={styles.code}>{expertise.area_code}</span>
+              {areaTitle(catalog, expertise.area_code)}
+            </>
+          ) : (
+            "Определит эксперт"
+          )}
         </DetailsRow>
         {expertise.hazard_class !== null && (
           <DetailsRow label="Класс опасности ОПО">{expertise.hazard_class}</DetailsRow>
         )}
-        <DetailsRow label="Категория эксперта">{expertise.expert_category}</DetailsRow>
+        {expertise.expert_category !== null && (
+          <DetailsRow label="Категория эксперта">{expertise.expert_category}</DetailsRow>
+        )}
+        {expertise.deadline && (
+          <DetailsRow label="Желаемый срок">{DEADLINE_LABELS[expertise.deadline]}</DetailsRow>
+        )}
         <DetailsRow label="Стоимость">{formatRub(expertise.price)}</DetailsRow>
         {role === "expert" && <DetailsRow label="Заказчик">{expertise.customer_name}</DetailsRow>}
         {role === "customer" && expertise.expert_name && (

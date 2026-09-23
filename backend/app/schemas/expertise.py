@@ -1,5 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -7,13 +8,27 @@ from app.models.expertise import ExpertiseResult, ExpertiseStatus
 from app.models.payment import PaymentStatus
 
 
-class ExpertiseInSchema(BaseModel):
-    """Заявка на экспертизу. Нужен либо класс опасности, либо категория эксперта."""
+Deadline = Literal["today", "three_days", "week", "any"]
 
-    object_code: str = Field(..., max_length=8, description="Объект экспертизы: kl, tp, kl_tp, d, ob")
-    area_code: str = Field(..., max_length=8, description="Область аттестации, например Э1")
+
+class ExpertiseInSchema(BaseModel):
+    """Заявка на экспертизу.
+
+    Обязательна только документация: объект, область и требования к эксперту
+    заказчик указывает, если знает их. Незаполненные поля уточняет эксперт.
+    """
+
+    object_code: str | None = Field(
+        None, max_length=8, description="Объект экспертизы: kl, tp, kl_tp, d, ob"
+    )
+    area_code: str | None = Field(
+        None, max_length=8, description="Область аттестации, например Э1"
+    )
     hazard_class: int | None = Field(None, ge=1, le=4, description="Класс опасности ОПО")
     expert_category: int | None = Field(None, ge=1, le=3, description="Категория эксперта")
+    deadline: Deadline | None = Field(
+        None, description="Желаемый срок: today, three_days, week или any"
+    )
     comment: str | None = Field(None, max_length=4000, description="Комментарий заказчика")
 
 
@@ -38,10 +53,11 @@ class ExpertiseAdminSchema(BaseModel):
     customer_name: str
     expert_id: int | None
     expert_name: str | None
-    object_code: str
-    area_code: str
+    object_code: str | None
+    area_code: str | None
     hazard_class: int | None
-    expert_category: int
+    expert_category: int | None
+    deadline: Deadline | None
     comment: str | None
     status: ExpertiseStatus
     price: Decimal | None
@@ -102,10 +118,11 @@ class ExpertiseOutSchema(BaseModel):
     customer_name: str
     expert_id: int | None
     expert_name: str | None
-    object_code: str
-    area_code: str
+    object_code: str | None
+    area_code: str | None
     hazard_class: int | None
-    expert_category: int
+    expert_category: int | None
+    deadline: Deadline | None
     comment: str | None
     status: ExpertiseStatus
     result: ExpertiseResult | None

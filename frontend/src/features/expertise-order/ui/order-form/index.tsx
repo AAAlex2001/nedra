@@ -9,6 +9,7 @@ import Modal from "@/shared/ui/modal";
 import SelectField from "@/shared/ui/select-field";
 import TextField from "@/shared/ui/text-field";
 import { useExpertiseOrder } from "../../model/use-expertise-order";
+import type { Deadline } from "../../model/types";
 import styles from "./style.module.scss";
 
 type OrderFormProps = {
@@ -16,6 +17,13 @@ type OrderFormProps = {
 };
 
 const ACCEPT = ".pdf,.doc,.docx,.jpg,.jpeg,.png";
+
+const DEADLINES: { value: Deadline; label: string }[] = [
+  { value: "today", label: "Сегодня" },
+  { value: "three_days", label: "До 3 дней" },
+  { value: "week", label: "Неделя" },
+  { value: "any", label: "Неважно" },
+];
 
 const OrderForm = ({ catalog }: OrderFormProps) => {
   const {
@@ -30,8 +38,11 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
     selectHazard,
     selectCategory,
     selectArea,
+    selectDeadline,
     addFiles,
     removeFile,
+    setCard,
+    removeCard,
     changeComment,
     closeSuccess,
     submit,
@@ -47,8 +58,8 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
     >
       <Modal open={state.status === "success"} title="Заявка отправлена" onClose={closeSuccess}>
         <p className={styles.successText}>
-          Эксперты, аттестованные по вашей области, получили уведомление. Когда кто-то из них
-          возьмёт заявку в работу, вы увидите это в{" "}
+          Эксперты получили уведомление. Когда кто-то из них возьмёт заявку в работу, вы увидите
+          это в{" "}
           <Link href="/kabinet" className={styles.successLink}>
             личном кабинете
           </Link>
@@ -72,8 +83,22 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
               {object.label}
             </button>
           ))}
+          <button
+            type="button"
+            role="tab"
+            aria-selected={state.objectCode === ""}
+            title="Эксперт определит по документации"
+            className={`${styles.segment} ${state.objectCode === "" ? styles.segmentActive : ""}`}
+            onClick={() => selectObject("")}
+          >
+            Не знаю
+          </button>
         </div>
-        {currentObject && <p className={styles.note}>{currentObject.title}</p>}
+        <p className={styles.note}>
+          {currentObject
+            ? currentObject.title
+            : "Ничего страшного: эксперт определит объект по вашей документации."}
+        </p>
       </div>
 
       <div className={styles.group}>
@@ -97,9 +122,18 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
           >
             Категория эксперта
           </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={state.mode === "unknown"}
+            className={`${styles.segment} ${state.mode === "unknown" ? styles.segmentActive : ""}`}
+            onClick={() => setMode("unknown")}
+          >
+            Не знаю
+          </button>
         </div>
 
-        {state.mode === "hazard" ? (
+        {state.mode === "hazard" && (
           <div className={styles.row} role="group" aria-label="Класс опасности">
             {catalog.hazard_classes.map((rule) => (
               <Chip
@@ -112,7 +146,9 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
               </Chip>
             ))}
           </div>
-        ) : (
+        )}
+
+        {state.mode === "category" && (
           <div className={styles.row} role="group" aria-label="Категория эксперта">
             {catalog.categories.map((category) => (
               <Chip
@@ -128,9 +164,11 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
         )}
 
         <p className={styles.note}>
-          {requiredCategory === null
-            ? "Класс опасности указан в свидетельстве о регистрации ОПО. По нему подберём категорию эксперта."
-            : `Заявку увидят эксперты ${requiredCategory} категории и выше.`}
+          {state.mode === "unknown"
+            ? "Заявку увидят все аттестованные эксперты, подходящего подберём по документации."
+            : requiredCategory === null
+              ? "Класс опасности указан в свидетельстве о регистрации ОПО. По нему подберём категорию эксперта."
+              : `Заявку увидят эксперты ${requiredCategory} категории и выше.`}
         </p>
       </div>
 
@@ -139,7 +177,6 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
           <SelectField
             label="Область аттестации"
             placeholder="Выберите отрасль"
-            required
             value={state.areaCode}
             onChange={selectArea}
             options={availableAreas.map((area) => ({
@@ -151,9 +188,7 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
         </div>
 
         <div className={styles.areaChips}>
-          <span className={styles.label}>
-            Область аттестации<span className={styles.required}> *</span>
-          </span>
+          <span className={styles.label}>Область аттестации</span>
           <div className={styles.chips} role="group" aria-label="Область аттестации">
             {catalog.areas.map((area) => {
               const allowed = availableAreas.some((item) => item.code === area.code);
@@ -171,10 +206,44 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
               );
             })}
           </div>
-          <p className={styles.note}>
-            {selectedArea ? selectedArea.title : "Выберите отрасль, к которой относится объект."}
-          </p>
         </div>
+
+        <div className={styles.row}>
+          <Chip
+            active={state.areaCode === ""}
+            className={styles.rowChip}
+            title="Эксперт определит область по документации"
+            onClick={() => selectArea("")}
+          >
+            Не знаю
+          </Chip>
+        </div>
+
+        <p className={styles.note}>
+          {selectedArea
+            ? selectedArea.title
+            : "Если не знаете отрасль, оставьте «Не знаю» — определим по документации."}
+        </p>
+      </div>
+
+      <div className={styles.group}>
+        <span className={styles.label}>Когда нужно заключение</span>
+        <div className={styles.row} role="group" aria-label="Срок">
+          {DEADLINES.map((item) => (
+            <Chip
+              key={item.value}
+              active={state.deadline === item.value}
+              className={styles.rowChip}
+              onClick={() => selectDeadline(item.value)}
+            >
+              {item.label}
+            </Chip>
+          ))}
+        </div>
+        <p className={styles.note}>
+          Срок влияет на подбор эксперта: чем он короче, тем меньше специалистов смогут взять
+          заявку.
+        </p>
       </div>
 
       <FilesField
@@ -182,9 +251,18 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
         required
         files={state.files}
         accept={ACCEPT}
-        hint="PDF, Word, JPG или PNG, до 50 МБ каждый. Можно приложить несколько файлов."
+        hint="PDF, Word, JPG или PNG, до 50 МБ каждый. Можно приложить несколько файлов. Если документации нет — приложите техническое задание."
         onAdd={addFiles}
         onRemove={removeFile}
+      />
+
+      <FilesField
+        label="Карточка организации"
+        files={state.companyCard ? [state.companyCard] : []}
+        accept={ACCEPT}
+        hint="Реквизиты вашей организации — нужны, чтобы выставить счёт."
+        onAdd={setCard}
+        onRemove={removeCard}
       />
 
       <TextField

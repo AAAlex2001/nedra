@@ -166,8 +166,7 @@ def test_resolve_category_prefers_hazard_class() -> None:
     assert resolve_category(4, 1) == 3
     assert resolve_category(None, 2) == 2
 
-    with pytest.raises(InvalidExpertiseError):
-        resolve_category(None, None)
+    assert resolve_category(None, None) is None
 
     with pytest.raises(InvalidExpertiseError):
         resolve_category(None, 5)
@@ -219,6 +218,48 @@ def test_create_without_tariff_keeps_price_empty() -> None:
     created = asyncio.run(usecase.execute(make_user(1, UserRole.CUSTOMER), data, [FakeUpload("a.pdf")]))
 
     assert created.expertise.price is None
+
+
+def test_create_without_known_fields_keeps_them_empty() -> None:
+    expert = make_user(10, UserRole.EXPERT)
+    usecase, expertises, notifications = make_usecase([expert])
+    data = ExpertiseInSchema(deadline="three_days", comment="не знаю, что нужно")
+
+    created = asyncio.run(
+        usecase.execute(make_user(1, UserRole.CUSTOMER), data, [FakeUpload("a.pdf")])
+    )
+
+    expertise = created.expertise
+    assert expertise.object_code is None
+    assert expertise.area_code is None
+    assert expertise.expert_category is None
+    assert expertise.deadline == "three_days"
+    assert expertise.price is None
+    assert created.notified_experts == [expert]
+
+
+def test_create_saves_company_card_separately() -> None:
+    usecase, expertises, notifications = make_usecase([])
+    data = ExpertiseInSchema(object_code="kl_tp", area_code="Э1", expert_category=1)
+
+    created = asyncio.run(
+        usecase.execute(
+            make_user(1, UserRole.CUSTOMER),
+            data,
+            [FakeUpload("a.pdf")],
+            FakeUpload("card.docx"),
+        )
+    )
+
+    kinds = [document.kind for document in created.expertise.documents]
+    assert kinds == ["documentation", "company_card"]
+
+
+def test_certificate_fits_when_request_has_no_area() -> None:
+    expertise = Expertise(customer_id=1, object_code=None, area_code=None, expert_category=None)
+    certificate = ExpertCertificate(object_code="d", area_code="Э4", category=3)
+
+    assert certificate_fits([certificate], expertise) is True
 
 
 def test_create_requires_files() -> None:

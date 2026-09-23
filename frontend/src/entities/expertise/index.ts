@@ -1,4 +1,5 @@
 export type {
+  Deadline,
   Expertise,
   ExpertiseDocument,
   ExpertiseInvoice,
@@ -9,6 +10,7 @@ export type {
   ExpertiseStatusTone,
 } from "./model/types";
 export {
+  DEADLINE_LABELS,
   EXPERTISE_RESULT_LABELS,
   EXPERTISE_STATUS_LABELS,
   EXPERTISE_STATUS_TONES,

@@ -159,14 +159,26 @@ class ExpertiseRepository:
 
 
 def certificate_fits(certificates: list[ExpertCertificate], expertise: Expertise) -> bool:
-    """Есть ли у эксперта удостоверение под эту экспертизу."""
+    """Есть ли у эксперта удостоверение под эту экспертизу.
+
+    Заказчик мог не знать объект, область или требуемую категорию. Пустое поле
+    ничего не ограничивает: такую заявку видит любой эксперт с действующим
+    удостоверением, а недостающее уточняет тот, кто возьмёт её в работу.
+    """
 
     for certificate in certificates:
-        same_pair = (
-            certificate.object_code == expertise.object_code
-            and certificate.area_code == expertise.area_code
-        )
-        if same_pair and certificate.category <= expertise.expert_category:
-            return True
+        if expertise.object_code is not None and certificate.object_code != expertise.object_code:
+            continue
+
+        if expertise.area_code is not None and certificate.area_code != expertise.area_code:
+            continue
+
+        if (
+            expertise.expert_category is not None
+            and certificate.category > expertise.expert_category
+        ):
+            continue
+
+        return True
 
     return False

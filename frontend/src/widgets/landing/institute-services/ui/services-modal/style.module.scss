@@ -1,0 +1,118 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+
+  background: rgba(11, 11, 11, 0.55);
+  backdrop-filter: blur(4px);
+  overflow-y: auto;
+
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.window {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 640px;
+  margin: auto;
+
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(11, 11, 11, 0.25);
+  overflow: hidden;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 20px 0;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 26px;
+  letter-spacing: -0.02em;
+
+  color: #0b0b0b;
+}
+
+.close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+
+  width: 36px;
+  height: 36px;
+
+  background: #f5f6f8;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.close:hover {
+  background: #eceef3;
+}
+
+.closeIcon {
+  width: 16px;
+  height: 16px;
+
+  color: #5b6070;
+}
+
+.body {
+  padding: 20px;
+}
+
+.body > * {
+  box-shadow: none;
+  border-radius: 0;
+}
+
+@media (min-width: 768px) {
+  .root {
+    padding: 40px 20px;
+  }
+
+  .head {
+    padding: 28px 28px 0;
+  }
+
+  .body {
+    padding: 24px 28px 28px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .root {
+    display: none;
+  }
+}

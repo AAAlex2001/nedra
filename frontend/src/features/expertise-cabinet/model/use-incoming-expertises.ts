@@ -52,11 +52,13 @@ export const useIncomingExpertises = (certificates: Certificate[]) => {
 
   const items = state.status === "ready" ? state.items : [];
 
-  const visibleItems = items.filter(
-    (item) =>
-      (objectCode === "" || item.object_code === objectCode) &&
-      (areaCode === "" || item.area_code === areaCode),
-  );
+  const matchesObject = (item: Expertise) =>
+    objectCode === "" || item.object_code === null || item.object_code === objectCode;
+
+  const matchesArea = (item: Expertise) =>
+    areaCode === "" || item.area_code === null || item.area_code === areaCode;
+
+  const visibleItems = items.filter((item) => matchesObject(item) && matchesArea(item));
 
   const replace = (updated: Expertise) => {
     if (state.status !== "ready") return;

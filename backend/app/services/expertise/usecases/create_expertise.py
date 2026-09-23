@@ -31,7 +31,9 @@ class CreateExpertiseUseCase:
     """Проверить заявку по справочнику, сохранить файлы, найти подходящих экспертов и уведомить их.
 
     Цена фиксируется из тарифа при подаче: если админ позже поменяет тариф,
-    уже поданные заявки останутся с прежней ценой.
+    уже поданные заявки останутся с прежней ценой. Когда заказчик не знает
+    область аттестации, тариф определить нечем и цена остаётся пустой до
+    уточнения.
     """
 
     def __init__(
@@ -49,7 +51,11 @@ class CreateExpertiseUseCase:
         self.storage = storage
 
     async def execute(
-        self, customer: User, data: ExpertiseInSchema, files: list[UploadFile]
+        self,
+        customer: User,
+        data: ExpertiseInSchema,
+        files: list[UploadFile],
+        company_card: UploadFile | None = None,
     ) -> CreatedExpertise:
         """Создать экспертизу. Бросает InvalidExpertiseError и UploadError."""
 
@@ -59,7 +65,10 @@ class CreateExpertiseUseCase:
         if not files:
             raise InvalidExpertiseError("Приложите хотя бы один файл документации")
 
-        tariff = await self.tariffs.get(data.area_code, data.object_code)
+        price = None
+        if data.object_code is not None and data.area_code is not None:
+            tariff = await self.tariffs.get(data.area_code, data.object_code)
+            price = tariff.price if tariff else None
 
         expertise = Expertise(
             customer_id=customer.id,
@@ -67,9 +76,10 @@ class CreateExpertiseUseCase:
             area_code=data.area_code,
             hazard_class=data.hazard_class,
             expert_category=category,
+            deadline=data.deadline,
             comment=data.comment.strip() if data.comment else None,
             status=ExpertiseStatus.NEW,
-            price=tariff.price if tariff else None,
+            price=price,
         )
 
         for file in files:
@@ -85,6 +95,21 @@ class CreateExpertiseUseCase:
                 )
             )
 
+        if company_card is not None:
+            stored = await self.storage.save(
+                company_card, DOCUMENTS_FOLDER, DOCUMENTATION_MAX_SIZE_BYTES
+            )
+            expertise.documents.append(
+                ExpertiseDocument(
+                    uploaded_by=customer.id,
+                    kind="company_card",
+                    file_path=stored.path,
+                    original_name=stored.original_name,
+                    size=stored.size,
+                    content_type=stored.content_type,
+                )
+            )
+
         experts = await self.profiles.list_certified(
             data.object_code, data.area_code, category
         )
@@ -93,7 +118,7 @@ class CreateExpertiseUseCase:
             Notification(
                 user_id=expert.id,
                 expertise=expertise,
-                text=f"Новая заявка на экспертизу по вашей области {data.area_code}",
+                text=notification_text(data.area_code),
             )
             for expert in experts
         ]
@@ -102,3 +127,12 @@ class CreateExpertiseUseCase:
         saved = await self.expertises.add(expertise)
 
         return CreatedExpertise(expertise=saved, notified_experts=experts)
+
+
+def notification_text(area_code: str | None) -> str:
+    """Текст уведомления эксперту: с областью, если заказчик её указал."""
+
+    if area_code is None:
+        return "Новая заявка на экспертизу, область аттестации заказчик не указал"
+
+    return f"Новая заявка на экспертизу по вашей области {area_code}"

@@ -50,10 +50,12 @@ class ExpertiseResult(StrEnum):
 class Expertise(Base):
     """Заявка заказчика на экспертизу промышленной безопасности.
 
-    Заказчик указывает объект экспертизы, область аттестации и класс опасности
-    объекта или требуемую категорию эксперта, прикладывает документацию.
-    Цена берётся из тарифа в момент подачи, чтобы смена тарифа не меняла
-    уже поданные заявки. Эксперт назначается позже, поэтому expert_id пустой.
+    Заказчик прикладывает документацию, а объект экспертизы, область аттестации
+    и требования к эксперту указывает по желанию: если он их не знает, поля
+    остаются пустыми и заявку разбирает эксперт. Цена берётся из тарифа в момент
+    подачи, чтобы смена тарифа не меняла уже поданные заявки, а при неизвестной
+    области остаётся пустой до уточнения. Эксперт назначается позже, поэтому
+    expert_id пустой.
     """
 
     __tablename__ = "expertises"
@@ -67,10 +69,12 @@ class Expertise(Base):
         ForeignKey("users.id", ondelete="SET NULL"), index=True
     )
 
-    object_code: Mapped[str] = mapped_column(String(8), index=True)
-    area_code: Mapped[str] = mapped_column(String(8), index=True)
+    object_code: Mapped[str | None] = mapped_column(String(8), index=True)
+    area_code: Mapped[str | None] = mapped_column(String(8), index=True)
     hazard_class: Mapped[int | None] = mapped_column(SmallInteger)
-    expert_category: Mapped[int] = mapped_column(SmallInteger)
+    expert_category: Mapped[int | None] = mapped_column(SmallInteger)
+
+    deadline: Mapped[str | None] = mapped_column(String(16))
 
     comment: Mapped[str | None] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(32), index=True, default=ExpertiseStatus.NEW)

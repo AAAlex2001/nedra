@@ -172,6 +172,9 @@ async def create_expertise(
     background_tasks: BackgroundTasks,
     payload: str = Form(..., description="JSON заявки по схеме ExpertiseInSchema"),
     files: list[UploadFile] = File(default=[], description="Документация: PDF, Word, фото"),
+    company_card: UploadFile | None = File(
+        default=None, description="Карточка организации заказчика с реквизитами"
+    ),
     customer: User = Depends(require_customer),
     usecase: CreateExpertiseUseCase = Depends(get_create_expertise_usecase),
     users: UserRepository = Depends(get_user_repository),
@@ -188,7 +191,7 @@ async def create_expertise(
         ) from error
 
     try:
-        created = await usecase.execute(customer, data, files)
+        created = await usecase.execute(customer, data, files, company_card)
     except (InvalidExpertiseError, UploadError) as error:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,

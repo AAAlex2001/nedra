@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { areaTitle, objectLabel, type ExpertCatalog } from "@/entities/expert";
-import { EXPERTISE_STATUS_LABELS, type ExpertiseStatus } from "@/entities/expertise";
+import {
+  DEADLINE_LABELS,
+  EXPERTISE_STATUS_LABELS,
+  type ExpertiseStatus,
+} from "@/entities/expertise";
 import { formatRequestDate } from "@/entities/request";
 import { formatRub } from "@/shared/lib/money";
 import { statusGroup } from "../../model/groups";
@@ -33,8 +37,15 @@ const Fact = ({ label, value }: FactProps) => (
 const ExpertiseCard = ({ expertise, catalog, pending, onSave, onRemove }: ExpertiseCardProps) => {
   const [editing, setEditing] = useState(false);
 
-  const subject = catalog ? areaTitle(catalog, expertise.area_code) : expertise.area_code;
-  const object = catalog ? objectLabel(catalog, expertise.object_code) : expertise.object_code;
+  let subject = "Область определит эксперт";
+  if (expertise.area_code) {
+    subject = catalog ? areaTitle(catalog, expertise.area_code) : expertise.area_code;
+  }
+
+  let object = "";
+  if (expertise.object_code) {
+    object = catalog ? objectLabel(catalog, expertise.object_code) : expertise.object_code;
+  }
 
   const save = (status: ExpertiseStatus, price: string | null) => {
     onSave(expertise.id, status, price);
@@ -65,11 +76,16 @@ const ExpertiseCard = ({ expertise, catalog, pending, onSave, onRemove }: Expert
       <h3 className={styles.subject}>{subject}</h3>
 
       <div className={styles.chips}>
-        <span className={styles.chip}>{expertise.area_code}</span>
-        <span className={styles.chip}>{object}</span>
-        <span className={styles.chip}>Категория {expertise.expert_category}</span>
+        {expertise.area_code && <span className={styles.chip}>{expertise.area_code}</span>}
+        {object && <span className={styles.chip}>{object}</span>}
+        {expertise.expert_category !== null && (
+          <span className={styles.chip}>Категория {expertise.expert_category}</span>
+        )}
         {expertise.hazard_class !== null && (
           <span className={styles.chip}>Класс опасности {expertise.hazard_class}</span>
+        )}
+        {expertise.deadline && (
+          <span className={styles.chip}>Срок: {DEADLINE_LABELS[expertise.deadline]}</span>
         )}
       </div>
 

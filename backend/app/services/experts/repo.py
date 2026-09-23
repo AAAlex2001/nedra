@@ -160,24 +160,38 @@ class ExpertProfileRepository:
         return result.scalar_one_or_none()
 
     async def list_certified(
-        self, object_code: str, area_code: str, max_category: int
+        self,
+        object_code: str | None,
+        area_code: str | None,
+        max_category: int | None,
     ) -> list[User]:
-        """Эксперты с действующим удостоверением под пару и категорией не хуже требуемой."""
+        """Эксперты с действующим удостоверением под требования заявки.
+
+        Заказчик может не знать объект, область и категорию. Каждое указанное
+        требование сужает выборку, а при пустой заявке уведомление уходит всем
+        экспертам с действующим удостоверением: область определит тот, кто её
+        возьмёт.
+        """
 
         today = date.today()
 
         stmt = (
             select(User)
             .join(ExpertCertificate, ExpertCertificate.user_id == User.id)
-            .where(
-                ExpertCertificate.object_code == object_code,
-                ExpertCertificate.area_code == area_code,
-                ExpertCertificate.category <= max_category,
-                ExpertCertificate.valid_until >= today,
-            )
-            .distinct()
-            .order_by(User.full_name)
+            .where(ExpertCertificate.valid_until >= today)
         )
+
+        if object_code is not None:
+            stmt = stmt.where(ExpertCertificate.object_code == object_code)
+
+        if area_code is not None:
+            stmt = stmt.where(ExpertCertificate.area_code == area_code)
+
+        if max_category is not None:
+            stmt = stmt.where(ExpertCertificate.category <= max_category)
+
+        stmt = stmt.distinct().order_by(User.full_name)
+
         result = await self.db.execute(stmt)
 
         return list(result.scalars().all())

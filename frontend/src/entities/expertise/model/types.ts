@@ -11,6 +11,15 @@ export type ExpertiseStatus =
 
 export type ExpertiseResult = "positive" | "negative";
 
+export type Deadline = "today" | "three_days" | "week" | "any";
+
+export const DEADLINE_LABELS: Record<Deadline, string> = {
+  today: "Сегодня",
+  three_days: "До 3 дней",
+  week: "Неделя",
+  any: "Неважно",
+};
+
 export type PaymentStatus = "pending" | "waiting_for_capture" | "succeeded" | "canceled";
 
 export type ExpertisePayment = {
@@ -53,10 +62,11 @@ export type Expertise = {
   customer_name: string;
   expert_id: number | null;
   expert_name: string | null;
-  object_code: string;
-  area_code: string;
+  object_code: string | null;
+  area_code: string | null;
   hazard_class: number | null;
-  expert_category: number;
+  expert_category: number | null;
+  deadline: Deadline | null;
   comment: string | null;
   status: ExpertiseStatus;
   result: ExpertiseResult | null;

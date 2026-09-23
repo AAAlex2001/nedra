@@ -1,20 +1,24 @@
 .header {
+  position: relative;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: 1fr auto;
   grid-template-areas:
-    "number . count chevron"
-    "title title title title";
-  column-gap: 15px;
-  row-gap: 15px;
+    "title title"
+    "count chevron";
+  column-gap: 10px;
+  row-gap: 14px;
   align-items: center;
+  align-content: space-between;
 
   width: 100%;
+  min-height: 132px;
   padding: 20px;
 
   background: #ffffff;
   border: 2px solid #d1d1d6;
   border-radius: 16px;
+  overflow: hidden;
 
   text-align: left;
   cursor: pointer;
@@ -25,12 +29,36 @@
     border-color 0.2s ease;
 }
 
-.open {
-  background: rgba(246, 152, 39, 0.1);
-  border-color: #f69827;
+.picture {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 62%;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.picture::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to right,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.85) 30%,
+    rgba(255, 255, 255, 0.4) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
 .number {
+  display: none;
   grid-area: number;
 
   font-family: "Manrope";
@@ -43,7 +71,10 @@
 }
 
 .count {
+  position: relative;
+  z-index: 1;
   grid-area: count;
+  justify-self: start;
 
   font-family: "Manrope";
   font-style: normal;
@@ -55,30 +86,31 @@
 }
 
 .chevron {
+  position: relative;
+  z-index: 1;
   grid-area: chevron;
+  justify-self: start;
+
   width: 24px;
   height: 24px;
 
-  color: #797979;
+  color: #f69827;
   transform: rotate(-90deg);
   transition:
     transform 0.2s ease,
     color 0.2s ease;
 }
 
-.chevronOpen {
-  color: #f69827;
-  transform: rotate(180deg);
-}
-
 .title {
+  position: relative;
+  z-index: 1;
   grid-area: title;
-  min-height: 52px;
+  max-width: 320px;
 
   font-family: "Manrope";
   font-style: normal;
   font-weight: 700;
-  font-size: 22px;
+  font-size: 20px;
   line-height: 26px;
 
   color: #0b0b0b;
@@ -86,23 +118,63 @@
 
 @media (min-width: 768px) {
   .header {
-    grid-template-areas: "number title count chevron";
-    row-gap: 0;
+    min-height: 148px;
+    padding: 24px;
   }
 
   .title {
-    display: flex;
-    align-items: center;
+    max-width: 360px;
+    font-size: 22px;
+    line-height: 28px;
   }
 }
 
 @media (min-width: 1440px) {
   .header {
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "number title count chevron";
+    column-gap: 15px;
+    row-gap: 0;
+    align-content: center;
+
     min-height: 82px;
+    padding: 20px;
+  }
+
+  .picture {
+    display: none;
+  }
+
+  .number {
+    display: block;
+  }
+
+  .count {
+    justify-self: end;
+  }
+
+  .chevron {
+    justify-self: end;
+    color: #797979;
   }
 
   .title {
+    display: flex;
+    align-items: center;
+
+    max-width: none;
     min-height: 54px;
+    font-size: 22px;
     line-height: 27px;
+  }
+
+  .open {
+    background: rgba(246, 152, 39, 0.1);
+    border-color: #f69827;
+  }
+
+  .chevronOpen {
+    color: #f69827;
+    transform: rotate(180deg);
   }
 }
