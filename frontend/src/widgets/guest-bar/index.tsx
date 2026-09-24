@@ -24,9 +24,9 @@ const GuestBar = () => {
 
         <div className={styles.text}>
           <span className={styles.title}>
-            БЛИЦ-ЭКСПЕРТ — онлайн экспертиза промышленной безопасности!
+            БЛИЦ-ЭКСПЕРТ – онлайн экспертиза промышленной безопасности!
           </span>
-          <span className={styles.subtitle}>Загрузите файл — получите экспертизу!</span>
+          <span className={styles.subtitle}>Загрузите файл – получите заключение с ЭЦП!</span>
         </div>
 
         <Button className={styles.button} href="/blits-ekspert">
