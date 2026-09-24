@@ -23,11 +23,10 @@ const GuestBar = () => {
         <Image className={styles.icon} src="/blitz/20.webp" alt="" width={120} height={120} />
 
         <div className={styles.text}>
-          <span className={styles.title}>Экспертиза промышленной безопасности от 1 дня</span>
-          <span className={styles.subtitle}>
-            Цена только за экспертизу, сроки продиктованы опытом штатных экспертов,
-            заключение с ЭЦП, любая форма оплаты, работаем по гарантийному письму!
+          <span className={styles.title}>
+            БЛИЦ-ЭКСПЕРТ — онлайн экспертиза промышленной безопасности!
           </span>
+          <span className={styles.subtitle}>Загрузите файл — получите экспертизу!</span>
         </div>
 
         <Button className={styles.button} href="/blits-ekspert">
