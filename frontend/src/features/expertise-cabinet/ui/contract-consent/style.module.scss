@@ -1,0 +1,188 @@
+.consent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.documents {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.document {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px 14px 10px 10px;
+
+  text-decoration: none;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 14px;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.document:hover {
+  border-color: #f69827;
+  box-shadow: 0 4px 14px rgba(246, 152, 39, 0.12);
+}
+
+.document:focus-visible {
+  outline: 2px solid #f69827;
+  outline-offset: 2px;
+}
+
+.tile {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+
+  background: #fff2e2;
+  border: 1px solid #ffe3c2;
+  border-radius: 12px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.caption {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #0b0b0b;
+}
+
+.hint {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #6c7078;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.checkbox {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  cursor: pointer;
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+}
+
+.box {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+
+  color: #fff;
+  background: #fff;
+  border: 1.5px solid #d5d8df;
+  border-radius: 7px;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.mark {
+  width: 14px;
+  height: 14px;
+
+  opacity: 0;
+  transform: scale(0.6);
+
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.checkbox:hover .box {
+  border-color: #f69827;
+}
+
+.input:checked + .box {
+  background: #f69827;
+  border-color: #f69827;
+}
+
+.input:checked + .box .mark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.input:focus-visible + .box {
+  outline: 2px solid #f69827;
+  outline-offset: 2px;
+}
+
+.label {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.button {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .documents {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .button {
+    flex: none;
+    width: auto;
+    min-width: 180px;
+  }
+}

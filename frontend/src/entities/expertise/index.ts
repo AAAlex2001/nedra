@@ -1,6 +1,8 @@
 export type {
+  ContractKind,
   Deadline,
   Expertise,
+  ExpertiseCompany,
   ExpertiseDocument,
   ExpertiseInvoice,
   ExpertisePayment,
@@ -10,10 +12,13 @@ export type {
   ExpertiseStatusTone,
 } from "./model/types";
 export {
+  CONTRACT_KIND_LABELS,
   DEADLINE_LABELS,
   EXPERTISE_RESULT_LABELS,
   EXPERTISE_STATUS_LABELS,
   EXPERTISE_STATUS_TONES,
+  cardPaymentAllowed,
+  contractKindsFor,
   hasPendingPayment,
   isFinished,
 } from "./model/types";
@@ -26,6 +31,7 @@ export {
   createExpertise,
   createExpertisePayment,
   expertiseDocumentUrl,
+  expertiseSigningUrl,
   fetchAssignedExpertises,
   fetchIncomingExpertises,
   fetchMyExpertises,

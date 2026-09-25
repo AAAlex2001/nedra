@@ -2,7 +2,6 @@
 
 import type { AttestationArea, ExpertCatalog, ExpertiseObject } from "@/entities/expert";
 import Chip from "@/shared/ui/chip";
-import FileField from "@/shared/ui/file-field";
 import TextField from "@/shared/ui/text-field";
 import type { CertificateDraft } from "../../model/types";
 import styles from "./style.module.scss";
@@ -17,7 +16,7 @@ type CertificateBuilderProps = {
   onObject: (code: string) => void;
   onCategory: (category: number) => void;
   onDate: (value: string) => void;
-  onScan: (file: File | null) => void;
+  onNumber: (value: string) => void;
   onAdd: () => void;
 };
 
@@ -33,7 +32,7 @@ const CertificateBuilder = ({
   onObject,
   onCategory,
   onDate,
-  onScan,
+  onNumber,
   onAdd,
 }: CertificateBuilderProps) => (
   <div className={styles.builder}>
@@ -97,18 +96,17 @@ const CertificateBuilder = ({
 
     <div className={styles.row}>
       <TextField
-        label="Срок действия удостоверения"
+        label="Дата окончания срока действия квалификационного удостоверения"
         type="date"
         min={today()}
         value={draft.validUntil}
         onChange={onDate}
       />
-      <FileField
-        label="Скан удостоверения"
-        file={draft.scan}
-        accept=".pdf,.jpg,.jpeg,.png"
-        hint="PDF, JPG или PNG до 10 МБ. Можно приложить позже по запросу."
-        onChange={onScan}
+      <TextField
+        label="Номер квалификационного удостоверения либо номер регистрации в ЕРУЛ"
+        maxLength={64}
+        value={draft.number}
+        onChange={onNumber}
       />
     </div>
 

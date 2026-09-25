@@ -17,6 +17,7 @@ import {
   resubmitDocumentation,
   sendConclusion,
   sendRemarks,
+  type ContractKind,
   type Expertise,
 } from "@/entities/expertise";
 
@@ -41,7 +42,8 @@ export const useExpertiseActions = (expertise: Expertise, onChange: (item: Exper
     }
   };
 
-  const accept = () => run(() => acceptExpertise(expertise.id));
+  const accept = (contractKind: ContractKind | null) =>
+    run(() => acceptExpertise(expertise.id, contractKind));
   const confirm = () => run(() => confirmExpertise(expertise.id));
   const conclusionReady = () => run(() => markConclusionReady(expertise.id));
   const finish = () => run(() => acceptWork(expertise.id));

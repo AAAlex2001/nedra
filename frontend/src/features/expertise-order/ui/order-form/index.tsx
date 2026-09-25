@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { ExpertCatalog } from "@/entities/expert";
+import { CONTRACT_KIND_LABELS } from "@/entities/expertise";
 import Button from "@/shared/ui/button";
 import Chip from "@/shared/ui/chip";
 import FilesField from "@/shared/ui/files-field";
@@ -9,14 +10,55 @@ import Modal from "@/shared/ui/modal";
 import SelectField from "@/shared/ui/select-field";
 import TextField from "@/shared/ui/text-field";
 import { useExpertiseOrder } from "../../model/use-expertise-order";
-import type { Deadline } from "../../model/types";
+import type { CompanyField, Deadline } from "../../model/types";
 import styles from "./style.module.scss";
 
 type OrderFormProps = {
   catalog: ExpertCatalog;
 };
 
+type CompanyInput = {
+  field: CompanyField;
+  label: string;
+  placeholder: string;
+  numeric?: boolean;
+  optional?: boolean;
+  wide?: boolean;
+};
+
 const ACCEPT = ".pdf,.doc,.docx,.jpg,.jpeg,.png";
+
+const COMPANY_INPUTS: CompanyInput[] = [
+  {
+    field: "full_name",
+    label: "Полное наименование",
+    placeholder: "Общество с ограниченной ответственностью «Ромашка»",
+    wide: true,
+  },
+  { field: "name", label: "Сокращённое наименование", placeholder: "ООО «Ромашка»" },
+  { field: "inn", label: "ИНН", placeholder: "10 или 12 цифр", numeric: true },
+  { field: "kpp", label: "КПП", placeholder: "Если есть", numeric: true, optional: true },
+  { field: "ogrn", label: "ОГРН или ОГРНИП", placeholder: "13 или 15 цифр", numeric: true },
+  {
+    field: "address",
+    label: "Юридический адрес",
+    placeholder: "630000, г. Новосибирск, ул. Ленина, д. 1",
+    wide: true,
+  },
+  { field: "bank", label: "Банк", placeholder: "АО «Альфа-Банк»", wide: true },
+  { field: "bic", label: "БИК", placeholder: "9 цифр", numeric: true },
+  { field: "account", label: "Расчётный счёт", placeholder: "20 цифр", numeric: true },
+  { field: "corr_account", label: "Корреспондентский счёт", placeholder: "20 цифр", numeric: true },
+  { field: "signer_position", label: "Должность подписанта", placeholder: "Генеральный директор" },
+  { field: "signer_name", label: "ФИО подписанта", placeholder: "Иванов Иван Иванович" },
+  {
+    field: "signer_genitive",
+    label: "В лице кого",
+    placeholder: "генерального директора Иванова Ивана Ивановича",
+    wide: true,
+  },
+  { field: "signer_basis", label: "Действует на основании", placeholder: "Устава" },
+];
 
 const DEADLINES: { value: Deadline; label: string }[] = [
   { value: "today", label: "Сегодня" },
@@ -31,14 +73,18 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
     currentObject,
     availableAreas,
     selectedArea,
+    contractKinds,
     requiredCategory,
     canSubmit,
     selectObject,
+    selectKind,
+    changeObjectName,
     setMode,
     selectHazard,
     selectCategory,
     selectArea,
     selectDeadline,
+    changeCompany,
     addFiles,
     removeFile,
     setCard,
@@ -100,6 +146,40 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
             : "Ничего страшного: эксперт определит объект по вашей документации."}
         </p>
       </div>
+
+      {contractKinds.length > 1 && (
+        <div className={styles.group}>
+          <span className={styles.label}>Вид проекта</span>
+          <div className={styles.chips} role="group" aria-label="Вид проекта">
+            {contractKinds.map((kind) => (
+              <Chip
+                key={kind}
+                active={state.contractKind === kind}
+                onClick={() => selectKind(kind)}
+              >
+                {CONTRACT_KIND_LABELS[kind]}
+              </Chip>
+            ))}
+            <Chip active={state.contractKind === ""} onClick={() => selectKind("")}>
+              Не знаю
+            </Chip>
+          </div>
+          <p className={styles.note}>
+            {state.contractKind
+              ? "По виду проекта подберём договор."
+              : "Вид проекта определит эксперт, а вам останется согласиться с договором."}
+          </p>
+        </div>
+      )}
+
+      <TextField
+        label="Наименование документации"
+        required
+        placeholder="Как на титульном листе проекта"
+        maxLength={500}
+        value={state.objectName}
+        onChange={changeObjectName}
+      />
 
       <div className={styles.group}>
         <span className={styles.label}>Требования к эксперту</span>
@@ -256,11 +336,34 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
         onRemove={removeFile}
       />
 
+      <div className={styles.group}>
+        <span className={styles.label}>Реквизиты заказчика</span>
+        <p className={styles.note}>
+          По ним составим договор, счёт и акт. Заявки можно подавать от разных организаций —
+          реквизиты указываются в каждой.
+        </p>
+        <div className={styles.fields}>
+          {COMPANY_INPUTS.map((input) => (
+            <div key={input.field} className={input.wide ? styles.wide : undefined}>
+              <TextField
+                label={input.label}
+                required={!input.optional}
+                placeholder={input.placeholder}
+                inputMode={input.numeric ? "numeric" : undefined}
+                maxLength={500}
+                value={state.company[input.field]}
+                onChange={(value) => changeCompany(input.field, value)}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
       <FilesField
         label="Карточка организации"
         files={state.companyCard ? [state.companyCard] : []}
         accept={ACCEPT}
-        hint="Реквизиты вашей организации — нужны, чтобы выставить счёт."
+        hint="Приложите карточку с реквизитами, чтобы бухгалтерия сверила данные."
         onAdd={setCard}
         onRemove={removeCard}
       />

@@ -3,31 +3,34 @@
 import { useState } from "react";
 import type { PaymentDocumentKind } from "@/entities/billing";
 import Button from "@/shared/ui/button";
-import Chip from "@/shared/ui/chip";
 import FilesField from "@/shared/ui/files-field";
 import styles from "./style.module.scss";
 
 const ACCEPT = ".pdf,.doc,.docx,.jpg,.jpeg,.png";
 
-const KINDS: { value: PaymentDocumentKind; label: string }[] = [
-  { value: "payment_order", label: "Платёжное поручение" },
-  { value: "guarantee_letter", label: "Гарантийное письмо" },
-];
-
-const HINTS: Record<PaymentDocumentKind, string> = {
-  payment_order: "Документ из банка, подтверждающий перевод по счёту.",
-  guarantee_letter:
-    "Если внести предоплату сейчас нечем, приложите гарантийное письмо с обязательством оплатить.",
+const TEXTS: Record<PaymentDocumentKind, { label: string; hint: string; submit: string }> = {
+  payment_order: {
+    label: "Платёжное поручение",
+    hint: "Документ из банка, подтверждающий перевод по счёту. Можно не прикладывать — администратор проверит поступление сам.",
+    submit: "Подтвердить оплату",
+  },
+  guarantee_letter: {
+    label: "Гарантийное письмо",
+    hint: "Если внести предоплату сейчас нечем, приложите письмо с обязательством оплатить.",
+    submit: "Отправить письмо",
+  },
 };
 
 type PaymentProofFormProps = {
+  kind: PaymentDocumentKind;
   pending: boolean;
-  onSubmit: (document: File | null, kind: PaymentDocumentKind) => void;
+  onSubmit: (document: File | null) => void;
 };
 
-const PaymentProofForm = ({ pending, onSubmit }: PaymentProofFormProps) => {
-  const [kind, setKind] = useState<PaymentDocumentKind>("payment_order");
+const PaymentProofForm = ({ kind, pending, onSubmit }: PaymentProofFormProps) => {
   const [file, setFile] = useState<File | null>(null);
+  const texts = TEXTS[kind];
+  const fileRequired = kind === "guarantee_letter";
 
   const setChosen = (files: File[]) => {
     const [chosen] = files;
@@ -36,36 +39,23 @@ const PaymentProofForm = ({ pending, onSubmit }: PaymentProofFormProps) => {
 
   return (
     <div className={styles.form}>
-      <span className={styles.label}>Что прикладываете</span>
-      <div className={styles.row} role="group" aria-label="Тип документа">
-        {KINDS.map((item) => (
-          <Chip
-            key={item.value}
-            active={kind === item.value}
-            className={styles.chip}
-            onClick={() => setKind(item.value)}
-          >
-            {item.label}
-          </Chip>
-        ))}
-      </div>
-
       <FilesField
-        label="Документ"
+        label={texts.label}
+        required={fileRequired}
         files={file ? [file] : []}
         accept={ACCEPT}
-        hint={HINTS[kind]}
+        hint={texts.hint}
         onAdd={setChosen}
         onRemove={() => setFile(null)}
       />
 
       <Button
         className={styles.submit}
-        disabled={pending}
+        disabled={pending || (fileRequired && file === null)}
         loading={pending}
-        onClick={() => onSubmit(file, kind)}
+        onClick={() => onSubmit(file)}
       >
-        Подтвердить оплату
+        {texts.submit}
       </Button>
     </div>
   );

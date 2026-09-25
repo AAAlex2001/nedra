@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { areaTitle, objectLabel, type ExpertCatalog } from "@/entities/expert";
 import {
+  CONTRACT_KIND_LABELS,
   DEADLINE_LABELS,
   EXPERTISE_STATUS_LABELS,
   type ExpertiseStatus,
@@ -91,6 +92,21 @@ const ExpertiseCard = ({ expertise, catalog, pending, onSave, onRemove }: Expert
 
       <dl className={styles.facts}>
         <Fact label="Заказчик" value={expertise.customer_name} />
+        {expertise.company && (
+          <Fact
+            label="Организация"
+            value={`${expertise.company.name}, ИНН ${expertise.company.inn}`}
+          />
+        )}
+        {expertise.object_name && <Fact label="Документация" value={expertise.object_name} />}
+        <Fact
+          label="Вид договора"
+          value={
+            expertise.contract_kind
+              ? CONTRACT_KIND_LABELS[expertise.contract_kind]
+              : "определит эксперт"
+          }
+        />
         <Fact label="Эксперт" value={expertise.expert_name ?? "не назначен"} />
         <Fact
           label="Стоимость"

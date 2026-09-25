@@ -44,8 +44,11 @@ const ExpertAttestation = ({ profile, catalog }: ExpertAttestationProps) => {
           </DetailsRow>
           <DetailsRow label="Категория">{item.category}</DetailsRow>
           <DetailsRow label="Действует до">{formatDate(item.valid_until)}</DetailsRow>
-          <DetailsRow label="Ваше удостоверение">
-            {item.scan_name ? (
+          {item.number && (
+            <DetailsRow label="Номер удостоверения или ЕРУЛ">{item.number}</DetailsRow>
+          )}
+          {item.scan_name && (
+            <DetailsRow label="Скан удостоверения">
               <a
                 className={styles.scan}
                 href={myCertificateScanUrl(item.id)}
@@ -58,10 +61,8 @@ const ExpertAttestation = ({ profile, catalog }: ExpertAttestationProps) => {
                 </span>
                 <span className={styles.scanName}>{item.scan_name}</span>
               </a>
-            ) : (
-              <span className={styles.muted}>Скан не приложен</span>
-            )}
-          </DetailsRow>
+            </DetailsRow>
+          )}
         </Fragment>
       ))}
     </DetailsTable>

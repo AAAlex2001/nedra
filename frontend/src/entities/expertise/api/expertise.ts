@@ -1,5 +1,5 @@
 import { API_URL, readErrorMessage } from "@/shared/api";
-import type { Expertise, ExpertisePayment } from "../model/types";
+import type { ContractKind, Expertise, ExpertisePayment } from "../model/types";
 
 export const createExpertise = async (formData: FormData): Promise<Expertise> => {
   const response = await fetch(`${API_URL}/v1/expertise`, {
@@ -78,10 +78,15 @@ export const fetchAssignedExpertises = async (): Promise<Expertise[]> => {
   return items;
 };
 
-export const acceptExpertise = async (id: number): Promise<Expertise> => {
+export const acceptExpertise = async (
+  id: number,
+  contractKind: ContractKind | null,
+): Promise<Expertise> => {
   const response = await fetch(`${API_URL}/v1/expertise/${id}/accept`, {
     method: "POST",
     credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ contract_kind: contractKind }),
   });
 
   if (!response.ok) {
@@ -230,3 +235,6 @@ export const acceptWork = async (id: number): Promise<Expertise> => {
 
 export const expertiseDocumentUrl = (expertiseId: number, documentId: number): string =>
   `${API_URL}/v1/expertise/${expertiseId}/documents/${documentId}`;
+
+export const expertiseSigningUrl = (expertiseId: number, kind: "contract" | "nda"): string =>
+  `${API_URL}/v1/expertise/${expertiseId}/signing/${kind}`;

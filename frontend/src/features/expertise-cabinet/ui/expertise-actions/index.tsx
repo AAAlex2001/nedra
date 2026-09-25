@@ -1,14 +1,21 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { invoicePdfUrl } from "@/entities/billing";
-import type { Expertise } from "@/entities/expertise";
+import { invoicePdfUrl, type PaymentDocumentKind } from "@/entities/billing";
+import {
+  cardPaymentAllowed,
+  contractKindsFor,
+  type ContractKind,
+  type Expertise,
+} from "@/entities/expertise";
 import { formatRequestDate } from "@/entities/request";
 import { formatRub, halfOf } from "@/shared/lib/money";
 import Button from "@/shared/ui/button";
 import { CheckIcon, ClockIcon } from "@/shared/ui/icons";
 import { useExpertiseActions } from "../../model/use-expertise-actions";
 import ConclusionForm from "../conclusion-form";
+import ContractConsent from "../contract-consent";
+import ContractKindPicker from "../contract-kind-picker";
 import PaymentProofForm from "../payment-proof-form";
 import RemarksForm from "../remarks-form";
 import RevisionForm from "../revision-form";
@@ -28,79 +35,104 @@ type Step = {
 
 const when = (value: string | null): string => (value ? formatRequestDate(value) : "");
 
+const PROOF_BUTTONS: { kind: PaymentDocumentKind; label: string }[] = [
+  { kind: "payment_order", label: "Я оплатил" },
+  { kind: "guarantee_letter", label: "Гарантийное письмо" },
+];
+
 const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) => {
   const actions = useExpertiseActions(expertise, onChange);
   const [remarksOpen, setRemarksOpen] = useState(false);
-  const [proofOpen, setProofOpen] = useState(false);
+  const [proofKind, setProofKind] = useState<PaymentDocumentKind | null>(null);
+  const [sentKind, setSentKind] = useState<PaymentDocumentKind | null>(null);
+  const [contractKind, setContractKind] = useState<ContractKind | null>(expertise.contract_kind);
 
   const half = formatRub(halfOf(expertise.price));
   const price = formatRub(expertise.price);
   const invoice = expertise.invoice;
+  const canReport = invoice !== null && invoice.reported_at === null;
+  const guaranteed =
+    sentKind === "guarantee_letter" ||
+    expertise.documents.some((item) => item.kind === "guarantee_letter");
+  const cardAllowed = cardPaymentAllowed(expertise);
+  const kindUnknown = expertise.contract_kind === null;
 
-  const payButtons = (hasPayment: boolean) => (
-    <>
-      {hasPayment && (
-        <button
-          type="button"
-          className={styles.secondary}
-          disabled={actions.pending}
-          onClick={() => void actions.refresh()}
-        >
-          Проверить оплату
-        </button>
-      )}
+  const toggleProof = (kind: PaymentDocumentKind) =>
+    setProofKind(proofKind === kind ? null : kind);
 
-      {invoice === null ? (
-        <button
-          type="button"
-          className={styles.secondary}
-          disabled={actions.pending}
-          onClick={() => void actions.requestInvoice()}
-        >
-          Счёт для юрлица
-        </button>
-      ) : (
-        <a
-          className={styles.secondary}
-          href={invoicePdfUrl(invoice.id)}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Счёт № {invoice.number}
-        </a>
-      )}
+  const payment = (hasPayment: boolean) => (
+    <div className={styles.payment}>
+      <div className={styles.payButtons}>
+        {cardAllowed && (
+          <Button
+            className={styles.payCard}
+            loading={actions.pending}
+            onClick={() => void actions.pay()}
+          >
+            Оплатить картой {half}
+          </Button>
+        )}
 
-      {invoice !== null && invoice.reported_at === null && (
-        <button
-          type="button"
-          className={styles.secondary}
-          disabled={actions.pending}
-          onClick={() => setProofOpen(!proofOpen)}
-        >
-          Я оплатил
-        </button>
-      )}
+        {invoice === null ? (
+          <button
+            type="button"
+            className={styles.secondary}
+            disabled={actions.pending}
+            onClick={() => void actions.requestInvoice()}
+          >
+            Счёт для юрлица
+          </button>
+        ) : (
+          <a
+            className={styles.secondary}
+            href={invoicePdfUrl(invoice.id)}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Счёт № {invoice.number}
+          </a>
+        )}
 
-      <Button
-        className={styles.primary}
-        loading={actions.pending}
-        onClick={() => void actions.pay()}
-      >
-        Картой {half}
-      </Button>
+        {canReport &&
+          PROOF_BUTTONS.map((item) => (
+            <button
+              key={item.kind}
+              type="button"
+              className={`${styles.secondary} ${proofKind === item.kind ? styles.secondaryActive : ""}`}
+              disabled={actions.pending}
+              onClick={() => toggleProof(item.kind)}
+            >
+              {item.label}
+            </button>
+          ))}
 
-      {proofOpen && invoice !== null && invoice.reported_at === null && (
+        {hasPayment && (
+          <button
+            type="button"
+            className={styles.secondary}
+            disabled={actions.pending}
+            onClick={() => void actions.refresh()}
+          >
+            Проверить оплату
+          </button>
+        )}
+      </div>
+
+      {canReport && proofKind !== null && (
         <div className={styles.proof}>
           <PaymentProofForm
+            key={proofKind}
+            kind={proofKind}
             pending={actions.pending}
-            onSubmit={(document, kind) => {
-              setProofOpen(false);
-              void actions.reportPaid(document, kind);
+            onSubmit={(document) => {
+              setProofKind(null);
+              setSentKind(proofKind);
+              void actions.reportPaid(document, proofKind);
             }}
           />
         </div>
       )}
-    </>
+    </div>
   );
 
   const customerStep = (): Step => {
@@ -110,18 +142,22 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
 
       case "expert_ready":
         return {
-          text: `${expertise.expert_name} готов провести экспертизу за ${price}, оплата двумя частями по 50 %`,
-          action: (
-            <Button loading={actions.pending} onClick={() => void actions.confirm()}>
-              Готов оплатить
-            </Button>
+          text: `${expertise.expert_name} готов провести экспертизу за ${price}, оплата двумя частями по 50 %. Прочитайте договор и соглашение о конфиденциальности и подпишите их`,
+          form: (
+            <ContractConsent
+              expertiseId={expertise.id}
+              pending={actions.pending}
+              onSign={() => void actions.confirm()}
+            />
           ),
         };
 
       case "contract":
         return {
-          text: `Договор заключён ${when(expertise.contract_at)}. Оплатите аванс, и эксперт приступит к работе`,
-          action: payButtons(expertise.advance_payment !== null),
+          text: cardAllowed
+            ? `Договор заключён ${when(expertise.contract_at)}. Оплатите аванс, и эксперт приступит к работе`
+            : `Договор заключён ${when(expertise.contract_at)}. Оплатите аванс по счёту исполнителя и приложите платёжное поручение`,
+          form: payment(expertise.advance_payment !== null),
         };
 
       case "in_progress":
@@ -136,7 +172,7 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
       case "conclusion_ready":
         return {
           text: "Замечаний нет, заключение готово. Требуется полная оплата: внесите остаток, и эксперт отправит подписанный документ",
-          action: payButtons(expertise.final_payment !== null),
+          form: payment(expertise.final_payment !== null),
         };
 
       case "paid":
@@ -161,12 +197,25 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
     switch (expertise.status) {
       case "new":
         return {
-          text: `Стоимость экспертизы ${price}. Заявку получит первый, кто подтвердит готовность`,
+          text: kindUnknown
+            ? `Стоимость экспертизы ${price}. Заказчик не знает вид проекта: определите его по документации, от него зависит договор`
+            : `Стоимость экспертизы ${price}. Заявку получит первый, кто подтвердит готовность`,
           action: (
-            <Button loading={actions.pending} onClick={() => void actions.accept()}>
+            <Button
+              disabled={contractKind === null}
+              loading={actions.pending}
+              onClick={() => void actions.accept(contractKind)}
+            >
               Готов провести экспертизу
             </Button>
           ),
+          form: kindUnknown ? (
+            <ContractKindPicker
+              kinds={contractKindsFor(expertise.object_code)}
+              value={contractKind}
+              onChange={setContractKind}
+            />
+          ) : null,
         };
 
       case "expert_ready":
@@ -242,8 +291,9 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
 
       {role === "customer" && invoice !== null && invoice.reported_at !== null && (
         <p className={styles.note}>
-          Вы сообщили об оплате счёта № {invoice.number} {when(invoice.reported_at)}. Администратор
-          проверит поступление на расчётный счёт и подтвердит оплату
+          {guaranteed
+            ? `Вы отправили гарантийное письмо по счёту № ${invoice.number} ${when(invoice.reported_at)}. Администратор рассмотрит его и подтвердит`
+            : `Вы сообщили об оплате счёта № ${invoice.number} ${when(invoice.reported_at)}. Администратор проверит поступление на расчётный счёт и подтвердит оплату`}
         </p>
       )}
 

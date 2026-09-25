@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ROLE_LABELS, useSession, type User } from "@/entities/user";
 import { useAuthModal, useLogout } from "@/features/auth";
-import { ActsTab, CompanyForm, InvoicesTab } from "@/features/billing";
+import { ActsTab, InvoicesTab } from "@/features/billing";
 import { ExpertAttestation, useExpertProfile } from "@/features/expert-profile";
 import {
   AssignedExpertises,
@@ -126,12 +126,7 @@ const CustomerCabinet = ({ user }: CabinetPanelProps) => {
         {tab === "invoices" && <InvoicesTab />}
         {tab === "acts" && <ActsTab />}
         {tab === "notifications" && <NotificationsTab notifications={notifications} />}
-        {tab === "account" && (
-          <>
-            <AccountDetails user={user} />
-            <CompanyForm />
-          </>
-        )}
+        {tab === "account" && <AccountDetails user={user} />}
       </section>
     </>
   );

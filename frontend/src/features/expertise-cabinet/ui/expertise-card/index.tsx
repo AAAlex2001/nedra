@@ -7,6 +7,7 @@ import {
   type ExpertCatalog,
 } from "@/entities/expert";
 import {
+  CONTRACT_KIND_LABELS,
   DEADLINE_LABELS,
   EXPERTISE_RESULT_LABELS,
   EXPERTISE_STATUS_LABELS,
@@ -40,6 +41,8 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
     (item) => item.kind === "revision" && !shownInRemarks.has(item.id),
   );
   const conclusion = documents.filter((item) => item.kind === "conclusion");
+  const contract = documents.filter((item) => item.kind === "contract" || item.kind === "nda");
+  const company = expertise.company;
 
   return (
     <article className={styles.card}>
@@ -65,6 +68,19 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
       <ExpertiseProgress expertise={expertise} />
 
       <DetailsTable>
+        {expertise.object_name && (
+          <DetailsRow label="Документация">{expertise.object_name}</DetailsRow>
+        )}
+        <DetailsRow label="Вид договора">
+          {expertise.contract_kind
+            ? CONTRACT_KIND_LABELS[expertise.contract_kind]
+            : "Определит эксперт"}
+        </DetailsRow>
+        {company && (
+          <DetailsRow label="Организация">
+            {company.name}, ИНН {company.inn}
+          </DetailsRow>
+        )}
         <DetailsRow label="Область аттестации">
           {expertise.area_code ? (
             <>
@@ -94,7 +110,12 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
             <span className={styles.comment}>{expertise.comment}</span>
           </DetailsRow>
         )}
-        <DetailsRow label="Документация">
+        {contract.length > 0 && (
+          <DetailsRow label="Договор">
+            <FilesList expertiseId={expertise.id} documents={contract} />
+          </DetailsRow>
+        )}
+        <DetailsRow label="Файлы документации">
           <FilesList expertiseId={expertise.id} documents={documentation} />
         </DetailsRow>
         {revisions.length > 0 && (

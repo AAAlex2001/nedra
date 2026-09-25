@@ -12,7 +12,7 @@ type CertificatePayload = {
   object_code: string;
   category: number | null;
   valid_until: string;
-  scan_index: number | null;
+  number: string;
 };
 
 const buildFormData = (
@@ -20,25 +20,13 @@ const buildFormData = (
   directions: string[],
   certificates: CertificateItem[],
 ): FormData => {
-  const scans: File[] = [];
-  const certificatesPayload: CertificatePayload[] = [];
-
-  for (const item of certificates) {
-    let scanIndex: number | null = null;
-
-    if (item.scan) {
-      scanIndex = scans.length;
-      scans.push(item.scan);
-    }
-
-    certificatesPayload.push({
-      area_code: item.areaCode,
-      object_code: item.objectCode,
-      category: item.category,
-      valid_until: item.validUntil,
-      scan_index: scanIndex,
-    });
-  }
+  const certificatesPayload: CertificatePayload[] = certificates.map((item) => ({
+    area_code: item.areaCode,
+    object_code: item.objectCode,
+    category: item.category,
+    valid_until: item.validUntil,
+    number: item.number.trim(),
+  }));
 
   const payload = {
     email: fields ? fields.email.trim() : null,
@@ -51,10 +39,6 @@ const buildFormData = (
 
   const formData = new FormData();
   formData.append("payload", JSON.stringify(payload));
-
-  for (const scan of scans) {
-    formData.append("scans", scan);
-  }
 
   return formData;
 };
@@ -82,7 +66,7 @@ export const useExpertApplication = (catalog: ExpertCatalog) => {
   const selectObject = (code: string) => dispatch({ type: "draft/object", code });
   const selectCategory = (category: number) => dispatch({ type: "draft/category", category });
   const changeDate = (value: string) => dispatch({ type: "draft/date", value });
-  const changeScan = (file: File | null) => dispatch({ type: "draft/scan", file });
+  const changeNumber = (value: string) => dispatch({ type: "draft/number", value });
 
   const addCertificate = () => dispatch({ type: "certificate/add" });
   const removeCertificate = (key: number) => dispatch({ type: "certificate/remove", key });
@@ -115,7 +99,7 @@ export const useExpertApplication = (catalog: ExpertCatalog) => {
     selectObject,
     selectCategory,
     changeDate,
-    changeScan,
+    changeNumber,
     addCertificate,
     removeCertificate,
     closeSuccess,

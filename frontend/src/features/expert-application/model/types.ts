@@ -10,7 +10,7 @@ export type CertificateDraft = {
   objectCode: string;
   category: number | null;
   validUntil: string;
-  scan: File | null;
+  number: string;
 };
 
 export type CertificateItem = CertificateDraft & {
@@ -36,7 +36,7 @@ export type ApplicationFormAction =
   | { type: "draft/object"; code: string }
   | { type: "draft/category"; category: number }
   | { type: "draft/date"; value: string }
-  | { type: "draft/scan"; file: File | null }
+  | { type: "draft/number"; value: string }
   | { type: "certificate/add" }
   | { type: "certificate/remove"; key: number }
   | { type: "submit/start" }

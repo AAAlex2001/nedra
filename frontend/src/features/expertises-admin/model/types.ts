@@ -1,4 +1,9 @@
-import type { Deadline, ExpertiseStatus } from "@/entities/expertise";
+import type {
+  ContractKind,
+  Deadline,
+  ExpertiseCompany,
+  ExpertiseStatus,
+} from "@/entities/expertise";
 
 export type ExpertiseAdminRecord = {
   id: number;
@@ -11,6 +16,9 @@ export type ExpertiseAdminRecord = {
   hazard_class: number | null;
   expert_category: number | null;
   deadline: Deadline | null;
+  object_name: string | null;
+  contract_kind: ContractKind | null;
+  company: ExpertiseCompany | null;
   comment: string | null;
   status: ExpertiseStatus;
   price: string | null;

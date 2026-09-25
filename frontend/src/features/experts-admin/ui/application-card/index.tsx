@@ -173,7 +173,8 @@ const ApplicationCard = ({
                 </span>
                 <span className={styles.meta}>{formatCategory(item.category)}</span>
                 <span className={styles.meta}>до {formatDate(item.valid_until)}</span>
-                {item.scan_name ? (
+                {item.number && <span className={styles.meta}>№ {item.number}</span>}
+                {item.scan_name && (
                   <a
                     className={styles.scanLink}
                     href={scanUrl(basePath, application.id, item.id)}
@@ -182,8 +183,6 @@ const ApplicationCard = ({
                   >
                     Скан
                   </a>
-                ) : (
-                  <span className={styles.noScan}>без скана</span>
                 )}
               </div>
               {catalog && (

@@ -1,45 +1,5 @@
 import { API_URL, readErrorMessage } from "@/shared/api";
-import type {
-  Act,
-  Company,
-  CompanyDraft,
-  Invoice,
-  PaymentDocumentKind,
-} from "../model/types";
-
-export const fetchCompany = async (): Promise<Company | null> => {
-  const response = await fetch(`${API_URL}/v1/me/company`, {
-    credentials: "include",
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const company: Company | null = await response.json();
-
-  return company;
-};
-
-export const saveCompany = async (draft: CompanyDraft): Promise<Company> => {
-  const response = await fetch(`${API_URL}/v1/me/company`, {
-    method: "PUT",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(draft),
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const company: Company = await response.json();
-
-  return company;
-};
+import type { Act, Invoice, PaymentDocumentKind } from "../model/types";
 
 export const fetchInvoices = async (): Promise<Invoice[]> => {
   const response = await fetch(`${API_URL}/v1/invoices`, {

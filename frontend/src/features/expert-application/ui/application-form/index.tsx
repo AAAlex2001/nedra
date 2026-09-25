@@ -30,7 +30,7 @@ const ExpertApplicationForm = ({ catalog }: ExpertApplicationFormProps) => {
     selectObject,
     selectCategory,
     changeDate,
-    changeScan,
+    changeNumber,
     addCertificate,
     removeCertificate,
     closeSuccess,
@@ -121,7 +121,7 @@ const ExpertApplicationForm = ({ catalog }: ExpertApplicationFormProps) => {
         <h2 className={styles.sectionTitle}>Удостоверения</h2>
         <p className={styles.sectionText}>
           Для каждого удостоверения укажите область аттестации, объект экспертизы,
-          категорию и срок действия.
+          категорию, срок действия и номер удостоверения или регистрации в ЕРУЛ.
         </p>
 
         <CertificateBuilder
@@ -134,7 +134,7 @@ const ExpertApplicationForm = ({ catalog }: ExpertApplicationFormProps) => {
           onObject={selectObject}
           onCategory={selectCategory}
           onDate={changeDate}
-          onScan={changeScan}
+          onNumber={changeNumber}
           onAdd={addCertificate}
         />
 

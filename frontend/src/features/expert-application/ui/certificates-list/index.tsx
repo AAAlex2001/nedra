@@ -24,7 +24,7 @@ const CertificatesList = ({ catalog, items, onRemove }: CertificatesListProps) =
             {item.category !== null && formatCategory(item.category)} · до{" "}
             {formatDate(item.validUntil)}
           </span>
-          <span className={styles.scan}>{item.scan ? item.scan.name : "без скана"}</span>
+          <span className={styles.number}>№ {item.number}</span>
           <button
             type="button"
             className={styles.remove}

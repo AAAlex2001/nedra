@@ -20,6 +20,60 @@ export const DEADLINE_LABELS: Record<Deadline, string> = {
   any: "Неважно",
 };
 
+export type ContractKind =
+  | "justification"
+  | "reequipment"
+  | "conservation"
+  | "liquidation"
+  | "declaration";
+
+export const CONTRACT_KIND_LABELS: Record<ContractKind, string> = {
+  justification: "Обоснование безопасности",
+  reequipment: "Техническое перевооружение",
+  conservation: "Консервация",
+  liquidation: "Ликвидация",
+  declaration: "Декларация промышленной безопасности",
+};
+
+const ALL_CONTRACT_KINDS: ContractKind[] = [
+  "conservation",
+  "liquidation",
+  "reequipment",
+  "declaration",
+  "justification",
+];
+
+const CONTRACT_KINDS_BY_OBJECT: Record<string, ContractKind[]> = {
+  kl: ["conservation", "liquidation"],
+  tp: ["reequipment"],
+  kl_tp: ["conservation", "liquidation", "reequipment"],
+  d: ["declaration"],
+  ob: ["justification"],
+};
+
+export const contractKindsFor = (objectCode: string | null): ContractKind[] =>
+  objectCode ? (CONTRACT_KINDS_BY_OBJECT[objectCode] ?? ALL_CONTRACT_KINDS) : ALL_CONTRACT_KINDS;
+
+export const cardPaymentAllowed = (expertise: Expertise): boolean =>
+  expertise.contract_kind !== "declaration";
+
+export type ExpertiseCompany = {
+  full_name: string;
+  name: string;
+  inn: string;
+  kpp: string | null;
+  ogrn: string;
+  address: string;
+  bank: string;
+  bic: string;
+  account: string;
+  corr_account: string;
+  signer_position: string;
+  signer_name: string;
+  signer_genitive: string;
+  signer_basis: string;
+};
+
 export type PaymentStatus = "pending" | "waiting_for_capture" | "succeeded" | "canceled";
 
 export type ExpertisePayment = {
@@ -67,6 +121,9 @@ export type Expertise = {
   hazard_class: number | null;
   expert_category: number | null;
   deadline: Deadline | null;
+  object_name: string | null;
+  contract_kind: ContractKind | null;
+  company: ExpertiseCompany | null;
   comment: string | null;
   status: ExpertiseStatus;
   result: ExpertiseResult | null;

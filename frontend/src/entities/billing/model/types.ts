@@ -2,21 +2,6 @@ export type InvoiceStage = "advance" | "final";
 
 export type PaymentDocumentKind = "payment_order" | "guarantee_letter";
 
-export type Company = {
-  name: string;
-  inn: string;
-  kpp: string | null;
-  address: string;
-  updated_at: string;
-};
-
-export type CompanyDraft = {
-  name: string;
-  inn: string;
-  kpp: string | null;
-  address: string;
-};
-
 export type Invoice = {
   id: number;
   number: string;

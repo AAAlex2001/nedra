@@ -5,7 +5,7 @@ export const EMPTY_DRAFT: CertificateDraft = {
   objectCode: "",
   category: null,
   validUntil: "",
-  scan: null,
+  number: "",
 };
 
 export const INITIAL_STATE: ApplicationFormState = {
@@ -22,7 +22,8 @@ export const isDraftComplete = (draft: CertificateDraft): boolean =>
   draft.areaCode !== "" &&
   draft.objectCode !== "" &&
   draft.category !== null &&
-  draft.validUntil !== "";
+  draft.validUntil !== "" &&
+  draft.number.trim() !== "";
 
 export const applicationFormReducer = (
   state: ApplicationFormState,
@@ -57,8 +58,8 @@ export const applicationFormReducer = (
     case "draft/date":
       return { ...state, draft: { ...state.draft, validUntil: action.value } };
 
-    case "draft/scan":
-      return { ...state, draft: { ...state.draft, scan: action.file } };
+    case "draft/number":
+      return { ...state, draft: { ...state.draft, number: action.value } };
 
     case "certificate/add": {
       if (!isDraftComplete(state.draft)) return state;

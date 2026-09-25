@@ -35,6 +35,7 @@ export type Certificate = {
   object_code: string;
   category: number;
   valid_until: string;
+  number: string | null;
   scan_name: string | null;
 };
 

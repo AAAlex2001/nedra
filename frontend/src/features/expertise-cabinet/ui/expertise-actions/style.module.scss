@@ -84,9 +84,31 @@
   cursor: default;
 }
 
+.secondaryActive {
+  color: #b86108;
+  border-color: #f69827;
+}
+
+.payment {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.payCard {
+  width: 100%;
+}
+
 .proof {
   width: 100%;
 
+  background: #fff;
   border: 1px solid #eceef3;
   border-radius: 12px;
 }
@@ -136,7 +158,13 @@
     width: auto;
   }
 
-  .primary {
-    width: 100%;
+  .payButtons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .payCard {
+    width: auto;
   }
 }
