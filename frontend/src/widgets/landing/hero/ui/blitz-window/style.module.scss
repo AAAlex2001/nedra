@@ -223,8 +223,16 @@
   color: #6b6f78;
 }
 
-.cta {
+.window .cta {
   width: 100%;
+
+  background: #9db0fc;
+  border-color: #9db0fc;
+}
+
+.window .cta:hover {
+  background: #8aa0f5;
+  border-color: #8aa0f5;
 }
 
 @media (min-width: 768px) {

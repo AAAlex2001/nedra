@@ -16,11 +16,32 @@
 
   width: min(728px, calc(100% - 40px));
 
-  transform: translateX(-50%);
+  transform: translate(-50%, 24px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 
   background: #fff;
   border: 1px solid #e9ecf1;
   border-radius: 100px;
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0.3s;
+}
+
+.barVisible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    transition: none;
+  }
 }
 
 .icon {
@@ -63,6 +84,14 @@
 .bar .button {
   flex: none;
   padding: 10px 14px;
+
+  background: #9db0fc;
+  border-color: #9db0fc;
+}
+
+.bar .button:hover {
+  background: #8aa0f5;
+  border-color: #8aa0f5;
 }
 
 @media (max-width: 767px) {
