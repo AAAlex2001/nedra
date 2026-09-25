@@ -1,4 +1,4 @@
-"""Счета и акты для заказчика: реквизиты, выставление счёта, печать PDF."""
+"""Счета и акты для заказчика: выставление счёта, заявление об оплате, печать PDF."""
 
 from urllib.parse import quote
 
@@ -16,34 +16,25 @@ from fastapi import (
 
 from app.services.files.storage import UploadError
 from app.dependencies.billing import (
-    get_company_repository,
     get_invoice_repository,
     get_issue_invoice_usecase,
     get_report_payment_usecase,
-    get_save_company_usecase,
 )
 from app.dependencies.expertise import get_expertise_repository, get_visible_expertise
 from app.dependencies.users import require_customer
 from app.models.billing import Invoice, InvoiceStage
 from app.models.expertise import Expertise, ExpertiseStatus
 from app.models.user import User
-from app.schemas.billing import (
-    ActOutSchema,
-    CompanyInSchema,
-    CompanyOutSchema,
-    InvoiceOutSchema,
-)
+from app.schemas.billing import ActOutSchema, InvoiceOutSchema
 from app.services.billing.exceptions import (
     CompanyRequiredError,
-    InvalidCompanyError,
     InvoiceAlreadyPaidError,
     InvoiceNotFoundError,
 )
 from app.services.billing.letters import send_invoice_reported_letter
-from app.services.billing.repo import CustomerCompanyRepository, InvoiceRepository
+from app.services.billing.repo import InvoiceRepository
 from app.services.billing.usecases.issue_invoice import IssueInvoiceUseCase
 from app.services.billing.usecases.report_payment import ReportInvoicePaidUseCase
-from app.services.billing.usecases.save_company import SaveCustomerCompanyUseCase
 from app.services.documents.act_pdf import act_filename, act_number, build_act_pdf
 from app.services.contracts.executors import executor_for, executor_requisites
 from app.services.documents.company import (
@@ -130,34 +121,6 @@ def load_company_requisites(expertise: Expertise) -> CompanyRequisites:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Реквизиты организации не настроены, обратитесь к администратору",
         ) from error
-
-
-@router.get("/me/company")
-async def get_company(
-    customer: User = Depends(require_customer),
-    companies: CustomerCompanyRepository = Depends(get_company_repository),
-) -> CompanyOutSchema | None:
-    """Реквизиты организации заказчика. Пусто, если он их ещё не заполнял."""
-
-    company = await companies.get_by_user(customer.id)
-
-    return CompanyOutSchema.model_validate(company) if company else None
-
-
-@router.put("/me/company")
-async def save_company(
-    payload: CompanyInSchema,
-    customer: User = Depends(require_customer),
-    usecase: SaveCustomerCompanyUseCase = Depends(get_save_company_usecase),
-) -> CompanyOutSchema:
-    """Сохранить реквизиты организации: по ним выставляются счета и акты."""
-
-    try:
-        company = await usecase.execute(customer, payload)
-    except InvalidCompanyError as error:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
-
-    return CompanyOutSchema.model_validate(company)
 
 
 @router.get("/invoices")
@@ -277,7 +240,6 @@ async def list_acts(
 async def download_act(
     expertise: Expertise = Depends(get_visible_expertise),
     customer: User = Depends(require_customer),
-    companies: CustomerCompanyRepository = Depends(get_company_repository),
 ) -> Response:
     """Акт выполненных работ в PDF. Доступен после приёмки работы."""
 
@@ -287,11 +249,10 @@ async def download_act(
     if expertise.status != ExpertiseStatus.ACCEPTED:
         raise HTTPException(status.HTTP_409_CONFLICT, "Акт готовится после приёмки работы")
 
-    payer = expertise.company or await companies.get_by_user(customer.id)
+    payer = expertise.company
     if payer is None:
         raise HTTPException(
-            status.HTTP_422_UNPROCESSABLE_ENTITY,
-            "Заполните реквизиты организации в разделе «Мои данные»",
+            status.HTTP_422_UNPROCESSABLE_ENTITY, "В заявке нет реквизитов заказчика"
         )
 
     company = load_company_requisites(expertise)

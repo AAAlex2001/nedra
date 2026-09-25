@@ -19,31 +19,12 @@ class InvoiceStage(StrEnum):
     FINAL = "final"
 
 
-class CustomerCompany(Base):
-    """Реквизиты организации заказчика. Печатаются в счёте и акте."""
-
-    __tablename__ = "customer_companies"
-
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
-    )
-
-    name: Mapped[str] = mapped_column(String(255))
-    inn: Mapped[str] = mapped_column(String(12))
-    kpp: Mapped[str | None] = mapped_column(String(9))
-    address: Mapped[str] = mapped_column(String(500))
-
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
-    )
-
-
 class Invoice(Base):
     """Счёт на оплату этапа экспертизы для юридического лица.
 
-    Реквизиты плательщика копируются в счёт при выставлении: выставленный
-    документ не должен меняться, если заказчик потом поправит профиль.
-    Оплату подтверждает администратор, когда деньги пришли на счёт.
+    Реквизиты плательщика копируются в счёт из заявки при выставлении:
+    выставленный документ не должен меняться. Оплату подтверждает
+    администратор, когда деньги пришли на счёт.
     """
 
     __tablename__ = "invoices"

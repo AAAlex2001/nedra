@@ -7,7 +7,6 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from app.models.billing import CustomerCompany
 from app.models.expertise import Expertise, ExpertiseCompany
 from app.services.documents.company import CompanyRequisites
 from app.services.documents.fonts import register_fonts
@@ -40,7 +39,7 @@ def act_filename(expertise: Expertise) -> str:
 
 def build_act_pdf(
     expertise: Expertise,
-    payer: ExpertiseCompany | CustomerCompany,
+    payer: ExpertiseCompany,
     subject: str,
     company: CompanyRequisites,
 ) -> bytes:

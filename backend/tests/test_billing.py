@@ -6,12 +6,11 @@ from decimal import Decimal
 
 import pytest
 
-from app.models.billing import CustomerCompany, Invoice, InvoiceStage
-from app.models.expertise import Expertise, ExpertiseStatus
+from app.models.billing import Invoice, InvoiceStage
+from app.models.expertise import Expertise, ExpertiseCompany, ExpertiseStatus
 from app.models.notification import Notification
 from app.models.user import User, UserRole
 from app.routers.billing import pdf_response
-from app.schemas.billing import CompanyInSchema
 from app.services.billing.exceptions import (
     CompanyRequiredError,
     InvalidCompanyError,
@@ -21,7 +20,6 @@ from app.services.billing.exceptions import (
 from app.services.billing.usecases.confirm_invoice import ConfirmInvoiceUseCase
 from app.services.billing.usecases.issue_invoice import IssueInvoiceUseCase
 from app.services.billing.usecases.report_payment import ReportInvoicePaidUseCase
-from app.services.billing.usecases.save_company import SaveCustomerCompanyUseCase
 from app.services.billing.validators import normalize_inn, normalize_kpp
 from app.services.files.storage import StoredFile
 from app.services.documents.act_pdf import build_act_pdf
@@ -31,18 +29,6 @@ from app.services.documents.invoice_pdf import build_invoice_pdf
 from app.services.documents.layout import amount_in_words, format_amount, vat_included, vat_text
 from app.services.expertise.exceptions import ExpertiseStateError, PriceMissingError
 from app.services.expertise.stages import current_stage, mark_stage_paid
-
-
-class FakeCompanyRepository:
-    def __init__(self, company: CustomerCompany | None = None) -> None:
-        self.company = company
-
-    async def get_by_user(self, user_id: int) -> CustomerCompany | None:
-        return self.company
-
-    async def save(self, company: CustomerCompany) -> CustomerCompany:
-        self.company = company
-        return company
 
 
 class FakeInvoiceRepository:
@@ -111,9 +97,22 @@ def make_customer() -> User:
     return user
 
 
-def make_company() -> CustomerCompany:
-    return CustomerCompany(
-        user_id=1, name="ООО «Ромашка»", inn="7701234567", kpp="770101001", address="Москва"
+def make_company() -> ExpertiseCompany:
+    return ExpertiseCompany(
+        full_name="Общество с ограниченной ответственностью «Ромашка»",
+        name="ООО «Ромашка»",
+        inn="7701234567",
+        kpp="770101001",
+        ogrn="1027700000000",
+        address="Москва",
+        bank="Банк",
+        bic="044525000",
+        account="40702810000000000001",
+        corr_account="30101810000000000001",
+        signer_position="Генеральный директор",
+        signer_name="Иванов Иван Иванович",
+        signer_genitive="генерального директора Иванова Ивана Ивановича",
+        signer_basis="Устава",
     )
 
 
@@ -122,12 +121,13 @@ def make_expertise(status: ExpertiseStatus, price: Decimal | None = Decimal("200
         customer_id=1,
         expert_id=10,
         object_code="kl",
-        area_code="Р­4",
+        area_code="Э4",
         expert_category=2,
         status=status,
         price=price,
     )
     expertise.id = 1
+    expertise.company = make_company()
     return expertise
 
 
@@ -145,23 +145,9 @@ def test_normalize_requisites() -> None:
         normalize_kpp("12345")
 
 
-def test_save_company_normalizes() -> None:
-    repo = FakeCompanyRepository()
-    usecase = SaveCustomerCompanyUseCase(repo)
-    data = CompanyInSchema(
-        name="  ООО «Ромашка» ", inn="77 0123 4567", kpp="770101001", address=" Москва "
-    )
-
-    company = asyncio.run(usecase.execute(make_customer(), data))
-
-    assert company.name == "ООО «Ромашка»"
-    assert company.inn == "7701234567"
-    assert company.address == "Москва"
-
-
 def test_issue_invoice_splits_amount_and_reuses_unpaid() -> None:
     invoices = FakeInvoiceRepository()
-    usecase = IssueInvoiceUseCase(invoices, FakeCompanyRepository(make_company()))
+    usecase = IssueInvoiceUseCase(invoices)
     expertise = make_expertise(ExpertiseStatus.CONTRACT)
     customer = make_customer()
 
@@ -185,11 +171,12 @@ def test_issue_invoice_requires_company_price_and_stage() -> None:
     invoices = FakeInvoiceRepository()
     customer = make_customer()
 
-    without_company = IssueInvoiceUseCase(invoices, FakeCompanyRepository())
-    with pytest.raises(CompanyRequiredError):
-        asyncio.run(without_company.execute(customer, make_expertise(ExpertiseStatus.CONTRACT)))
+    usecase = IssueInvoiceUseCase(invoices)
 
-    usecase = IssueInvoiceUseCase(invoices, FakeCompanyRepository(make_company()))
+    without_company = make_expertise(ExpertiseStatus.CONTRACT)
+    without_company.company = None
+    with pytest.raises(CompanyRequiredError):
+        asyncio.run(usecase.execute(customer, without_company))
 
     with pytest.raises(PriceMissingError):
         asyncio.run(usecase.execute(customer, make_expertise(ExpertiseStatus.CONTRACT, None)))
@@ -202,7 +189,7 @@ def test_confirm_invoice_moves_expertise_once() -> None:
     invoices = FakeInvoiceRepository()
     expertise = make_expertise(ExpertiseStatus.CONTRACT)
     notifications = FakeNotificationRepository()
-    issue = IssueInvoiceUseCase(invoices, FakeCompanyRepository(make_company()))
+    issue = IssueInvoiceUseCase(invoices)
     invoice = asyncio.run(issue.execute(make_customer(), expertise))
 
     confirm = ConfirmInvoiceUseCase(
@@ -239,7 +226,7 @@ def test_documents_build_pdf() -> None:
         pytest.skip("на этой машине нет шрифта с кириллицей")
 
     company = CompanyRequisites(
-        name="РћРћРћ В«РќРџР В«РќРµРґСЂР°В»",
+        name="ООО «НПИ «Недра»",
         inn="5400000000",
         kpp="540001001",
         address="Новосибирск",
@@ -247,7 +234,7 @@ def test_documents_build_pdf() -> None:
         bic="040000000",
         account="40702810000000000000",
         corr_account="30101810000000000000",
-        director="РРІР°РЅРѕРІ Р. Р.",
+        director="Самохин С. В.",
         vat_rate=7,
     )
     expertise = make_expertise(ExpertiseStatus.ACCEPTED)
@@ -285,7 +272,7 @@ def test_customer_reports_payment_once() -> None:
     invoices = FakeInvoiceRepository()
     customer = make_customer()
 
-    issue = IssueInvoiceUseCase(invoices, FakeCompanyRepository(make_company()))
+    issue = IssueInvoiceUseCase(invoices)
     invoice = asyncio.run(issue.execute(customer, expertise))
 
     usecase = ReportInvoicePaidUseCase(
@@ -308,7 +295,7 @@ def test_customer_attaches_guarantee_letter() -> None:
     invoices = FakeInvoiceRepository()
     customer = make_customer()
 
-    issue = IssueInvoiceUseCase(invoices, FakeCompanyRepository(make_company()))
+    issue = IssueInvoiceUseCase(invoices)
     invoice = asyncio.run(issue.execute(customer, expertise))
 
     usecase = ReportInvoicePaidUseCase(
@@ -329,7 +316,7 @@ def test_payment_document_kind_defaults_to_payment_order() -> None:
     invoices = FakeInvoiceRepository()
     customer = make_customer()
 
-    issue = IssueInvoiceUseCase(invoices, FakeCompanyRepository(make_company()))
+    issue = IssueInvoiceUseCase(invoices)
     invoice = asyncio.run(issue.execute(customer, expertise))
 
     usecase = ReportInvoicePaidUseCase(

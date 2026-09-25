@@ -1,30 +1,9 @@
 from datetime import datetime
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 from app.models.billing import InvoiceStage
-
-
-class CompanyInSchema(BaseModel):
-    """Реквизиты организации заказчика из формы в кабинете."""
-
-    name: str = Field(..., min_length=2, max_length=255, description="Название организации")
-    inn: str = Field(..., min_length=10, max_length=12, description="ИНН")
-    kpp: str | None = Field(None, max_length=9, description="КПП, у предпринимателя его нет")
-    address: str = Field(..., min_length=5, max_length=500, description="Юридический адрес")
-
-
-class CompanyOutSchema(BaseModel):
-    """Реквизиты организации наружу."""
-
-    model_config = ConfigDict(from_attributes=True)
-
-    name: str
-    inn: str
-    kpp: str | None
-    address: str
-    updated_at: datetime
 
 
 class InvoiceOutSchema(BaseModel):

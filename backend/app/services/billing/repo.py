@@ -1,35 +1,14 @@
-"""Репозитории биллинга: реквизиты заказчиков и счета."""
+"""Репозиторий счетов."""
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.billing import CustomerCompany, Invoice
+from app.models.billing import Invoice
 from app.models.expertise import Expertise
 
 
-class CustomerCompanyRepository:
-    """Доступ к таблице customer_companies. Сессию получает снаружи, коммитит сам."""
-
-    def __init__(self, db: AsyncSession) -> None:
-        self.db = db
-
-    async def get_by_user(self, user_id: int) -> CustomerCompany | None:
-        """Реквизиты заказчика или None, если он их не заполнял."""
-
-        return await self.db.get(CustomerCompany, user_id)
-
-    async def save(self, company: CustomerCompany) -> CustomerCompany:
-        """Сохранить новые или изменённые реквизиты."""
-
-        self.db.add(company)
-        await self.db.commit()
-        await self.db.refresh(company)
-
-        return company
-
-
 class InvoiceRepository:
-    """Доступ к таблице invoices."""
+    """Доступ к таблице invoices. Сессию получает снаружи, коммитит сам."""
 
     def __init__(self, db: AsyncSession) -> None:
         self.db = db

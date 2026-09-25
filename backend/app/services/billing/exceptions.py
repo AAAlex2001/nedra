@@ -6,7 +6,7 @@ class InvalidCompanyError(ValueError):
 
 
 class CompanyRequiredError(Exception):
-    """Счёт нельзя выставить, пока заказчик не заполнил реквизиты организации."""
+    """Счёт нельзя выставить: в заявке нет реквизитов заказчика."""
 
 
 class InvoiceNotFoundError(LookupError):

@@ -1,10 +1,10 @@
 """Сценарий выставления счёта на оплату этапа экспертизы."""
 
-from app.models.billing import Invoice
+from app.models.billing import Invoice, InvoiceStage
 from app.models.expertise import Expertise
 from app.models.user import User
 from app.services.billing.exceptions import CompanyRequiredError
-from app.services.billing.repo import CustomerCompanyRepository, InvoiceRepository
+from app.services.billing.repo import InvoiceRepository
 from app.services.expertise.exceptions import (
     ExpertiseAccessError,
     ExpertiseStateError,
@@ -12,24 +12,18 @@ from app.services.expertise.exceptions import (
 )
 from app.services.expertise.money import split_price
 from app.services.expertise.stages import current_stage
-from app.models.billing import InvoiceStage
 
 
 class IssueInvoiceUseCase:
     """Выставить счёт на текущий этап: аванс или остаток.
 
-    Плательщик — организация из заявки. У заявок, поданных до появления
-    реквизитов в заявке, берём организацию из профиля. Реквизиты копируются
-    в счёт: выставленный документ не меняется, даже если их потом поправят.
-    Пока счёт не оплачен, повторный запрос отдаёт тот же документ, а не плодит
-    новые номера.
+    Плательщик — организация из заявки. Реквизиты копируются в счёт:
+    выставленный документ не меняется. Пока счёт не оплачен, повторный
+    запрос отдаёт тот же документ, а не плодит новые номера.
     """
 
-    def __init__(
-        self, invoices: InvoiceRepository, companies: CustomerCompanyRepository
-    ) -> None:
+    def __init__(self, invoices: InvoiceRepository) -> None:
         self.invoices = invoices
-        self.companies = companies
 
     async def execute(self, customer: User, expertise: Expertise) -> Invoice:
         """Бросает ExpertiseAccessError, ExpertiseStateError, PriceMissingError, CompanyRequiredError."""
@@ -44,9 +38,9 @@ class IssueInvoiceUseCase:
         if stage is None:
             raise ExpertiseStateError("Сейчас платить нечего")
 
-        company = expertise.company or await self.companies.get_by_user(customer.id)
+        company = expertise.company
         if company is None:
-            raise CompanyRequiredError("Заполните реквизиты организации в разделе «Мои данные»")
+            raise CompanyRequiredError("В заявке нет реквизитов заказчика")
 
         existing = await self.invoices.get_unpaid_for_stage(expertise.id, stage)
         if existing is not None:

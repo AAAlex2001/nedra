@@ -7,8 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_session
 from app.dependencies.admin import require_admin
 from app.dependencies.users import get_user_repository
-from app.models.billing import CustomerCompany
-from app.models.expertise import Expertise
+from app.models.expertise import Expertise, ExpertiseCompany
 from app.models.user import UserRole
 from app.schemas.user import CustomerOutSchema
 from app.services.users.repo import UserRepository
@@ -29,12 +28,20 @@ async def count_expertises(db: AsyncSession) -> dict[int, int]:
     return {customer_id: total for customer_id, total in result.all()}
 
 
-async def load_companies(db: AsyncSession) -> dict[int, CustomerCompany]:
-    """Реквизиты организаций по id заказчика. Тоже одним запросом."""
+async def load_companies(db: AsyncSession) -> dict[int, ExpertiseCompany]:
+    """Организация из последней заявки каждого заказчика. Тоже одним запросом.
 
-    result = await db.execute(select(CustomerCompany))
+    Заявки идут от старых к новым, поэтому в словаре остаётся самая свежая.
+    """
 
-    return {company.user_id: company for company in result.scalars().all()}
+    stmt = (
+        select(Expertise.customer_id, ExpertiseCompany)
+        .join(ExpertiseCompany, ExpertiseCompany.expertise_id == Expertise.id)
+        .order_by(Expertise.created_at)
+    )
+    result = await db.execute(stmt)
+
+    return {customer_id: company for customer_id, company in result.all()}
 
 
 @router.get("")
@@ -42,7 +49,7 @@ async def list_customers(
     users: UserRepository = Depends(get_user_repository),
     db: AsyncSession = Depends(get_session),
 ) -> list[CustomerOutSchema]:
-    """Заказчики с реквизитами и числом поданных заявок, новые сверху."""
+    """Заказчики с организацией из последней заявки и числом заявок, новые сверху."""
 
     accounts = await users.list_by_role(UserRole.CUSTOMER)
     totals = await count_expertises(db)
