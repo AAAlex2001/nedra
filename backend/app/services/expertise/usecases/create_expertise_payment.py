@@ -3,6 +3,7 @@
 from app.models.expertise import Expertise, ExpertiseStatus
 from app.models.payment import Payment, PaymentStatus
 from app.models.user import User
+from app.services.contracts.executors import executor_for
 from app.services.expertise.exceptions import (
     ExpertiseAccessError,
     ExpertiseStateError,
@@ -19,7 +20,8 @@ class CreateExpertisePaymentUseCase:
 
     Какой этап платить, решает статус: contract — аванс, conclusion_ready — остаток.
     Если для этапа уже есть неоплаченный платёж со ссылкой, возвращаем его,
-    а не плодим новые.
+    а не плодим новые. Касса принадлежит «Недрам», поэтому по договорам
+    с другим исполнителем картой платить нельзя.
     """
 
     def __init__(
@@ -40,6 +42,9 @@ class CreateExpertisePaymentUseCase:
 
         if expertise.price is None:
             raise PriceMissingError("Стоимость экспертизы не задана")
+
+        if not executor_for(expertise.contract_kind).card_payment:
+            raise ExpertiseStateError("По этому договору оплата только по счёту исполнителя")
 
         advance, final = split_price(expertise.price)
 

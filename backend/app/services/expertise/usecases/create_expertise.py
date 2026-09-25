@@ -4,10 +4,23 @@ from dataclasses import dataclass
 
 from fastapi import UploadFile
 
-from app.models.expertise import Expertise, ExpertiseDocument, ExpertiseStatus
+from app.models.expertise import (
+    Expertise,
+    ExpertiseCompany,
+    ExpertiseDocument,
+    ExpertiseStatus,
+)
 from app.models.notification import Notification
 from app.models.user import User
-from app.schemas.expertise import ExpertiseInSchema
+from app.schemas.expertise import ExpertiseCompanyInSchema, ExpertiseInSchema
+from app.services.billing.validators import (
+    normalize_account,
+    normalize_bic,
+    normalize_inn,
+    normalize_kpp,
+    normalize_ogrn,
+)
+from app.services.contracts.kinds import resolve_kind
 from app.services.experts.repo import ExpertProfileRepository
 from app.services.expertise.exceptions import InvalidExpertiseError
 from app.services.expertise.repo import ExpertiseRepository
@@ -57,10 +70,12 @@ class CreateExpertiseUseCase:
         files: list[UploadFile],
         company_card: UploadFile | None = None,
     ) -> CreatedExpertise:
-        """Создать экспертизу. Бросает InvalidExpertiseError и UploadError."""
+        """Создать экспертизу. Бросает InvalidExpertiseError, InvalidCompanyError и UploadError."""
 
         validate_pair(data.object_code, data.area_code)
         category = resolve_category(data.hazard_class, data.expert_category)
+        contract_kind = resolve_kind(data.object_code, data.contract_kind)
+        company = build_company(data.company)
 
         if not files:
             raise InvalidExpertiseError("Приложите хотя бы один файл документации")
@@ -77,9 +92,12 @@ class CreateExpertiseUseCase:
             hazard_class=data.hazard_class,
             expert_category=category,
             deadline=data.deadline,
+            object_name=data.object_name.strip(),
+            contract_kind=contract_kind,
             comment=data.comment.strip() if data.comment else None,
             status=ExpertiseStatus.NEW,
             price=price,
+            company=company,
         )
 
         for file in files:
@@ -127,6 +145,27 @@ class CreateExpertiseUseCase:
         saved = await self.expertises.add(expertise)
 
         return CreatedExpertise(expertise=saved, notified_experts=experts)
+
+
+def build_company(data: ExpertiseCompanyInSchema) -> ExpertiseCompany:
+    """Реквизиты заказчика для заявки: цифровые поля без пробелов и с проверкой длины."""
+
+    return ExpertiseCompany(
+        full_name=data.full_name.strip(),
+        name=data.name.strip(),
+        inn=normalize_inn(data.inn),
+        kpp=normalize_kpp(data.kpp),
+        ogrn=normalize_ogrn(data.ogrn),
+        address=data.address.strip(),
+        bank=data.bank.strip(),
+        bic=normalize_bic(data.bic),
+        account=normalize_account(data.account, "Расчётный счёт"),
+        corr_account=normalize_account(data.corr_account, "Корреспондентский счёт"),
+        signer_position=data.signer_position.strip(),
+        signer_name=data.signer_name.strip(),
+        signer_genitive=data.signer_genitive.strip(),
+        signer_basis=data.signer_basis.strip(),
+    )
 
 
 def notification_text(area_code: str | None) -> str:

@@ -75,10 +75,11 @@ def get_accept_expertise_usecase(
 def get_confirm_expertise_usecase(
     expertises: ExpertiseRepository = Depends(get_expertise_repository),
     notifications: NotificationRepository = Depends(get_notification_repository),
+    storage: PrivateStorage = Depends(get_private_storage),
 ) -> ConfirmExpertiseUseCase:
-    """Сценарий «заказчик готов оплатить»."""
+    """Сценарий «заказчик подписал договор»."""
 
-    return ConfirmExpertiseUseCase(expertises, notifications)
+    return ConfirmExpertiseUseCase(expertises, notifications, storage)
 
 
 def get_create_expertise_payment_usecase(

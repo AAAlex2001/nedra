@@ -5,10 +5,12 @@ from datetime import datetime, timezone
 from app.models.expertise import Expertise, ExpertiseStatus
 from app.models.notification import Notification
 from app.models.user import User
+from app.services.contracts.kinds import resolve_kind
 from app.services.experts.repo import ExpertProfileRepository
 from app.services.expertise.exceptions import (
     ExpertiseAccessError,
     ExpertiseStateError,
+    InvalidExpertiseError,
     PriceMissingError,
 )
 from app.services.expertise.repo import ExpertiseRepository, certificate_fits
@@ -20,6 +22,8 @@ class AcceptExpertiseUseCase:
 
     У остальных экспертов заявка пропадает из входящих: expert_id заполнен.
     Без тарифа заявку взять нельзя, иначе на шаге договора нечего оплачивать.
+    Если заказчик не знал вид проекта, вид договора определяет эксперт: у него
+    право первой подписи, а заказчику остаётся согласиться с одним вариантом.
     """
 
     def __init__(
@@ -32,8 +36,13 @@ class AcceptExpertiseUseCase:
         self.profiles = profiles
         self.notifications = notifications
 
-    async def execute(self, expert: User, expertise: Expertise) -> Expertise:
-        """Перевести заявку в expert_ready. Бросает ExpertiseStateError, ExpertiseAccessError, PriceMissingError."""
+    async def execute(
+        self, expert: User, expertise: Expertise, contract_kind: str | None = None
+    ) -> Expertise:
+        """Перевести заявку в expert_ready.
+
+        Бросает ExpertiseStateError, ExpertiseAccessError, PriceMissingError, InvalidExpertiseError.
+        """
 
         if expertise.status != ExpertiseStatus.NEW or expertise.expert_id is not None:
             raise ExpertiseStateError("Заявку уже взял другой эксперт")
@@ -44,6 +53,12 @@ class AcceptExpertiseUseCase:
 
         if expertise.price is None:
             raise PriceMissingError("Для этой области и объекта не задан тариф")
+
+        if expertise.contract_kind is None:
+            expertise.contract_kind = resolve_kind(expertise.object_code, contract_kind)
+
+        if expertise.contract_kind is None:
+            raise InvalidExpertiseError("Выберите вид договора по проекту заказчика")
 
         expertise.expert_id = expert.id
         expertise.expert_ready_at = datetime.now(timezone.utc)

@@ -8,7 +8,7 @@ from reportlab.lib.units import mm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
 from app.models.billing import CustomerCompany
-from app.models.expertise import Expertise
+from app.models.expertise import Expertise, ExpertiseCompany
 from app.services.documents.company import CompanyRequisites
 from app.services.documents.fonts import register_fonts
 from app.services.documents.layout import (
@@ -40,7 +40,7 @@ def act_filename(expertise: Expertise) -> str:
 
 def build_act_pdf(
     expertise: Expertise,
-    payer: CustomerCompany,
+    payer: ExpertiseCompany | CustomerCompany,
     subject: str,
     company: CompanyRequisites,
 ) -> bytes:

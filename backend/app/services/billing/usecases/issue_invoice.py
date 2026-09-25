@@ -18,9 +18,11 @@ from app.models.billing import InvoiceStage
 class IssueInvoiceUseCase:
     """Выставить счёт на текущий этап: аванс или остаток.
 
-    Реквизиты плательщика копируются в счёт: выставленный документ не меняется,
-    даже если заказчик потом поправит профиль. Пока счёт не оплачен, повторный
-    запрос отдаёт тот же документ, а не плодит новые номера.
+    Плательщик — организация из заявки. У заявок, поданных до появления
+    реквизитов в заявке, берём организацию из профиля. Реквизиты копируются
+    в счёт: выставленный документ не меняется, даже если их потом поправят.
+    Пока счёт не оплачен, повторный запрос отдаёт тот же документ, а не плодит
+    новые номера.
     """
 
     def __init__(
@@ -42,7 +44,7 @@ class IssueInvoiceUseCase:
         if stage is None:
             raise ExpertiseStateError("Сейчас платить нечего")
 
-        company = await self.companies.get_by_user(customer.id)
+        company = expertise.company or await self.companies.get_by_user(customer.id)
         if company is None:
             raise CompanyRequiredError("Заполните реквизиты организации в разделе «Мои данные»")
 

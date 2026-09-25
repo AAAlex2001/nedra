@@ -44,7 +44,7 @@ async def send_new_expertise_letters(expertise: Expertise, experts: list[User]) 
 
 
 async def send_expert_ready_letter(expertise: Expertise, customer: User, expert: User) -> None:
-    """Заказчику: эксперт готов, подтвердите готовность оплатить."""
+    """Заказчику: эксперт готов, ознакомьтесь с договором и подпишите его."""
 
     await send_email(
         recipients=[customer.email],
@@ -53,20 +53,21 @@ async def send_expert_ready_letter(expertise: Expertise, customer: User, expert:
             f"{customer.full_name}, эксперт {expert.full_name} готов провести экспертизу "
             f"по вашей заявке.\n\n{describe_expertise(expertise)}.\n"
             f"Стоимость: {format_price(expertise)}, оплата двумя частями по 50 %.\n\n"
-            f"Подтвердите готовность оплатить в кабинете, и договор будет заключён.\n{CABINET_LINE}"
+            "Ознакомьтесь с договором в кабинете и согласитесь с его условиями, "
+            f"после этого договор будет заключён.\n{CABINET_LINE}"
         ),
     )
 
 
 async def send_contract_letter(expertise: Expertise, expert: User) -> None:
-    """Эксперту: заказчик подтвердил, договор заключён, ждём аванс."""
+    """Эксперту: заказчик подписал договор, ждём аванс."""
 
     await send_email(
         recipients=[expert.email],
         subject=f"Договор по экспертизе №{expertise.id} заключён — НПИ «Недра»",
         text=(
-            f"{expert.full_name}, заказчик подтвердил заявку №{expertise.id}. "
-            "Договор считается заключённым. Как только поступит аванс, мы сообщим, "
+            f"{expert.full_name}, заказчик согласился с условиями договора по заявке "
+            f"№{expertise.id}. Договор заключён. Как только поступит аванс, мы сообщим, "
             f"и можно будет приступать к работе.\n\n{CABINET_LINE}"
         ),
     )

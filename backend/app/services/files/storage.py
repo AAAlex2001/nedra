@@ -112,6 +112,24 @@ class PrivateStorage:
             content_type=content_type,
         )
 
+    def save_bytes(
+        self, content: bytes, folder: str, original_name: str, content_type: str, extension: str
+    ) -> StoredFile:
+        """Сохранить документ, который собрал сам сервер, например договор."""
+
+        directory = self.root / folder
+        directory.mkdir(parents=True, exist_ok=True)
+
+        filename = f"{uuid4().hex}{extension}"
+        (directory / filename).write_bytes(content)
+
+        return StoredFile(
+            path=f"{folder}/{filename}",
+            original_name=original_name,
+            size=len(content),
+            content_type=content_type,
+        )
+
     def remove(self, relative_path: str) -> None:
         """Удалить файл. Если его уже нет на диске, молчим: цель достигнута."""
 

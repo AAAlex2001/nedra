@@ -8,7 +8,11 @@ from app.dependencies.expertise import (
 )
 from app.dependencies.users import get_user_repository
 from app.models.expertise import Expertise
-from app.schemas.expertise import ExpertiseAdminSchema, ExpertiseAdminUpdateSchema
+from app.schemas.expertise import (
+    ExpertiseAdminSchema,
+    ExpertiseAdminUpdateSchema,
+    ExpertiseCompanySchema,
+)
 from app.services.expertise.exceptions import ExpertiseNotFoundError
 from app.services.expertise.repo import ExpertiseRepository
 from app.services.expertise.usecases.manage_expertise import (
@@ -42,6 +46,11 @@ async def to_admin_schema(expertise: Expertise, users: UserRepository) -> Expert
         hazard_class=expertise.hazard_class,
         expert_category=expertise.expert_category,
         deadline=expertise.deadline,
+        object_name=expertise.object_name,
+        contract_kind=expertise.contract_kind,
+        company=ExpertiseCompanySchema.model_validate(expertise.company)
+        if expertise.company
+        else None,
         comment=expertise.comment,
         status=expertise.status,
         price=expertise.price,

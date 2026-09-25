@@ -1,5 +1,7 @@
 import logging
-from typing import NoReturn
+from datetime import datetime, timezone
+from typing import Literal, NoReturn
+from urllib.parse import quote
 
 from fastapi import (
     APIRouter,
@@ -9,6 +11,7 @@ from fastapi import (
     Form,
     HTTPException,
     Query,
+    Response,
     UploadFile,
     status,
 )
@@ -37,11 +40,22 @@ from app.models.payment import PaymentStatus
 from app.models.user import User
 from app.models.billing import Invoice
 from app.schemas.expertise import (
+    ExpertiseAcceptSchema,
+    ExpertiseCompanySchema,
     ExpertiseInSchema,
     ExpertiseInvoiceSchema,
     ExpertiseOutSchema,
     ExpertisePaymentSchema,
 )
+from app.services.billing.exceptions import InvalidCompanyError
+from app.services.contracts.document import (
+    DOCX_TYPE,
+    build_signed_document,
+    contract_problem,
+    signed_filename,
+)
+from app.services.contracts.executors import executor_for, executor_requisites
+from app.services.documents.company import CompanyRequisitesMissingError
 from app.services.documents.invoice_pdf import invoice_number
 from app.schemas.payment import PaymentOutSchema
 from app.services.experts.repo import ExpertProfileRepository
@@ -134,6 +148,11 @@ async def to_schema(
         hazard_class=expertise.hazard_class,
         expert_category=expertise.expert_category,
         deadline=expertise.deadline,
+        object_name=expertise.object_name,
+        contract_kind=expertise.contract_kind,
+        company=ExpertiseCompanySchema.model_validate(expertise.company)
+        if expertise.company
+        else None,
         comment=expertise.comment,
         status=expertise.status,
         result=expertise.result,
@@ -193,7 +212,7 @@ async def create_expertise(
 
     try:
         created = await usecase.execute(customer, data, files, company_card)
-    except (InvalidExpertiseError, UploadError) as error:
+    except (InvalidExpertiseError, InvalidCompanyError, UploadError) as error:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(error),
@@ -264,17 +283,28 @@ async def get_expertise(
 @router.post("/{expertise_id}/accept")
 async def accept_expertise(
     background_tasks: BackgroundTasks,
+    payload: ExpertiseAcceptSchema | None = None,
     expertise: Expertise = Depends(get_visible_expertise),
     expert: User = Depends(require_expert),
     usecase: AcceptExpertiseUseCase = Depends(get_accept_expertise_usecase),
     users: UserRepository = Depends(get_user_repository),
     payments: PaymentRepository = Depends(get_payment_repository),
 ) -> ExpertiseOutSchema:
-    """Шаг 3: эксперт готов провести экспертизу. Заказчику уходит уведомление и письмо."""
+    """Шаг 3: эксперт готов провести экспертизу. Заказчику уходит уведомление и письмо.
+
+    Если заказчик не выбрал вид договора, его выбирает эксперт.
+    """
+
+    contract_kind = payload.contract_kind if payload else None
 
     try:
-        updated = await usecase.execute(expert, expertise)
-    except (ExpertiseStateError, ExpertiseAccessError, PriceMissingError) as error:
+        updated = await usecase.execute(expert, expertise, contract_kind)
+    except (
+        ExpertiseStateError,
+        ExpertiseAccessError,
+        PriceMissingError,
+        InvalidExpertiseError,
+    ) as error:
         raise_for_flow_error(error)
 
     customer = await users.get_by_id(updated.customer_id)
@@ -293,12 +323,17 @@ async def confirm_expertise(
     users: UserRepository = Depends(get_user_repository),
     payments: PaymentRepository = Depends(get_payment_repository),
 ) -> ExpertiseOutSchema:
-    """Шаг 5–6: заказчик готов оплатить, договор заключён."""
+    """Шаг 5–6: заказчик согласился с условиями, договор заключён и сохранён в заявке."""
 
     try:
         updated = await usecase.execute(customer, expertise)
     except (ExpertiseStateError, ExpertiseAccessError) as error:
         raise_for_flow_error(error)
+    except CompanyRequisitesMissingError as error:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Реквизиты исполнителя не настроены, обратитесь к администратору",
+        ) from error
 
     expert = await users.get_by_id(updated.expert_id) if updated.expert_id else None
     if expert is not None:
@@ -517,6 +552,58 @@ async def accept_work(
         background_tasks.add_task(send_work_accepted_letter, updated, expert)
 
     return await to_schema(updated, users, payments)
+
+
+@router.get("/{expertise_id}/signing/{kind}")
+async def download_signing_document(
+    kind: Literal["contract", "nda"],
+    expertise: Expertise = Depends(get_visible_expertise),
+    storage: PrivateStorage = Depends(get_private_storage),
+    users: UserRepository = Depends(get_user_repository),
+) -> Response:
+    """Договор или соглашение о конфиденциальности по заявке.
+
+    После подписания отдаётся сохранённый файл, до него — проект, собранный
+    по текущим данным заявки, чтобы заказчик прочитал условия перед согласием.
+    """
+
+    signed = [item for item in expertise.documents if item.kind == kind]
+    if signed:
+        try:
+            path = storage.resolve(signed[-1].file_path)
+        except FileNotFoundError as error:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Файл документа отсутствует на диске",
+            ) from error
+
+        return FileResponse(path, filename=signed[-1].original_name)
+
+    problem = contract_problem(expertise)
+    if problem is not None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=problem)
+
+    customer = await users.get_by_id(expertise.customer_id)
+    if customer is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Заказчик не найден")
+
+    try:
+        requisites = executor_requisites(executor_for(expertise.contract_kind))
+    except CompanyRequisitesMissingError as error:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Реквизиты исполнителя не настроены, обратитесь к администратору",
+        ) from error
+
+    now = datetime.now(timezone.utc)
+    content = build_signed_document(kind, expertise, customer, requisites.vat_rate, now)
+    filename = quote(f"Проект — {signed_filename(kind, expertise, now)}")
+
+    return Response(
+        content=content,
+        media_type=DOCX_TYPE,
+        headers={"Content-Disposition": f"attachment; filename*=UTF-8''{filename}"},
+    )
 
 
 @router.get("/{expertise_id}/documents/{document_id}")

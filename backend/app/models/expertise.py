@@ -47,6 +47,16 @@ class ExpertiseResult(StrEnum):
     NEGATIVE = "negative"
 
 
+class ContractKind(StrEnum):
+    """Вид договора по предмету экспертизы. От него зависят текст и исполнитель."""
+
+    JUSTIFICATION = "justification"
+    REEQUIPMENT = "reequipment"
+    CONSERVATION = "conservation"
+    LIQUIDATION = "liquidation"
+    DECLARATION = "declaration"
+
+
 class Expertise(Base):
     """Заявка заказчика на экспертизу промышленной безопасности.
 
@@ -56,6 +66,9 @@ class Expertise(Base):
     подачи, чтобы смена тарифа не меняла уже поданные заявки, а при неизвестной
     области остаётся пустой до уточнения. Эксперт назначается позже, поэтому
     expert_id пустой.
+
+    Вид договора выбирает заказчик, а если не знает — эксперт, когда берёт
+    заявку. От вида зависит, какая организация выступает исполнителем.
     """
 
     __tablename__ = "expertises"
@@ -75,6 +88,9 @@ class Expertise(Base):
     expert_category: Mapped[int | None] = mapped_column(SmallInteger)
 
     deadline: Mapped[str | None] = mapped_column(String(16))
+
+    object_name: Mapped[str | None] = mapped_column(String(500))
+    contract_kind: Mapped[str | None] = mapped_column(String(16))
 
     comment: Mapped[str | None] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(32), index=True, default=ExpertiseStatus.NEW)
@@ -119,6 +135,46 @@ class Expertise(Base):
         cascade="all, delete-orphan",
         order_by="Invoice.id",
     )
+
+    company: Mapped["ExpertiseCompany | None"] = relationship(
+        back_populates="expertise",
+        lazy="selectin",
+        cascade="all, delete-orphan",
+        uselist=False,
+    )
+
+
+class ExpertiseCompany(Base):
+    """Реквизиты заказчика по конкретной заявке.
+
+    Один человек подаёт заявки от разных организаций, поэтому реквизиты живут
+    в заявке, а не в профиле. По ним заполняются договор, счёт и акт.
+    """
+
+    __tablename__ = "expertise_companies"
+
+    expertise_id: Mapped[int] = mapped_column(
+        ForeignKey("expertises.id", ondelete="CASCADE"), primary_key=True
+    )
+
+    full_name: Mapped[str] = mapped_column(String(500))
+    name: Mapped[str] = mapped_column(String(255))
+    inn: Mapped[str] = mapped_column(String(12))
+    kpp: Mapped[str | None] = mapped_column(String(9))
+    ogrn: Mapped[str] = mapped_column(String(15))
+    address: Mapped[str] = mapped_column(String(500))
+
+    bank: Mapped[str] = mapped_column(String(255))
+    bic: Mapped[str] = mapped_column(String(9))
+    account: Mapped[str] = mapped_column(String(20))
+    corr_account: Mapped[str] = mapped_column(String(20))
+
+    signer_position: Mapped[str] = mapped_column(String(255))
+    signer_name: Mapped[str] = mapped_column(String(255))
+    signer_genitive: Mapped[str] = mapped_column(String(500))
+    signer_basis: Mapped[str] = mapped_column(String(255))
+
+    expertise: Mapped["Expertise"] = relationship(back_populates="company")
 
 
 class ExpertiseRemark(Base):

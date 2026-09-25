@@ -4,20 +4,67 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.models.expertise import ExpertiseResult, ExpertiseStatus
+from app.models.expertise import ContractKind, ExpertiseResult, ExpertiseStatus
 from app.models.payment import PaymentStatus
 
 
 Deadline = Literal["today", "three_days", "week", "any"]
 
 
+class ExpertiseCompanyInSchema(BaseModel):
+    """Реквизиты заказчика для договора, счёта и акта."""
+
+    full_name: str = Field(
+        ..., min_length=3, max_length=500,
+        description="Полное наименование: Общество с ограниченной ответственностью «Ромашка»",
+    )
+    name: str = Field(
+        ..., min_length=2, max_length=255, description="Сокращённое наименование: ООО «Ромашка»"
+    )
+    inn: str = Field(..., min_length=10, max_length=12, description="ИНН")
+    kpp: str | None = Field(None, max_length=9, description="КПП, у предпринимателя его нет")
+    ogrn: str = Field(..., min_length=13, max_length=20, description="ОГРН или ОГРНИП")
+    address: str = Field(..., min_length=5, max_length=500, description="Юридический адрес")
+    bank: str = Field(..., min_length=2, max_length=255, description="Название банка")
+    bic: str = Field(..., min_length=9, max_length=12, description="БИК")
+    account: str = Field(..., min_length=20, max_length=30, description="Расчётный счёт")
+    corr_account: str = Field(..., min_length=20, max_length=30, description="Корреспондентский счёт")
+    signer_position: str = Field(
+        ..., min_length=2, max_length=255, description="Должность подписанта: Генеральный директор"
+    )
+    signer_name: str = Field(
+        ..., min_length=3, max_length=255, description="ФИО подписанта: Иванов Иван Иванович"
+    )
+    signer_genitive: str = Field(
+        ..., min_length=3, max_length=500,
+        description="В лице кого: генерального директора Иванова Ивана Ивановича",
+    )
+    signer_basis: str = Field(
+        "Устава", min_length=2, max_length=255, description="На основании чего действует"
+    )
+
+
+class ExpertiseCompanySchema(ExpertiseCompanyInSchema):
+    """Реквизиты заказчика в заявке."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class ExpertiseInSchema(BaseModel):
     """Заявка на экспертизу.
 
-    Обязательна только документация: объект, область и требования к эксперту
-    заказчик указывает, если знает их. Незаполненные поля уточняет эксперт.
+    Объект, область и требования к эксперту заказчик указывает, если знает их,
+    незаполненные поля уточняет эксперт. Наименование документации и реквизиты
+    обязательны: по ним составляется договор.
     """
 
+    object_name: str = Field(
+        ..., min_length=2, max_length=500, description="Наименование документации, как на титуле"
+    )
+    company: ExpertiseCompanyInSchema
+    contract_kind: ContractKind | None = Field(
+        None, description="Вид договора, если заказчик знает вид проекта"
+    )
     object_code: str | None = Field(
         None, max_length=8, description="Объект экспертизы: kl, tp, kl_tp, d, ob"
     )
@@ -58,10 +105,19 @@ class ExpertiseAdminSchema(BaseModel):
     hazard_class: int | None
     expert_category: int | None
     deadline: Deadline | None = None
+    object_name: str | None = None
+    contract_kind: ContractKind | None = None
+    company: ExpertiseCompanySchema | None = None
     comment: str | None
     status: ExpertiseStatus
     price: Decimal | None
     created_at: datetime
+
+
+class ExpertiseAcceptSchema(BaseModel):
+    """Эксперт берёт заявку. Вид договора указывает, если заказчик его не выбрал."""
+
+    contract_kind: ContractKind | None = Field(None, description="Вид договора")
 
 
 class ExpertiseAdminUpdateSchema(BaseModel):
@@ -123,6 +179,9 @@ class ExpertiseOutSchema(BaseModel):
     hazard_class: int | None
     expert_category: int | None
     deadline: Deadline | None = None
+    object_name: str | None = None
+    contract_kind: ContractKind | None = None
+    company: ExpertiseCompanySchema | None = None
     comment: str | None
     status: ExpertiseStatus
     result: ExpertiseResult | None

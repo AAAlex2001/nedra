@@ -45,9 +45,10 @@ from app.services.billing.usecases.issue_invoice import IssueInvoiceUseCase
 from app.services.billing.usecases.report_payment import ReportInvoicePaidUseCase
 from app.services.billing.usecases.save_company import SaveCustomerCompanyUseCase
 from app.services.documents.act_pdf import act_filename, act_number, build_act_pdf
+from app.services.contracts.executors import executor_for, executor_requisites
 from app.services.documents.company import (
+    CompanyRequisites,
     CompanyRequisitesMissingError,
-    load_requisites,
 )
 from app.services.documents.invoice_pdf import (
     build_invoice_pdf,
@@ -119,11 +120,11 @@ def pdf_response(content: bytes, filename: str) -> Response:
     )
 
 
-def load_company_requisites():
-    """Наши реквизиты или понятная ошибка, если админ их не заполнил."""
+def load_company_requisites(expertise: Expertise) -> CompanyRequisites:
+    """Реквизиты исполнителя по договору или понятная ошибка, если админ их не заполнил."""
 
     try:
-        return load_requisites()
+        return executor_requisites(executor_for(expertise.contract_kind))
     except CompanyRequisitesMissingError as error:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -239,7 +240,7 @@ async def download_invoice(
     if invoice is None or expertise is None or expertise.customer_id != customer.id:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Счёт не найден")
 
-    company = load_company_requisites()
+    company = load_company_requisites(expertise)
     subject = stage_subject(
         expertise.id,
         STAGE_TITLES[InvoiceStage(invoice.stage)],
@@ -286,14 +287,14 @@ async def download_act(
     if expertise.status != ExpertiseStatus.ACCEPTED:
         raise HTTPException(status.HTTP_409_CONFLICT, "Акт готовится после приёмки работы")
 
-    payer = await companies.get_by_user(customer.id)
+    payer = expertise.company or await companies.get_by_user(customer.id)
     if payer is None:
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
             "Заполните реквизиты организации в разделе «Мои данные»",
         )
 
-    company = load_company_requisites()
+    company = load_company_requisites(expertise)
     content = build_act_pdf(expertise, payer, describe_expertise(expertise), company)
 
     return pdf_response(content, act_filename(expertise))

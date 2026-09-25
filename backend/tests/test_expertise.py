@@ -1,18 +1,32 @@
 """Тесты экспертизы без БД и без диска: подача, путь по шагам, платежи."""
 
 import asyncio
-from datetime import date
+from datetime import date, datetime, timezone
 from decimal import Decimal
+from io import BytesIO
+
+import docx
 
 import pytest
 
 from app.models.expert import ExpertCertificate
-from app.models.expertise import Expertise, ExpertiseResult, ExpertiseStatus
+from app.models.expertise import ContractKind, Expertise, ExpertiseResult, ExpertiseStatus
 from app.models.notification import Notification
 from app.models.payment import Payment, PaymentStatus
 from app.models.tariff import Tariff
 from app.models.user import User, UserRole
-from app.schemas.expertise import ExpertiseInSchema
+from app.schemas.expertise import ExpertiseCompanyInSchema, ExpertiseInSchema
+from app.services.contracts.document import (
+    CONTRACT,
+    NDA,
+    all_paragraphs,
+    build_signed_document,
+    contract_problem,
+    initials,
+    working_days,
+)
+from app.services.contracts.executors import NEDRA, SIBNTC, executor_for
+from app.services.contracts.kinds import resolve_kind
 from app.services.expertise.access import can_view
 from app.services.expertise.exceptions import (
     ExpertiseAccessError,
@@ -26,7 +40,7 @@ from app.services.expertise.usecases.accept_expertise import AcceptExpertiseUseC
 from app.services.expertise.usecases.accept_work import AcceptWorkUseCase
 from app.services.expertise.usecases.apply_expertise_payment import ApplyExpertisePaymentUseCase
 from app.services.expertise.usecases.confirm_expertise import ConfirmExpertiseUseCase
-from app.services.expertise.usecases.create_expertise import CreateExpertiseUseCase
+from app.services.expertise.usecases.create_expertise import CreateExpertiseUseCase, build_company
 from app.services.expertise.usecases.create_expertise_payment import CreateExpertisePaymentUseCase
 from app.services.expertise.usecases.mark_conclusion_ready import MarkConclusionReadyUseCase
 from app.services.expertise.usecases.resubmit_documentation import ResubmitDocumentationUseCase
@@ -117,12 +131,26 @@ class FakeCreatePayment:
 
 
 class FakeStorage:
+    def __init__(self) -> None:
+        self.written: list[bytes] = []
+
     async def save(self, file, folder: str, max_size_bytes: int, allowed_types=None) -> StoredFile:
         return StoredFile(
             path=f"{folder}/fake.pdf",
             original_name=file.name,
             size=100,
             content_type="application/pdf",
+        )
+
+    def save_bytes(
+        self, content: bytes, folder: str, original_name: str, content_type: str, extension: str
+    ) -> StoredFile:
+        self.written.append(content)
+        return StoredFile(
+            path=f"{folder}/fake{extension}",
+            original_name=original_name,
+            size=len(content),
+            content_type=content_type,
         )
 
 
@@ -150,12 +178,42 @@ def make_usecase(
 
 FITTING = [ExpertCertificate(area_code="Э4", object_code="kl", category=1, valid_until=date(2030, 1, 1))]
 
+COMPANY = ExpertiseCompanyInSchema(
+    full_name="Общество с ограниченной ответственностью «Ромашка»",
+    name="ООО «Ромашка»",
+    inn="5401 234567",
+    kpp="540101001",
+    ogrn="1025400000000",
+    address="630000, г. Новосибирск, ул. Ленина, 1",
+    bank="АО «Альфа-Банк»",
+    bic="045004774",
+    account="4070 2810 0000 0000 0001",
+    corr_account="30101810600000000774",
+    signer_position="Генеральный директор",
+    signer_name="Иванов Иван Иванович",
+    signer_genitive="генерального директора Иванова Ивана Ивановича",
+)
+
+
+def make_order(**fields) -> ExpertiseInSchema:
+    return ExpertiseInSchema(object_name="Проект консервации шахты", company=COMPANY, **fields)
+
 
 def make_expertise(status: ExpertiseStatus, price: Decimal | None = Decimal("20001")) -> Expertise:
     expertise = Expertise(
         customer_id=1, object_code="kl", area_code="Э4", expert_category=2, status=status, price=price
     )
     expertise.id = 1
+    return expertise
+
+
+def make_contract_ready(kind: ContractKind) -> Expertise:
+    expertise = make_expertise(ExpertiseStatus.EXPERT_READY)
+    expertise.expert_id = 10
+    expertise.contract_kind = kind
+    expertise.object_name = "Проект консервации шахты"
+    expertise.deadline = "three_days"
+    expertise.company = build_company(COMPANY)
     return expertise
 
 
@@ -193,7 +251,7 @@ def test_create_saves_documents_price_and_notifies_experts() -> None:
     expert = make_user(10, UserRole.EXPERT)
     usecase, expertises, notifications = make_usecase([expert])
     customer = make_user(1, UserRole.CUSTOMER)
-    data = ExpertiseInSchema(object_code="kl_tp", area_code="Э1", hazard_class=2, comment="  срочно ")
+    data = make_order(object_code="kl_tp", area_code="Э1", hazard_class=2, comment="  срочно ")
 
     created = asyncio.run(usecase.execute(customer, data, [FakeUpload("a.pdf"), FakeUpload("b.pdf")]))
 
@@ -213,7 +271,7 @@ def test_create_saves_documents_price_and_notifies_experts() -> None:
 
 def test_create_without_tariff_keeps_price_empty() -> None:
     usecase, expertises, notifications = make_usecase([], price=None)
-    data = ExpertiseInSchema(object_code="kl_tp", area_code="Э1", expert_category=1)
+    data = make_order(object_code="kl_tp", area_code="Э1", expert_category=1)
 
     created = asyncio.run(usecase.execute(make_user(1, UserRole.CUSTOMER), data, [FakeUpload("a.pdf")]))
 
@@ -223,7 +281,7 @@ def test_create_without_tariff_keeps_price_empty() -> None:
 def test_create_without_known_fields_keeps_them_empty() -> None:
     expert = make_user(10, UserRole.EXPERT)
     usecase, expertises, notifications = make_usecase([expert])
-    data = ExpertiseInSchema(deadline="three_days", comment="не знаю, что нужно")
+    data = make_order(deadline="three_days", comment="не знаю, что нужно")
 
     created = asyncio.run(
         usecase.execute(make_user(1, UserRole.CUSTOMER), data, [FakeUpload("a.pdf")])
@@ -240,7 +298,7 @@ def test_create_without_known_fields_keeps_them_empty() -> None:
 
 def test_create_saves_company_card_separately() -> None:
     usecase, expertises, notifications = make_usecase([])
-    data = ExpertiseInSchema(object_code="kl_tp", area_code="Э1", expert_category=1)
+    data = make_order(object_code="kl_tp", area_code="Э1", expert_category=1)
 
     created = asyncio.run(
         usecase.execute(
@@ -264,7 +322,7 @@ def test_certificate_fits_when_request_has_no_area() -> None:
 
 def test_create_requires_files() -> None:
     usecase, expertises, notifications = make_usecase([])
-    data = ExpertiseInSchema(object_code="kl_tp", area_code="Э1", expert_category=1)
+    data = make_order(object_code="kl_tp", area_code="Э1", expert_category=1)
 
     with pytest.raises(InvalidExpertiseError):
         asyncio.run(usecase.execute(make_user(1, UserRole.CUSTOMER), data, []))
@@ -307,11 +365,18 @@ def test_accept_locks_expertise_and_notifies_customer() -> None:
     )
     expert = make_user(10, UserRole.EXPERT)
 
-    updated = asyncio.run(usecase.execute(expert, expertise))
+    with pytest.raises(InvalidExpertiseError):
+        asyncio.run(usecase.execute(expert, expertise))
+
+    with pytest.raises(InvalidExpertiseError):
+        asyncio.run(usecase.execute(expert, expertise, ContractKind.DECLARATION))
+
+    updated = asyncio.run(usecase.execute(expert, expertise, ContractKind.LIQUIDATION))
 
     assert updated.status == ExpertiseStatus.EXPERT_READY
     assert updated.expert_id == 10
     assert updated.expert_ready_at is not None
+    assert updated.contract_kind == ContractKind.LIQUIDATION
     assert notifications.added[0].user_id == 1
 
     with pytest.raises(ExpertiseStateError):
@@ -334,11 +399,11 @@ def test_accept_requires_fitting_certificate_and_price() -> None:
         asyncio.run(no_price.execute(expert, make_expertise(ExpertiseStatus.NEW, price=None)))
 
 
-def test_confirm_makes_contract_and_notifies_expert() -> None:
-    expertise = make_expertise(ExpertiseStatus.EXPERT_READY)
-    expertise.expert_id = 10
+def test_confirm_signs_contract_and_notifies_expert() -> None:
+    expertise = make_contract_ready(ContractKind.DECLARATION)
     notifications = FakeNotificationRepository()
-    usecase = ConfirmExpertiseUseCase(FakeExpertiseRepository(), notifications)
+    storage = FakeStorage()
+    usecase = ConfirmExpertiseUseCase(FakeExpertiseRepository(), notifications, storage)
 
     with pytest.raises(ExpertiseAccessError):
         asyncio.run(usecase.execute(make_user(2, UserRole.CUSTOMER), expertise))
@@ -347,7 +412,124 @@ def test_confirm_makes_contract_and_notifies_expert() -> None:
 
     assert updated.status == ExpertiseStatus.CONTRACT
     assert updated.contract_at is not None
+    assert [item.kind for item in updated.documents] == ["contract", "nda"]
+    assert updated.documents[0].original_name.startswith("Договор БЭ-")
+    assert updated.documents[1].original_name.startswith("Соглашение о конфиденциальности БЭ-")
+    assert len(storage.written) == 2
     assert notifications.added[0].user_id == 10
+
+    with pytest.raises(ExpertiseStateError):
+        asyncio.run(usecase.execute(make_user(1, UserRole.CUSTOMER), expertise))
+
+
+def test_confirm_requires_company_and_contract_kind() -> None:
+    usecase = ConfirmExpertiseUseCase(
+        FakeExpertiseRepository(), FakeNotificationRepository(), FakeStorage()
+    )
+    customer = make_user(1, UserRole.CUSTOMER)
+
+    without_company = make_contract_ready(ContractKind.DECLARATION)
+    without_company.company = None
+    with pytest.raises(ExpertiseStateError):
+        asyncio.run(usecase.execute(customer, without_company))
+
+    without_kind = make_contract_ready(ContractKind.DECLARATION)
+    without_kind.contract_kind = None
+    with pytest.raises(ExpertiseStateError):
+        asyncio.run(usecase.execute(customer, without_kind))
+
+
+def test_resolve_kind_by_object() -> None:
+    assert resolve_kind("tp", None) == ContractKind.REEQUIPMENT
+    assert resolve_kind("d", None) == ContractKind.DECLARATION
+    assert resolve_kind("ob", None) == ContractKind.JUSTIFICATION
+    assert resolve_kind("kl", None) is None
+    assert resolve_kind(None, None) is None
+    assert resolve_kind("kl", "liquidation") == ContractKind.LIQUIDATION
+    assert resolve_kind("kl_tp", "reequipment") == ContractKind.REEQUIPMENT
+    assert resolve_kind(None, "declaration") == ContractKind.DECLARATION
+
+    with pytest.raises(InvalidExpertiseError):
+        resolve_kind("kl", "reequipment")
+
+
+def test_declaration_goes_to_sibntc() -> None:
+    assert executor_for(ContractKind.DECLARATION) == SIBNTC
+    assert executor_for(ContractKind.CONSERVATION) == NEDRA
+    assert executor_for(None) == NEDRA
+
+
+def signed_text(kind: str, expertise: Expertise) -> str:
+    signed_at = datetime(2026, 9, 25, tzinfo=timezone.utc)
+    content = build_signed_document(kind, expertise, make_user(1, UserRole.CUSTOMER), 7, signed_at)
+    document = docx.Document(BytesIO(content))
+
+    return "\n".join(paragraph.text for paragraph in all_paragraphs(document))
+
+
+def test_contract_is_filled_from_expertise() -> None:
+    expertise = make_contract_ready(ContractKind.CONSERVATION)
+    assert contract_problem(expertise) is None
+
+    text = signed_text(CONTRACT, expertise)
+
+    assert "{{" not in text
+    assert "Договор №БЭ-2026-0001" in text
+    assert "«25» сентября 2026 г." in text
+    assert "документации на консервацию ОПО «Проект консервации шахты»" in text
+    assert "3 (три) рабочих дня" in text
+    assert "20 001,00 (Двадцать тысяч один рубль 00 копеек)" in text
+    assert "в т.ч. НДС 7% – 1 308,48" in text
+    assert "ИНН/КПП 5401234567/540101001" in text
+    assert "в лице генерального директора Иванова Ивана Ивановича" in text
+    assert "И.И. Иванов" in text
+    assert "ООО «НПИ «Недра»" in text
+
+
+def test_nda_is_filled_for_executor() -> None:
+    text = signed_text(NDA, make_contract_ready(ContractKind.DECLARATION))
+
+    assert "{{" not in text
+    assert "К ДОГОВОРУ № БЭ-2026-0001 ОТ «25» СЕНТЯБРЯ 2026 Г." in text
+    assert "договора № БЭ-2026-0001 от «25» сентября 2026 г." in text
+    assert "в лице генерального директора Иванова Ивана Ивановича" in text
+    assert "технических устройств «Проект консервации шахты»" in text
+    assert "Электронная почта: u1@example.com" in text
+    assert "Телефон: +79990000000" in text
+    assert "/И.И. Иванов/" in text
+    assert "ООО «СибНТЦ «Промтехэксперт»" in text
+
+
+def test_contract_helpers() -> None:
+    assert initials("Иванов Иван Иванович") == "И.И. Иванов"
+    assert initials("Иванов") == "Иванов"
+    assert working_days("today") == "1 (один) рабочий день"
+    assert working_days(None) == "5 (пять) рабочих дней"
+
+
+def test_create_resolves_kind_and_saves_company() -> None:
+    usecase, expertises, notifications = make_usecase([])
+
+    created = asyncio.run(
+        usecase.execute(make_user(1, UserRole.CUSTOMER), make_order(object_code="tp"), [FakeUpload("a.pdf")])
+    )
+
+    expertise = created.expertise
+    assert expertise.contract_kind == ContractKind.REEQUIPMENT
+    assert expertise.object_name == "Проект консервации шахты"
+    assert expertise.company is not None
+    assert expertise.company.inn == "5401234567"
+    assert expertise.company.account == "40702810000000000001"
+    assert expertise.company.signer_basis == "Устава"
+
+
+def test_card_payment_is_closed_for_declaration() -> None:
+    expertise = make_expertise(ExpertiseStatus.CONTRACT)
+    expertise.contract_kind = ContractKind.DECLARATION
+    payments = FakePaymentRepository()
+    usecase = CreateExpertisePaymentUseCase(
+        FakeExpertiseRepository(), payments, FakeCreatePayment(payments)
+    )
 
     with pytest.raises(ExpertiseStateError):
         asyncio.run(usecase.execute(make_user(1, UserRole.CUSTOMER), expertise))
