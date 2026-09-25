@@ -61,7 +61,7 @@ type CabinetPanelProps = {
 
 const ExpertCabinet = ({ user }: CabinetPanelProps) => {
   const [tab, setTab] = useState("incoming");
-  const state = useExpertProfile();
+  const { state, replaceProfile } = useExpertProfile();
   const notifications = useNotifications();
 
   if (state.status === "loading") {
@@ -92,7 +92,11 @@ const ExpertCabinet = ({ user }: CabinetPanelProps) => {
         {tab === "account" && (
           <>
             <AccountDetails user={user} />
-            <ExpertAttestation profile={state.profile} catalog={state.catalog} />
+            <ExpertAttestation
+              profile={state.profile}
+              catalog={state.catalog}
+              onChange={replaceProfile}
+            />
           </>
         )}
       </section>

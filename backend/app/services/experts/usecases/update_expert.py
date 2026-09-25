@@ -2,10 +2,10 @@
 
 from app.models.expert import ExpertProfile
 from app.models.user import User
-from app.schemas.expert import CertificateUpdateSchema, ExpertUpdateSchema
-from app.services.experts.exceptions import CertificateNotFoundError, ExpertNotFoundError
+from app.schemas.expert import ExpertUpdateSchema
+from app.services.experts.exceptions import ExpertNotFoundError
 from app.services.experts.repo import ExpertApplicationRepository, ExpertProfileRepository
-from app.services.experts.validators import validate_certificate, validate_directions
+from app.services.experts.validators import validate_directions
 from app.services.users.repo import UserRepository
 from app.services.users.validators import normalize_phone
 
@@ -50,44 +50,3 @@ class UpdateExpertUseCase:
         await self.profiles.save()
 
         return user, profile
-
-
-class UpdateCertificateUseCase:
-    """Поменять область, объект, категорию или срок удостоверения."""
-
-    def __init__(self, profiles: ExpertProfileRepository) -> None:
-        self.profiles = profiles
-
-    async def execute(
-        self, user_id: int, certificate_id: int, data: CertificateUpdateSchema
-    ) -> None:
-        """Бросает CertificateNotFoundError и InvalidCertificateError."""
-
-        certificate = await self.profiles.get_certificate(user_id, certificate_id)
-        if certificate is None:
-            raise CertificateNotFoundError(f"Удостоверение {certificate_id} не найдено")
-
-        validate_certificate(data.area_code, data.object_code, data.category)
-
-        certificate.area_code = data.area_code
-        certificate.object_code = data.object_code
-        certificate.category = data.category
-        certificate.valid_until = data.valid_until
-
-        await self.profiles.save()
-
-
-class DeleteCertificateUseCase:
-    """Убрать удостоверение у эксперта."""
-
-    def __init__(self, profiles: ExpertProfileRepository) -> None:
-        self.profiles = profiles
-
-    async def execute(self, user_id: int, certificate_id: int) -> None:
-        """Бросает CertificateNotFoundError."""
-
-        certificate = await self.profiles.get_certificate(user_id, certificate_id)
-        if certificate is None:
-            raise CertificateNotFoundError(f"Удостоверение {certificate_id} не найдено")
-
-        await self.profiles.remove_certificate(certificate)

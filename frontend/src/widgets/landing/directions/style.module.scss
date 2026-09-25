@@ -117,8 +117,9 @@
     order: 1;
     z-index: 1;
 
-    padding: 100px 0 100px 20px;
-    width: 652px;
+    padding: 100px 0 100px 30px;
+    width: auto;
+    min-width: 0;
     min-height: 402px;
 
     background: #ffffff;
@@ -126,16 +127,16 @@
   }
 
   .heading {
-    width: 652px;
+    width: 100%;
   }
 
   .title {
-    width: 652px;
+    width: 100%;
     line-height: 39px;
   }
 
   .description {
-    width: 652px;
+    width: 100%;
   }
 
   .media {
@@ -143,7 +144,7 @@
     flex: none;
     flex-shrink: 0;
 
-    width: 718px;
+    width: 690px;
     height: 580px;
   }
 

@@ -1,0 +1,208 @@
+.card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  padding: 16px;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 18px;
+}
+
+.code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+
+  font-family: "Manrope";
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 18px;
+
+  color: #b86108;
+  background: #fff2e2;
+  border: 1px solid #ffe3c2;
+  border-radius: 14px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+
+  color: #0b0b0b;
+}
+
+.object {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+
+  color: #6c7078;
+}
+
+.objectLabel {
+  margin-right: 6px;
+
+  font-weight: 700;
+
+  color: #0b0b0b;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.chip,
+.term,
+.scan {
+  padding: 5px 10px;
+
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #3d4048;
+  background: #f5f6f8;
+  border-radius: 100px;
+}
+
+.chipMissing {
+  color: #b86108;
+  background: #fff2e2;
+}
+
+.termExpiring {
+  color: #b86108;
+  background: #fff2e2;
+}
+
+.termExpired {
+  color: #b23b2c;
+  background: #fdecea;
+}
+
+.scan {
+  color: #b86108;
+  text-decoration: none;
+  background: #fff2e2;
+}
+
+.scan:hover {
+  background: #ffe3c2;
+}
+
+.actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 12px;
+
+  border-top: 1px solid #f0f1f4;
+}
+
+.confirmText {
+  margin-right: auto;
+
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #b23b2c;
+}
+
+.ghost,
+.danger {
+  padding: 10px 16px;
+
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 13px;
+
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.actions .edit {
+  padding: 10px 16px;
+}
+
+.actions .edit span {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 13px;
+}
+
+.ghost {
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #e3e6ec;
+}
+
+.ghost:hover:not(:disabled) {
+  color: #b86108;
+  border-color: #f69827;
+}
+
+.danger {
+  color: #fff;
+  background: #b23b2c;
+  border: 1px solid #b23b2c;
+}
+
+.danger:hover:not(:disabled) {
+  background: #962f23;
+}
+
+.ghost:disabled,
+.danger:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+@media (min-width: 768px) {
+  .card {
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
+    padding: 18px 20px;
+  }
+
+  .actions {
+    grid-column: auto;
+
+    flex-wrap: nowrap;
+    padding-top: 0;
+
+    border-top: none;
+  }
+
+  .confirmText {
+    margin-right: 4px;
+  }
+}

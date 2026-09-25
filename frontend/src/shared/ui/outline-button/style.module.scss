@@ -8,19 +8,26 @@
   padding: 16px 24px;
   gap: 10px;
 
+  background: transparent;
   border: 1px solid #f69827;
   border-radius: 100px;
+  cursor: pointer;
 
   text-decoration: none;
 
   transition: background 0.2s ease;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: #f69827;
 
     .text {
       color: #fff;
     }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
   }
 }
 

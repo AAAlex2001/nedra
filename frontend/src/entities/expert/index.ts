@@ -18,9 +18,13 @@ export {
   objectTitle,
 } from "./lib/labels";
 export {
+  addMyCertificate,
+  deleteMyCertificate,
   fetchExpertCatalog,
   fetchExpertProfile,
   myCertificateScanUrl,
   submitExpertApplication,
+  updateMyCertificate,
   type ApplicationCreated,
+  type CertificateInput,
 } from "./api/experts";

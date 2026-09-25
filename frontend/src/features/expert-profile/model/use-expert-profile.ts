@@ -39,5 +39,11 @@ export const useExpertProfile = () => {
     };
   }, []);
 
-  return state;
+  const replaceProfile = (profile: ExpertProfile) => {
+    if (state.status !== "ready") return;
+
+    setState({ ...state, profile });
+  };
+
+  return { state, replaceProfile };
 };

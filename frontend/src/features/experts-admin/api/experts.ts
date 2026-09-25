@@ -11,6 +11,7 @@ export type CertificateUpdate = {
   object_code: string;
   category: number;
   valid_until: string;
+  number: string;
 };
 
 export const updateExpert = async (
@@ -20,6 +21,23 @@ export const updateExpert = async (
 ): Promise<void> => {
   const response = await fetch(`${basePath}/api/experts/${userId}`, {
     method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const message = await readErrorMessage(response);
+    throw new Error(message);
+  }
+};
+
+export const createCertificate = async (
+  basePath: string,
+  userId: number,
+  payload: CertificateUpdate,
+): Promise<void> => {
+  const response = await fetch(`${basePath}/api/experts/${userId}/certificates`, {
+    method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });

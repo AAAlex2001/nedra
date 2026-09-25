@@ -1,7 +1,9 @@
-"""Письма эксперту о решении по заявке."""
+"""Письма эксперту о решении по заявке и менеджерам о правках удостоверений."""
 
 from app.config import get_settings
-from app.models.expert import ExpertApplication
+from app.models.expert import ExpertApplication, ExpertCertificate
+from app.models.user import User
+from app.services.experts.catalog import OBJECT_BY_CODE
 from app.services.mail.sender import send_email
 
 SITE_URL = "https://nedra-npi.ru"
@@ -33,6 +35,29 @@ async def send_application_received(application: ExpertApplication) -> None:
             "Проверить заявку можно в админке, раздел «Эксперты»."
         ),
         reply_to=application.email,
+    )
+
+
+async def send_certificate_changed(
+    expert: User, action: str, certificate: ExpertCertificate
+) -> None:
+    """Менеджерам: эксперт сам поменял удостоверения в кабинете, стоит сверить с реестром."""
+
+    settings = get_settings()
+    label = OBJECT_BY_CODE[certificate.object_code].label
+
+    await send_email(
+        recipients=settings.notify_emails,
+        subject=f"Эксперт {expert.full_name} {action} удостоверение",
+        text=(
+            f"Эксперт: {expert.full_name}\n"
+            f"Email: {expert.email}\n\n"
+            f"Удостоверение: {certificate.area_code} · {label} · "
+            f"категория {certificate.category} · до {certificate.valid_until:%d.%m.%Y}\n"
+            f"Номер или ЕРУЛ: {certificate.number or '—'}\n\n"
+            "Проверить можно в админке, раздел «Эксперты»."
+        ),
+        reply_to=expert.email,
     )
 
 

@@ -134,15 +134,6 @@ class ExpertUpdateSchema(BaseModel):
     directions: list[str] = Field(..., min_length=1, description="Коды направлений работы")
 
 
-class CertificateUpdateSchema(BaseModel):
-    """Правка удостоверения из админки. Скан не трогаем."""
-
-    area_code: str = Field(..., max_length=8)
-    object_code: str = Field(..., max_length=8)
-    category: int = Field(..., ge=1, le=3)
-    valid_until: date
-
-
 class ExpertOutSchema(BaseModel):
     """Эксперт в админке: аккаунт, направления и удостоверения."""
 

@@ -11,13 +11,14 @@ from app.dependencies.users import get_user_repository
 from app.services.experts.repo import ExpertApplicationRepository, ExpertProfileRepository
 from app.services.experts.usecases.approve_application import ApproveExpertApplicationUseCase
 from app.services.experts.usecases.delete_expert import DeleteExpertUseCase
-from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
-from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
-from app.services.experts.usecases.update_expert import (
+from app.services.experts.usecases.manage_certificates import (
+    AddCertificateUseCase,
     DeleteCertificateUseCase,
     UpdateCertificateUseCase,
-    UpdateExpertUseCase,
 )
+from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
+from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
+from app.services.experts.usecases.update_expert import UpdateExpertUseCase
 from app.services.files.storage import PrivateStorage
 from app.services.users.repo import UserRepository
 
@@ -80,6 +81,14 @@ def get_update_expert_usecase(
     """Сценарий правки данных эксперта."""
 
     return UpdateExpertUseCase(users, profiles, applications)
+
+
+def get_add_certificate_usecase(
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> AddCertificateUseCase:
+    """Сценарий добавления удостоверения."""
+
+    return AddCertificateUseCase(profiles)
 
 
 def get_update_certificate_usecase(

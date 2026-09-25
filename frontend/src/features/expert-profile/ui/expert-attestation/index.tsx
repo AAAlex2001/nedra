@@ -1,71 +1,117 @@
-import { Fragment } from "react";
+"use client";
+
+import { useState } from "react";
 import {
-  areaTitle,
   directionTitle,
-  myCertificateScanUrl,
-  objectLabel,
-  objectTitle,
+  type CertificateInput,
   type ExpertCatalog,
   type ExpertProfile,
 } from "@/entities/expert";
 import { formatDate } from "@/shared/lib/date";
 import { DetailsRow, DetailsTable } from "@/shared/ui/details-table";
-import { DocumentIcon } from "@/shared/ui/icons";
+import Button from "@/shared/ui/button";
+import { useCertificates } from "../../model/use-certificates";
+import CertificateCard from "../certificate-card";
+import CertificateForm from "../certificate-form";
 import styles from "./style.module.scss";
 
 type ExpertAttestationProps = {
   profile: ExpertProfile;
   catalog: ExpertCatalog;
+  onChange: (profile: ExpertProfile) => void;
 };
 
-const ExpertAttestation = ({ profile, catalog }: ExpertAttestationProps) => {
+type Editing = number | "new" | null;
+
+const ExpertAttestation = ({ profile, catalog, onChange }: ExpertAttestationProps) => {
+  const [editing, setEditing] = useState<Editing>(null);
+  const actions = useCertificates(onChange);
+
   const directions = profile.directions.map((code) => directionTitle(catalog, code));
+  const certificates = profile.certificates;
+  const removable = certificates.length > 1;
+
+  const open = (target: Editing) => {
+    actions.clearError();
+    setEditing(target);
+  };
+
+  const submit = async (input: CertificateInput) => {
+    const saved =
+      editing === "new"
+        ? await actions.add(input)
+        : await actions.update(Number(editing), input);
+
+    if (saved) setEditing(null);
+  };
+
+  const remove = (id: number) => {
+    actions.clearError();
+    void actions.remove(id);
+  };
 
   return (
-    <DetailsTable>
-      <DetailsRow label="Направления работы">{directions.join(", ")}</DetailsRow>
-      <DetailsRow label="Эксперт платформы">с {formatDate(profile.approved_at)}</DetailsRow>
+    <div className={styles.attestation}>
+      <DetailsTable>
+        <DetailsRow label="Направления работы">{directions.join(", ")}</DetailsRow>
+        <DetailsRow label="Эксперт платформы">с {formatDate(profile.approved_at)}</DetailsRow>
+      </DetailsTable>
 
-      {profile.certificates.length === 0 && (
-        <DetailsRow label="Удостоверения">
-          <span className={styles.muted}>Удостоверений пока нет</span>
-        </DetailsRow>
-      )}
+      <section className={styles.section}>
+        <div className={styles.head}>
+          <h3 className={styles.title}>
+            Удостоверения <span className={styles.count}>{certificates.length}</span>
+          </h3>
+          <p className={styles.hint}>
+            Заявки приходят по областям и объектам из ваших удостоверений. Если какое-то забыли
+            указать при регистрации — добавьте его здесь.
+          </p>
+        </div>
 
-      {profile.certificates.map((item) => (
-        <Fragment key={item.id}>
-          <DetailsRow label="Область аттестации">
-            <span className={styles.code}>{item.area_code}</span>
-            {areaTitle(catalog, item.area_code)}
-          </DetailsRow>
-          <DetailsRow label="Вид экспертизы">
-            <span className={styles.code}>{objectLabel(catalog, item.object_code)}</span>
-            {objectTitle(catalog, item.object_code)}
-          </DetailsRow>
-          <DetailsRow label="Категория">{item.category}</DetailsRow>
-          <DetailsRow label="Действует до">{formatDate(item.valid_until)}</DetailsRow>
-          {item.number && (
-            <DetailsRow label="Номер удостоверения или ЕРУЛ">{item.number}</DetailsRow>
+        <div className={styles.list}>
+          {certificates.map((certificate) =>
+            editing === certificate.id ? (
+              <CertificateForm
+                key={certificate.id}
+                catalog={catalog}
+                initial={certificate}
+                pending={actions.pending}
+                error={actions.error}
+                onSubmit={(input) => void submit(input)}
+                onCancel={() => setEditing(null)}
+              />
+            ) : (
+              <CertificateCard
+                key={certificate.id}
+                certificate={certificate}
+                catalog={catalog}
+                pending={actions.pending}
+                removable={removable}
+                onEdit={() => open(certificate.id)}
+                onRemove={() => remove(certificate.id)}
+              />
+            ),
           )}
-          {item.scan_name && (
-            <DetailsRow label="Скан удостоверения">
-              <a
-                className={styles.scan}
-                href={myCertificateScanUrl(item.id)}
-                target="_blank"
-                rel="noreferrer"
-                title={item.scan_name}
-              >
-                <span className={styles.scanTile}>
-                  <DocumentIcon className={styles.scanIcon} />
-                </span>
-                <span className={styles.scanName}>{item.scan_name}</span>
-              </a>
-            </DetailsRow>
+
+          {editing === "new" ? (
+            <CertificateForm
+              catalog={catalog}
+              initial={null}
+              pending={actions.pending}
+              error={actions.error}
+              onSubmit={(input) => void submit(input)}
+              onCancel={() => setEditing(null)}
+            />
+          ) : (
+            <Button className={styles.add} onClick={() => open("new")}>
+              Добавить удостоверение
+            </Button>
           )}
-        </Fragment>
-      ))}
-    </DetailsTable>
+        </div>
+
+        {editing === null && actions.error && <p className={styles.error}>{actions.error}</p>}
+      </section>
+    </div>
   );
 };
 

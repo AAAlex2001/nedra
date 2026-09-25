@@ -1,0 +1,94 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 16px;
+
+  background: #fff;
+  border: 1px solid #f69827;
+  border-radius: 18px;
+}
+
+.heading {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #0b0b0b;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #0b0b0b;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.note {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+
+  color: #6c7078;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: end;
+}
+
+.error {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #b23b2c;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+}
+
+.actions > * {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .form {
+    padding: 22px 24px;
+  }
+
+  .fields {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .actions > * {
+    width: auto;
+  }
+}

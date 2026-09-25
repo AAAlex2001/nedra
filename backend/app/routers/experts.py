@@ -3,14 +3,18 @@ from fastapi.responses import FileResponse
 from pydantic import ValidationError
 
 from app.dependencies.experts import (
+    get_add_certificate_usecase,
+    get_delete_certificate_usecase,
     get_private_storage,
     get_profile_repository,
     get_submit_application_usecase,
+    get_update_certificate_usecase,
 )
 from app.dependencies.users import require_expert
 from app.models.user import User
 from app.schemas.expert import (
     AttestationAreaSchema,
+    CertificateInSchema,
     CertificateOutSchema,
     DirectionSchema,
     ExpertApplicationCreatedSchema,
@@ -29,12 +33,18 @@ from app.services.experts.catalog import (
 )
 from app.services.experts.exceptions import (
     ApplicationAlreadyPendingError,
+    CertificateNotFoundError,
     ContactsRequiredError,
     InvalidCertificateError,
     InvalidDirectionError,
 )
-from app.services.experts.letters import send_application_received
+from app.services.experts.letters import send_application_received, send_certificate_changed
 from app.services.experts.repo import ExpertProfileRepository
+from app.services.experts.usecases.manage_certificates import (
+    AddCertificateUseCase,
+    DeleteCertificateUseCase,
+    UpdateCertificateUseCase,
+)
 from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
 from app.services.files.storage import PrivateStorage
 from app.services.users.exceptions import EmailAlreadyTakenError, InvalidPhoneError, WeakPasswordError
@@ -119,12 +129,8 @@ async def submit_application(
     return ExpertApplicationCreatedSchema(id=application.id, status=application.status)
 
 
-@router.get("/me")
-async def get_my_profile(
-    user: User = Depends(require_expert),
-    profiles: ExpertProfileRepository = Depends(get_profile_repository),
-) -> ExpertProfileOutSchema:
-    """Профиль текущего эксперта для личного кабинета."""
+async def profile_schema(user: User, profiles: ExpertProfileRepository) -> ExpertProfileOutSchema:
+    """Профиль эксперта с актуальным списком удостоверений."""
 
     profile = await profiles.get_by_user(user.id)
     if profile is None:
@@ -140,6 +146,81 @@ async def get_my_profile(
         approved_at=profile.approved_at,
         certificates=[CertificateOutSchema.model_validate(item) for item in certificates],
     )
+
+
+@router.get("/me")
+async def get_my_profile(
+    user: User = Depends(require_expert),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> ExpertProfileOutSchema:
+    """Профиль текущего эксперта для личного кабинета."""
+
+    return await profile_schema(user, profiles)
+
+
+@router.post("/me/certificates", status_code=status.HTTP_201_CREATED)
+async def add_my_certificate(
+    payload: CertificateInSchema,
+    background_tasks: BackgroundTasks,
+    user: User = Depends(require_expert),
+    usecase: AddCertificateUseCase = Depends(get_add_certificate_usecase),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> ExpertProfileOutSchema:
+    """Эксперт добавляет удостоверение, которое забыл указать в заявке."""
+
+    try:
+        certificate = await usecase.execute(user.id, payload)
+    except InvalidCertificateError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+
+    background_tasks.add_task(send_certificate_changed, user, "добавил", certificate)
+
+    return await profile_schema(user, profiles)
+
+
+@router.patch("/me/certificates/{certificate_id}")
+async def update_my_certificate(
+    certificate_id: int,
+    payload: CertificateInSchema,
+    background_tasks: BackgroundTasks,
+    user: User = Depends(require_expert),
+    usecase: UpdateCertificateUseCase = Depends(get_update_certificate_usecase),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> ExpertProfileOutSchema:
+    """Эксперт правит своё удостоверение."""
+
+    try:
+        certificate = await usecase.execute(user.id, certificate_id, payload)
+    except CertificateNotFoundError as error:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
+    except InvalidCertificateError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+
+    background_tasks.add_task(send_certificate_changed, user, "изменил", certificate)
+
+    return await profile_schema(user, profiles)
+
+
+@router.delete("/me/certificates/{certificate_id}")
+async def delete_my_certificate(
+    certificate_id: int,
+    background_tasks: BackgroundTasks,
+    user: User = Depends(require_expert),
+    usecase: DeleteCertificateUseCase = Depends(get_delete_certificate_usecase),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> ExpertProfileOutSchema:
+    """Эксперт удаляет своё удостоверение. Последнее удалить нельзя."""
+
+    try:
+        certificate = await usecase.execute(user.id, certificate_id)
+    except CertificateNotFoundError as error:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
+    except InvalidCertificateError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+
+    background_tasks.add_task(send_certificate_changed, user, "удалил", certificate)
+
+    return await profile_schema(user, profiles)
 
 
 @router.get("/me/certificates/{certificate_id}/scan")

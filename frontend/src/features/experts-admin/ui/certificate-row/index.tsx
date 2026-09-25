@@ -8,18 +8,20 @@ import {
   type ExpertCatalog,
 } from "@/entities/expert";
 import Button from "@/shared/ui/button";
+import OutlineButton from "@/shared/ui/outline-button";
 import SelectField from "@/shared/ui/select-field";
 import TextField from "@/shared/ui/text-field";
 import { useAdminAction } from "../../model/use-admin-action";
-import { deleteCertificate, updateCertificate } from "../../api/experts";
+import { createCertificate, deleteCertificate, updateCertificate } from "../../api/experts";
 import styles from "./style.module.scss";
 
 type CertificateRowProps = {
   userId: number;
-  certificate: Certificate;
+  certificate: Certificate | null;
   catalog: ExpertCatalog | null;
   basePath: string;
   onUpdated: () => void;
+  onCancel?: () => void;
 };
 
 const CATEGORIES = [
@@ -34,11 +36,13 @@ const CertificateRow = ({
   catalog,
   basePath,
   onUpdated,
+  onCancel,
 }: CertificateRowProps) => {
-  const [areaCode, setAreaCode] = useState(certificate.area_code);
-  const [objectCode, setObjectCode] = useState(certificate.object_code);
-  const [category, setCategory] = useState(String(certificate.category));
-  const [validUntil, setValidUntil] = useState(certificate.valid_until);
+  const [areaCode, setAreaCode] = useState(certificate?.area_code ?? "");
+  const [objectCode, setObjectCode] = useState(certificate?.object_code ?? "");
+  const [category, setCategory] = useState(certificate ? String(certificate.category) : "");
+  const [validUntil, setValidUntil] = useState(certificate?.valid_until ?? "");
+  const [number, setNumber] = useState(certificate?.number ?? "");
   const { pending, error, run } = useAdminAction();
 
   const areas = catalog ? catalog.areas : [];
@@ -55,17 +59,26 @@ const CertificateRow = ({
 
   const save = () =>
     run(async () => {
-      await updateCertificate(basePath, userId, certificate.id, {
+      const payload = {
         area_code: areaCode,
         object_code: objectCode,
         category: Number(category),
         valid_until: validUntil,
-      });
+        number: number.trim(),
+      };
+
+      if (certificate) {
+        await updateCertificate(basePath, userId, certificate.id, payload);
+      } else {
+        await createCertificate(basePath, userId, payload);
+        onCancel?.();
+      }
+
       onUpdated();
     });
 
   const remove = () => {
-    if (!window.confirm("Удалить это удостоверение?")) return;
+    if (!certificate || !window.confirm("Удалить это удостоверение?")) return;
 
     void run(async () => {
       await deleteCertificate(basePath, userId, certificate.id);
@@ -98,9 +111,10 @@ const CertificateRow = ({
           options={CATEGORIES}
         />
         <TextField label="Действует до" type="date" value={validUntil} onChange={setValidUntil} />
+        <TextField label="Номер или ЕРУЛ" maxLength={64} value={number} onChange={setNumber} />
       </div>
 
-      {catalog && (
+      {catalog && areaCode && objectCode && (
         <p className={styles.caption}>
           {areaTitle(catalog, areaCode)} · {objectTitle(catalog, objectCode)}
         </p>
@@ -109,11 +123,17 @@ const CertificateRow = ({
       {error && <p className={styles.error}>{error}</p>}
 
       <div className={styles.actions}>
-        <button type="button" className={styles.remove} disabled={pending} onClick={remove}>
-          Удалить
-        </button>
+        {certificate ? (
+          <button type="button" className={styles.remove} disabled={pending} onClick={remove}>
+            Удалить
+          </button>
+        ) : (
+          <OutlineButton disabled={pending} onClick={onCancel}>
+            Отмена
+          </OutlineButton>
+        )}
         <Button loading={pending} onClick={() => void save()}>
-          Сохранить
+          {certificate ? "Сохранить" : "Добавить"}
         </Button>
       </div>
     </article>

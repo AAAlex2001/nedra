@@ -3,6 +3,7 @@ from fastapi.responses import FileResponse
 
 from app.dependencies.admin import require_admin
 from app.dependencies.experts import (
+    get_add_certificate_usecase,
     get_application_repository,
     get_approve_application_usecase,
     get_delete_certificate_usecase,
@@ -16,8 +17,8 @@ from app.dependencies.experts import (
 from app.dependencies.users import get_user_repository
 from app.models.expert import ApplicationStatus, ExpertApplication
 from app.schemas.expert import (
+    CertificateInSchema,
     CertificateOutSchema,
-    CertificateUpdateSchema,
     ExpertApplicationOutSchema,
     ExpertOutSchema,
     ExpertUpdateSchema,
@@ -35,12 +36,13 @@ from app.services.experts.letters import send_application_approved, send_applica
 from app.services.experts.repo import ExpertApplicationRepository, ExpertProfileRepository
 from app.services.experts.usecases.approve_application import ApproveExpertApplicationUseCase
 from app.services.experts.usecases.delete_expert import DeleteExpertUseCase
-from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
-from app.services.experts.usecases.update_expert import (
+from app.services.experts.usecases.manage_certificates import (
+    AddCertificateUseCase,
     DeleteCertificateUseCase,
     UpdateCertificateUseCase,
-    UpdateExpertUseCase,
 )
+from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
+from app.services.experts.usecases.update_expert import UpdateExpertUseCase
 from app.services.files.storage import PrivateStorage
 from app.services.users.exceptions import EmailAlreadyTakenError, InvalidPhoneError
 from app.services.users.repo import UserRepository
@@ -187,14 +189,33 @@ async def update_expert(
     )
 
 
+@router.post("/{user_id}/certificates", status_code=status.HTTP_204_NO_CONTENT)
+async def add_certificate(
+    user_id: int,
+    payload: CertificateInSchema,
+    usecase: AddCertificateUseCase = Depends(get_add_certificate_usecase),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> None:
+    """Добавить эксперту удостоверение."""
+
+    profile = await profiles.get_by_user(user_id)
+    if profile is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"Эксперт {user_id} не найден")
+
+    try:
+        await usecase.execute(user_id, payload)
+    except InvalidCertificateError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+
+
 @router.patch("/{user_id}/certificates/{certificate_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_certificate(
     user_id: int,
     certificate_id: int,
-    payload: CertificateUpdateSchema,
+    payload: CertificateInSchema,
     usecase: UpdateCertificateUseCase = Depends(get_update_certificate_usecase),
 ) -> None:
-    """Поменять область, объект, категорию или срок удостоверения."""
+    """Поменять область, объект, категорию, срок или номер удостоверения."""
 
     try:
         await usecase.execute(user_id, certificate_id, payload)
@@ -210,12 +231,14 @@ async def delete_certificate(
     certificate_id: int,
     usecase: DeleteCertificateUseCase = Depends(get_delete_certificate_usecase),
 ) -> None:
-    """Убрать удостоверение у эксперта."""
+    """Убрать удостоверение у эксперта. Последнее удалить нельзя."""
 
     try:
         await usecase.execute(user_id, certificate_id)
     except CertificateNotFoundError as error:
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
+    except InvalidCertificateError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)

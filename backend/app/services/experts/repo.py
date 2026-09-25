@@ -134,6 +134,15 @@ class ExpertProfileRepository:
 
         await self.db.commit()
 
+    async def add_certificate(self, certificate: ExpertCertificate) -> ExpertCertificate:
+        """Сохранить новое удостоверение эксперта."""
+
+        self.db.add(certificate)
+        await self.db.commit()
+        await self.db.refresh(certificate)
+
+        return certificate
+
     async def remove_certificate(self, certificate: ExpertCertificate) -> None:
         """Удалить одно удостоверение эксперта."""
 
