@@ -1,4 +1,4 @@
-from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, BackgroundTasks, Depends, Form, HTTPException, status
 from fastapi.responses import FileResponse
 from pydantic import ValidationError
 
@@ -36,7 +36,7 @@ from app.services.experts.exceptions import (
 from app.services.experts.letters import send_application_received
 from app.services.experts.repo import ExpertProfileRepository
 from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
-from app.services.files.storage import PrivateStorage, UploadError
+from app.services.files.storage import PrivateStorage
 from app.services.users.exceptions import EmailAlreadyTakenError, InvalidPhoneError, WeakPasswordError
 
 
@@ -74,13 +74,11 @@ async def get_catalog() -> ExpertCatalogSchema:
 async def submit_application(
     background_tasks: BackgroundTasks,
     payload: str = Form(..., description="JSON заявки по схеме ExpertApplicationInSchema"),
-    scans: list[UploadFile] = File(default=[], description="Сканы удостоверений"),
     usecase: SubmitExpertApplicationUseCase = Depends(get_submit_application_usecase),
 ) -> ExpertApplicationCreatedSchema:
     """Подать заявку эксперта.
 
-    Форма приходит как multipart: поле payload с JSON и файлы scans.
-    Удостоверение ссылается на свой скан через scan_index.
+    Форма приходит как multipart с полем payload, где лежит JSON заявки.
     Аккаунт создаётся при одобрении, поэтому в заявке нужны контакты и пароль.
     """
 
@@ -93,14 +91,13 @@ async def submit_application(
         ) from error
 
     try:
-        application = await usecase.execute(data, scans)
+        application = await usecase.execute(data)
     except (
         WeakPasswordError,
         InvalidPhoneError,
         InvalidDirectionError,
         InvalidCertificateError,
         ContactsRequiredError,
-        UploadError,
     ) as error:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,

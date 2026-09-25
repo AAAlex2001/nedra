@@ -60,6 +60,8 @@ class ExpertCertificate(Base):
 
     Сначала принадлежит заявке. После одобрения получает user_id
     и становится удостоверением зарегистрированного эксперта.
+    Эксперт указывает номер удостоверения или номер регистрации в ЕРУЛ.
+    Сканы больше не принимаются, поля скана остались у старых заявок.
     """
 
     __tablename__ = "expert_certificates"
@@ -77,6 +79,7 @@ class ExpertCertificate(Base):
     object_code: Mapped[str] = mapped_column(String(8))
     category: Mapped[int] = mapped_column(SmallInteger)
     valid_until: Mapped[date] = mapped_column(Date)
+    number: Mapped[str | None] = mapped_column(String(64))
 
     scan_path: Mapped[str | None] = mapped_column(String(500))
     scan_name: Mapped[str | None] = mapped_column(String(255))

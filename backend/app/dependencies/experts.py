@@ -47,11 +47,10 @@ def get_private_storage() -> PrivateStorage:
 def get_submit_application_usecase(
     applications: ExpertApplicationRepository = Depends(get_application_repository),
     users: UserRepository = Depends(get_user_repository),
-    storage: PrivateStorage = Depends(get_private_storage),
 ) -> SubmitExpertApplicationUseCase:
     """Сценарий подачи заявки."""
 
-    return SubmitExpertApplicationUseCase(applications, users, storage)
+    return SubmitExpertApplicationUseCase(applications, users)
 
 
 def get_approve_application_usecase(

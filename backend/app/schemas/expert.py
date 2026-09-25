@@ -48,13 +48,20 @@ class ExpertCatalogSchema(BaseModel):
 
 
 class CertificateInSchema(BaseModel):
-    """Удостоверение в заявке. scan_index — номер файла в списке загруженных сканов."""
+    """Удостоверение в заявке."""
 
     area_code: str = Field(..., max_length=8, description="Область аттестации, например Э1")
     object_code: str = Field(..., max_length=8, description="Объект экспертизы, например kl_tp")
     category: int = Field(..., ge=1, le=3, description="Категория эксперта")
-    valid_until: date = Field(..., description="Срок действия удостоверения")
-    scan_index: int | None = Field(None, ge=0, description="Индекс файла скана среди загруженных")
+    valid_until: date = Field(
+        ..., description="Дата окончания срока действия квалификационного удостоверения"
+    )
+    number: str = Field(
+        ...,
+        min_length=1,
+        max_length=64,
+        description="Номер квалификационного удостоверения или номер регистрации в ЕРУЛ",
+    )
 
 
 class ExpertApplicationInSchema(BaseModel):
@@ -75,7 +82,7 @@ class ExpertApplicationInSchema(BaseModel):
 
 
 class CertificateOutSchema(BaseModel):
-    """Удостоверение наружу. Путь к файлу не отдаём, только факт наличия скана."""
+    """Удостоверение наружу. Скан есть только у старых заявок, путь к нему не отдаём."""
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -84,6 +91,7 @@ class CertificateOutSchema(BaseModel):
     object_code: str
     category: int
     valid_until: date
+    number: str | None
     scan_name: str | None
 
 

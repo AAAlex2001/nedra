@@ -109,11 +109,6 @@ class FakeApplicationRepository:
         return application
 
 
-class FakeStorage:
-    async def save(self, file, folder: str):
-        raise AssertionError("в тестах сканы не загружаются")
-
-
 class World:
     """Все фейковые репозитории вместе, чтобы сценарии видели одни и те же данные."""
 
@@ -123,7 +118,7 @@ class World:
         self.applications = FakeApplicationRepository(self.users, self.profiles)
 
     def submit(self) -> SubmitExpertApplicationUseCase:
-        return SubmitExpertApplicationUseCase(self.applications, self.users, FakeStorage())
+        return SubmitExpertApplicationUseCase(self.applications, self.users)
 
     def approve(self) -> ApproveExpertApplicationUseCase:
         return ApproveExpertApplicationUseCase(self.applications, self.users)
@@ -141,7 +136,11 @@ def make_payload(email: str | None = "Expert@Example.com") -> ExpertApplicationI
         directions=["industrial_safety", "sms_audit"],
         certificates=[
             CertificateInSchema(
-                area_code="Э1", object_code="kl_tp", category=2, valid_until=date(2028, 1, 1)
+                area_code="Э1",
+                object_code="kl_tp",
+                category=2,
+                valid_until=date(2028, 1, 1),
+                number=" 77-ЭПБ-12345 ",
             )
         ],
     )
@@ -183,7 +182,7 @@ def test_validate_directions() -> None:
 def test_submit_creates_pending_application() -> None:
     world = World()
 
-    application = asyncio.run(world.submit().execute(make_payload(), []))
+    application = asyncio.run(world.submit().execute(make_payload()))
 
     assert application.id == 1
     assert application.email == "expert@example.com"
@@ -193,13 +192,14 @@ def test_submit_creates_pending_application() -> None:
     assert application.user_id is None
     assert application.password_hash != "secret123"
     assert len(application.certificates) == 1
+    assert application.certificates[0].number == "77-ЭПБ-12345"
 
 
 def test_submit_requires_contacts() -> None:
     world = World()
 
     with pytest.raises(ContactsRequiredError):
-        asyncio.run(world.submit().execute(make_payload(email=None), []))
+        asyncio.run(world.submit().execute(make_payload(email=None)))
 
 
 def test_submit_rejects_existing_account_email() -> None:
@@ -207,29 +207,29 @@ def test_submit_rejects_existing_account_email() -> None:
     make_customer(world, "expert@example.com")
 
     with pytest.raises(EmailAlreadyTakenError):
-        asyncio.run(world.submit().execute(make_payload(), []))
+        asyncio.run(world.submit().execute(make_payload()))
 
 
 def test_submit_rejects_second_pending_application() -> None:
     world = World()
-    asyncio.run(world.submit().execute(make_payload(), []))
+    asyncio.run(world.submit().execute(make_payload()))
 
     with pytest.raises(ApplicationAlreadyPendingError):
-        asyncio.run(world.submit().execute(make_payload("expert@example.com"), []))
+        asyncio.run(world.submit().execute(make_payload("expert@example.com")))
 
 
-def test_submit_rejects_missing_scan() -> None:
+def test_submit_requires_certificate_number() -> None:
     world = World()
     payload = make_payload()
-    payload.certificates[0].scan_index = 0
+    payload.certificates[0].number = "   "
 
     with pytest.raises(InvalidCertificateError):
-        asyncio.run(world.submit().execute(payload, []))
+        asyncio.run(world.submit().execute(payload))
 
 
 def test_approve_creates_expert_account() -> None:
     world = World()
-    asyncio.run(world.submit().execute(make_payload(), []))
+    asyncio.run(world.submit().execute(make_payload()))
 
     application = asyncio.run(world.approve().execute(1))
 
@@ -247,7 +247,7 @@ def test_approve_creates_expert_account() -> None:
 
 def test_approve_rejects_taken_email() -> None:
     world = World()
-    asyncio.run(world.submit().execute(make_payload(), []))
+    asyncio.run(world.submit().execute(make_payload()))
     make_customer(world, "expert@example.com")
 
     with pytest.raises(EmailAlreadyTakenError):
@@ -256,7 +256,7 @@ def test_approve_rejects_taken_email() -> None:
 
 def test_delete_expert_removes_account() -> None:
     world = World()
-    asyncio.run(world.submit().execute(make_payload(), []))
+    asyncio.run(world.submit().execute(make_payload()))
     asyncio.run(world.approve().execute(1))
     user = world.users.users["expert@example.com"]
 
@@ -275,7 +275,7 @@ def test_delete_expert_removes_account() -> None:
 
 def test_reject_stores_comment() -> None:
     world = World()
-    asyncio.run(world.submit().execute(make_payload(), []))
+    asyncio.run(world.submit().execute(make_payload()))
     usecase = RejectExpertApplicationUseCase(world.applications)
 
     application = asyncio.run(usecase.execute(1, "  Удостоверение просрочено "))
