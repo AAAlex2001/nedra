@@ -10348,5 +10348,815 @@
     "license": "CC BY 2.0",
     "license_url": "https://creativecommons.org/licenses/by/2.0/",
     "provider": "flickr"
+  },
+  "tehperevooruzhenie-burovoy-ustanovki-geologorazvedki-kogda-nuzhen-proekt": {
+    "title": "Core Samples",
+    "url": "https://live.staticflickr.com/7180/6988276471_ac8efe54a8_b.jpg",
+    "source": "https://www.flickr.com/photos/47953739@N08/6988276471",
+    "author": "NashvilleCorps",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "deklaraciya-pb-sklada-vm-geologorazvedochnoy-ekspedicii-ekspertiza": {
+    "title": "Firework Storage Bunkers in the UK",
+    "url": "https://live.staticflickr.com/3567/3534823663_669e6ec655_b.jpg",
+    "source": "https://www.flickr.com/photos/30048753@N05/3534823663",
+    "author": "EpicFireworks",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "kak-proyti-ekspertizu-proekta-tp-sklada-vm-ekspedicii-7-shagov": {
+    "title": "NS-09448 - Dry Primer Storage",
+    "url": "https://live.staticflickr.com/65535/50310345578_60d9f44f1f_b.jpg",
+    "source": "https://www.flickr.com/photos/22490717@N02/50310345578",
+    "author": "archer10 (Dennis)",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "konservaciya-tec-i-energobloka-dokumentaciya-i-epb": {
+    "title": "File:Zmiiv thermal power plant (2007).jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/42/Zmiiv_thermal_power_plant_%282007%29.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=17798494",
+    "author": "Maksim Sidorov",
+    "license": "CC BY 3.0",
+    "license_url": "https://creativecommons.org/licenses/by/3.0/",
+    "provider": "wikimedia"
+  },
+  "obosnovanie-bezopasnosti-kotelnoy-i-tec-otstupleniya-ot-fnp-orpd": {
+    "title": "Safety valve",
+    "url": "https://live.staticflickr.com/7692/17105134758_bc3868a9eb_b.jpg",
+    "source": "https://www.flickr.com/photos/61132483@N00/17105134758",
+    "author": "Elsie esq.",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "likvidaciya-kotelnoy-dokumentaciya-i-epb": {
+    "title": "Abandoned boiler house at RAF West Raynham, Norfolk - geograph.org.uk - 4268107",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Abandoned_boiler_house_at_RAF_West_Raynham%2C_Norfolk_-_geograph.org.uk_-_4268107.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=127683543",
+    "author": "Richard Humphrey",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "wikimedia"
+  },
+  "tehperevooruzhenie-tec-proekt-epb-ili-gosekspertiza": {
+    "title": "Pitlochry Power Station Turbine Hall",
+    "url": "https://live.staticflickr.com/3180/2875557436_15014a17ac_b.jpg",
+    "source": "https://www.flickr.com/photos/15181848@N02/2875557436",
+    "author": "amandabhslater",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "kak-ulozhit-tehperevooruzhenie-kotelnoy-v-mezhotopitelnyy-period": {
+    "title": "Grand Canyon National Park: Powerhouse (2014) 8278",
+    "url": "https://live.staticflickr.com/3685/13204293284_1fee37abd0_b.jpg",
+    "source": "https://www.flickr.com/photos/50693818@N08/13204293284",
+    "author": "Grand Canyon NPS",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "zamena-oborudovaniya-kotelnoy-tehperevooruzhenie-ili-net-voprosy": {
+    "title": "Burners",
+    "url": "https://live.staticflickr.com/3241/3017418230_701c029f3e_b.jpg",
+    "source": "https://www.flickr.com/photos/26782864@N00/3017418230",
+    "author": "wwarby",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "proekt-tehperevooruzheniya-ili-obosnovanie-bezopasnosti-kotelnaya": {
+    "title": "Control panel boiler plant",
+    "url": "https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA0L2ZsMzA0OTY0MDgyNjEtaW1hZ2Uta3A1M243dmcuanBn.jpg",
+    "source": "https://www.rawpixel.com/image/3325695/free-photo-image-control-panel-boiler-plant-cc0",
+    "author": "U.S. Department of Energy",
+    "license": "CC0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "provider": "rawpixel"
+  },
+  "ugolnye-kotelnye-kuzbassa-tehperevooruzhenie-konservaciya-perevod-na-gaz": {
+    "title": "File:Komatsu bulldozer pushing coal in Power plant Ljubljana (winter 2017).jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Komatsu_bulldozer_pushing_coal_in_Power_plant_Ljubljana_%28winter_2017%29.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=54944653",
+    "author": "Petar Milošević",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "peresechenie-gpkd-s-dorogami-i-lep-predohranitelnye-sooruzheniya": {
+    "title": "Stuben-Material ropeway Kaltenberghut-02ASD",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/46/Stuben-Material_ropeway_Kaltenberghut-02ASD.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=95942218",
+    "author": "Asurnipal",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "kak-proyti-ekspertizu-proekta-gpkd-poshagovo": {
+    "title": "File:Reviewing documents (8656437132).jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Reviewing_documents_%288656437132%29.jpg/1920px-Reviewing_documents_%288656437132%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "source": "https://commons.wikimedia.org/wiki/File:Reviewing_documents_(8656437132).jpg",
+    "author": "NAVFAC",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0",
+    "provider": "wikimedia"
+  },
+  "gpkd-na-karere-i-rudnike-voprosy-ob-ekspertize-dokumentacii": {
+    "title": "Nobby's Head Aerial Cableway, Queensland, Australia",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Nobby%27s_Head_Aerial_Cableway%2C_Queensland%2C_Australia.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=178698035",
+    "author": "Jack Bain",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "provider": "wikimedia"
+  },
+  "tipovye-zamechaniya-eksperta-k-proektu-gpkd-chek-list": {
+    "title": "Brisbane River Bridge Blue Print T 69a",
+    "url": "https://live.staticflickr.com/7760/26848781810_25c3a9ea57_b.jpg",
+    "source": "https://www.flickr.com/photos/60455048@N02/26848781810",
+    "author": "Queensland State Archives",
+    "license": "Public domain",
+    "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "provider": "flickr"
+  },
+  "gosekspertiza-ili-epb-dokumentacii-proekta-gpkd": {
+    "title": "Oberalppass - Schneehüenerstock-Express (Intro)",
+    "url": "https://live.staticflickr.com/4901/44591827160_246967d332_b.jpg",
+    "source": "https://www.flickr.com/photos/70981241@N00/44591827160",
+    "author": "Kecko",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "gruzovye-kanatnye-dorogi-v-gorah-severnogo-kavkaza-ekspertiza": {
+    "title": "File:Cable car, Cable way, Aerial lift, Caucasus Mountains, Dombay, Karachay-Cherkessia.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Cable_car%2C_Cable_way%2C_Aerial_lift%2C_Caucasus_Mountains%2C_Dombay%2C_Karachay-Cherkessia.jpg/1920px-Cable_car%2C_Cable_way%2C_Aerial_lift%2C_Caucasus_Mountains%2C_Dombay%2C_Karachay-Cherkessia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "source": "https://commons.wikimedia.org/wiki/File:Cable_car,_Cable_way,_Aerial_lift,_Caucasus_Mountains,_Dombay,_Karachay-Cherkessia.jpg",
+    "author": "Vyacheslav Argenberg",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0",
+    "provider": "wikimedia"
+  },
+  "obosnovanie-bezopasnosti-passazhirskoy-kanatnoy-dorogi-otstupleniya-ot-fnp": {
+    "title": "Gondola Lift, Mountain Village, Colorado",
+    "url": "https://live.staticflickr.com/4098/4855395984_d120923a19_b.jpg",
+    "source": "https://www.flickr.com/photos/75683070@N00/4855395984",
+    "author": "Ken Lund",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "konservaciya-i-likvidaciya-passazhirskoy-kanatnoy-dorogi-epb": {
+    "title": "Jasná Low Tatra",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Jasn%C3%A1_Low_Tatra.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=3525792",
+    "author": "Andrij Bulba",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "wikimedia"
+  },
+  "funikuler-ekspertiza-proekta-tehperevooruzheniya-i-obosnovaniya": {
+    "title": "03198 (883) 30-08-2005 of the Bridgnorth - Castlehill Funicular Railway Co. Ltd., Cliff Rack Railway between the Upper town and the Lower town terminals, Bridgnorth, Shropshire, England, United Kingdom.",
+    "url": "https://live.staticflickr.com/8169/28787803746_30275c5523_b.jpg",
+    "source": "https://www.flickr.com/photos/25653307@N03/28787803746",
+    "author": "express000",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "kak-proyti-epb-proekta-passazhirskoy-kanatnoy-dorogi-do-sezona": {
+    "title": "Flaine - the first snow cannons to be installed in Europe, the first 8-seater high speed chairlift - opened on the 17 January 1969",
+    "url": "https://live.staticflickr.com/8464/8350407192_6339339ae1_b.jpg",
+    "source": "https://www.flickr.com/photos/16287002@N00/8350407192",
+    "author": "Richard Allaway",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "smena-vladelca-kanatnoy-dorogi-nuzhna-li-novaya-ekspertiza": {
+    "title": "Chunkurchak Ski Resort Lift",
+    "url": "https://live.staticflickr.com/4605/38931925385_e2327ffa14_b.jpg",
+    "source": "https://www.flickr.com/photos/158704586@N06/38931925385",
+    "author": "197travelstamps",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "perenos-bu-kanatnoy-dorogi-na-novyy-sklon-voprosy-ob-ekspertize": {
+    "title": "Underneath the Nobby's Head Aerial Cableway, Gold Coast, Queensland",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Underneath_the_Nobby%27s_Head_Aerial_Cableway%2C_Gold_Coast%2C_Queensland.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=178698960",
+    "author": "Jack Bain",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "provider": "wikimedia"
+  },
+  "chek-list-samoproverki-obosnovaniya-bezopasnosti-kanatnoy-dorogi": {
+    "title": "Emirates Air Line - London",
+    "url": "https://live.staticflickr.com/8159/7488667578_3793a600b9_b.jpg",
+    "source": "https://www.flickr.com/photos/52957117@N04/7488667578",
+    "author": "Dave Catchpole",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "tipovye-zamechaniya-ekspertov-k-proektam-passazhirskih-kanatnyh-dorog": {
+    "title": "Lift Operator",
+    "url": "https://live.staticflickr.com/4120/4858826989_323a486478_b.jpg",
+    "source": "https://www.flickr.com/photos/90616144@N00/4858826989",
+    "author": "JustTooLazy",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "tehperevooruzhenie-rekonstrukciya-ili-remont-passazhirskoy-kanatnoy-dorogi": {
+    "title": "Rock Cable Car",
+    "url": "https://live.staticflickr.com/4143/4901570351_4ebc1524c3_b.jpg",
+    "source": "https://www.flickr.com/photos/79721788@N00/4901570351",
+    "author": "D-Stanley",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "kreselnaya-gondolnaya-mayatnikovaya-funikuler-ekspertiza-proekta": {
+    "title": "Aerial tramway cabin",
+    "url": "https://live.staticflickr.com/2841/8767605469_341ee09495_b.jpg",
+    "source": "https://www.flickr.com/photos/27054484@N08/8767605469",
+    "author": "denipet",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "skolko-stoit-ekspertiza-proekta-i-ob-passazhirskoy-kanatnoy-dorogi": {
+    "title": "Lift top",
+    "url": "https://live.staticflickr.com/6047/7015350815_871caa13af_b.jpg",
+    "source": "https://www.flickr.com/photos/44423341@N00/7015350815",
+    "author": "Ed.ward",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "shtraf-za-zapusk-passazhirskoy-kanatnoy-dorogi-bez-zaklyucheniya-epb": {
+    "title": "Empty Ski Lift Chairs - Ski Resorts Closed?",
+    "url": "https://live.staticflickr.com/65535/49674443318_d2df0dc4ff_b.jpg",
+    "source": "https://www.flickr.com/photos/47121680@N00/49674443318",
+    "author": "joncutrer",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "kanatnye-dorogi-severnogo-kavkaza-ekspertiza-proektov": {
+    "title": "Dombay cable car, Caucasus Mountains, Dombay, Karachay-Cherkessia",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Dombay_cable_car%2C_Caucasus_Mountains%2C_Dombay%2C_Karachay-Cherkessia.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=175564023",
+    "author": "Vyacheslav Argenberg",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "provider": "wikimedia"
+  },
+  "obosnovanie-bezopasnosti-eskalatora-metropolitena-otstupleniya-ot-fnp": {
+    "title": "London tube",
+    "url": "https://live.staticflickr.com/3510/3244779936_36f96992bf_b.jpg",
+    "source": "https://www.flickr.com/photos/59367690@N00/3244779936",
+    "author": "neiljs",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "kak-proyti-epb-proekta-zameny-tonnelnogo-eskalatora": {
+    "title": "Old film movie posters in disused area at Notting Hill Gate tube station, London - 2010",
+    "url": "https://live.staticflickr.com/1307/4669213137_e864f3d7af_b.jpg",
+    "source": "https://www.flickr.com/photos/36844288@N00/4669213137",
+    "author": "mikeyashworth",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "podryadchik-po-zamene-eskalatorov-metro-ekspertiza-proekta-voprosy": {
+    "title": "NYCT_1544",
+    "url": "https://live.staticflickr.com/7090/7362196352_49165b9952_b.jpg",
+    "source": "https://www.flickr.com/photos/61135621@N03/7362196352",
+    "author": "MTAPhotos",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "tipovye-zamechaniya-eksperta-k-proektam-eskalatorov-metro": {
+    "title": "Brisbane River Bridge Blue Print T 56",
+    "url": "https://live.staticflickr.com/7797/26848852650_ac8e0c6ccb_b.jpg",
+    "source": "https://www.flickr.com/photos/60455048@N02/26848852650",
+    "author": "Queensland State Archives",
+    "license": "Public domain",
+    "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "provider": "flickr"
+  },
+  "ishodnye-dannye-dlya-proekta-zameny-tonnelnogo-eskalatora": {
+    "title": "Long subway escalator",
+    "url": "https://live.staticflickr.com/8274/8907408449_d1613e9754_b.jpg",
+    "source": "https://www.flickr.com/photos/44986793@N05/8907408449",
+    "author": "dianaandleland",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "eskalator-v-metro-i-v-torgovom-centre-v-chem-raznica": {
+    "title": "SZ 深圳市 Shenzhen 福田 Futian 中康路 Zhongkang Road 卓悅匯購物中心 Injoy Shopping Mall escalators gap November 2024 R12S 06",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/0/0b/SZ_%E6%B7%B1%E5%9C%B3%E5%B8%82_Shenzhen_%E7%A6%8F%E7%94%B0_Futian_%E4%B8%AD%E5%BA%B7%E8%B7%AF_Zhongkang_Road_%E5%8D%93%E6%82%85%E5%8C%AF%E8%B3%BC%E7%89%A9%E4%B8%AD%E5%BF%83_Injoy_Shopping_Mall_escalators_gap_November_2024_R12S_06.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=155335787",
+    "author": "Nnao KAIMUE MAUDN",
+    "license": "CC0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/deed.en/",
+    "provider": "wikimedia"
+  },
+  "skolko-stoit-ekspertiza-proekta-tp-i-ob-eskalatorov-metro": {
+    "title": "Tax Forms and Calculator",
+    "url": "https://live.staticflickr.com/7147/6757828303_86e79ceee3_b.jpg",
+    "source": "https://www.flickr.com/photos/68751915@N05/6757828303",
+    "author": "401(K) 2013",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "eskalatory-metro-sankt-peterburga-ekspertiza-proektov-zameny": {
+    "title": "Nievsky Prospekt metro station in Saint Petersburg, Russia. Some escalators are even longer than this.",
+    "url": "https://live.staticflickr.com/2525/32895951171_bcdde68dbb_b.jpg",
+    "source": "https://www.flickr.com/photos/145472109@N04/32895951171",
+    "author": "www.ralfsteinberger.com",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "rekonstrukciya-kranovogo-puti-proekt-i-epb-dokumentacii": {
+    "title": "Gantry crane",
+    "url": "https://live.staticflickr.com/7219/7369903170_03d5c1e0bc_b.jpg",
+    "source": "https://www.flickr.com/photos/61132483@N00/7369903170",
+    "author": "Elsie esq.",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "konservaciya-i-likvidaciya-opo-s-podemnymi-sooruzheniyami-dokumentaciya": {
+    "title": "Abandoned Factory",
+    "url": "https://live.staticflickr.com/3077/2911863640_e599a00eb5_b.jpg",
+    "source": "https://www.flickr.com/photos/8314403@N03/2911863640",
+    "author": "Sabrina Campagna Live Music Photographer",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "zamena-portalnyh-kranov-na-prichale-chastye-voprosy-o-proekte": {
+    "title": "Thorax at Quay 16 Ganz Portal Crane and Christmas Tree in Port of Tallinn 29 November 2016",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Thorax_at_Quay_16_Ganz_Portal_Crane_and_Christmas_Tree_in_Port_of_Tallinn_29_November_2016.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=53627550",
+    "author": "Pjotr Mahhonin",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "tehperevooruzhenie-kranovyh-cehov-v-sankt-peterburge-sudostroenie": {
+    "title": "File:Kronstadt Shipyard 2011-10 1317470819 rail crane on sea shore.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Kronstadt_Shipyard_2011-10_1317470819_rail_crane_on_sea_shore.jpg/1920px-Kronstadt_Shipyard_2011-10_1317470819_rail_crane_on_sea_shore.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "source": "https://commons.wikimedia.org/wiki/File:Kronstadt_Shipyard_2011-10_1317470819_rail_crane_on_sea_shore.jpg",
+    "author": "Artyom Svetlov",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "provider": "wikimedia"
+  },
+  "zamena-zernosushilki-na-elevatore-proekt-tehperevooruzheniya-i-ekspertiza": {
+    "title": "File:Grain dryer at Northside Farm - geograph.org.uk - 4664436.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/35/Grain_dryer_at_Northside_Farm_-_geograph.org.uk_-_4664436.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "source": "https://commons.wikimedia.org/wiki/File:Grain_dryer_at_Northside_Farm_-_geograph.org.uk_-_4664436.jpg",
+    "author": "Andrew Curtis",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+    "provider": "wikimedia"
+  },
+  "konservaciya-elevatora-dokumentaciya-ekspertiza-i-podgotovka-silosov": {
+    "title": "Abandoned grain elevator, downtown Wichita Falls TX",
+    "url": "https://live.staticflickr.com/6162/6134124818_a9fb950e56_b.jpg",
+    "source": "https://www.flickr.com/photos/21550937@N03/6134124818",
+    "author": "roy.luck",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "tehperevooruzhenie-masloekstrakcionnogo-ceha-proekt-i-ekspertiza": {
+    "title": "Ölsaatverarbeitungsanlage, 2026 Martfű",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/%C3%96lsaatverarbeitungsanlage%2C_2026_Martf%C5%B1.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=191915513",
+    "author": "Globetrotter19",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "novye-silosy-na-deystvuyuschem-elevatore-tp-rekonstrukciya-i-gge": {
+    "title": "Grain Bins",
+    "url": "https://live.staticflickr.com/5508/9620693377_78fd5df42f_b.jpg",
+    "source": "https://www.flickr.com/photos/95352257@N06/9620693377",
+    "author": "UnitedSoybeanBoard",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "kak-podgotovit-proekt-ustanovki-novoy-norii-k-ekspertize": {
+    "title": "File:Grain elevator. Brant Alberta Canada. (8096390076).jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/5/56/Grain_elevator._Brant_Alberta_Canada._%288096390076%29.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=70524184",
+    "author": "Bernard Spragg. NZ from Christchurch, New Zealand",
+    "license": "CC0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "provider": "wikimedia"
+  },
+  "kak-likvidirovat-elevator-ili-melzavod-poshagovo": {
+    "title": "Silo demolition at SOK mill in Toppila May2012 005",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Silo_demolition_at_SOK_mill_in_Toppila_May2012_005.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=19658211",
+    "author": "Methem (Mikko J. Putkonen)",
+    "license": "CC BY 3.0",
+    "license_url": "https://creativecommons.org/licenses/by/3.0/",
+    "provider": "wikimedia"
+  },
+  "kak-provesti-ekspertizu-proekta-novoy-linii-kombikormovogo-zavoda": {
+    "title": "THE LOXTON FLOUR MILL",
+    "url": "https://live.staticflickr.com/5207/5371152717_ccc77dd5e7_b.jpg",
+    "source": "https://www.flickr.com/photos/58241471@N04/5371152717",
+    "author": "pmagarey",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "zamena-oborudovaniya-elevatora-odin-v-odin-nuzhna-li-ekspertiza-proekta": {
+    "title": "NS-01323 - Halifax Grain Elevators",
+    "url": "https://live.staticflickr.com/8165/28442674724_a23e727a15_b.jpg",
+    "source": "https://www.flickr.com/photos/22490717@N02/28442674724",
+    "author": "archer10 (Dennis)",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "sklad-bestarnogo-hraneniya-muki-kogda-nuzhen-proekt-tehperevooruzheniya": {
+    "title": "Angel's flour pipeline 1",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Angel%27s_flour_pipeline_1.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=11151902",
+    "author": "Yoninah",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "provider": "wikimedia"
+  },
+  "chek-list-komplektnosti-proekta-tp-elevatora-pered-ekspertizoy": {
+    "title": "Rough Sketches",
+    "url": "https://live.staticflickr.com/5525/9791626204_49735067ab_b.jpg",
+    "source": "https://www.flickr.com/photos/38869431@N00/9791626204",
+    "author": "juhansonin",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "proekt-tp-ili-obosnovanie-bezopasnosti-dlya-elevatora-chto-vybrat": {
+    "title": "Grain Terminal. Gibson City, IL",
+    "url": "https://live.staticflickr.com/8603/16093580394_224a1629a5_b.jpg",
+    "source": "https://www.flickr.com/photos/56377701@N07/16093580394",
+    "author": "Ronald Douglas Frazier",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "skolko-stoit-ekspertiza-proekta-tehperevooruzheniya-elevatora": {
+    "title": "Brant Alberta.",
+    "url": "https://live.staticflickr.com/4495/36827059033_f0f4460468_b.jpg",
+    "source": "https://www.flickr.com/photos/88123769@N02/36827059033",
+    "author": "Bernard Spragg",
+    "license": "CC0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "provider": "flickr"
+  },
+  "shtraf-za-ekspluataciyu-elevatora-posle-tp-bez-zaklyucheniya-epb": {
+    "title": "File:Cargill-Westwego Grain Elevator and port facility, Nine Mile Point, Louisiana, 10 March 2022 - 03.jpg",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/Cargill-Westwego_Grain_Elevator_and_port_facility%2C_Nine_Mile_Point%2C_Louisiana%2C_10_March_2022_-_03.jpg/1920px-Cargill-Westwego_Grain_Elevator_and_port_facility%2C_Nine_Mile_Point%2C_Louisiana%2C_10_March_2022_-_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "source": "https://commons.wikimedia.org/wiki/File:Cargill-Westwego_Grain_Elevator_and_port_facility,_Nine_Mile_Point,_Louisiana,_10_March_2022_-_03.jpg",
+    "author": "U.S. Department of Agriculture",
+    "license": "Public domain",
+    "license_url": "",
+    "provider": "wikimedia"
+  },
+  "prostrelochno-vzryvnye-raboty-v-skvazhinah-dokumentaciya-na-ekspertizu": {
+    "title": "Ocean Star Drilling Rig",
+    "url": "https://live.staticflickr.com/4051/4577660624_e327272103_b.jpg",
+    "source": "https://www.flickr.com/photos/16638697@N00/4577660624",
+    "author": "eschipul",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "konservaciya-i-likvidaciya-opo-geologorazvedki-posle-polevogo-sezona": {
+    "title": "CH057A - Drill Rig Removal from East Approach (09-05-2017)",
+    "url": "https://live.staticflickr.com/4337/36693921820_b6bb75f492_b.jpg",
+    "source": "https://www.flickr.com/photos/59595815@N03/36693921820",
+    "author": "MTA C&D - EAST SIDE ACCESS",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "kak-razrabotat-obosnovanie-bezopasnosti-polevogo-lagerya-s-des-i-gsm": {
+    "title": "Forest Road Hardened for Drilling Rigs",
+    "url": "https://live.staticflickr.com/6111/6322963137_8e8941802e_b.jpg",
+    "source": "https://www.flickr.com/photos/45846171@N04/6322963137",
+    "author": "andyarthur",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "chek-list-obosnovaniya-bezopasnosti-opo-geologorazvedki": {
+    "title": "Horses with in the background Synergy 2 Drilling Rig",
+    "url": "https://live.staticflickr.com/5588/14889282335_df3589a169_b.jpg",
+    "source": "https://www.flickr.com/photos/71963413@N06/14889282335",
+    "author": "GorissM",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "tipovye-zamechaniya-eksperta-k-dokumentacii-grr-chek-list": {
+    "title": "Synergy 2 Drilling Rig",
+    "url": "https://live.staticflickr.com/3871/14702608720_ef0c87e973_b.jpg",
+    "source": "https://www.flickr.com/photos/71963413@N06/14702608720",
+    "author": "GorissM",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "epb-dokumentacii-ili-gosekspertiza-proekta-baza-geologorazvedki": {
+    "title": "Ocean Star Drilling Rig & Museum",
+    "url": "https://live.staticflickr.com/4037/4576999757_e78c33d977_b.jpg",
+    "source": "https://www.flickr.com/photos/16638697@N00/4576999757",
+    "author": "eschipul",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "ekspertiza-dokumentacii-grr-na-chukotke-polevye-bazy-i-sklady-vm": {
+    "title": "Coal Seam Gas exploration drill rig, Doubtful Creek, NSW",
+    "url": "https://live.staticflickr.com/7300/9296324885_e10bc2d9d0_b.jpg",
+    "source": "https://www.flickr.com/photos/98076023@N02/9296324885",
+    "author": "Beyond Coal and Gas",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "chek-list-proekta-tehperevooruzheniya-kotelnoy-pered-ekspertizoy": {
+    "title": "Котельная в лучах солнца // Boiler house in the sun",
+    "url": "https://live.staticflickr.com/3667/13237736315_dd73aa40d6_b.jpg",
+    "source": "https://www.flickr.com/photos/39824826@N08/13237736315",
+    "author": "alexyv",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "bmk-vmesto-staroy-kotelnoy-tehperevooruzhenie-ili-novoe-stroitelstvo": {
+    "title": "Котельная // Boiler house",
+    "url": "https://live.staticflickr.com/7310/10025346943_c7eb3bb1d3_b.jpg",
+    "source": "https://www.flickr.com/photos/39824826@N08/10025346943",
+    "author": "alexyv",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "epb-dokumentacii-gruzovoy-podvesnoy-kanatnoy-dorogi-kogda-nuzhna": {
+    "title": "Remains of aerial ropeway",
+    "url": "https://live.staticflickr.com/2793/4345970559_d9e7c661ef_b.jpg",
+    "source": "https://www.flickr.com/photos/28310050@N02/4345970559",
+    "author": "b3tarev3",
+    "license": "Public domain",
+    "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "provider": "flickr"
+  },
+  "obosnovanie-bezopasnosti-gpkd-tipovye-otstupleniya-ot-fnp": {
+    "title": "Aerial Ropeway",
+    "url": "https://live.staticflickr.com/2039/2421121873_6c8a1d218e_b.jpg",
+    "source": "https://www.flickr.com/photos/19901727@N05/2421121873",
+    "author": "Christopher Owen Jones",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "zamena-privoda-i-tormozov-gpkd-proekt-tehperevooruzheniya": {
+    "title": "The central pylon of the aerial ropeway at Alresford creek",
+    "url": "https://live.staticflickr.com/65535/51625028127_531036d803_b.jpg",
+    "source": "https://www.flickr.com/photos/58415659@N00/51625028127",
+    "author": "kitmasterbloke",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "uvelichenie-proizvoditelnosti-gpkd-proekt-i-raschety": {
+    "title": "aerial ropeway",
+    "url": "https://live.staticflickr.com/4070/4700147536_9fbc2d28a2_b.jpg",
+    "source": "https://www.flickr.com/photos/30713600@N00/4700147536",
+    "author": "twicepix",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "kak-likvidirovat-gpkd-demontazh-kanatov-i-opor": {
+    "title": "Alresford Creek Aerial Ropeway remnants, with yacht 'Nil Desperandum'",
+    "url": "https://live.staticflickr.com/65535/51625859051_4e56cf5643_b.jpg",
+    "source": "https://www.flickr.com/photos/58415659@N00/51625859051",
+    "author": "kitmasterbloke",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "chek-list-dokumentov-na-ekspertizu-proekta-tp-gpkd": {
+    "title": "wheels form aerial ropeway",
+    "url": "https://live.staticflickr.com/2794/4346710048_2375e5fd29_b.jpg",
+    "source": "https://www.flickr.com/photos/28310050@N02/4346710048",
+    "author": "b3tarev3",
+    "license": "Public domain",
+    "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "provider": "flickr"
+  },
+  "chek-list-obosnovaniya-bezopasnosti-gpkd-sostav": {
+    "title": "Schoppernau-material ropeway Neuhornbachhaus-top station-02ASD",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Schoppernau-material_ropeway_Neuhornbachhaus-top_station-02ASD.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=147412432",
+    "author": "Asurnipal",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "stoimost-ekspertizy-proekta-i-ob-gpkd": {
+    "title": "Stuben-Material ropeway Kaltenberghut-01ASD",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Stuben-Material_ropeway_Kaltenberghut-01ASD.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=95942217",
+    "author": "Asurnipal",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "tehnicheskoe-perevooruzhenie-passazhirskoy-kanatnoy-dorogi-kakie-raboty": {
+    "title": "Gondola Lift 12",
+    "url": "https://live.staticflickr.com/65535/52312826597_c24a2e1531_b.jpg",
+    "source": "https://www.flickr.com/photos/189561381@N07/52312826597",
+    "author": "claralieu",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "kak-nayti-eksperta-e14-2-kanatnye-dorogi-i-funikulery": {
+    "title": "Jasná Ski Resort - gondola lift Kosodrevina - Chopok (4)",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Jasn%C3%A1_Ski_Resort_-_gondola_lift_Kosodrevina_-_Chopok_%284%29.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=31384611",
+    "author": "Pudelek (Marcin Szala)",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "provider": "wikimedia"
+  },
+  "poetazhnye-eskalatory-v-vestibyulyah-metro-nuzhna-li-ekspertiza": {
+    "title": "Copenhagen Metro escalators",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/42/Copenhagen_Metro_escalators.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=3332204",
+    "author": "Stig Nygaard from Copenhagen, Denmark",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "wikimedia"
+  },
+  "zamena-sistemy-upravleniya-eskalatora-metro-proekt-tp": {
+    "title": "Woodley Park/Adams Morgan/Zoo DC Metro Escalators",
+    "url": "https://live.staticflickr.com/7180/6819838978_11f280a6ea_b.jpg",
+    "source": "https://www.flickr.com/photos/39908901@N06/6819838978",
+    "author": "m01229",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "ekspert-e14-3-kto-provodit-ekspertizu-proektov-eskalatorov-metro": {
+    "title": "Kharkiv Metro Escalator",
+    "url": "https://live.staticflickr.com/4115/4888676925_5c93f0ecdd_b.jpg",
+    "source": "https://www.flickr.com/photos/52252253@N08/4888676925",
+    "author": "Leon Hart",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "paket-dokumentov-na-ekspertizu-proekta-tp-eskalatorov-metro-chek-list": {
+    "title": "Helsinki Central Railway Station metro escalators April 2022",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Helsinki_Central_Railway_Station_metro_escalators_April_2022.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=117049139",
+    "author": "Roopeank",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "mehanizirovannyy-sklad-s-kranami-shtabelerami-proekt-i-epb": {
+    "title": "Overhead crane",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/8/85/Overhead_crane.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=2291854",
+    "author": "Oxam Hartog",
+    "license": "CC BY-SA 2.5",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.5/",
+    "provider": "wikimedia"
+  },
+  "kak-razrabotat-obosnovanie-bezopasnosti-dlya-kranovogo-hozyaystva": {
+    "title": "A 160 foot long Overhead Crane in the renewable energy sector",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/A_160_foot_long_Overhead_Crane_in_the_renewable_energy_sector.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=148773948",
+    "author": "Sclaferriere",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "kak-ustanovit-kran-balku-v-deystvuyuschem-cehe-proekt-i-ekspertiza": {
+    "title": "Longest Overhead Crane to build the longest wind turbines",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/Longest_Overhead_Crane_to_build_the_longest_wind_turbines.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=148773840",
+    "author": "Sclaferriere",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "ekspert-e14-4-chastye-voprosy-o-vybore-eksperta-dlya-proekta-krana": {
+    "title": "Oakwood station (Toronto) - Overhead crane",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/6/66/Oakwood_station_%28Toronto%29_-_Overhead_crane.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=63721610",
+    "author": "TheTrolleyPole",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "kran-ustanovlen-bez-proekta-chastye-voprosy-kak-uzakonit": {
+    "title": "Overhead crane Kanto Mitsukaido railway vehicle base,Josa-city,Japan",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/2/23/Overhead_crane_Kanto_Mitsukaido_railway_vehicle_base%2CJosa-city%2CJapan.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=31095816",
+    "author": "Katorisi",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "provider": "wikimedia"
+  },
+  "chek-list-sostava-proekta-tp-kranovogo-hozyaystva-pered-ekspertizoy": {
+    "title": "Freightliner overhead crane",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Freightliner_overhead_crane.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=10125208",
+    "author": "NotFromUtrecht",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "provider": "wikimedia"
+  },
+  "chek-list-ishodnyh-dannyh-dlya-proekta-ustanovki-krana": {
+    "title": "Euro-type-overhead-crane-3",
+    "url": "https://live.staticflickr.com/8813/18215116050_10eb8dd0d7_b.jpg",
+    "source": "https://www.flickr.com/photos/131698157@N03/18215116050",
+    "author": "dgcrane123",
+    "license": "CC0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "provider": "flickr"
+  },
+  "modernizaciya-krana-ili-tehperevooruzhenie-opo-kakoy-dokument-na-ekspertizu": {
+    "title": "Overhead Crane for Coil Lifting",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/8/81/Overhead_Crane_for_Coil_Lifting.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=141585305",
+    "author": "Sclaferriere",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "shtraf-za-tehperevooruzhenie-opo-s-kranami-bez-ekspertizy-proekta": {
+    "title": "2019 at Long Rock TCD - overhead crane",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a6/2019_at_Long_Rock_TCD_-_overhead_crane.JPG",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=78235696",
+    "author": "Geof Sheppard",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "provider": "wikimedia"
+  },
+  "ekspertiza-dokumentacii-e15-oblast-attestacii-sroki-reestr-voprosy": {
+    "title": "Butze Alberta Grain Elevator",
+    "url": "https://live.staticflickr.com/3719/9627269402_2c0a3e12ca_b.jpg",
+    "source": "https://www.flickr.com/photos/51942038@N04/9627269402",
+    "author": "Wilson Hui",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "provider": "flickr"
+  },
+  "skolko-stoit-ekspertiza-dokumentacii-opo-geologorazvedki": {
+    "title": "Exploratory Drilling",
+    "url": "https://live.staticflickr.com/7195/6988275019_18fa849144_b.jpg",
+    "source": "https://www.flickr.com/photos/47953739@N08/6988275019",
+    "author": "NashvilleCorps",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "flickr"
+  },
+  "tehperevooruzhenie-opo-s-kranami-kogda-nuzhen-proekt-i-epb": {
+    "title": "Overhead crane in abandoned Pen-yr-Orsedd Quarry workshop - geograph.org.uk - 7527273",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Overhead_crane_in_abandoned_Pen-yr-Orsedd_Quarry_workshop_-_geograph.org.uk_-_7527273.jpg",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=163349298",
+    "author": "Gareth James",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "provider": "wikimedia"
   }
 }
