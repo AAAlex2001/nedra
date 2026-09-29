@@ -94,8 +94,14 @@ const ExpertiseCard = ({ expertise, catalog, pending, onSave, onRemove }: Expert
         <Fact label="Заказчик" value={expertise.customer_name} />
         {expertise.company && (
           <Fact
-            label="Организация"
+            label="Юрлицо, по счёту"
             value={`${expertise.company.name}, ИНН ${expertise.company.inn}`}
+          />
+        )}
+        {expertise.individual && (
+          <Fact
+            label="Физлицо, картой"
+            value={`${expertise.individual.full_name}, паспорт ${expertise.individual.passport_number}`}
           />
         )}
         {expertise.object_name && <Fact label="Документация" value={expertise.object_name} />}
@@ -109,7 +115,7 @@ const ExpertiseCard = ({ expertise, catalog, pending, onSave, onRemove }: Expert
         />
         <Fact label="Эксперт" value={expertise.expert_name ?? "не назначен"} />
         <Fact
-          label="Стоимость"
+          label="Цена заказчика"
           value={expertise.price === null ? "не задана" : formatRub(expertise.price)}
         />
       </dl>

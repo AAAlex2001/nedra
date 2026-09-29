@@ -73,16 +73,17 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
           </Button>
         )}
 
-        {invoice === null ? (
-          <button
-            type="button"
-            className={styles.secondary}
-            disabled={actions.pending}
+        {!cardAllowed && invoice === null && (
+          <Button
+            className={styles.payCard}
+            loading={actions.pending}
             onClick={() => void actions.requestInvoice()}
           >
-            Счёт для юрлица
-          </button>
-        ) : (
+            Получить счёт на {half}
+          </Button>
+        )}
+
+        {!cardAllowed && invoice !== null && (
           <a
             className={styles.secondary}
             href={invoicePdfUrl(invoice.id)}
@@ -155,8 +156,8 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
       case "contract":
         return {
           text: cardAllowed
-            ? `Договор заключён ${when(expertise.contract_at)}. Оплатите аванс, и эксперт приступит к работе`
-            : `Договор заключён ${when(expertise.contract_at)}. Оплатите аванс по счёту исполнителя и приложите платёжное поручение`,
+            ? `Договор заключён ${when(expertise.contract_at)}. Оплатите аванс картой, и эксперт приступит к работе`
+            : `Договор заключён ${when(expertise.contract_at)}. Оплатите аванс по счёту и приложите платёжное поручение или гарантийное письмо`,
           form: payment(expertise.advance_payment !== null),
         };
 
@@ -198,8 +199,8 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
       case "new":
         return {
           text: kindUnknown
-            ? `Стоимость экспертизы ${price}. Заказчик не знает вид проекта: определите его по документации, от него зависит договор`
-            : `Стоимость экспертизы ${price}. Заявку получит первый, кто подтвердит готовность`,
+            ? `Заказчик предлагает ${price}. Он не знает вид проекта: определите его по документации. Нажимая «Готов провести», вы соглашаетесь с ценой`
+            : `Заказчик предлагает ${price}. Нажимая «Готов провести», вы соглашаетесь с ценой. Заявку получит первый, кто подтвердит готовность`,
           action: (
             <Button
               disabled={contractKind === null}

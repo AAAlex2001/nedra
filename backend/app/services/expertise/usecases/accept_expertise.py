@@ -21,7 +21,7 @@ class AcceptExpertiseUseCase:
     """Закрепить заявку за первым экспертом, который нажал «готов провести».
 
     У остальных экспертов заявка пропадает из входящих: expert_id заполнен.
-    Без тарифа заявку взять нельзя, иначе на шаге договора нечего оплачивать.
+    Цену назначил заказчик: беря заявку, эксперт соглашается с ней.
     Если заказчик не знал вид проекта, вид договора определяет эксперт: у него
     право первой подписи, а заказчику остаётся согласиться с одним вариантом.
     """
@@ -52,7 +52,7 @@ class AcceptExpertiseUseCase:
             raise ExpertiseAccessError("Ваша аттестация не подходит под эту заявку")
 
         if expertise.price is None:
-            raise PriceMissingError("Для этой области и объекта не задан тариф")
+            raise PriceMissingError("В заявке не указана цена")
 
         if expertise.contract_kind is None:
             expertise.contract_kind = resolve_kind(expertise.object_code, contract_kind)

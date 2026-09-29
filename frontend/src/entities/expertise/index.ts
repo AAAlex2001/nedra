@@ -1,8 +1,10 @@
 export type {
   ContractKind,
+  CustomerType,
   Deadline,
   Expertise,
   ExpertiseCompany,
+  ExpertiseIndividual,
   ExpertiseDocument,
   ExpertiseInvoice,
   ExpertisePayment,
@@ -13,6 +15,7 @@ export type {
 } from "./model/types";
 export {
   CONTRACT_KIND_LABELS,
+  CUSTOMER_TYPE_LABELS,
   DEADLINE_LABELS,
   EXPERTISE_RESULT_LABELS,
   EXPERTISE_STATUS_LABELS,

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ExpertCatalog } from "@/entities/expert";
-import { CONTRACT_KIND_LABELS } from "@/entities/expertise";
+import { CONTRACT_KIND_LABELS, type CustomerType } from "@/entities/expertise";
 import Button from "@/shared/ui/button";
 import Chip from "@/shared/ui/chip";
 import FilesField from "@/shared/ui/files-field";
@@ -10,7 +10,7 @@ import Modal from "@/shared/ui/modal";
 import SelectField from "@/shared/ui/select-field";
 import TextField from "@/shared/ui/text-field";
 import { useExpertiseOrder } from "../../model/use-expertise-order";
-import type { CompanyField, Deadline } from "../../model/types";
+import type { CompanyField, Deadline, IndividualField } from "../../model/types";
 import styles from "./style.module.scss";
 
 type OrderFormProps = {
@@ -60,6 +60,43 @@ const COMPANY_INPUTS: CompanyInput[] = [
   { field: "signer_basis", label: "Действует на основании", placeholder: "Устава" },
 ];
 
+type IndividualInput = {
+  field: IndividualField;
+  label: string;
+  placeholder: string;
+  type?: "text" | "date";
+  numeric?: boolean;
+  wide?: boolean;
+};
+
+const INDIVIDUAL_INPUTS: IndividualInput[] = [
+  { field: "full_name", label: "ФИО полностью", placeholder: "Иванов Иван Иванович", wide: true },
+  {
+    field: "passport_number",
+    label: "Серия и номер паспорта",
+    placeholder: "4510 123456",
+    numeric: true,
+  },
+  { field: "passport_issued_at", label: "Дата выдачи", placeholder: "", type: "date" },
+  {
+    field: "passport_issued_by",
+    label: "Кем выдан",
+    placeholder: "ГУ МВД России по г. Москве",
+    wide: true,
+  },
+  {
+    field: "address",
+    label: "Адрес регистрации",
+    placeholder: "г. Москва, ул. Тверская, д. 1, кв. 2",
+    wide: true,
+  },
+];
+
+const CUSTOMER_TYPES: { value: CustomerType; label: string }[] = [
+  { value: "legal", label: "Юридическое лицо" },
+  { value: "individual", label: "Физическое лицо" },
+];
+
 const DEADLINES: { value: Deadline; label: string }[] = [
   { value: "today", label: "Сегодня" },
   { value: "three_days", label: "До 3 дней" },
@@ -84,7 +121,10 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
     selectCategory,
     selectArea,
     selectDeadline,
+    changePrice,
+    selectCustomerType,
     changeCompany,
+    changeIndividual,
     addFiles,
     removeFile,
     setCard,
@@ -93,6 +133,8 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
     closeSuccess,
     submit,
   } = useExpertiseOrder(catalog);
+
+  const legal = state.customerType === "legal";
 
   return (
     <form
@@ -326,6 +368,22 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
         </p>
       </div>
 
+      <div className={styles.group}>
+        <TextField
+          label="Ваша цена за экспертизу, ₽"
+          required
+          inputMode="numeric"
+          placeholder="Например, 50 000"
+          maxLength={14}
+          value={state.price}
+          onChange={changePrice}
+        />
+        <p className={styles.note}>
+          Эксперты увидят цену и возьмут заявку, если согласны с ней. Эта сумма войдёт в
+          договор, оплата — двумя частями по 50 %.
+        </p>
+      </div>
+
       <FilesField
         label="Документация"
         required
@@ -337,36 +395,69 @@ const OrderForm = ({ catalog }: OrderFormProps) => {
       />
 
       <div className={styles.group}>
-        <span className={styles.label}>Реквизиты заказчика</span>
-        <p className={styles.note}>
-          По ним составим договор, счёт и акт. Заявки можно подавать от разных организаций —
-          реквизиты указываются в каждой.
-        </p>
-        <div className={styles.fields}>
-          {COMPANY_INPUTS.map((input) => (
-            <div key={input.field} className={input.wide ? styles.wide : undefined}>
-              <TextField
-                label={input.label}
-                required={!input.optional}
-                placeholder={input.placeholder}
-                inputMode={input.numeric ? "numeric" : undefined}
-                maxLength={500}
-                value={state.company[input.field]}
-                onChange={(value) => changeCompany(input.field, value)}
-              />
-            </div>
+        <span className={styles.label}>Заказчик</span>
+        <div className={styles.segments} role="tablist" aria-label="Кто заказчик">
+          {CUSTOMER_TYPES.map((item) => (
+            <button
+              key={item.value}
+              type="button"
+              role="tab"
+              aria-selected={state.customerType === item.value}
+              className={`${styles.segment} ${state.customerType === item.value ? styles.segmentActive : ""}`}
+              onClick={() => selectCustomerType(item.value)}
+            >
+              {item.label}
+            </button>
           ))}
+        </div>
+        <p className={styles.note}>
+          {legal
+            ? "Оплата по счёту. По реквизитам составим договор, счёт и акт. Заявки можно подавать от разных организаций — реквизиты указываются в каждой."
+            : "Оплата картой. Паспортные данные нужны только для договора."}
+        </p>
+
+        <div className={styles.fields}>
+          {legal
+            ? COMPANY_INPUTS.map((input) => (
+                <div key={input.field} className={input.wide ? styles.wide : undefined}>
+                  <TextField
+                    label={input.label}
+                    required={!input.optional}
+                    placeholder={input.placeholder}
+                    inputMode={input.numeric ? "numeric" : undefined}
+                    maxLength={500}
+                    value={state.company[input.field]}
+                    onChange={(value) => changeCompany(input.field, value)}
+                  />
+                </div>
+              ))
+            : INDIVIDUAL_INPUTS.map((input) => (
+                <div key={input.field} className={input.wide ? styles.wide : undefined}>
+                  <TextField
+                    label={input.label}
+                    required
+                    type={input.type ?? "text"}
+                    placeholder={input.placeholder}
+                    inputMode={input.numeric ? "numeric" : undefined}
+                    maxLength={500}
+                    value={state.individual[input.field]}
+                    onChange={(value) => changeIndividual(input.field, value)}
+                  />
+                </div>
+              ))}
         </div>
       </div>
 
-      <FilesField
-        label="Карточка организации"
-        files={state.companyCard ? [state.companyCard] : []}
-        accept={ACCEPT}
-        hint="Приложите карточку с реквизитами, чтобы бухгалтерия сверила данные."
-        onAdd={setCard}
-        onRemove={removeCard}
-      />
+      {legal && (
+        <FilesField
+          label="Карточка организации"
+          files={state.companyCard ? [state.companyCard] : []}
+          accept={ACCEPT}
+          hint="Приложите карточку с реквизитами, чтобы бухгалтерия сверила данные."
+          onAdd={setCard}
+          onRemove={removeCard}
+        />
+      )}
 
       <TextField
         label="Комментарий"

@@ -54,8 +54,23 @@ const CONTRACT_KINDS_BY_OBJECT: Record<string, ContractKind[]> = {
 export const contractKindsFor = (objectCode: string | null): ContractKind[] =>
   objectCode ? (CONTRACT_KINDS_BY_OBJECT[objectCode] ?? ALL_CONTRACT_KINDS) : ALL_CONTRACT_KINDS;
 
+export type CustomerType = "legal" | "individual";
+
+export const CUSTOMER_TYPE_LABELS: Record<CustomerType, string> = {
+  legal: "Юридическое лицо",
+  individual: "Физическое лицо",
+};
+
 export const cardPaymentAllowed = (expertise: Expertise): boolean =>
-  expertise.contract_kind !== "declaration";
+  expertise.customer_type === "individual";
+
+export type ExpertiseIndividual = {
+  full_name: string;
+  passport_number: string;
+  passport_issued_by: string;
+  passport_issued_at: string;
+  address: string;
+};
 
 export type ExpertiseCompany = {
   full_name: string;
@@ -123,7 +138,9 @@ export type Expertise = {
   deadline: Deadline | null;
   object_name: string | null;
   contract_kind: ContractKind | null;
+  customer_type: CustomerType;
   company: ExpertiseCompany | null;
+  individual: ExpertiseIndividual | null;
   comment: string | null;
   status: ExpertiseStatus;
   result: ExpertiseResult | null;

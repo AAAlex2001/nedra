@@ -35,7 +35,7 @@ from app.services.billing.letters import send_invoice_reported_letter
 from app.services.billing.repo import InvoiceRepository
 from app.services.billing.usecases.issue_invoice import IssueInvoiceUseCase
 from app.services.billing.usecases.report_payment import ReportInvoicePaidUseCase
-from app.services.documents.act_pdf import act_filename, act_number, build_act_pdf
+from app.services.documents.act_pdf import act_filename, act_number, act_payer, build_act_pdf
 from app.services.contracts.executors import executor_for, executor_requisites
 from app.services.documents.company import (
     CompanyRequisites,
@@ -249,10 +249,10 @@ async def download_act(
     if expertise.status != ExpertiseStatus.ACCEPTED:
         raise HTTPException(status.HTTP_409_CONFLICT, "Акт готовится после приёмки работы")
 
-    payer = expertise.company
+    payer = act_payer(expertise)
     if payer is None:
         raise HTTPException(
-            status.HTTP_422_UNPROCESSABLE_ENTITY, "В заявке нет реквизитов заказчика"
+            status.HTTP_422_UNPROCESSABLE_ENTITY, "В заявке нет данных заказчика"
         )
 
     company = load_company_requisites(expertise)

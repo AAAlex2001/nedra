@@ -12,6 +12,7 @@ from app.schemas.expertise import (
     ExpertiseAdminSchema,
     ExpertiseAdminUpdateSchema,
     ExpertiseCompanySchema,
+    ExpertiseIndividualSchema,
 )
 from app.services.expertise.exceptions import ExpertiseNotFoundError
 from app.services.expertise.repo import ExpertiseRepository
@@ -48,8 +49,12 @@ async def to_admin_schema(expertise: Expertise, users: UserRepository) -> Expert
         deadline=expertise.deadline,
         object_name=expertise.object_name,
         contract_kind=expertise.contract_kind,
+        customer_type=expertise.customer_type,
         company=ExpertiseCompanySchema.model_validate(expertise.company)
         if expertise.company
+        else None,
+        individual=ExpertiseIndividualSchema.model_validate(expertise.individual)
+        if expertise.individual
         else None,
         comment=expertise.comment,
         status=expertise.status,

@@ -15,7 +15,13 @@ from docx import Document
 from docx.document import Document as WordDocument
 from docx.text.paragraph import Paragraph
 
-from app.models.expertise import ContractKind, Expertise
+from app.models.expertise import (
+    ContractKind,
+    CustomerType,
+    Expertise,
+    ExpertiseCompany,
+    ExpertiseIndividual,
+)
 from app.models.user import User
 from app.services.contracts.executors import executor_for
 from app.services.contracts.kinds import SUBJECTS
@@ -49,8 +55,13 @@ DEFAULT_DAYS = 5
 def contract_problem(expertise: Expertise) -> str | None:
     """Чего не хватает, чтобы составить договор. None — всё на месте."""
 
-    if expertise.company is None:
+    legal = expertise.customer_type == CustomerType.LEGAL
+
+    if legal and expertise.company is None:
         return "В заявке нет реквизитов заказчика"
+
+    if not legal and expertise.individual is None:
+        return "В заявке нет данных заказчика"
 
     if expertise.contract_kind is None:
         return "Вид договора ещё не определён"
@@ -114,6 +125,95 @@ def vat_clause(amount: Decimal, rate: int) -> str:
     return f"в т.ч. НДС {rate}% – {money_text(vat_included(amount, rate))}"
 
 
+def numbered(prefix: str, lines: list[str]) -> dict[str, str]:
+    """Строки блока реквизитов как метки prefix_1, prefix_2…"""
+
+    return {f"{prefix}_{index}": line for index, line in enumerate(lines, start=1)}
+
+
+def company_values(company: ExpertiseCompany, customer: User) -> dict[str, str]:
+    """Преамбулы, реквизиты и подпись для заказчика-юрлица."""
+
+    kpp = company.kpp or "—"
+    inn_line = f"ИНН/КПП {company.inn}/{kpp}"
+    person = (
+        f"{company.full_name} ({company.name}), в лице {company.signer_genitive}, "
+        f"действующего на основании {company.signer_basis}"
+    )
+
+    contract_lines = [
+        company.name,
+        inn_line,
+        f"ОГРН {company.ogrn}",
+        f"Юридический/фактический адрес: {company.address}",
+        f"р/с {company.account}",
+        f"БАНК {company.bank}",
+        f"к/с {company.corr_account}",
+        f"БИК {company.bic}",
+    ]
+    nda_lines = [
+        f"Наименование: {company.name}",
+        f"Адрес, указанный в ЕГРЮЛ: {company.address}",
+        "",
+        f"Телефон: {customer.phone}",
+        f"Электронная почта: {customer.email}",
+        f"ОГРН {company.ogrn}",
+        inn_line,
+    ]
+
+    return {
+        "customer_preamble": f"{person}, именуемое в дальнейшем «Заказчик», с одной стороны,",
+        "nda_preamble": f"{person}, далее именуемое Сторона, передающая информацию "
+        "(Сторона 1), с одной стороны и",
+        "customer_name": company.name,
+        "signer_position": company.signer_position,
+        "signer_initials": initials(company.signer_name),
+        **numbered("customer_line", contract_lines),
+        **numbered("nda_line", nda_lines),
+    }
+
+
+def individual_values(individual: ExpertiseIndividual, customer: User) -> dict[str, str]:
+    """Преамбулы, реквизиты и подпись для заказчика-физлица."""
+
+    issued = f"{individual.passport_issued_by}, {individual.passport_issued_at:%d.%m.%Y}"
+    person = (
+        f"{individual.full_name}, паспорт {individual.passport_number}, выдан {issued}, "
+        f"адрес регистрации: {individual.address}"
+    )
+
+    contract_lines = [
+        individual.full_name,
+        f"Паспорт: {individual.passport_number}",
+        f"Выдан: {issued}",
+        f"Адрес регистрации: {individual.address}",
+        f"Телефон: {customer.phone}",
+        f"E-mail: {customer.email}",
+        "",
+        "",
+    ]
+    nda_lines = [
+        f"ФИО: {individual.full_name}",
+        f"Адрес регистрации: {individual.address}",
+        f"Паспорт: {individual.passport_number}, выдан {issued}",
+        f"Телефон: {customer.phone}",
+        f"Электронная почта: {customer.email}",
+        "",
+        "",
+    ]
+
+    return {
+        "customer_preamble": f"{person}, именуемый в дальнейшем «Заказчик», с одной стороны,",
+        "nda_preamble": f"{person}, далее именуемый Сторона, передающая информацию "
+        "(Сторона 1), с одной стороны и",
+        "customer_name": individual.full_name,
+        "signer_position": "Заказчик",
+        "signer_initials": initials(individual.full_name),
+        **numbered("customer_line", contract_lines),
+        **numbered("nda_line", nda_lines),
+    }
+
+
 def document_values(
     expertise: Expertise, customer: User, vat_rate: int, signed_at: datetime
 ) -> dict[str, str]:
@@ -122,9 +222,12 @@ def document_values(
     Телефон и почту для связи берём из аккаунта заказчика, который подписывает.
     """
 
-    company = expertise.company
-    if company is None:
-        raise ValueError("В заявке нет реквизитов заказчика")
+    if expertise.company is not None and expertise.customer_type == CustomerType.LEGAL:
+        party = company_values(expertise.company, customer)
+    elif expertise.individual is not None:
+        party = individual_values(expertise.individual, customer)
+    else:
+        raise ValueError("В заявке нет данных заказчика")
 
     price = expertise.price if expertise.price is not None else Decimal("0")
     kind = ContractKind(expertise.contract_kind)
@@ -139,22 +242,7 @@ def document_values(
         "days": working_days(expertise.deadline),
         "price": money_text(price),
         "vat": vat_clause(price, vat_rate),
-        "customer_full_name": company.full_name,
-        "customer_name": company.name,
-        "customer_inn": company.inn,
-        "customer_kpp": company.kpp or "—",
-        "customer_ogrn": company.ogrn,
-        "customer_address": company.address,
-        "customer_bank": company.bank,
-        "customer_bic": company.bic,
-        "customer_account": company.account,
-        "customer_corr_account": company.corr_account,
-        "customer_phone": customer.phone,
-        "customer_email": customer.email,
-        "signer_position": company.signer_position,
-        "signer_genitive": company.signer_genitive,
-        "signer_basis": company.signer_basis,
-        "signer_initials": initials(company.signer_name),
+        **party,
     }
 
 

@@ -1,7 +1,7 @@
 """Сценарий выставления счёта на оплату этапа экспертизы."""
 
 from app.models.billing import Invoice, InvoiceStage
-from app.models.expertise import Expertise
+from app.models.expertise import CustomerType, Expertise
 from app.models.user import User
 from app.services.billing.exceptions import CompanyRequiredError
 from app.services.billing.repo import InvoiceRepository
@@ -33,6 +33,9 @@ class IssueInvoiceUseCase:
 
         if expertise.price is None:
             raise PriceMissingError("Стоимость экспертизы не задана")
+
+        if expertise.customer_type == CustomerType.INDIVIDUAL:
+            raise ExpertiseStateError("Физические лица оплачивают экспертизу картой")
 
         stage = current_stage(expertise)
         if stage is None:

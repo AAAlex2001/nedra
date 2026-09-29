@@ -1,4 +1,9 @@
-import type { ContractKind, ExpertiseCompany } from "@/entities/expertise";
+import type {
+  ContractKind,
+  CustomerType,
+  ExpertiseCompany,
+  ExpertiseIndividual,
+} from "@/entities/expertise";
 
 export type RequirementMode = "hazard" | "category" | "unknown";
 
@@ -10,6 +15,10 @@ export type CompanyField = keyof ExpertiseCompany;
 
 export type CompanyFields = Record<CompanyField, string>;
 
+export type IndividualField = keyof ExpertiseIndividual;
+
+export type IndividualFields = Record<IndividualField, string>;
+
 export type OrderState = {
   objectCode: string;
   contractKind: ContractKind | "";
@@ -19,7 +28,10 @@ export type OrderState = {
   category: number | null;
   areaCode: string;
   deadline: Deadline | null;
+  price: string;
+  customerType: CustomerType;
   company: CompanyFields;
+  individual: IndividualFields;
   files: File[];
   companyCard: File | null;
   comment: string;
@@ -36,8 +48,12 @@ export type OrderAction =
   | { type: "category/select"; value: number }
   | { type: "area/select"; code: string }
   | { type: "deadline/select"; value: Deadline }
+  | { type: "price/change"; value: string }
+  | { type: "customer/select"; customerType: CustomerType }
   | { type: "company/change"; field: CompanyField; value: string }
   | { type: "company/fill"; company: ExpertiseCompany }
+  | { type: "individual/change"; field: IndividualField; value: string }
+  | { type: "individual/fill"; individual: ExpertiseIndividual }
   | { type: "files/add"; files: File[] }
   | { type: "files/remove"; index: number }
   | { type: "card/set"; file: File }

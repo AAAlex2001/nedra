@@ -1,8 +1,7 @@
 """Организации-исполнители.
 
 Экспертизу деклараций институт «Недра» не проводит, по ним договор, счёт
-и акт оформляются на СибНТЦ «Промтехэксперт». Оплата картой идёт через кассу
-«Недр», поэтому для СибНТЦ доступна только оплата по счёту.
+и акт оформляются на СибНТЦ «Промтехэксперт».
 """
 
 from dataclasses import dataclass
@@ -13,17 +12,15 @@ from app.services.documents.company import CompanyRequisites, load_requisites
 
 @dataclass(frozen=True)
 class Executor:
-    """Исполнитель по договору: его шаблоны договора и соглашения о конфиденциальности
-    и можно ли платить картой."""
+    """Исполнитель по договору и его шаблоны договора и соглашения о конфиденциальности."""
 
     code: str
     contract_template: str
     nda_template: str
-    card_payment: bool
 
 
-NEDRA = Executor("nedra", "contract_nedra.docx", "nda_nedra.docx", card_payment=True)
-SIBNTC = Executor("sibntc", "contract_sibntc.docx", "nda_sibntc.docx", card_payment=False)
+NEDRA = Executor("nedra", "contract_nedra.docx", "nda_nedra.docx")
+SIBNTC = Executor("sibntc", "contract_sibntc.docx", "nda_sibntc.docx")
 
 SIBNTC_REQUISITES = CompanyRequisites(
     name="ООО «СибНТЦ «Промтехэксперт»",

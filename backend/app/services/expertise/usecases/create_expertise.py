@@ -5,14 +5,20 @@ from dataclasses import dataclass
 from fastapi import UploadFile
 
 from app.models.expertise import (
+    CustomerType,
     Expertise,
     ExpertiseCompany,
     ExpertiseDocument,
+    ExpertiseIndividual,
     ExpertiseStatus,
 )
 from app.models.notification import Notification
 from app.models.user import User
-from app.schemas.expertise import ExpertiseCompanyInSchema, ExpertiseInSchema
+from app.schemas.expertise import (
+    ExpertiseCompanyInSchema,
+    ExpertiseInSchema,
+    ExpertiseIndividualInSchema,
+)
 from app.services.billing.validators import (
     normalize_account,
     normalize_bic,
@@ -27,9 +33,9 @@ from app.services.expertise.repo import ExpertiseRepository
 from app.services.expertise.validators import resolve_category, validate_pair
 from app.services.files.storage import DOCUMENTATION_MAX_SIZE_BYTES, PrivateStorage
 from app.services.notifications.repo import NotificationRepository
-from app.services.tariffs.repo import TariffRepository
 
 DOCUMENTS_FOLDER = "expertise-documents"
+PASSPORT_DIGITS = 10
 
 
 @dataclass(frozen=True)
@@ -43,10 +49,8 @@ class CreatedExpertise:
 class CreateExpertiseUseCase:
     """Проверить заявку по справочнику, сохранить файлы, найти подходящих экспертов и уведомить их.
 
-    Цена фиксируется из тарифа при подаче: если админ позже поменяет тариф,
-    уже поданные заявки останутся с прежней ценой. Когда заказчик не знает
-    область аттестации, тариф определить нечем и цена остаётся пустой до
-    уточнения.
+    Цену назначает заказчик. Эксперт видит её во входящих и берёт заявку,
+    только если согласен: так цена сразу становится ценой договора.
     """
 
     def __init__(
@@ -54,13 +58,11 @@ class CreateExpertiseUseCase:
         expertises: ExpertiseRepository,
         profiles: ExpertProfileRepository,
         notifications: NotificationRepository,
-        tariffs: TariffRepository,
         storage: PrivateStorage,
     ) -> None:
         self.expertises = expertises
         self.profiles = profiles
         self.notifications = notifications
-        self.tariffs = tariffs
         self.storage = storage
 
     async def execute(
@@ -75,15 +77,16 @@ class CreateExpertiseUseCase:
         validate_pair(data.object_code, data.area_code)
         category = resolve_category(data.hazard_class, data.expert_category)
         contract_kind = resolve_kind(data.object_code, data.contract_kind)
-        company = build_company(data.company)
+
+        company = None
+        individual = None
+        if data.customer_type == CustomerType.LEGAL and data.company is not None:
+            company = build_company(data.company)
+        if data.customer_type == CustomerType.INDIVIDUAL and data.individual is not None:
+            individual = build_individual(data.individual)
 
         if not files:
             raise InvalidExpertiseError("Приложите хотя бы один файл документации")
-
-        price = None
-        if data.object_code is not None and data.area_code is not None:
-            tariff = await self.tariffs.get(data.area_code, data.object_code)
-            price = tariff.price if tariff else None
 
         expertise = Expertise(
             customer_id=customer.id,
@@ -96,8 +99,10 @@ class CreateExpertiseUseCase:
             contract_kind=contract_kind,
             comment=data.comment.strip() if data.comment else None,
             status=ExpertiseStatus.NEW,
-            price=price,
+            price=data.price,
+            customer_type=data.customer_type,
             company=company,
+            individual=individual,
         )
 
         for file in files:
@@ -165,6 +170,22 @@ def build_company(data: ExpertiseCompanyInSchema) -> ExpertiseCompany:
         signer_name=data.signer_name.strip(),
         signer_genitive=data.signer_genitive.strip(),
         signer_basis=data.signer_basis.strip(),
+    )
+
+
+def build_individual(data: ExpertiseIndividualInSchema) -> ExpertiseIndividual:
+    """Данные физлица для заявки: паспорт — только цифры, серия отделена пробелом."""
+
+    digits = "".join(char for char in data.passport_number if char.isdigit())
+    if len(digits) != PASSPORT_DIGITS:
+        raise InvalidExpertiseError("Серия и номер паспорта — 10 цифр")
+
+    return ExpertiseIndividual(
+        full_name=data.full_name.strip(),
+        passport_number=f"{digits[:4]} {digits[4:]}",
+        passport_issued_by=data.passport_issued_by.strip(),
+        passport_issued_at=data.passport_issued_at,
+        address=data.address.strip(),
     )
 
 

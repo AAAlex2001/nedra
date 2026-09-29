@@ -1,9 +1,9 @@
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from enum import StrEnum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, ForeignKey, Integer, Numeric, SmallInteger, String, Text, func
+from sqlalchemy import Date, DateTime, ForeignKey, Integer, Numeric, SmallInteger, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
@@ -57,18 +57,25 @@ class ContractKind(StrEnum):
     DECLARATION = "declaration"
 
 
+class CustomerType(StrEnum):
+    """Кто заказчик. Юрлицо платит по счёту, физлицо — картой."""
+
+    LEGAL = "legal"
+    INDIVIDUAL = "individual"
+
+
 class Expertise(Base):
     """Заявка заказчика на экспертизу промышленной безопасности.
 
     Заказчик прикладывает документацию, а объект экспертизы, область аттестации
     и требования к эксперту указывает по желанию: если он их не знает, поля
-    остаются пустыми и заявку разбирает эксперт. Цена берётся из тарифа в момент
-    подачи, чтобы смена тарифа не меняла уже поданные заявки, а при неизвестной
-    области остаётся пустой до уточнения. Эксперт назначается позже, поэтому
-    expert_id пустой.
+    остаются пустыми и заявку разбирает эксперт. Цену назначает сам заказчик,
+    эксперт берёт заявку, только если согласен с ней. Эксперт назначается позже,
+    поэтому expert_id пустой.
 
     Вид договора выбирает заказчик, а если не знает — эксперт, когда берёт
     заявку. От вида зависит, какая организация выступает исполнителем.
+    Реквизиты лежат в company у юрлица и в individual у физлица.
     """
 
     __tablename__ = "expertises"
@@ -91,6 +98,7 @@ class Expertise(Base):
 
     object_name: Mapped[str | None] = mapped_column(String(500))
     contract_kind: Mapped[str | None] = mapped_column(String(16))
+    customer_type: Mapped[str] = mapped_column(String(16), default=CustomerType.LEGAL)
 
     comment: Mapped[str | None] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(32), index=True, default=ExpertiseStatus.NEW)
@@ -142,6 +150,31 @@ class Expertise(Base):
         cascade="all, delete-orphan",
         uselist=False,
     )
+
+    individual: Mapped["ExpertiseIndividual | None"] = relationship(
+        back_populates="expertise",
+        lazy="selectin",
+        cascade="all, delete-orphan",
+        uselist=False,
+    )
+
+
+class ExpertiseIndividual(Base):
+    """Данные заказчика-физлица по заявке: попадают в договор и акт."""
+
+    __tablename__ = "expertise_individuals"
+
+    expertise_id: Mapped[int] = mapped_column(
+        ForeignKey("expertises.id", ondelete="CASCADE"), primary_key=True
+    )
+
+    full_name: Mapped[str] = mapped_column(String(255))
+    passport_number: Mapped[str] = mapped_column(String(20))
+    passport_issued_by: Mapped[str] = mapped_column(String(500))
+    passport_issued_at: Mapped[date] = mapped_column(Date)
+    address: Mapped[str] = mapped_column(String(500))
+
+    expertise: Mapped["Expertise"] = relationship(back_populates="individual")
 
 
 class ExpertiseCompany(Base):

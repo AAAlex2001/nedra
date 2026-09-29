@@ -7,7 +7,7 @@ from decimal import Decimal
 import pytest
 
 from app.models.billing import Invoice, InvoiceStage
-from app.models.expertise import Expertise, ExpertiseCompany, ExpertiseStatus
+from app.models.expertise import CustomerType, Expertise, ExpertiseCompany, ExpertiseStatus
 from app.models.notification import Notification
 from app.models.user import User, UserRole
 from app.routers.billing import pdf_response
@@ -22,7 +22,7 @@ from app.services.billing.usecases.issue_invoice import IssueInvoiceUseCase
 from app.services.billing.usecases.report_payment import ReportInvoicePaidUseCase
 from app.services.billing.validators import normalize_inn, normalize_kpp
 from app.services.files.storage import StoredFile
-from app.services.documents.act_pdf import build_act_pdf
+from app.services.documents.act_pdf import act_payer, build_act_pdf
 from app.services.documents.company import CompanyRequisites
 from app.services.documents.fonts import register_fonts
 from app.services.documents.invoice_pdf import build_invoice_pdf
@@ -125,6 +125,7 @@ def make_expertise(status: ExpertiseStatus, price: Decimal | None = Decimal("200
         expert_category=2,
         status=status,
         price=price,
+        customer_type=CustomerType.LEGAL,
     )
     expertise.id = 1
     expertise.company = make_company()
@@ -254,7 +255,9 @@ def test_documents_build_pdf() -> None:
     invoice.created_at = datetime.now(timezone.utc)
 
     assert build_invoice_pdf(invoice, "Аванс 50%", company).startswith(b"%PDF")
-    assert build_act_pdf(expertise, make_company(), "Экспертиза", company).startswith(b"%PDF")
+    payer = act_payer(expertise)
+    assert payer is not None
+    assert build_act_pdf(expertise, payer, "Экспертиза", company).startswith(b"%PDF")
 
 
 def test_money_words_and_format() -> None:

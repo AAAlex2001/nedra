@@ -1,10 +1,10 @@
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from app.models.expertise import ContractKind, ExpertiseResult, ExpertiseStatus
+from app.models.expertise import ContractKind, CustomerType, ExpertiseResult, ExpertiseStatus
 from app.models.payment import PaymentStatus
 
 
@@ -50,18 +50,46 @@ class ExpertiseCompanySchema(ExpertiseCompanyInSchema):
     model_config = ConfigDict(from_attributes=True)
 
 
+class ExpertiseIndividualInSchema(BaseModel):
+    """Данные заказчика-физлица для договора и акта."""
+
+    full_name: str = Field(..., min_length=3, max_length=255, description="ФИО полностью")
+    passport_number: str = Field(
+        ..., min_length=10, max_length=20, description="Серия и номер паспорта: 4510 123456"
+    )
+    passport_issued_by: str = Field(
+        ..., min_length=5, max_length=500, description="Кем выдан паспорт"
+    )
+    passport_issued_at: date = Field(..., description="Дата выдачи паспорта")
+    address: str = Field(..., min_length=5, max_length=500, description="Адрес регистрации")
+
+
+class ExpertiseIndividualSchema(ExpertiseIndividualInSchema):
+    """Данные физлица в заявке."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class ExpertiseInSchema(BaseModel):
     """Заявка на экспертизу.
 
     Объект, область и требования к эксперту заказчик указывает, если знает их,
-    незаполненные поля уточняет эксперт. Наименование документации и реквизиты
-    обязательны: по ним составляется договор.
+    незаполненные поля уточняет эксперт. Наименование документации, цена и данные
+    заказчика обязательны: по ним составляется договор. Юрлицо присылает
+    реквизиты в company, физлицо — паспортные данные в individual.
     """
 
     object_name: str = Field(
         ..., min_length=2, max_length=500, description="Наименование документации, как на титуле"
     )
-    company: ExpertiseCompanyInSchema
+    price: Decimal = Field(
+        ..., gt=0, max_digits=10, decimal_places=2, description="Цена, которую предлагает заказчик"
+    )
+    customer_type: CustomerType = Field(
+        CustomerType.LEGAL, description="legal — юрлицо, оплата по счёту; individual — физлицо, картой"
+    )
+    company: ExpertiseCompanyInSchema | None = None
+    individual: ExpertiseIndividualInSchema | None = None
     contract_kind: ContractKind | None = Field(
         None, description="Вид договора, если заказчик знает вид проекта"
     )
@@ -77,6 +105,18 @@ class ExpertiseInSchema(BaseModel):
         None, description="Желаемый срок: today, three_days, week или any"
     )
     comment: str | None = Field(None, max_length=4000, description="Комментарий заказчика")
+
+    @model_validator(mode="after")
+    def require_customer_data(self) -> "ExpertiseInSchema":
+        """Юрлицу нужны реквизиты, физлицу — паспортные данные."""
+
+        if self.customer_type == CustomerType.LEGAL and self.company is None:
+            raise ValueError("Укажите реквизиты организации")
+
+        if self.customer_type == CustomerType.INDIVIDUAL and self.individual is None:
+            raise ValueError("Укажите данные физического лица")
+
+        return self
 
 
 class ExpertiseDocumentSchema(BaseModel):
@@ -107,7 +147,9 @@ class ExpertiseAdminSchema(BaseModel):
     deadline: Deadline | None = None
     object_name: str | None = None
     contract_kind: ContractKind | None = None
+    customer_type: CustomerType = CustomerType.LEGAL
     company: ExpertiseCompanySchema | None = None
+    individual: ExpertiseIndividualSchema | None = None
     comment: str | None
     status: ExpertiseStatus
     price: Decimal | None
@@ -181,7 +223,9 @@ class ExpertiseOutSchema(BaseModel):
     deadline: Deadline | None = None
     object_name: str | None = None
     contract_kind: ContractKind | None = None
+    customer_type: CustomerType = CustomerType.LEGAL
     company: ExpertiseCompanySchema | None = None
+    individual: ExpertiseIndividualSchema | None = None
     comment: str | None
     status: ExpertiseStatus
     result: ExpertiseResult | None

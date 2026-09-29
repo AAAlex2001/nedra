@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_session
 from app.dependencies.experts import get_private_storage, get_profile_repository
 from app.dependencies.payments import get_create_payment_usecase, get_payment_repository
-from app.dependencies.tariffs import get_tariff_repository
 from app.dependencies.users import get_current_user
 from app.models.expertise import Expertise
 from app.models.user import User, UserRole
@@ -31,7 +30,6 @@ from app.services.files.storage import PrivateStorage
 from app.services.notifications.repo import NotificationRepository
 from app.services.payments.repo import PaymentRepository
 from app.services.payments.usecases.create_payment import CreatePaymentUseCase
-from app.services.tariffs.repo import TariffRepository
 
 
 def get_expertise_repository(
@@ -54,12 +52,11 @@ def get_create_expertise_usecase(
     expertises: ExpertiseRepository = Depends(get_expertise_repository),
     profiles: ExpertProfileRepository = Depends(get_profile_repository),
     notifications: NotificationRepository = Depends(get_notification_repository),
-    tariffs: TariffRepository = Depends(get_tariff_repository),
     storage: PrivateStorage = Depends(get_private_storage),
 ) -> CreateExpertiseUseCase:
     """Сценарий подачи документации на экспертизу."""
 
-    return CreateExpertiseUseCase(expertises, profiles, notifications, tariffs, storage)
+    return CreateExpertiseUseCase(expertises, profiles, notifications, storage)
 
 
 def get_accept_expertise_usecase(

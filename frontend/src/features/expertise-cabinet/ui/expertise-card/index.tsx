@@ -8,6 +8,7 @@ import {
 } from "@/entities/expert";
 import {
   CONTRACT_KIND_LABELS,
+  CUSTOMER_TYPE_LABELS,
   DEADLINE_LABELS,
   EXPERTISE_RESULT_LABELS,
   EXPERTISE_STATUS_LABELS,
@@ -43,6 +44,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
   const conclusion = documents.filter((item) => item.kind === "conclusion");
   const contract = documents.filter((item) => item.kind === "contract" || item.kind === "nda");
   const company = expertise.company;
+  const individual = expertise.individual;
 
   return (
     <article className={styles.card}>
@@ -76,11 +78,10 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
             ? CONTRACT_KIND_LABELS[expertise.contract_kind]
             : "Определит эксперт"}
         </DetailsRow>
-        {company && (
-          <DetailsRow label="Организация">
-            {company.name}, ИНН {company.inn}
-          </DetailsRow>
-        )}
+        <DetailsRow label={CUSTOMER_TYPE_LABELS[expertise.customer_type]}>
+          {company && `${company.name}, ИНН ${company.inn} · оплата по счёту`}
+          {individual && `${individual.full_name} · оплата картой`}
+        </DetailsRow>
         <DetailsRow label="Область аттестации">
           {expertise.area_code ? (
             <>
@@ -100,7 +101,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
         {expertise.deadline && (
           <DetailsRow label="Желаемый срок">{DEADLINE_LABELS[expertise.deadline]}</DetailsRow>
         )}
-        <DetailsRow label="Стоимость">{formatRub(expertise.price)}</DetailsRow>
+        <DetailsRow label="Цена заказчика">{formatRub(expertise.price)}</DetailsRow>
         {role === "expert" && <DetailsRow label="Заказчик">{expertise.customer_name}</DetailsRow>}
         {role === "customer" && expertise.expert_name && (
           <DetailsRow label="Эксперт">{expertise.expert_name}</DetailsRow>

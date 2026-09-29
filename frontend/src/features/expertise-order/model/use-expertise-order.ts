@@ -7,13 +7,19 @@ import {
   createExpertise,
   fetchMyExpertises,
   type ContractKind,
+  type CustomerType,
 } from "@/entities/expertise";
 import { INITIAL_STATE, orderReducer } from "./reducer";
-import type { CompanyField, Deadline, RequirementMode } from "./types";
+import type { CompanyField, Deadline, IndividualField, RequirementMode } from "./types";
 
 const SUBMIT_FAILED = "Не удалось отправить заявку. Попробуйте ещё раз.";
 
 const OPTIONAL_COMPANY_FIELDS: CompanyField[] = ["kpp"];
+
+const parsePrice = (value: string): number => Number(value.replace(/\s/g, "").replace(",", "."));
+
+const allFilled = (fields: Record<string, string>, optional: string[] = []): boolean =>
+  Object.entries(fields).every(([field, value]) => optional.includes(field) || value.trim() !== "");
 
 export const useExpertiseOrder = (catalog: ExpertCatalog) => {
   const [state, dispatch] = useReducer(orderReducer, INITIAL_STATE);
@@ -22,8 +28,12 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
     const fillFromLastOrder = async () => {
       try {
         const items = await fetchMyExpertises();
-        const last = items.find((item) => item.company !== null);
-        if (last?.company) dispatch({ type: "company/fill", company: last.company });
+        const lastCompany = items.find((item) => item.company !== null)?.company;
+        const lastIndividual = items.find((item) => item.individual !== null)?.individual;
+
+        if (lastCompany) dispatch({ type: "company/fill", company: lastCompany });
+        if (lastIndividual) dispatch({ type: "individual/fill", individual: lastIndividual });
+        if (items[0]) dispatch({ type: "customer/select", customerType: items[0].customer_type });
       } catch {
         return;
       }
@@ -45,15 +55,17 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
   if (state.mode === "hazard") requiredCategory = hazardRule?.category ?? null;
   if (state.mode === "category") requiredCategory = state.category;
 
-  const companyFilled = Object.entries(state.company).every(
-    ([field, value]) =>
-      OPTIONAL_COMPANY_FIELDS.includes(field as CompanyField) || value.trim() !== "",
-  );
+  const price = parsePrice(state.price);
+  const legal = state.customerType === "legal";
+  const customerFilled = legal
+    ? allFilled(state.company, OPTIONAL_COMPANY_FIELDS)
+    : allFilled(state.individual);
 
   const canSubmit =
     state.files.length > 0 &&
     state.objectName.trim() !== "" &&
-    companyFilled &&
+    price > 0 &&
+    customerFilled &&
     state.status !== "loading";
 
   const selectObject = (code: string) => dispatch({ type: "object/select", code });
@@ -64,8 +76,13 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
   const selectCategory = (value: number) => dispatch({ type: "category/select", value });
   const selectArea = (code: string) => dispatch({ type: "area/select", code });
   const selectDeadline = (value: Deadline) => dispatch({ type: "deadline/select", value });
+  const changePrice = (value: string) => dispatch({ type: "price/change", value });
+  const selectCustomerType = (customerType: CustomerType) =>
+    dispatch({ type: "customer/select", customerType });
   const changeCompany = (field: CompanyField, value: string) =>
     dispatch({ type: "company/change", field, value });
+  const changeIndividual = (field: IndividualField, value: string) =>
+    dispatch({ type: "individual/change", field, value });
   const addFiles = (files: File[]) => dispatch({ type: "files/add", files });
   const removeFile = (index: number) => dispatch({ type: "files/remove", index });
   const removeCard = () => dispatch({ type: "card/remove" });
@@ -82,11 +99,15 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
 
     dispatch({ type: "submit/start" });
 
-    const company = { ...state.company, kpp: state.company.kpp.trim() || null };
+    const company = legal ? { ...state.company, kpp: state.company.kpp.trim() || null } : null;
+    const individual = legal ? null : state.individual;
 
     const payload = {
       object_name: state.objectName.trim(),
+      price,
+      customer_type: state.customerType,
       company,
+      individual,
       contract_kind: state.contractKind || null,
       object_code: state.objectCode || null,
       area_code: state.areaCode || null,
@@ -102,7 +123,7 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
       formData.append("files", file);
     }
 
-    if (state.companyCard) {
+    if (legal && state.companyCard) {
       formData.append("company_card", state.companyCard);
     }
 
@@ -131,7 +152,10 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
     selectCategory,
     selectArea,
     selectDeadline,
+    changePrice,
+    selectCustomerType,
     changeCompany,
+    changeIndividual,
     addFiles,
     removeFile,
     setCard,

@@ -10,12 +10,21 @@ import docx
 import pytest
 
 from app.models.expert import ExpertCertificate
-from app.models.expertise import ContractKind, Expertise, ExpertiseResult, ExpertiseStatus
+from app.models.expertise import (
+    ContractKind,
+    CustomerType,
+    Expertise,
+    ExpertiseResult,
+    ExpertiseStatus,
+)
 from app.models.notification import Notification
 from app.models.payment import Payment, PaymentStatus
-from app.models.tariff import Tariff
 from app.models.user import User, UserRole
-from app.schemas.expertise import ExpertiseCompanyInSchema, ExpertiseInSchema
+from app.schemas.expertise import (
+    ExpertiseCompanyInSchema,
+    ExpertiseIndividualInSchema,
+    ExpertiseInSchema,
+)
 from app.services.contracts.document import (
     CONTRACT,
     NDA,
@@ -40,7 +49,11 @@ from app.services.expertise.usecases.accept_expertise import AcceptExpertiseUseC
 from app.services.expertise.usecases.accept_work import AcceptWorkUseCase
 from app.services.expertise.usecases.apply_expertise_payment import ApplyExpertisePaymentUseCase
 from app.services.expertise.usecases.confirm_expertise import ConfirmExpertiseUseCase
-from app.services.expertise.usecases.create_expertise import CreateExpertiseUseCase, build_company
+from app.services.expertise.usecases.create_expertise import (
+    CreateExpertiseUseCase,
+    build_company,
+    build_individual,
+)
 from app.services.expertise.usecases.create_expertise_payment import CreateExpertisePaymentUseCase
 from app.services.expertise.usecases.mark_conclusion_ready import MarkConclusionReadyUseCase
 from app.services.expertise.usecases.resubmit_documentation import ResubmitDocumentationUseCase
@@ -87,16 +100,6 @@ class FakeNotificationRepository:
 
     def add_all(self, notifications: list[Notification]) -> None:
         self.added.extend(notifications)
-
-
-class FakeTariffRepository:
-    def __init__(self, price: Decimal | None) -> None:
-        self.price = price
-
-    async def get(self, area_code: str, object_code: str) -> Tariff | None:
-        if self.price is None:
-            return None
-        return Tariff(area_code=area_code, object_code=object_code, price=self.price)
 
 
 class FakePaymentRepository:
@@ -166,12 +169,12 @@ def make_user(user_id: int, role: UserRole) -> User:
 
 
 def make_usecase(
-    experts: list[User], price: Decimal | None = Decimal("20000")
+    experts: list[User],
 ) -> tuple[CreateExpertiseUseCase, FakeExpertiseRepository, FakeNotificationRepository]:
     expertises = FakeExpertiseRepository()
     notifications = FakeNotificationRepository()
     usecase = CreateExpertiseUseCase(
-        expertises, FakeProfileRepository(experts), notifications, FakeTariffRepository(price), FakeStorage()
+        expertises, FakeProfileRepository(experts), notifications, FakeStorage()
     )
     return usecase, expertises, notifications
 
@@ -195,13 +198,30 @@ COMPANY = ExpertiseCompanyInSchema(
 )
 
 
+INDIVIDUAL = ExpertiseIndividualInSchema(
+    full_name="Петров Пётр Петрович",
+    passport_number="45 10 123456",
+    passport_issued_by="ГУ МВД России по г. Москве",
+    passport_issued_at=date(2015, 3, 20),
+    address="г. Москва, ул. Тверская, д. 1, кв. 2",
+)
+
+
 def make_order(**fields) -> ExpertiseInSchema:
-    return ExpertiseInSchema(object_name="Проект консервации шахты", company=COMPANY, **fields)
+    return ExpertiseInSchema(
+        object_name="Проект консервации шахты", price=Decimal("20000"), company=COMPANY, **fields
+    )
 
 
 def make_expertise(status: ExpertiseStatus, price: Decimal | None = Decimal("20001")) -> Expertise:
     expertise = Expertise(
-        customer_id=1, object_code="kl", area_code="Э4", expert_category=2, status=status, price=price
+        customer_id=1,
+        object_code="kl",
+        area_code="Э4",
+        expert_category=2,
+        status=status,
+        price=price,
+        customer_type=CustomerType.LEGAL,
     )
     expertise.id = 1
     return expertise
@@ -214,6 +234,14 @@ def make_contract_ready(kind: ContractKind) -> Expertise:
     expertise.object_name = "Проект консервации шахты"
     expertise.deadline = "three_days"
     expertise.company = build_company(COMPANY)
+    return expertise
+
+
+def make_individual_contract_ready(kind: ContractKind) -> Expertise:
+    expertise = make_contract_ready(kind)
+    expertise.customer_type = CustomerType.INDIVIDUAL
+    expertise.company = None
+    expertise.individual = build_individual(INDIVIDUAL)
     return expertise
 
 
@@ -269,13 +297,33 @@ def test_create_saves_documents_price_and_notifies_experts() -> None:
     assert notifications.added[0].user_id == 10
 
 
-def test_create_without_tariff_keeps_price_empty() -> None:
-    usecase, expertises, notifications = make_usecase([], price=None)
-    data = make_order(object_code="kl_tp", area_code="Э1", expert_category=1)
+def test_create_individual_keeps_passport_data() -> None:
+    usecase, expertises, notifications = make_usecase([])
+    data = ExpertiseInSchema(
+        object_name="Проект",
+        price=Decimal("15000"),
+        customer_type=CustomerType.INDIVIDUAL,
+        individual=INDIVIDUAL,
+    )
 
     created = asyncio.run(usecase.execute(make_user(1, UserRole.CUSTOMER), data, [FakeUpload("a.pdf")]))
 
-    assert created.expertise.price is None
+    expertise = created.expertise
+    assert expertise.customer_type == CustomerType.INDIVIDUAL
+    assert expertise.price == Decimal("15000")
+    assert expertise.company is None
+    assert expertise.individual is not None
+    assert expertise.individual.passport_number == "4510 123456"
+
+
+def test_order_requires_customer_data_for_its_type() -> None:
+    with pytest.raises(ValueError):
+        ExpertiseInSchema(object_name="Проект", price=Decimal("1000"), customer_type=CustomerType.LEGAL)
+
+    with pytest.raises(ValueError):
+        ExpertiseInSchema(
+            object_name="Проект", price=Decimal("1000"), customer_type=CustomerType.INDIVIDUAL
+        )
 
 
 def test_create_without_known_fields_keeps_them_empty() -> None:
@@ -292,7 +340,7 @@ def test_create_without_known_fields_keeps_them_empty() -> None:
     assert expertise.area_code is None
     assert expertise.expert_category is None
     assert expertise.deadline == "three_days"
-    assert expertise.price is None
+    assert expertise.price == Decimal("20000")
     assert created.notified_experts == [expert]
 
 
@@ -500,6 +548,23 @@ def test_nda_is_filled_for_executor() -> None:
     assert "ООО «СибНТЦ «Промтехэксперт»" in text
 
 
+def test_individual_contract_uses_passport_data() -> None:
+    expertise = make_individual_contract_ready(ContractKind.REEQUIPMENT)
+    assert contract_problem(expertise) is None
+
+    contract = signed_text(CONTRACT, expertise)
+    nda = signed_text(NDA, expertise)
+
+    assert "{{" not in contract and "{{" not in nda
+    assert "Петров Пётр Петрович, паспорт 4510 123456, выдан ГУ МВД России по г. Москве, 20.03.2015" in contract
+    assert "именуемый в дальнейшем «Заказчик»" in contract
+    assert "Адрес регистрации: г. Москва, ул. Тверская, д. 1, кв. 2" in contract
+    assert "П.П. Петров" in contract
+    assert "ИНН" not in contract.split("Исполнитель")[0]
+    assert "далее именуемый Сторона, передающая информацию" in nda
+    assert "ФИО: Петров Пётр Петрович" in nda
+
+
 def test_contract_helpers() -> None:
     assert initials("Иванов Иван Иванович") == "И.И. Иванов"
     assert initials("Иванов") == "Иванов"
@@ -523,9 +588,8 @@ def test_create_resolves_kind_and_saves_company() -> None:
     assert expertise.company.signer_basis == "Устава"
 
 
-def test_card_payment_is_closed_for_declaration() -> None:
+def test_card_payment_is_closed_for_legal_entity() -> None:
     expertise = make_expertise(ExpertiseStatus.CONTRACT)
-    expertise.contract_kind = ContractKind.DECLARATION
     payments = FakePaymentRepository()
     usecase = CreateExpertisePaymentUseCase(
         FakeExpertiseRepository(), payments, FakeCreatePayment(payments)
@@ -537,6 +601,7 @@ def test_card_payment_is_closed_for_declaration() -> None:
 
 def test_payment_stage_amounts_and_reuse() -> None:
     expertise = make_expertise(ExpertiseStatus.CONTRACT)
+    expertise.customer_type = CustomerType.INDIVIDUAL
     expertise.expert_id = 10
     payments = FakePaymentRepository()
     create_payment = FakeCreatePayment(payments)

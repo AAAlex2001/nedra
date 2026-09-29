@@ -1,5 +1,6 @@
 """Акт выполненных работ в PDF."""
 
+from dataclasses import dataclass
 from decimal import Decimal
 from io import BytesIO
 
@@ -7,7 +8,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from app.models.expertise import Expertise, ExpertiseCompany
+from app.models.expertise import CustomerType, Expertise
 from app.services.documents.company import CompanyRequisites
 from app.services.documents.fonts import register_fonts
 from app.services.documents.layout import (
@@ -37,9 +38,34 @@ def act_filename(expertise: Expertise) -> str:
     return f"Акт {act_number(expertise)}.pdf"
 
 
+@dataclass(frozen=True)
+class ActPayer:
+    """Заказчик в акте: как подписан, чем идентифицирован и где зарегистрирован."""
+
+    name: str
+    details: str
+    address: str
+
+
+def act_payer(expertise: Expertise) -> ActPayer | None:
+    """Заказчик из заявки: организация у юрлица, паспортные данные у физлица."""
+
+    company = expertise.company
+    if expertise.customer_type == CustomerType.LEGAL and company is not None:
+        kpp = company.kpp or "—"
+        return ActPayer(company.name, f"{company.name}, ИНН {company.inn}, КПП {kpp}", company.address)
+
+    individual = expertise.individual
+    if individual is not None:
+        details = f"{individual.full_name}, паспорт {individual.passport_number}"
+        return ActPayer(individual.full_name, details, individual.address)
+
+    return None
+
+
 def build_act_pdf(
     expertise: Expertise,
-    payer: ExpertiseCompany,
+    payer: ActPayer,
     subject: str,
     company: CompanyRequisites,
 ) -> bytes:
@@ -49,7 +75,6 @@ def build_act_pdf(
 
     amount = expertise.price if expertise.price is not None else Decimal("0")
     signed = expertise.accepted_at or expertise.created_at
-    payer_kpp = payer.kpp or "—"
 
     buffer = BytesIO()
     document = SimpleDocTemplate(
@@ -70,7 +95,7 @@ def build_act_pdf(
         requisites_table(
             [
                 ("Исполнитель", f"{company.name}, ИНН {company.inn}, {company.address}"),
-                ("Заказчик", f"{payer.name}, ИНН {payer.inn}, КПП {payer_kpp}"),
+                ("Заказчик", payer.details),
                 ("Адрес заказчика", payer.address),
             ]
         ),

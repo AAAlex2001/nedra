@@ -22,4 +22,4 @@ class ExpertiseAccessError(Exception):
 
 
 class PriceMissingError(Exception):
-    """Для пары «область × объект» не задан тариф, договор заключить нельзя."""
+    """В заявке нет цены, договор заключить нельзя."""

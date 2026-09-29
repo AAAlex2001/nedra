@@ -42,6 +42,7 @@ from app.models.billing import Invoice
 from app.schemas.expertise import (
     ExpertiseAcceptSchema,
     ExpertiseCompanySchema,
+    ExpertiseIndividualSchema,
     ExpertiseInSchema,
     ExpertiseInvoiceSchema,
     ExpertiseOutSchema,
@@ -150,8 +151,12 @@ async def to_schema(
         deadline=expertise.deadline,
         object_name=expertise.object_name,
         contract_kind=expertise.contract_kind,
+        customer_type=expertise.customer_type,
         company=ExpertiseCompanySchema.model_validate(expertise.company)
         if expertise.company
+        else None,
+        individual=ExpertiseIndividualSchema.model_validate(expertise.individual)
+        if expertise.individual
         else None,
         comment=expertise.comment,
         status=expertise.status,

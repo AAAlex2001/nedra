@@ -1,9 +1,8 @@
 """Шаги 7 и 9: заказчик оплачивает аванс или остаток по 50 %."""
 
-from app.models.expertise import Expertise, ExpertiseStatus
+from app.models.expertise import CustomerType, Expertise, ExpertiseStatus
 from app.models.payment import Payment, PaymentStatus
 from app.models.user import User
-from app.services.contracts.executors import executor_for
 from app.services.expertise.exceptions import (
     ExpertiseAccessError,
     ExpertiseStateError,
@@ -20,8 +19,7 @@ class CreateExpertisePaymentUseCase:
 
     Какой этап платить, решает статус: contract — аванс, conclusion_ready — остаток.
     Если для этапа уже есть неоплаченный платёж со ссылкой, возвращаем его,
-    а не плодим новые. Касса принадлежит «Недрам», поэтому по договорам
-    с другим исполнителем картой платить нельзя.
+    а не плодим новые. Картой платят только физлица, юрлица — по счёту.
     """
 
     def __init__(
@@ -43,8 +41,8 @@ class CreateExpertisePaymentUseCase:
         if expertise.price is None:
             raise PriceMissingError("Стоимость экспертизы не задана")
 
-        if not executor_for(expertise.contract_kind).card_payment:
-            raise ExpertiseStateError("По этому договору оплата только по счёту исполнителя")
+        if expertise.customer_type != CustomerType.INDIVIDUAL:
+            raise ExpertiseStateError("Юридические лица оплачивают экспертизу по счёту")
 
         advance, final = split_price(expertise.price)
 
