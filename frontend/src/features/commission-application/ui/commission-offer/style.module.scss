@@ -1,0 +1,169 @@
+.offer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+
+  width: 100%;
+
+  background: #eaeefd;
+  border-radius: 32px;
+}
+
+.media {
+  position: relative;
+  overflow: hidden;
+
+  border-radius: 26px 26px 0 0;
+}
+
+.image {
+  display: block;
+
+  width: 100%;
+  height: 150px;
+
+  object-fit: cover;
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+
+  color: #0b0b0b;
+  background: #fff;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.close:hover {
+  background: #e6e9ef;
+}
+
+.closeIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: -28px;
+  padding: 22px 20px 24px;
+
+  background: #fff;
+  border-radius: 26px;
+}
+
+.badge {
+  padding: 7px 14px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #4a5fc7;
+  background: #eef1ff;
+  border-radius: 100px;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 31px;
+  letter-spacing: -0.02em;
+
+  color: #0b0b0b;
+}
+
+.lead {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+
+  color: #4a5060;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  list-style: none;
+}
+
+.point {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.pointIcon {
+  flex: none;
+
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+.pointIcon path {
+  fill: #7f92e8;
+}
+
+.pointText {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+.offer .cta {
+  width: 100%;
+  margin-top: 8px;
+
+  background: #9db0fc;
+  border-color: #9db0fc;
+}
+
+.offer .cta:hover {
+  background: #8aa0fb;
+  border-color: #8aa0fb;
+}
+
+@media (min-width: 768px) {
+  .image {
+    height: 220px;
+  }
+
+  .content {
+    margin-top: -36px;
+    padding: 32px 36px 36px;
+  }
+
+  .title {
+    font-size: 30px;
+    line-height: 38px;
+  }
+}

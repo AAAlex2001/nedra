@@ -1,6 +1,7 @@
 import { SessionProvider } from "@/entities/user";
 import { getCurrentUser } from "@/entities/user/api/session-server";
 import { AuthModalProvider } from "@/features/auth";
+import { CommissionPopupProvider } from "@/features/commission-application";
 import CommissionPopup from "@/widgets/commission-popup";
 import Footer from "@/widgets/footer";
 import GuestBar from "@/widgets/guest-bar";
@@ -12,11 +13,13 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   return (
     <SessionProvider initialUser={user}>
       <AuthModalProvider>
-        <Header />
-        {children}
-        <Footer />
-        <GuestBar />
-        <CommissionPopup />
+        <CommissionPopupProvider>
+          <Header />
+          {children}
+          <Footer />
+          <GuestBar />
+          <CommissionPopup />
+        </CommissionPopupProvider>
       </AuthModalProvider>
     </SessionProvider>
   );

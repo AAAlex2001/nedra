@@ -1,3 +1,4 @@
+import { CommissionOfferBlock } from "@/features/commission-application";
 import AccentLine from "@/shared/ui/accent-line";
 import { DIRECTIONS_DATA } from "./data";
 import styles from "./style.module.scss";
@@ -13,9 +14,8 @@ const Directions = () => {
         </div>
       </div>
 
-      <div className={styles.media}>
-        <div className={styles.image} role="img" aria-hidden />
-        <div className={styles.fade} aria-hidden />
+      <div className={styles.offer}>
+        <CommissionOfferBlock />
       </div>
     </section>
   );

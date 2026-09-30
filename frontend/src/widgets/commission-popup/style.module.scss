@@ -14,35 +14,39 @@
 }
 
 .window {
-  box-sizing: border-box;
-  display: flex;
   flex: none;
-  flex-direction: column;
-  padding: 8px;
 
   width: 100%;
   max-width: 640px;
   margin: auto;
 
-  background: #eaeefd;
   border-radius: 32px;
   box-shadow: 0 20px 60px rgba(11, 11, 11, 0.25);
 }
 
-.media {
-  position: relative;
-  overflow: hidden;
+.frame {
+  box-sizing: border-box;
+  padding: 8px;
 
-  border-radius: 26px 26px 0 0;
+  background: #eaeefd;
+  border-radius: 32px;
 }
 
-.image {
-  display: block;
+.content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 22px 20px 24px;
 
-  width: 100%;
-  height: 150px;
+  background: #fff;
+  border-radius: 26px;
+}
 
-  object-fit: cover;
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .round {
@@ -67,14 +71,6 @@
   background: #e6e9ef;
 }
 
-.closeOnImage {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-
-  background: #fff;
-}
-
 .roundIcon {
   width: 20px;
   height: 20px;
@@ -84,115 +80,7 @@
   transform: rotate(90deg);
 }
 
-.content {
-  position: relative;
-  z-index: 1;
-
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  margin-top: -28px;
-  padding: 22px 20px 24px;
-
-  background: #fff;
-  border-radius: 26px;
-}
-
-.formContent {
-  align-items: stretch;
-  gap: 20px;
-  margin-top: 0;
-}
-
-.badge {
-  padding: 7px 14px;
-
-  font-family: "Manrope";
-  font-weight: 700;
-  font-size: 13px;
-  line-height: 17px;
-
-  color: #4a5fc7;
-  background: #eef1ff;
-  border-radius: 100px;
-}
-
 .title {
-  font-family: "Manrope";
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 31px;
-  letter-spacing: -0.02em;
-
-  color: #0b0b0b;
-}
-
-.lead {
-  font-family: "Manrope";
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 22px;
-
-  color: #4a5060;
-}
-
-.points {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  list-style: none;
-}
-
-.point {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.pointIcon {
-  flex: none;
-
-  width: 20px;
-  height: 20px;
-  margin-top: 1px;
-}
-
-.pointIcon path {
-  fill: #7f92e8;
-}
-
-.pointText {
-  font-family: "Manrope";
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 22px;
-
-  color: #0b0b0b;
-}
-
-.window .cta {
-  width: 100%;
-  margin-top: 8px;
-
-  background: #9db0fc;
-  border-color: #9db0fc;
-}
-
-.window .cta:hover {
-  background: #8aa0fb;
-  border-color: #8aa0fb;
-}
-
-.formHead {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.formTitle {
   flex: 1;
 
   font-family: "Manrope";
@@ -227,26 +115,11 @@
     padding: 40px 20px;
   }
 
-  .image {
-    height: 220px;
-  }
-
   .content {
-    margin-top: -36px;
-    padding: 32px 36px 36px;
-  }
-
-  .formContent {
-    margin-top: 0;
     padding: 28px 32px 32px;
   }
 
   .title {
-    font-size: 30px;
-    line-height: 38px;
-  }
-
-  .formTitle {
     font-size: 20px;
     line-height: 26px;
   }
