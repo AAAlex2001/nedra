@@ -6,7 +6,8 @@ import { createPortal } from "react-dom";
 import { fetchExpertCatalog, type ExpertCatalog } from "@/entities/expert";
 import { CommissionApplicationForm } from "@/features/commission-application";
 import Button from "@/shared/ui/button";
-import { CheckIcon, CloseIcon } from "@/shared/ui/icons";
+import { CheckIcon, ChevronIcon, CloseIcon } from "@/shared/ui/icons";
+import Spinner from "@/shared/ui/spinner";
 import styles from "./style.module.scss";
 
 const SHOW_DELAY = 4000;
@@ -14,10 +15,10 @@ const STORAGE_KEY = "nedra-commission-popup";
 const CATALOG_FAILED = "Не удалось загрузить справочник областей аттестации. Попробуйте позже.";
 
 const OBJECTS = [
-  "проекты консервации и ликвидации",
-  "проекты технического перевооружения",
-  "декларации промышленной безопасности",
-  "обоснования безопасности",
+  "Проекты консервации и ликвидации",
+  "Проекты технического перевооружения",
+  "Декларации промышленной безопасности",
+  "Обоснования безопасности",
 ];
 
 type Step = "intro" | "form";
@@ -55,6 +56,21 @@ const CommissionPopup = () => {
   useEffect(() => {
     if (!open) return;
 
+    const loadCatalog = async () => {
+      try {
+        const loaded = await fetchExpertCatalog();
+        setCatalog(loaded);
+      } catch {
+        setCatalogError(CATALOG_FAILED);
+      }
+    };
+
+    void loadCatalog();
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       rememberClosed();
@@ -76,18 +92,6 @@ const CommissionPopup = () => {
     setOpen(false);
   };
 
-  const openForm = async () => {
-    setStep("form");
-    if (catalog) return;
-
-    try {
-      const loaded = await fetchExpertCatalog();
-      setCatalog(loaded);
-    } catch {
-      setCatalogError(CATALOG_FAILED);
-    }
-  };
-
   if (!open) return null;
 
   return createPortal(
@@ -99,54 +103,73 @@ const CommissionPopup = () => {
         aria-label="Конкурсный отбор экспертов"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className={styles.head}>
-          <span className={styles.badge}>Конкурсный отбор</span>
-          <button type="button" className={styles.close} aria-label="Закрыть" onClick={close}>
-            <CloseIcon className={styles.closeIcon} />
-          </button>
-        </div>
-
         {step === "intro" ? (
-          <div className={styles.intro}>
-            <div className={styles.lead}>
+          <>
+            <div className={styles.media}>
               <Image
                 className={styles.image}
-                src="/blitz/10.webp"
-                alt=""
-                width={400}
-                height={400}
-                sizes="120px"
+                src="/blitz/23.webp"
+                alt="Документация, заключение экспертизы и оборудование опасного производственного объекта"
+                width={1600}
+                height={700}
+                sizes="(min-width: 768px) 640px, 100vw"
+                priority
               />
-              <div className={styles.leadText}>
-                <p className={styles.title}>Примем эксперта</p>
-                <p className={styles.text}>
-                  для выполнения работ по экспертизе промышленной безопасности объектов:
-                </p>
-              </div>
+              <button
+                type="button"
+                className={`${styles.round} ${styles.closeOnImage}`}
+                aria-label="Закрыть"
+                onClick={close}
+              >
+                <CloseIcon className={styles.roundIcon} />
+              </button>
             </div>
 
-            <ul className={styles.objects}>
-              {OBJECTS.map((item) => (
-                <li key={item} className={styles.object}>
-                  <CheckIcon className={styles.objectIcon} />
-                  <span className={styles.objectText}>{item}</span>
-                </li>
-              ))}
-            </ul>
+            <div className={styles.content}>
+              <span className={styles.badge}>Конкурсный отбор</span>
 
-            <Button className={styles.cta} onClick={() => void openForm()}>
-              Оставить заявку в конкурсную комиссию
-            </Button>
-          </div>
+              <p className={styles.title}>Примем эксперта</p>
+              <p className={styles.lead}>
+                для выполнения работ по экспертизе промышленной безопасности следующих объектов:
+              </p>
+
+              <ul className={styles.points}>
+                {OBJECTS.map((item) => (
+                  <li key={item} className={styles.point}>
+                    <CheckIcon className={styles.pointIcon} />
+                    <span className={styles.pointText}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <Button className={styles.cta} onClick={() => setStep("form")}>
+                Оставить заявку в конкурсную комиссию
+              </Button>
+            </div>
+          </>
         ) : (
-          <div className={styles.formStep}>
-            <button type="button" className={styles.back} onClick={() => setStep("intro")}>
-              ← Назад
-            </button>
-            <p className={styles.formTitle}>Заявка в конкурсную комиссию</p>
+          <div className={`${styles.content} ${styles.formContent}`}>
+            <div className={styles.formHead}>
+              <button
+                type="button"
+                className={styles.round}
+                aria-label="Назад"
+                onClick={() => setStep("intro")}
+              >
+                <ChevronIcon className={`${styles.roundIcon} ${styles.backIcon}`} />
+              </button>
+              <p className={styles.formTitle}>Заявка в конкурсную комиссию</p>
+              <button type="button" className={styles.round} aria-label="Закрыть" onClick={close}>
+                <CloseIcon className={styles.roundIcon} />
+              </button>
+            </div>
 
             {catalog && <CommissionApplicationForm catalog={catalog} onClose={close} />}
-            {!catalog && !catalogError && <p className={styles.text}>Загружаем справочник…</p>}
+            {!catalog && !catalogError && (
+              <div className={styles.loader}>
+                <Spinner size={32} />
+              </div>
+            )}
             {catalogError && <p className={styles.error}>{catalogError}</p>}
           </div>
         )}
