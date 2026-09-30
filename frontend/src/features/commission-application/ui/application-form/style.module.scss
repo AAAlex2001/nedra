@@ -1,0 +1,204 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.builder {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+
+  background: #fff;
+  border-radius: 18px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #0b0b0b;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.note {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}
+
+.add {
+  align-self: flex-start;
+  padding: 12px 20px;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #0b0b0b;
+  background: transparent;
+  border: 1px solid #f69827;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.add:hover:not(:disabled) {
+  color: #fff;
+  background: #f69827;
+}
+
+.add:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 16px;
+
+  background: #fff;
+  border-radius: 14px;
+}
+
+.code {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #0b0b0b;
+}
+
+.object {
+  padding: 4px 10px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b86108;
+  background: #fff2e2;
+  border-radius: 100px;
+}
+
+.meta {
+  flex: 1;
+
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #0b0b0b;
+}
+
+.remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+
+  font-size: 20px;
+  line-height: 1;
+
+  color: #b23b2c;
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.remove:hover {
+  background: #fdeceb;
+}
+
+.error {
+  padding: 12px 14px;
+
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+  background: #fdeceb;
+  border-radius: 12px;
+}
+
+.form .submit,
+.done .submit {
+  width: 100%;
+
+  background: #9db0fc;
+  border-color: #9db0fc;
+}
+
+.form .submit:hover,
+.done .submit:hover {
+  background: #8aa0f5;
+  border-color: #8aa0f5;
+}
+
+.done {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.doneTitle {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #0b0b0b;
+}
+
+.doneText {
+  margin-bottom: 8px;
+
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 21px;
+
+  color: #5b6070;
+}

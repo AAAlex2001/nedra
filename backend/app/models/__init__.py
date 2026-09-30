@@ -23,6 +23,7 @@ from app.models.expertise import (
     ExpertiseStatus,
 )
 from app.models.notification import Notification
+from app.models.commission import CommissionApplication
 
 __all__ = [
     "Base",
@@ -52,4 +53,5 @@ __all__ = [
     "ExpertiseResult",
     "ExpertiseStatus",
     "Notification",
+    "CommissionApplication",
 ]

@@ -1,0 +1,143 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 18px;
+
+  transition: opacity 0.2s ease;
+}
+
+.cardPending {
+  opacity: 0.5;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.headMain {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.id {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+.date {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+
+  color: #7b8190;
+}
+
+.delete {
+  padding: 8px 16px;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #b23b2c;
+  background: #fdeceb;
+  border: 1px solid #f6d5d1;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.delete:hover:not(:disabled) {
+  background: #f9d9d6;
+}
+
+.delete:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.name {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 10px 14px;
+
+  background: #f5f6f8;
+  border-radius: 14px;
+}
+
+.code {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}
+
+.object {
+  padding: 4px 10px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b86108;
+  background: #fff2e2;
+  border-radius: 100px;
+}
+
+.meta {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #0b0b0b;
+}
+
+.area {
+  flex-basis: 100%;
+
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #7b8190;
+}

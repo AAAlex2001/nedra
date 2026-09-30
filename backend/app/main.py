@@ -14,6 +14,7 @@ from app.routers import (
     articles,
     auth,
     billing,
+    commission,
     experts,
     expertise,
     notifications,
@@ -57,6 +58,7 @@ app.include_router(billing.router, prefix="/api/v1")
 app.include_router(admin_billing.router, prefix="/api/v1")
 app.include_router(notifications.router, prefix="/api/v1")
 app.include_router(requests.router, prefix="/api/v1")
+app.include_router(commission.router, prefix="/api/v1")
 app.include_router(articles.router, prefix="/api/v1")
 app.include_router(admin_articles.router, prefix="/api/v1")
 
