@@ -4,6 +4,12 @@
   gap: 16px;
 }
 
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .builder {
   display: flex;
   flex-direction: column;
@@ -36,6 +42,12 @@
   gap: 6px;
 }
 
+.chips .chip[aria-checked="true"] {
+  color: #3f7a3a;
+  background: #eaf4e8;
+  border-color: #7cb073;
+}
+
 .note {
   font-family: "Manrope";
   font-weight: 400;
@@ -56,7 +68,7 @@
 
   color: #0b0b0b;
   background: transparent;
-  border: 1px solid #f69827;
+  border: 1px solid #9cc79a;
   border-radius: 100px;
   cursor: pointer;
 
@@ -68,7 +80,7 @@
 
 .add:hover:not(:disabled) {
   color: #fff;
-  background: #f69827;
+  background: #9cc79a;
 }
 
 .add:disabled {
@@ -111,8 +123,8 @@
   font-size: 12px;
   line-height: 15px;
 
-  color: #4a5fc7;
-  background: #eef1ff;
+  color: #3f7a3a;
+  background: #eaf4e8;
   border-radius: 100px;
 }
 
@@ -168,14 +180,14 @@
 .done .submit {
   width: 100%;
 
-  background: #9db0fc;
-  border-color: #9db0fc;
+  background: #9cc79a;
+  border-color: #9cc79a;
 }
 
 .form .submit:hover,
 .done .submit:hover {
-  background: #8aa0f5;
-  border-color: #8aa0f5;
+  background: #8bbc89;
+  border-color: #8bbc89;
 }
 
 .done {
@@ -191,6 +203,13 @@
   line-height: 26px;
 
   color: #0b0b0b;
+}
+
+@media (min-width: 768px) {
+  .row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .doneText {

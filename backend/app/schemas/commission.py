@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class AttestationSchema(BaseModel):
@@ -15,6 +15,8 @@ class CommissionApplicationInSchema(BaseModel):
     """Заявка кандидата в конкурсную комиссию."""
 
     full_name: str = Field(..., min_length=3, max_length=255, description="ФИО кандидата")
+    phone: str = Field(..., min_length=5, max_length=32, description="Телефон кандидата")
+    email: EmailStr = Field(..., description="Email кандидата")
     attestations: list[AttestationSchema] = Field(..., min_length=1, max_length=30)
 
 

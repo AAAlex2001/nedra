@@ -29,6 +29,8 @@ def build_text(application: CommissionApplication) -> str:
     return (
         "Новая заявка в конкурсную комиссию\n\n"
         f"ФИО: {application.full_name}\n"
+        f"Телефон: {application.phone}\n"
+        f"Email: {application.email}\n"
         f"Аттестация:\n{attestations}\n"
         f"Дата: {created}"
     )
@@ -40,6 +42,8 @@ def build_html(application: CommissionApplication) -> str:
     attestations = "<br>".join(escape(line) for line in attestation_lines(application))
     fields = [
         ("ФИО", escape(application.full_name)),
+        ("Телефон", escape(application.phone)),
+        ("Email", escape(application.email)),
         ("Аттестация", attestations),
         ("Дата", application.created_at.strftime("%d.%m.%Y %H:%M")),
     ]
@@ -87,4 +91,5 @@ async def send_commission_letter(application: CommissionApplication) -> None:
         subject=f"Конкурсная комиссия: заявка №{application.id} — {application.full_name}",
         text=build_text(application),
         html=build_html(application),
+        reply_to=application.email,
     )

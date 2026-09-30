@@ -13,8 +13,16 @@ export type AttestationItem = {
 
 export type ApplicationStatus = "idle" | "loading" | "success" | "error";
 
-export type ApplicationState = {
+export type ContactFields = {
   fullName: string;
+  phone: string;
+  email: string;
+};
+
+export type ContactField = keyof ContactFields;
+
+export type ApplicationState = {
+  contacts: ContactFields;
   draft: AttestationDraft;
   items: AttestationItem[];
   nextKey: number;
@@ -23,7 +31,7 @@ export type ApplicationState = {
 };
 
 export type ApplicationAction =
-  | { type: "name/change"; value: string }
+  | { type: "contact/change"; field: ContactField; value: string }
   | { type: "draft/area"; code: string }
   | { type: "draft/object"; code: string }
   | { type: "draft/category"; category: number }

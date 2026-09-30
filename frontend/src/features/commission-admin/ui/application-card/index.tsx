@@ -37,6 +37,15 @@ const ApplicationCard = ({ application, catalog, pending, onDelete }: Applicatio
 
       <p className={styles.name}>{application.full_name}</p>
 
+      <div className={styles.contacts}>
+        <a className={styles.link} href={`tel:${application.phone}`}>
+          {application.phone}
+        </a>
+        <a className={styles.link} href={`mailto:${application.email}`}>
+          {application.email}
+        </a>
+      </div>
+
       <ul className={styles.list}>
         {application.attestations.map((item) => (
           <li key={`${item.area_code}-${item.object_code}-${item.category}`} className={styles.item}>

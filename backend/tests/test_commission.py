@@ -27,7 +27,12 @@ class FakeCommissionRepository:
 
 
 def make_payload(attestations: list[dict], full_name: str = "Иванов Иван Иванович") -> CommissionApplicationInSchema:
-    return CommissionApplicationInSchema(full_name=full_name, attestations=attestations)
+    return CommissionApplicationInSchema(
+        full_name=full_name,
+        phone="+7 913 000-00-00",
+        email="expert@example.com",
+        attestations=attestations,
+    )
 
 
 def test_create_application_keeps_attestations() -> None:
@@ -43,6 +48,8 @@ def test_create_application_keeps_attestations() -> None:
     application = asyncio.run(usecase.execute(payload))
 
     assert application.full_name == "Иванов Иван Иванович"
+    assert application.phone == "+7 913 000-00-00"
+    assert application.email == "expert@example.com"
     assert application.attestations == [
         {"area_code": "Э1", "object_code": "kl_tp", "category": 1},
         {"area_code": "Э13", "object_code": "d", "category": 2},
@@ -72,9 +79,12 @@ def test_letter_lists_attestations() -> None:
     application = CommissionApplication(
         id=7,
         full_name="Петров Пётр",
+        phone="+7 913 111-11-11",
+        email="petrov@example.com",
         attestations=[{"area_code": "Э1", "object_code": "kl_tp", "category": 1}],
     )
     application.created_at = datetime(2026, 10, 1, 9, 30, tzinfo=timezone.utc)
 
     assert "Э1 КЛ/ТП, 1 категория" in build_text(application)
+    assert "petrov@example.com" in build_text(application)
     assert "Заявка №7 в конкурсную комиссию" in build_html(application)

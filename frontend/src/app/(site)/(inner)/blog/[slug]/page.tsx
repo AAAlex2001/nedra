@@ -11,8 +11,8 @@ import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import BlitsPromo from "@/widgets/blits-promo";
 import ArticlePage from "@/widgets/blog/article-page";
 import RelatedArticles from "@/widgets/blog/related-articles";
+import CommissionPromo from "@/widgets/commission-promo";
 import InstituteServices from "@/widgets/landing/institute-services";
-import ServicesPromo from "@/widgets/services-promo";
 import styles from "../../../articles-page.module.scss";
 
 export const dynamic = "force-dynamic";
@@ -52,7 +52,7 @@ export default async function BlogArticleRoute({ params }: { params: Params }) {
           <ArticlePage
             article={article}
             promo={<BlitsPromo />}
-            middle={<ServicesPromo />}
+            middle={<CommissionPromo />}
           />
         </div>
       </main>

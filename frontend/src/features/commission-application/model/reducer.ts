@@ -7,7 +7,7 @@ const EMPTY_DRAFT: AttestationDraft = {
 };
 
 export const INITIAL_STATE: ApplicationState = {
-  fullName: "",
+  contacts: { fullName: "", phone: "", email: "" },
   draft: EMPTY_DRAFT,
   items: [],
   nextKey: 1,
@@ -23,8 +23,8 @@ export const applicationReducer = (
   action: ApplicationAction,
 ): ApplicationState => {
   switch (action.type) {
-    case "name/change":
-      return { ...state, fullName: action.value };
+    case "contact/change":
+      return { ...state, contacts: { ...state.contacts, [action.field]: action.value } };
 
     case "draft/area":
       return { ...state, draft: { ...state.draft, areaCode: action.code, objectCode: "" } };

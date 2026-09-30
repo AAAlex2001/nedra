@@ -1,14 +1,20 @@
 import type { Attestation, CommissionApplicationRecord } from "@/entities/commission";
 import { API_URL, readErrorMessage } from "@/shared/api";
+import type { ContactFields } from "../model/types";
 
 export const submitCommissionApplication = async (
-  fullName: string,
+  contacts: ContactFields,
   attestations: Attestation[],
 ): Promise<CommissionApplicationRecord> => {
   const response = await fetch(`${API_URL}/v1/commission/applications`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ full_name: fullName.trim(), attestations }),
+    body: JSON.stringify({
+      full_name: contacts.fullName.trim(),
+      phone: contacts.phone.trim(),
+      email: contacts.email.trim(),
+      attestations,
+    }),
   });
 
   if (!response.ok) {

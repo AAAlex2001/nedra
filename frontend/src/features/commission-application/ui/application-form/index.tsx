@@ -19,7 +19,7 @@ const ApplicationForm = ({ catalog, onClose }: ApplicationFormProps) => {
     availableObjects,
     draftComplete,
     canSubmit,
-    changeName,
+    changeContact,
     selectArea,
     selectObject,
     selectCategory,
@@ -56,9 +56,34 @@ const ApplicationForm = ({ catalog, onClose }: ApplicationFormProps) => {
         placeholder="Иванов Иван Иванович"
         maxLength={255}
         autoComplete="name"
-        value={state.fullName}
-        onChange={changeName}
+        value={state.contacts.fullName}
+        onChange={(value) => changeContact("fullName", value)}
       />
+
+      <div className={styles.row}>
+        <TextField
+          label="Телефон"
+          required
+          type="tel"
+          inputMode="tel"
+          placeholder="+7 900 000-00-00"
+          maxLength={32}
+          autoComplete="tel"
+          value={state.contacts.phone}
+          onChange={(value) => changeContact("phone", value)}
+        />
+        <TextField
+          label="Email"
+          required
+          type="email"
+          inputMode="email"
+          placeholder="name@mail.ru"
+          maxLength={320}
+          autoComplete="email"
+          value={state.contacts.email}
+          onChange={(value) => changeContact("email", value)}
+        />
+      </div>
 
       <div className={styles.builder}>
         <div className={styles.group}>
@@ -67,6 +92,7 @@ const ApplicationForm = ({ catalog, onClose }: ApplicationFormProps) => {
             {catalog.areas.map((item) => (
               <Chip
                 key={item.code}
+                className={styles.chip}
                 active={state.draft.areaCode === item.code}
                 title={item.title}
                 onClick={() => selectArea(item.code)}
@@ -87,6 +113,7 @@ const ApplicationForm = ({ catalog, onClose }: ApplicationFormProps) => {
               return (
                 <Chip
                   key={item.code}
+                  className={styles.chip}
                   active={state.draft.objectCode === item.code}
                   disabled={!allowed}
                   title={item.title}
@@ -106,6 +133,7 @@ const ApplicationForm = ({ catalog, onClose }: ApplicationFormProps) => {
             {catalog.categories.map((category) => (
               <Chip
                 key={category}
+                className={styles.chip}
                 active={state.draft.category === category}
                 onClick={() => selectCategory(category)}
               >

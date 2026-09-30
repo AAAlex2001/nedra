@@ -20,8 +20,8 @@ const CommissionOffer = ({ onApply, onClose }: CommissionOfferProps) => (
     <div className={styles.media}>
       <Image
         className={styles.image}
-        src="/blitz/23.webp"
-        alt="Документация, заключение экспертизы и оборудование опасного производственного объекта"
+        src="/services/1.webp"
+        alt="Проектная документация, геодезический прибор и лабораторная колба"
         width={1600}
         height={700}
         sizes="(min-width: 768px) 640px, 100vw"

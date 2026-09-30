@@ -22,6 +22,8 @@ class CreateCommissionApplicationUseCase:
 
         application = CommissionApplication(
             full_name=data.full_name.strip(),
+            phone=data.phone.strip(),
+            email=data.email,
             attestations=attestations,
         )
 

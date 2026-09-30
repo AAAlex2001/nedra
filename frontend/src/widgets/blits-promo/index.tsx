@@ -18,9 +18,10 @@ const Check = () => (
 const DECOR = ["/blitz/24.webp", "/blitz/25.webp", "/blitz/26.webp", "/blitz/27.webp"];
 
 const POINTS = [
-  "Заявку сразу видят эксперты с нужной аттестацией",
-  "Цену предлагаете вы, тариф института — ориентир",
-  "Заключение с ЭЦП, счёт и акт — в личном кабинете",
+  "Рассмотрим Ваше предложение стоимости ЭПБ",
+  "Приступим к работе по гарантийному письму",
+  "Выдадим заключение с ЭЦП в течение 1-5 дней",
+  "Вернем деньги, если результат Вас не устроит",
 ];
 
 const BlitsPromo = () => (
@@ -40,7 +41,7 @@ const BlitsPromo = () => (
       <div className={styles.content}>
         <span className={styles.badge}>Блиц-эксперт</span>
 
-        <p className={styles.title}>Экспертиза промышленной безопасности от 1 дня</p>
+        <p className={styles.title}>Онлайн экспертиза промышленной безопасности</p>
 
         <ul className={styles.points}>
           {POINTS.map((text) => (

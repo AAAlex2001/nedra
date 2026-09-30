@@ -5,6 +5,7 @@ import type { Attestation } from "@/entities/commission";
 import type { ExpertCatalog } from "@/entities/expert";
 import { submitCommissionApplication } from "../api/submit-application";
 import { applicationReducer, INITIAL_STATE, isDraftComplete } from "./reducer";
+import type { ContactField } from "./types";
 
 const SUBMIT_FAILED = "Не удалось отправить заявку. Попробуйте ещё раз.";
 
@@ -17,10 +18,14 @@ export const useCommissionApplication = (catalog: ExpertCatalog) => {
     : [];
 
   const draftComplete = isDraftComplete(state.draft);
-  const canSubmit =
-    state.fullName.trim().length >= 3 && state.items.length > 0 && state.status !== "loading";
+  const contactsFilled =
+    state.contacts.fullName.trim().length >= 3 &&
+    state.contacts.phone.trim().length >= 5 &&
+    state.contacts.email.trim() !== "";
+  const canSubmit = contactsFilled && state.items.length > 0 && state.status !== "loading";
 
-  const changeName = (value: string) => dispatch({ type: "name/change", value });
+  const changeContact = (field: ContactField, value: string) =>
+    dispatch({ type: "contact/change", field, value });
   const selectArea = (code: string) => dispatch({ type: "draft/area", code });
   const selectObject = (code: string) => dispatch({ type: "draft/object", code });
   const selectCategory = (category: number) => dispatch({ type: "draft/category", category });
@@ -39,7 +44,7 @@ export const useCommissionApplication = (catalog: ExpertCatalog) => {
     }));
 
     try {
-      await submitCommissionApplication(state.fullName, attestations);
+      await submitCommissionApplication(state.contacts, attestations);
       dispatch({ type: "submit/success" });
     } catch (error) {
       const message = error instanceof Error && error.message ? error.message : SUBMIT_FAILED;
@@ -53,7 +58,7 @@ export const useCommissionApplication = (catalog: ExpertCatalog) => {
     availableObjects,
     draftComplete,
     canSubmit,
-    changeName,
+    changeContact,
     selectArea,
     selectObject,
     selectCategory,

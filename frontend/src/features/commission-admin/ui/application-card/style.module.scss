@@ -81,6 +81,27 @@
   color: #0b0b0b;
 }
 
+.contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: -8px;
+}
+
+.link {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  text-decoration: none;
+
+  color: #0b0b0b;
+}
+
+.link:hover {
+  color: #f69827;
+}
+
 .list {
   display: flex;
   flex-direction: column;

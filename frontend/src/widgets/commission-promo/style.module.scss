@@ -52,10 +52,10 @@
 .decorImage {
   position: absolute;
 
-  width: 84px;
-  height: 84px;
+  width: 96px;
+  height: 96px;
 
-  border-radius: 18px;
+  border-radius: 20px;
 }
 
 .badge {
@@ -79,6 +79,15 @@
   letter-spacing: -0.02em;
 
   color: #0b0b0b;
+}
+
+.lead {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+
+  color: #4a5060;
 }
 
 .points {
@@ -111,54 +120,36 @@
   font-size: 15px;
   line-height: 22px;
 
-  color: #4a5060;
+  color: #0b0b0b;
 }
 
-.buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 6px;
-
-  width: 100%;
-}
-
-.primary,
-.secondary {
+.primary {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  margin-top: 6px;
   padding: 15px 28px;
+
+  width: 100%;
 
   font-family: "Manrope";
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
   text-align: center;
-  text-decoration: none;
 
+  color: #fff;
+  background: #9cc79a;
+  border: none;
   border-radius: 100px;
+  cursor: pointer;
 
   transition: background 0.15s ease;
 }
 
-.primary {
-  color: #fff;
-  background: #9cc79a;
-}
-
 .primary:hover {
   background: #8bbc89;
-}
-
-.secondary {
-  color: #0b0b0b;
-  background: #f5f6f8;
-}
-
-.secondary:hover {
-  background: #e6e9ef;
 }
 
 @media (min-width: 768px) {
@@ -178,15 +169,11 @@
     line-height: 38px;
   }
 
-  .buttons {
-    flex-direction: row;
-    align-items: center;
-    gap: 14px;
+  .primary {
     margin-top: 10px;
 
     width: auto;
   }
-
 }
 
 @media (min-width: 1440px) {
@@ -201,15 +188,15 @@
     min-height: 440px;
   }
 
-  .title {
-    max-width: 480px;
-
-    font-size: 32px;
-    line-height: 40px;
+  .title,
+  .lead,
+  .pointText {
+    max-width: 520px;
   }
 
-  .pointText {
-    max-width: 480px;
+  .title {
+    font-size: 32px;
+    line-height: 40px;
   }
 
   .decor {
@@ -219,65 +206,30 @@
   }
 
   .decorImage:nth-child(1) {
-    top: 52px;
-    right: 240px;
+    top: 96px;
+    right: 160px;
 
     transform: rotate(-5deg);
   }
 
   .decorImage:nth-child(2) {
-    top: 52px;
-    right: 140px;
+    top: 96px;
+    right: 44px;
+
+    transform: rotate(4deg);
+  }
+
+  .decorImage:nth-child(3) {
+    top: 228px;
+    right: 160px;
 
     transform: rotate(3deg);
   }
 
-  .decorImage:nth-child(3) {
-    top: 52px;
-    right: 40px;
-
-    transform: rotate(-3deg);
-  }
-
   .decorImage:nth-child(4) {
-    top: 176px;
-    right: 240px;
-
-    transform: rotate(4deg);
-  }
-
-  .decorImage:nth-child(5) {
-    top: 176px;
-    right: 140px;
+    top: 228px;
+    right: 44px;
 
     transform: rotate(-4deg);
-  }
-
-  .decorImage:nth-child(6) {
-    top: 176px;
-    right: 40px;
-
-    transform: rotate(5deg);
-  }
-
-  .decorImage:nth-child(7) {
-    top: 300px;
-    right: 240px;
-
-    transform: rotate(-3deg);
-  }
-
-  .decorImage:nth-child(8) {
-    top: 300px;
-    right: 140px;
-
-    transform: rotate(4deg);
-  }
-
-  .decorImage:nth-child(9) {
-    top: 300px;
-    right: 40px;
-
-    transform: rotate(-5deg);
   }
 }

@@ -10,7 +10,7 @@ from app.models.base import Base
 class CommissionApplication(Base):
     """Заявка кандидата в эксперты для конкурсной комиссии.
 
-    Приходит из всплывающего окна на сайте: ФИО и список аттестаций —
+    Приходит из всплывающего окна на сайте: ФИО, телефон, email и список аттестаций —
     область, объект экспертизы и категория. Это не регистрация эксперта:
     аккаунт не создаётся, комиссия разбирает заявки в админке.
     """
@@ -20,6 +20,8 @@ class CommissionApplication(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
 
     full_name: Mapped[str] = mapped_column(String(255))
+    phone: Mapped[str] = mapped_column(String(32))
+    email: Mapped[str] = mapped_column(String(320))
 
     attestations: Mapped[list[dict]] = mapped_column(
         JSON().with_variant(JSONB, "postgresql"), default=list

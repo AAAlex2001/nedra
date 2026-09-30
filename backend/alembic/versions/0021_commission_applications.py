@@ -22,6 +22,8 @@ def upgrade() -> None:
         "commission_applications",
         sa.Column("id", sa.Integer(), primary_key=True),
         sa.Column("full_name", sa.String(255), nullable=False),
+        sa.Column("phone", sa.String(32), nullable=False),
+        sa.Column("email", sa.String(320), nullable=False),
         sa.Column(
             "attestations",
             sa.JSON().with_variant(postgresql.JSONB(), "postgresql"),
