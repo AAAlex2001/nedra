@@ -37,8 +37,9 @@ export const BLITZ_STEPS = [
 ];
 
 export const BLITZ_ADVANTAGES = [
-  { title: "От 1 до 5 дней", text: "Минимальные сроки экспертизы", image: "/blitz/22.webp" },
+  { title: "Предложите свою цену", text: "Эксперт примет, если согласен", image: "/blitz/17.webp" },
   { title: "Гарантийное письмо", text: "Приступим без предоплаты", image: "/blitz/19.webp" },
+  { title: "От 1 до 5 дней", text: "Минимальные сроки экспертизы", image: "/blitz/22.webp" },
   { title: "Свой штат экспертов", text: "Минимум рисков отказа", image: "/blitz/10.webp" },
   { title: "Возврат денег", text: "Если результат не устроит", image: "/blitz/20.webp" },
 ];
