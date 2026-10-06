@@ -59,7 +59,10 @@ def load_json(path: Path) -> dict | list:
 
 
 def is_trusted(url: str) -> bool:
-    """Ссылка ведёт на официальный источник, СМИ или фотобанк, а не на сайт конкурента."""
+    """Ссылка ведёт на страницу сайта, официальный источник, СМИ или фотобанк, а не на сайт конкурента."""
+
+    if url.startswith("/") and not url.startswith("//"):
+        return True
 
     host = urlparse(url).netloc.lower()
     if host.startswith("www."):
