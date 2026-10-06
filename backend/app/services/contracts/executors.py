@@ -20,6 +20,7 @@ class Executor:
 
 
 NEDRA = Executor("nedra", "contract_nedra.docx", "nda_nedra.docx")
+NEDRA_AUDIT = Executor("nedra", "contract_audit.docx", "nda_nedra.docx")
 SIBNTC = Executor("sibntc", "contract_sibntc.docx", "nda_sibntc.docx")
 
 SIBNTC_REQUISITES = CompanyRequisites(
@@ -44,6 +45,9 @@ def executor_for(kind: str | None) -> Executor:
 
     if kind == ContractKind.DECLARATION:
         return SIBNTC
+
+    if kind == ContractKind.AUDIT:
+        return NEDRA_AUDIT
 
     return NEDRA
 

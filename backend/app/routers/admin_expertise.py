@@ -38,6 +38,7 @@ async def to_admin_schema(expertise: Expertise, users: UserRepository) -> Expert
 
     return ExpertiseAdminSchema(
         id=expertise.id,
+        service=expertise.service,
         customer_id=expertise.customer_id,
         customer_name=customer.full_name if customer else "—",
         expert_id=expertise.expert_id,

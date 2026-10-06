@@ -10,6 +10,7 @@ from app.models.expertise import (
     ExpertiseDocument,
     ExpertiseRemark,
     ExpertiseStatus,
+    ServiceKind,
 )
 
 RELATIONS = (
@@ -84,14 +85,16 @@ class ExpertiseRepository:
     async def list_incoming(
         self,
         certificates: list[ExpertCertificate],
+        auditor: bool,
         object_code: str | None,
         area_code: str | None,
     ) -> list[Expertise]:
-        """Новые заявки без эксперта, подходящие под удостоверения эксперта.
+        """Новые заявки без исполнителя, подходящие эксперту.
 
-        Удостоверение подходит, если совпадают объект и область, а категория
-        эксперта не хуже требуемой: 1 — самая высокая, поэтому сравниваем «меньше или равно».
-        Фильтры object_code и area_code сужают выдачу для кабинета.
+        Экспертизу подбираем по удостоверениям: совпадают объект и область,
+        а категория эксперта не хуже требуемой — 1 самая высокая, поэтому
+        сравниваем «меньше или равно». Аудит видят эксперты с направлением
+        «Аудит СУПБ». Фильтры object_code и area_code сужают выдачу для кабинета.
         """
 
         matching: list[Expertise] = []
@@ -109,7 +112,7 @@ class ExpertiseRepository:
         result = await self.db.execute(stmt)
 
         for expertise in result.scalars().all():
-            if certificate_fits(certificates, expertise):
+            if executor_fits(expertise, certificates, auditor):
                 matching.append(expertise)
 
         return matching
@@ -156,6 +159,17 @@ class ExpertiseRepository:
         result = await self.db.execute(stmt)
 
         return result.scalar_one()
+
+
+def executor_fits(
+    expertise: Expertise, certificates: list[ExpertCertificate], auditor: bool
+) -> bool:
+    """Может ли эксперт взять заявку: аудит — по направлению, экспертизу — по удостоверениям."""
+
+    if expertise.service == ServiceKind.AUDIT:
+        return auditor
+
+    return certificate_fits(certificates, expertise)
 
 
 def certificate_fits(certificates: list[ExpertCertificate], expertise: Expertise) -> bool:

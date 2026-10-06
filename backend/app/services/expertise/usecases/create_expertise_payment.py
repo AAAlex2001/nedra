@@ -10,6 +10,7 @@ from app.services.expertise.exceptions import (
 )
 from app.services.expertise.money import split_price
 from app.services.expertise.repo import ExpertiseRepository
+from app.services.expertise.wording import wording_for
 from app.services.payments.repo import PaymentRepository
 from app.services.payments.usecases.create_payment import CreatePaymentUseCase
 
@@ -49,11 +50,11 @@ class CreateExpertisePaymentUseCase:
         if expertise.status == ExpertiseStatus.CONTRACT:
             existing_id = expertise.advance_payment_id
             amount = advance
-            description = f"Экспертиза №{expertise.id}: аванс 50%"
+            description = f"{wording_for(expertise).work_nominative} №{expertise.id}: аванс 50%"
         elif expertise.status == ExpertiseStatus.CONCLUSION_READY:
             existing_id = expertise.final_payment_id
             amount = final
-            description = f"Экспертиза №{expertise.id}: остаток 50%"
+            description = f"{wording_for(expertise).work_nominative} №{expertise.id}: остаток 50%"
         else:
             raise ExpertiseStateError("Сейчас платить нечего")
 

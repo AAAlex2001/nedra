@@ -21,6 +21,7 @@ from app.models.expertise import (
     ExpertiseRemark,
     ExpertiseResult,
     ExpertiseStatus,
+    ServiceKind,
 )
 from app.models.notification import Notification
 from app.models.commission import CommissionApplication
@@ -52,6 +53,7 @@ __all__ = [
     "ExpertiseRemark",
     "ExpertiseResult",
     "ExpertiseStatus",
+    "ServiceKind",
     "Notification",
     "CommissionApplication",
 ]

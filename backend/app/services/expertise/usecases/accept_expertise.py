@@ -1,4 +1,4 @@
-"""Шаг 2–3: эксперт посмотрел документацию и готов провести экспертизу."""
+"""Шаг 2–3: эксперт посмотрел документацию и готов провести экспертизу или аудит."""
 
 from datetime import datetime, timezone
 
@@ -13,7 +13,8 @@ from app.services.expertise.exceptions import (
     InvalidExpertiseError,
     PriceMissingError,
 )
-from app.services.expertise.repo import ExpertiseRepository, certificate_fits
+from app.services.expertise.repo import ExpertiseRepository, executor_fits
+from app.services.expertise.wording import wording_for
 from app.services.notifications.repo import NotificationRepository
 
 
@@ -24,6 +25,7 @@ class AcceptExpertiseUseCase:
     Цену назначил заказчик: беря заявку, эксперт соглашается с ней.
     Если заказчик не знал вид проекта, вид договора определяет эксперт: у него
     право первой подписи, а заказчику остаётся согласиться с одним вариантом.
+    У аудита вид договора один и ставится при подаче.
     """
 
     def __init__(
@@ -45,10 +47,11 @@ class AcceptExpertiseUseCase:
         """
 
         if expertise.status != ExpertiseStatus.NEW or expertise.expert_id is not None:
-            raise ExpertiseStateError("Заявку уже взял другой эксперт")
+            raise ExpertiseStateError("Заявку уже взял другой исполнитель")
 
         certificates = await self.profiles.list_certificates(expert.id)
-        if not certificate_fits(certificates, expertise):
+        auditor = await self.profiles.is_auditor(expert.id)
+        if not executor_fits(expertise, certificates, auditor):
             raise ExpertiseAccessError("Ваша аттестация не подходит под эту заявку")
 
         if expertise.price is None:
@@ -64,12 +67,14 @@ class AcceptExpertiseUseCase:
         expertise.expert_ready_at = datetime.now(timezone.utc)
         expertise.status = ExpertiseStatus.EXPERT_READY
 
+        words = wording_for(expertise)
         self.notifications.add_all(
             [
                 Notification(
                     user_id=expertise.customer_id,
                     expertise_id=expertise.id,
-                    text=f"Эксперт {expert.full_name} готов провести экспертизу по заявке №{expertise.id}",
+                    text=f"{words.executor} {expert.full_name} готов провести {words.work_accusative} "
+                    f"по заявке №{expertise.id}",
                 )
             ]
         )

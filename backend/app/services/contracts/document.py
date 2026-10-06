@@ -21,6 +21,7 @@ from app.models.expertise import (
     Expertise,
     ExpertiseCompany,
     ExpertiseIndividual,
+    ServiceKind,
 )
 from app.models.user import User
 from app.services.contracts.executors import executor_for
@@ -78,7 +79,9 @@ def contract_problem(expertise: Expertise) -> str | None:
 def contract_number(expertise: Expertise, signed_at: datetime) -> str:
     """Номер договора: префикс сервиса, год подписания и номер заявки."""
 
-    return f"БЭ-{signed_at.year}-{expertise.id:04d}"
+    prefix = "БА" if expertise.service == ServiceKind.AUDIT else "БЭ"
+
+    return f"{prefix}-{signed_at.year}-{expertise.id:04d}"
 
 
 def signed_filename(kind: str, expertise: Expertise, signed_at: datetime) -> str:

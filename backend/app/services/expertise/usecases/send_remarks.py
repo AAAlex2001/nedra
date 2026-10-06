@@ -11,6 +11,7 @@ from app.services.expertise.exceptions import (
     InvalidExpertiseError,
 )
 from app.services.expertise.repo import ExpertiseRepository
+from app.services.expertise.wording import wording_for
 from app.services.files.storage import DOCUMENTATION_MAX_SIZE_BYTES, PrivateStorage
 from app.services.notifications.repo import NotificationRepository
 
@@ -67,12 +68,13 @@ class SendRemarksUseCase:
 
         expertise.status = ExpertiseStatus.REMARKS
 
+        words = wording_for(expertise)
         self.notifications.add_all(
             [
                 Notification(
                     user_id=expertise.customer_id,
                     expertise_id=expertise.id,
-                    text=f"Эксперт прислал замечания по заявке №{expertise.id}. Исправьте документацию и отправьте повторно",
+                    text=f"{words.executor} прислал замечания по заявке №{expertise.id}. Исправьте документы и отправьте повторно",
                 )
             ]
         )

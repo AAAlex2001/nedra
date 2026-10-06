@@ -140,6 +140,7 @@ async def to_schema(
 
     return ExpertiseOutSchema(
         id=expertise.id,
+        service=expertise.service,
         customer_id=expertise.customer_id,
         customer_name=customer.full_name if customer else "—",
         expert_id=expertise.expert_id,
@@ -252,10 +253,11 @@ async def list_incoming_expertises(
     users: UserRepository = Depends(get_user_repository),
     payments: PaymentRepository = Depends(get_payment_repository),
 ) -> list[ExpertiseOutSchema]:
-    """Новые заявки, подходящие под удостоверения эксперта."""
+    """Новые заявки, подходящие эксперту: экспертизы по удостоверениям, аудит по направлению."""
 
     certificates = await profiles.list_certificates(expert.id)
-    items = await expertises.list_incoming(certificates, object_code, area_code)
+    auditor = await profiles.is_auditor(expert.id)
+    items = await expertises.list_incoming(certificates, auditor, object_code, area_code)
 
     return [await to_schema(item, users, payments) for item in items]
 
@@ -514,7 +516,7 @@ async def resubmit_documentation(
 @router.post("/{expertise_id}/conclusion")
 async def send_conclusion(
     background_tasks: BackgroundTasks,
-    result: str = Form(..., description="Исход: positive, negative или remarks"),
+    result: str | None = Form(None, description="Исход экспертизы: positive или negative; у аудита не нужен"),
     files: list[UploadFile] = File(default=[], description="Подписанное заключение и файлы ЭЦП"),
     expertise: Expertise = Depends(get_visible_expertise),
     expert: User = Depends(require_expert),

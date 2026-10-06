@@ -14,7 +14,10 @@ SUBJECTS = {
     ContractKind.CONSERVATION: "документации на консервацию ОПО",
     ContractKind.LIQUIDATION: "документации на ликвидацию ОПО",
     ContractKind.DECLARATION: "декларации промышленной безопасности",
+    ContractKind.AUDIT: "опасных производственных объектов",
 }
+
+EXPERTISE_KINDS = tuple(kind for kind in ContractKind if kind != ContractKind.AUDIT)
 
 KINDS_BY_OBJECT = {
     "kl": (ContractKind.CONSERVATION, ContractKind.LIQUIDATION),
@@ -29,9 +32,9 @@ def allowed_kinds(object_code: str | None) -> tuple[ContractKind, ...]:
     """Виды договора, подходящие объекту. Объект неизвестен — подходит любой."""
 
     if object_code is None:
-        return tuple(ContractKind)
+        return EXPERTISE_KINDS
 
-    return KINDS_BY_OBJECT.get(object_code, tuple(ContractKind))
+    return KINDS_BY_OBJECT.get(object_code, EXPERTISE_KINDS)
 
 
 def resolve_kind(object_code: str | None, chosen: str | None) -> ContractKind | None:

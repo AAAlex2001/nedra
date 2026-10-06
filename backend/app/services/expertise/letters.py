@@ -1,8 +1,9 @@
-"""Письма участникам экспертизы на каждом шаге. В кабинете дублируются уведомлениями."""
+"""Письма участникам экспертизы и аудита на каждом шаге. В кабинете дублируются уведомлениями."""
 
-from app.models.expertise import Expertise
+from app.models.expertise import Expertise, ServiceKind
 from app.models.user import User
 from app.services.experts.catalog import AREA_BY_CODE, OBJECT_BY_CODE
+from app.services.expertise.wording import wording_for
 from app.services.mail.sender import send_email
 
 SITE_URL = "https://nedra-npi.ru"
@@ -10,12 +11,27 @@ CABINET_LINE = f"Заявка в личном кабинете: {SITE_URL}/kabin
 
 
 def describe_expertise(expertise: Expertise) -> str:
-    """Короткое описание заявки для писем и уведомлений: объект, область, категория."""
+    """Короткое описание заявки для писем: объект, область и категория или предмет аудита."""
 
-    object_label = OBJECT_BY_CODE[expertise.object_code].label
-    area = AREA_BY_CODE[expertise.area_code]
+    if expertise.service == ServiceKind.AUDIT:
+        return f"Аудит СУПБ: {expertise.object_name}"
 
-    return f"{object_label}, {area.code} ({area.title}), категория {expertise.expert_category}"
+    parts = []
+
+    if expertise.object_code in OBJECT_BY_CODE:
+        parts.append(OBJECT_BY_CODE[expertise.object_code].label)
+
+    if expertise.area_code in AREA_BY_CODE:
+        area = AREA_BY_CODE[expertise.area_code]
+        parts.append(f"{area.code} ({area.title})")
+
+    if expertise.expert_category is not None:
+        parts.append(f"категория {expertise.expert_category}")
+
+    if not parts:
+        return f"Документация «{expertise.object_name}»"
+
+    return ", ".join(parts)
 
 
 def format_price(expertise: Expertise) -> str:
@@ -28,30 +44,38 @@ def format_price(expertise: Expertise) -> str:
 
 
 async def send_new_expertise_letters(expertise: Expertise, experts: list[User]) -> None:
-    """Каждому подходящему эксперту — письмо о новой заявке."""
+    """Каждому подходящему исполнителю — письмо о новой заявке."""
 
+    words = wording_for(expertise)
     description = describe_expertise(expertise)
+    reason = (
+        "по направлению «Аудит СУПБ»"
+        if expertise.service == ServiceKind.AUDIT
+        else "по вашей области аттестации"
+    )
 
     for expert in experts:
         await send_email(
             recipients=[expert.email],
-            subject=f"Новая заявка на экспертизу №{expertise.id} — НПИ «Недра»",
+            subject=f"Новая заявка на {words.work_accusative} №{expertise.id} — НПИ «Недра»",
             text=(
-                f"{expert.full_name}, поступила заявка по вашей области аттестации.\n\n"
-                f"{description}.\n\n{CABINET_LINE}"
+                f"{expert.full_name}, поступила заявка {reason}.\n\n"
+                f"{description}.\nЦена заказчика: {format_price(expertise)}.\n\n{CABINET_LINE}"
             ),
         )
 
 
 async def send_expert_ready_letter(expertise: Expertise, customer: User, expert: User) -> None:
-    """Заказчику: эксперт готов, ознакомьтесь с договором и подпишите его."""
+    """Заказчику: исполнитель готов, ознакомьтесь с договором и подпишите его."""
+
+    words = wording_for(expertise)
 
     await send_email(
         recipients=[customer.email],
-        subject=f"Эксперт готов провести экспертизу №{expertise.id} — НПИ «Недра»",
+        subject=f"{words.executor} готов провести {words.work_accusative} №{expertise.id} — НПИ «Недра»",
         text=(
-            f"{customer.full_name}, эксперт {expert.full_name} готов провести экспертизу "
-            f"по вашей заявке.\n\n{describe_expertise(expertise)}.\n"
+            f"{customer.full_name}, {words.executor_lower} {expert.full_name} готов провести "
+            f"{words.work_accusative} по вашей заявке.\n\n{describe_expertise(expertise)}.\n"
             f"Стоимость: {format_price(expertise)}, оплата двумя частями по 50 %.\n\n"
             "Ознакомьтесь с договором в кабинете и согласитесь с его условиями, "
             f"после этого договор будет заключён.\n{CABINET_LINE}"
@@ -60,11 +84,13 @@ async def send_expert_ready_letter(expertise: Expertise, customer: User, expert:
 
 
 async def send_contract_letter(expertise: Expertise, expert: User) -> None:
-    """Эксперту: заказчик подписал договор, ждём аванс."""
+    """Исполнителю: заказчик подписал договор, ждём аванс."""
+
+    words = wording_for(expertise)
 
     await send_email(
         recipients=[expert.email],
-        subject=f"Договор по экспертизе №{expertise.id} заключён — НПИ «Недра»",
+        subject=f"Договор по {words.work_dative} №{expertise.id} заключён — НПИ «Недра»",
         text=(
             f"{expert.full_name}, заказчик согласился с условиями договора по заявке "
             f"№{expertise.id}. Договор заключён. Как только поступит аванс, мы сообщим, "
@@ -74,97 +100,110 @@ async def send_contract_letter(expertise: Expertise, expert: User) -> None:
 
 
 async def send_advance_paid_letter(expertise: Expertise, expert: User) -> None:
-    """Эксперту: аванс оплачен, можно работать."""
+    """Исполнителю: аванс оплачен, можно работать."""
+
+    words = wording_for(expertise)
 
     await send_email(
         recipients=[expert.email],
-        subject=f"Аванс по экспертизе №{expertise.id} оплачен — НПИ «Недра»",
+        subject=f"Аванс по {words.work_dative} №{expertise.id} оплачен — НПИ «Недра»",
         text=(
             f"{expert.full_name}, заказчик оплатил аванс по заявке №{expertise.id}. "
-            "Можно приступать к экспертизе. Когда заключение будет готово, отметьте это "
-            f"в кабинете.\n\n{CABINET_LINE}"
+            f"Можно приступать к работе. Когда {words.result_lower} будет {words.result_ready}, "
+            f"отметьте это в кабинете.\n\n{CABINET_LINE}"
         ),
     )
 
 
 async def send_remarks_letter(expertise: Expertise, customer: User, text: str | None) -> None:
-    """Заказчику: по документации есть замечания, нужно исправить и прислать повторно."""
+    """Заказчику: есть замечания, нужно исправить и прислать повторно."""
 
+    words = wording_for(expertise)
     body = f"Замечания:\n{text}\n\n" if text else ""
 
     await send_email(
         recipients=[customer.email],
-        subject=f"Замечания по экспертизе №{expertise.id} — НПИ «Недра»",
+        subject=f"Замечания по {words.work_dative} №{expertise.id} — НПИ «Недра»",
         text=(
-            f"{customer.full_name}, эксперт подготовил рекомендации по приведению объекта "
-            f"экспертизы в соответствие с требованиями промышленной безопасности.\n\n{body}"
-            f"Внесите изменения в документацию и отправьте её повторно.\n{CABINET_LINE}"
+            f"{customer.full_name}, {words.executor_lower} подготовил замечания по представленным "
+            f"документам.\n\n{body}"
+            f"Внесите изменения и отправьте документы повторно.\n{CABINET_LINE}"
         ),
     )
 
 
 async def send_revision_letter(expertise: Expertise, expert: User, text: str | None) -> None:
-    """Эксперту: заказчик прислал исправленную документацию."""
+    """Исполнителю: заказчик прислал исправленные документы."""
 
+    words = wording_for(expertise)
     body = f"Комментарий заказчика:\n{text}\n\n" if text else ""
 
     await send_email(
         recipients=[expert.email],
-        subject=f"Исправленная документация по экспертизе №{expertise.id} — НПИ «Недра»",
+        subject=f"Исправленные документы по {words.work_dative} №{expertise.id} — НПИ «Недра»",
         text=(
             f"{expert.full_name}, заказчик исправил замечания по заявке №{expertise.id} "
-            f"и прислал документацию повторно.\n\n{body}{CABINET_LINE}"
+            f"и прислал документы повторно.\n\n{body}{CABINET_LINE}"
         ),
     )
 
 
 async def send_conclusion_ready_letter(expertise: Expertise, customer: User) -> None:
-    """Заказчику: заключение готово, оплатите остаток."""
+    """Заказчику: итоговый документ готов, оплатите остаток."""
+
+    words = wording_for(expertise)
 
     await send_email(
         recipients=[customer.email],
-        subject=f"Заключение по экспертизе №{expertise.id} готово — НПИ «Недра»",
+        subject=f"{words.result} по заявке №{expertise.id} {words.result_ready} — НПИ «Недра»",
         text=(
-            f"{customer.full_name}, эксперт подготовил заключение по заявке №{expertise.id}. "
-            "Замечаний нет, документация соответствует требованиям промышленной безопасности.\n\n"
-            f"Требуется полная оплата: внесите оставшиеся 50 %, и эксперт отправит "
-            f"подписанное заключение.\n\n{CABINET_LINE}"
+            f"{customer.full_name}, {words.executor_lower} подготовил {words.result_lower} "
+            f"по заявке №{expertise.id}.\n\n"
+            f"Внесите оставшиеся 50 %, и {words.executor_lower} отправит подписанный документ.\n\n"
+            f"{CABINET_LINE}"
         ),
     )
 
 
 async def send_final_paid_letter(expertise: Expertise, expert: User) -> None:
-    """Эксперту: остаток оплачен, отправьте заключение."""
+    """Исполнителю: остаток оплачен, отправьте итоговый документ."""
+
+    words = wording_for(expertise)
 
     await send_email(
         recipients=[expert.email],
-        subject=f"Остаток по экспертизе №{expertise.id} оплачен — НПИ «Недра»",
+        subject=f"Остаток по {words.work_dative} №{expertise.id} оплачен — НПИ «Недра»",
         text=(
             f"{expert.full_name}, заказчик оплатил остаток по заявке №{expertise.id}. "
-            f"Подпишите заключение ЭЦП и отправьте его заказчику из кабинета.\n\n{CABINET_LINE}"
+            f"Подпишите {words.result_lower} ЭЦП и отправьте заказчику из кабинета.\n\n{CABINET_LINE}"
         ),
     )
 
 
 async def send_conclusion_sent_letter(expertise: Expertise, customer: User) -> None:
-    """Заказчику: заключение отправлено, скачайте и примите работу."""
+    """Заказчику: итоговый документ отправлен, скачайте и примите работу."""
+
+    words = wording_for(expertise)
 
     await send_email(
         recipients=[customer.email],
-        subject=f"Заключение по экспертизе №{expertise.id} отправлено — НПИ «Недра»",
+        subject=f"{words.result} по заявке №{expertise.id} {words.result_sent} — НПИ «Недра»",
         text=(
-            f"{customer.full_name}, эксперт отправил заключение по заявке №{expertise.id}. "
-            f"Скачайте его в кабинете и, если всё в порядке, нажмите «Работа принята».\n\n{CABINET_LINE}"
+            f"{customer.full_name}, {words.executor_lower} отправил {words.result_lower} "
+            f"по заявке №{expertise.id}. Скачайте документ в кабинете и, если всё в порядке, "
+            f"нажмите «Работа принята».\n\n{CABINET_LINE}"
         ),
     )
 
 
 async def send_work_accepted_letter(expertise: Expertise, expert: User) -> None:
-    """Эксперту: заказчик принял работу."""
+    """Исполнителю: заказчик принял работу."""
+
+    words = wording_for(expertise)
 
     await send_email(
         recipients=[expert.email],
-        subject=f"Работа по экспертизе №{expertise.id} принята — НПИ «Недра»",
+        subject=f"Работа по {words.work_dative} №{expertise.id} принята — НПИ «Недра»",
         text=(
             f"{expert.full_name}, заказчик принял работу по заявке №{expertise.id}. "
             f"Спасибо!\n\n{CABINET_LINE}"

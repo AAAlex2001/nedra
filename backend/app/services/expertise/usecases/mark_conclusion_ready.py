@@ -7,6 +7,7 @@ from app.models.notification import Notification
 from app.models.user import User
 from app.services.expertise.exceptions import ExpertiseAccessError, ExpertiseStateError
 from app.services.expertise.repo import ExpertiseRepository
+from app.services.expertise.wording import wording_for
 from app.services.notifications.repo import NotificationRepository
 
 
@@ -31,12 +32,13 @@ class MarkConclusionReadyUseCase:
         expertise.conclusion_ready_at = datetime.now(timezone.utc)
         expertise.status = ExpertiseStatus.CONCLUSION_READY
 
+        words = wording_for(expertise)
         self.notifications.add_all(
             [
                 Notification(
                     user_id=expertise.customer_id,
                     expertise_id=expertise.id,
-                    text=f"Заключение по заявке №{expertise.id} готово. Оплатите остаток, чтобы получить его",
+                    text=f"{words.result} по заявке №{expertise.id} {words.result_ready}. Оплатите остаток, чтобы получить его",
                 )
             ]
         )

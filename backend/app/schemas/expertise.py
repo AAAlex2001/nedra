@@ -4,7 +4,13 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from app.models.expertise import ContractKind, CustomerType, ExpertiseResult, ExpertiseStatus
+from app.models.expertise import (
+    ContractKind,
+    CustomerType,
+    ExpertiseResult,
+    ExpertiseStatus,
+    ServiceKind,
+)
 from app.models.payment import PaymentStatus
 
 
@@ -126,6 +132,7 @@ class ExpertiseDocumentSchema(BaseModel):
 
     id: int
     kind: str
+    item_number: int | None = None
     original_name: str
     size: int
     content_type: str
@@ -136,6 +143,7 @@ class ExpertiseAdminSchema(BaseModel):
     """Заявка в админке: коротко и с именами сторон."""
 
     id: int
+    service: ServiceKind = ServiceKind.EXPERTISE
     customer_id: int
     customer_name: str
     expert_id: int | None
@@ -212,6 +220,7 @@ class ExpertiseOutSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    service: ServiceKind = ServiceKind.EXPERTISE
     customer_id: int
     customer_name: str
     expert_id: int | None

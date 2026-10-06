@@ -23,7 +23,7 @@ from app.dependencies.billing import (
 from app.dependencies.expertise import get_expertise_repository, get_visible_expertise
 from app.dependencies.users import require_customer
 from app.models.billing import Invoice, InvoiceStage
-from app.models.expertise import Expertise, ExpertiseStatus
+from app.models.expertise import Expertise, ExpertiseStatus, ServiceKind
 from app.models.user import User
 from app.schemas.billing import ActOutSchema, InvoiceOutSchema
 from app.services.billing.exceptions import (
@@ -55,6 +55,7 @@ from app.services.expertise.exceptions import (
 )
 from app.services.expertise.repo import ExpertiseRepository
 from app.services.expertise.stages import STAGE_TITLES
+from app.services.expertise.wording import wording_for
 
 router = APIRouter(tags=["billing"])
 
@@ -67,6 +68,9 @@ def describe_expertise(expertise: Expertise) -> str:
     Заказчик мог не знать объект и область — тогда в счёт идёт то, что известно.
     К моменту выставления счёта эксперт обычно уже уточнил их в заявке.
     """
+
+    if expertise.service == ServiceKind.AUDIT:
+        return f"Аудит системы управления промышленной безопасностью: {expertise.object_name}"
 
     parts = []
 
@@ -207,6 +211,7 @@ async def download_invoice(
     subject = stage_subject(
         expertise.id,
         STAGE_TITLES[InvoiceStage(invoice.stage)],
+        wording_for(expertise).invoice_subject,
         describe_expertise(expertise),
     )
     content = build_invoice_pdf(invoice, subject, company)

@@ -174,10 +174,12 @@ async def get_visible_expertise(
     expertise = await expertises.get_by_id(expertise_id)
 
     certificates = []
+    auditor = False
     if user.role == UserRole.EXPERT:
         certificates = await profiles.list_certificates(user.id)
+        auditor = await profiles.is_auditor(user.id)
 
-    if expertise is None or not can_view(expertise, user, certificates):
+    if expertise is None or not can_view(expertise, user, certificates, auditor):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Экспертиза не найдена",

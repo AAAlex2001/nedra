@@ -83,9 +83,21 @@ class FakeExpertiseRepository:
 
 
 class FakeProfileRepository:
-    def __init__(self, experts: list[User], certificates: list[ExpertCertificate] | None = None) -> None:
+    def __init__(
+        self,
+        experts: list[User],
+        certificates: list[ExpertCertificate] | None = None,
+        auditors: list[User] | None = None,
+    ) -> None:
         self.experts = experts
         self.certificates = certificates or []
+        self.auditors = auditors or []
+
+    async def list_auditors(self) -> list[User]:
+        return self.auditors
+
+    async def is_auditor(self, user_id: int) -> bool:
+        return any(auditor.id == user_id for auditor in self.auditors)
 
     async def list_certified(self, object_code: str, area_code: str, max_category: int) -> list[User]:
         return self.experts
@@ -394,15 +406,15 @@ def test_can_view_rules() -> None:
     expert = make_user(10, UserRole.EXPERT)
     fitting = [ExpertCertificate(area_code="Э4", object_code="d", category=1, valid_until=date(2030, 1, 1))]
 
-    assert can_view(expertise, owner, [])
-    assert not can_view(expertise, stranger, [])
-    assert can_view(expertise, expert, fitting)
-    assert not can_view(expertise, expert, [])
+    assert can_view(expertise, owner, [], False)
+    assert not can_view(expertise, stranger, [], False)
+    assert can_view(expertise, expert, fitting, False)
+    assert not can_view(expertise, expert, [], False)
 
     expertise.expert_id = 10
-    assert can_view(expertise, expert, [])
+    assert can_view(expertise, expert, [], False)
     expertise.expert_id = 11
-    assert not can_view(expertise, expert, fitting)
+    assert not can_view(expertise, expert, fitting, False)
 
 
 def test_accept_locks_expertise_and_notifies_customer() -> None:

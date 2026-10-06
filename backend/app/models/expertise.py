@@ -47,14 +47,26 @@ class ExpertiseResult(StrEnum):
     NEGATIVE = "negative"
 
 
+class ServiceKind(StrEnum):
+    """Какую работу заказали: экспертизу промышленной безопасности или аудит СУПБ.
+
+    Оба сервиса идут по одним и тем же шагам: исполнитель берёт заявку, договор,
+    аванс, работа с замечаниями, остаток, итоговый документ, приёмка.
+    """
+
+    EXPERTISE = "expertise"
+    AUDIT = "audit"
+
+
 class ContractKind(StrEnum):
-    """Вид договора по предмету экспертизы. От него зависят текст и исполнитель."""
+    """Вид договора по предмету работ. От него зависят текст и исполнитель."""
 
     JUSTIFICATION = "justification"
     REEQUIPMENT = "reequipment"
     CONSERVATION = "conservation"
     LIQUIDATION = "liquidation"
     DECLARATION = "declaration"
+    AUDIT = "audit"
 
 
 class CustomerType(StrEnum):
@@ -88,6 +100,8 @@ class Expertise(Base):
     expert_id: Mapped[int | None] = mapped_column(
         ForeignKey("users.id", ondelete="SET NULL"), index=True
     )
+
+    service: Mapped[str] = mapped_column(String(16), index=True, default=ServiceKind.EXPERTISE)
 
     object_code: Mapped[str | None] = mapped_column(String(8), index=True)
     area_code: Mapped[str | None] = mapped_column(String(8), index=True)
@@ -244,7 +258,11 @@ class ExpertiseRemark(Base):
 
 
 class ExpertiseDocument(Base):
-    """Файл, приложенный к экспертизе: документация заказчика или заключение эксперта."""
+    """Файл, приложенный к заявке: документация заказчика или заключение эксперта.
+
+    В аудите заказчик прикладывает документы по перечню, номер пункта
+    перечня хранится в item_number.
+    """
 
     __tablename__ = "expertise_documents"
 
@@ -259,6 +277,7 @@ class ExpertiseDocument(Base):
     uploaded_by: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="RESTRICT"))
 
     kind: Mapped[str] = mapped_column(String(32), default="documentation")
+    item_number: Mapped[int | None] = mapped_column(SmallInteger)
     file_path: Mapped[str] = mapped_column(String(500))
     original_name: Mapped[str] = mapped_column(String(255))
     size: Mapped[int] = mapped_column(Integer)

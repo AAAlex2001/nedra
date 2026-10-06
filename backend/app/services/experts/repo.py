@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.expert import ApplicationStatus, ExpertApplication, ExpertCertificate, ExpertProfile
 from app.models.user import User
+from app.services.audit.checklist import AUDIT_DIRECTION
 
 
 class ExpertApplicationRepository:
@@ -128,6 +129,20 @@ class ExpertProfileRepository:
         result = await self.db.execute(stmt)
 
         return [(user, profile) for user, profile in result.all()]
+
+    async def list_auditors(self) -> list[User]:
+        """Эксперты, у которых в направлениях работы отмечен аудит СУПБ."""
+
+        experts = await self.list_experts()
+
+        return [user for user, profile in experts if AUDIT_DIRECTION in profile.directions]
+
+    async def is_auditor(self, user_id: int) -> bool:
+        """Отмечен ли у эксперта аудит СУПБ в направлениях работы."""
+
+        profile = await self.get_by_user(user_id)
+
+        return profile is not None and AUDIT_DIRECTION in profile.directions
 
     async def save(self) -> None:
         """Зафиксировать правки профиля, удостоверения или аккаунта эксперта."""

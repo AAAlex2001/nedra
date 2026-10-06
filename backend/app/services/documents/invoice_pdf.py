@@ -97,7 +97,7 @@ def build_invoice_pdf(invoice: Invoice, subject: str, company: CompanyRequisites
     return buffer.getvalue()
 
 
-def stage_subject(expertise_id: int, stage_title: str, description: str) -> str:
+def stage_subject(expertise_id: int, stage_title: str, work: str, description: str) -> str:
     """Текст строки работ: что и за какой этап платят."""
 
-    return f"{stage_title} за экспертизу промышленной безопасности №{expertise_id}. {description}"
+    return f"{stage_title} за {work} №{expertise_id}. {description}"

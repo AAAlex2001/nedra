@@ -4,7 +4,13 @@ from datetime import datetime, timezone
 
 from fastapi import UploadFile
 
-from app.models.expertise import Expertise, ExpertiseDocument, ExpertiseResult, ExpertiseStatus
+from app.models.expertise import (
+    Expertise,
+    ExpertiseDocument,
+    ExpertiseResult,
+    ExpertiseStatus,
+    ServiceKind,
+)
 from app.models.notification import Notification
 from app.models.user import User
 from app.services.expertise.exceptions import (
@@ -13,6 +19,7 @@ from app.services.expertise.exceptions import (
     InvalidExpertiseError,
 )
 from app.services.expertise.repo import ExpertiseRepository
+from app.services.expertise.wording import wording_for
 from app.services.files.storage import CONCLUSION_TYPES, DOCUMENTATION_MAX_SIZE_BYTES, PrivateStorage
 from app.services.notifications.repo import NotificationRepository
 
@@ -37,21 +44,24 @@ class SendConclusionUseCase:
         self.storage = storage
 
     async def execute(
-        self, expert: User, expertise: Expertise, result: str, files: list[UploadFile]
+        self, expert: User, expertise: Expertise, result: str | None, files: list[UploadFile]
     ) -> Expertise:
         """Бросает ExpertiseStateError, ExpertiseAccessError, InvalidExpertiseError, UploadError."""
 
         if expertise.expert_id != expert.id:
             raise ExpertiseAccessError("Это не ваша экспертиза")
 
-        if expertise.status != ExpertiseStatus.PAID:
-            raise ExpertiseStateError("Отправить заключение можно после оплаты остатка")
+        words = wording_for(expertise)
+        audit = expertise.service == ServiceKind.AUDIT
 
-        if result not in ExpertiseResult:
+        if expertise.status != ExpertiseStatus.PAID:
+            raise ExpertiseStateError(f"Отправить {words.result_lower} можно после оплаты остатка")
+
+        if not audit and result not in ExpertiseResult:
             raise InvalidExpertiseError("Укажите исход экспертизы: положительное или отрицательное")
 
         if not files:
-            raise InvalidExpertiseError("Приложите файл заключения")
+            raise InvalidExpertiseError(f"Приложите файл: {words.result_lower}")
 
         for file in files:
             stored = await self.storage.save(
@@ -68,7 +78,7 @@ class SendConclusionUseCase:
                 )
             )
 
-        expertise.result = result
+        expertise.result = None if audit else result
         expertise.sent_at = datetime.now(timezone.utc)
         expertise.status = ExpertiseStatus.SENT
 
@@ -77,7 +87,7 @@ class SendConclusionUseCase:
                 Notification(
                     user_id=expertise.customer_id,
                     expertise_id=expertise.id,
-                    text=f"Заключение по заявке №{expertise.id} отправлено, его можно скачать в кабинете",
+                    text=f"{words.result} по заявке №{expertise.id} {words.result_sent}, его можно скачать в кабинете",
                 )
             ]
         )
