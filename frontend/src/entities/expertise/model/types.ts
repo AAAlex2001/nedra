@@ -20,12 +20,22 @@ export const DEADLINE_LABELS: Record<Deadline, string> = {
   any: "Неважно",
 };
 
+export type ServiceKind = "expertise" | "audit";
+
+export type AuditChecklistItem = {
+  number: number;
+  title: string;
+};
+
+export const AUDIT_CHECKLIST_SIZE = 47;
+
 export type ContractKind =
   | "justification"
   | "reequipment"
   | "conservation"
   | "liquidation"
-  | "declaration";
+  | "declaration"
+  | "audit";
 
 export const CONTRACT_KIND_LABELS: Record<ContractKind, string> = {
   justification: "Обоснование безопасности",
@@ -33,6 +43,7 @@ export const CONTRACT_KIND_LABELS: Record<ContractKind, string> = {
   conservation: "Консервация",
   liquidation: "Ликвидация",
   declaration: "Декларация промышленной безопасности",
+  audit: "Аудит СУПБ",
 };
 
 const ALL_CONTRACT_KINDS: ContractKind[] = [
@@ -102,6 +113,7 @@ export type ExpertisePayment = {
 export type ExpertiseDocument = {
   id: number;
   kind: string;
+  item_number: number | null;
   original_name: string;
   size: number;
   content_type: string;
@@ -127,6 +139,7 @@ export type ExpertiseInvoice = {
 
 export type Expertise = {
   id: number;
+  service: ServiceKind;
   customer_id: number;
   customer_name: string;
   expert_id: number | null;

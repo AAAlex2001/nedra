@@ -4,7 +4,7 @@ import { PAGE_SEO, SITE_URL } from "@/shared/config/seo";
 
 const WEEKLY_PATHS = new Set(["/", "/blog", "/novosti"]);
 const IMPORTANT_PATHS = new Set(["/svedeniya", "/blog", "/novosti"]);
-const KEY_PATHS = new Set(["/blits-ekspert"]);
+const KEY_PATHS = new Set(["/blits-ekspert", "/blits-audit"]);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();

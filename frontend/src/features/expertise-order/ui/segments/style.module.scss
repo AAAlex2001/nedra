@@ -1,0 +1,56 @@
+.segments {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  padding: 4px;
+
+  background: #f5f6f8;
+  border-radius: 100px;
+}
+
+.segment {
+  flex: 1;
+  padding: 12px 6px;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+
+  color: #6c7078;
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.segment:hover {
+  color: #0b0b0b;
+}
+
+.active,
+.active:hover {
+  font-weight: 700;
+
+  color: #0b0b0b;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(11, 11, 11, 0.08);
+}
+
+.segment:focus-visible {
+  outline: 2px solid var(--accent, #f69827);
+  outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .segment {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+}

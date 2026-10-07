@@ -1,0 +1,33 @@
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.row .option {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 6px;
+
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .row {
+    gap: 8px;
+  }
+
+  .row .option {
+    flex: none;
+    padding: 10px 16px;
+
+    font-size: 14px;
+  }
+}

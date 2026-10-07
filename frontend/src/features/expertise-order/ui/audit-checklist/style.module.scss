@@ -1,0 +1,236 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 16px;
+}
+
+.label {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #0b0b0b;
+}
+
+.counter {
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b86108;
+}
+
+.note {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+
+  color: #7b8190;
+}
+
+.list {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+
+  max-height: 520px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  list-style: none;
+
+  background: #f5f6f8;
+  border-radius: 20px;
+}
+
+.list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.list::-webkit-scrollbar-track {
+  margin: 16px 0;
+}
+
+.item {
+  flex: none;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 10px 12px;
+  padding: 12px;
+
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 16px;
+
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.itemDone {
+  background: #fffaf3;
+  border-color: #fbd9ae;
+}
+
+.number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 16px;
+
+  color: #5b6070;
+  background: #f5f6f8;
+  border-radius: 100px;
+}
+
+.itemDone .number {
+  background: #fff2e2;
+}
+
+.doneIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.doneIcon path {
+  fill: #f69827;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: #0b0b0b;
+}
+
+.files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  list-style: none;
+}
+
+.file {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 4px 6px 4px 12px;
+
+  background: #fff2e2;
+  border-radius: 100px;
+}
+
+.fileName {
+  overflow: hidden;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #b86108;
+}
+
+.remove {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+
+  color: #b86108;
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.remove:hover {
+  background: #ffe6c7;
+}
+
+.removeIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.attach {
+  grid-column: 2;
+  justify-self: start;
+  padding: 8px 16px;
+
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 16px;
+
+  color: #0b0b0b;
+  background: #fff;
+  border: 1px solid #f69827;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.attach:hover {
+  color: #fff;
+  background: #f69827;
+}
+
+.input {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .list {
+    max-height: 800px;
+  }
+
+  .item {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    align-items: start;
+    padding: 14px 16px;
+  }
+
+  .attach {
+    grid-column: auto;
+    white-space: nowrap;
+  }
+}

@@ -5,6 +5,8 @@ import { invoicePdfUrl, type PaymentDocumentKind } from "@/entities/billing";
 import {
   cardPaymentAllowed,
   contractKindsFor,
+  isAudit,
+  wordingFor,
   type ContractKind,
   type Expertise,
 } from "@/entities/expertise";
@@ -56,6 +58,8 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
     expertise.documents.some((item) => item.kind === "guarantee_letter");
   const cardAllowed = cardPaymentAllowed(expertise);
   const kindUnknown = expertise.contract_kind === null;
+  const audit = isAudit(expertise);
+  const words = wordingFor(expertise);
 
   const toggleProof = (kind: PaymentDocumentKind) =>
     setProofKind(proofKind === kind ? null : kind);
@@ -139,11 +143,15 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
   const customerStep = (): Step => {
     switch (expertise.status) {
       case "new":
-        return { text: "Ждём, когда эксперт по вашей области возьмёт заявку" };
+        return {
+          text: audit
+            ? "Ждём, когда аудитор возьмёт заявку"
+            : "Ждём, когда эксперт по вашей области возьмёт заявку",
+        };
 
       case "expert_ready":
         return {
-          text: `${expertise.expert_name} готов провести экспертизу за ${price}, оплата двумя частями по 50 %. Прочитайте договор и соглашение о конфиденциальности и подпишите их`,
+          text: `${expertise.expert_name} готов провести ${words.work} за ${price}, оплата двумя частями по 50 %. Прочитайте договор и соглашение о конфиденциальности и подпишите их`,
           form: (
             <ContractConsent
               expertiseId={expertise.id}
@@ -156,32 +164,42 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
       case "contract":
         return {
           text: cardAllowed
-            ? `Договор заключён ${when(expertise.contract_at)}. Оплатите аванс картой, и эксперт приступит к работе`
+            ? `Договор заключён ${when(expertise.contract_at)}. Оплатите аванс картой, и ${words.executorLower} приступит к работе`
             : `Договор заключён ${when(expertise.contract_at)}. Оплатите аванс по счёту и приложите платёжное поручение или гарантийное письмо`,
           form: payment(expertise.advance_payment !== null),
         };
 
       case "in_progress":
-        return { text: `Аванс оплачен ${when(expertise.advance_paid_at)}. Эксперт работает над заключением` };
+        return {
+          text: audit
+            ? `Аванс оплачен ${when(expertise.advance_paid_at)}. Аудитор проверяет документы`
+            : `Аванс оплачен ${when(expertise.advance_paid_at)}. Эксперт работает над заключением`,
+        };
 
       case "remarks":
         return {
-          text: "Эксперт прислал замечания. Внесите изменения в документацию и отправьте её повторно",
+          text: audit
+            ? "Аудитор прислал замечания. Дополните или исправьте документы и отправьте их повторно"
+            : "Эксперт прислал замечания. Внесите изменения в документацию и отправьте её повторно",
           form: <RevisionForm pending={actions.pending} onSubmit={actions.submitRevision} />,
         };
 
       case "conclusion_ready":
         return {
-          text: "Замечаний нет, заключение готово. Требуется полная оплата: внесите остаток, и эксперт отправит подписанный документ",
+          text: audit
+            ? "Отчёт об аудите готов. Требуется полная оплата: внесите остаток, и аудитор отправит подписанный отчёт"
+            : "Замечаний нет, заключение готово. Требуется полная оплата: внесите остаток, и эксперт отправит подписанный документ",
           form: payment(expertise.final_payment !== null),
         };
 
       case "paid":
-        return { text: `Остаток оплачен ${when(expertise.final_paid_at)}. Эксперт подписывает заключение ЭЦП` };
+        return {
+          text: `Остаток оплачен ${when(expertise.final_paid_at)}. ${words.executor} подписывает ${words.resultLower} ЭЦП`,
+        };
 
       case "sent":
         return {
-          text: `Заключение отправлено ${when(expertise.sent_at)}. Скачайте файлы и примите работу`,
+          text: `${words.resultSent} ${when(expertise.sent_at)}. Скачайте файлы и примите работу`,
           action: (
             <Button loading={actions.pending} onClick={() => void actions.finish()}>
               Работа принята
@@ -207,7 +225,7 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
               loading={actions.pending}
               onClick={() => void actions.accept(contractKind)}
             >
-              Готов провести экспертизу
+              Готов провести {words.work}
             </Button>
           ),
           form: kindUnknown ? (
@@ -227,7 +245,9 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
 
       case "in_progress":
         return {
-          text: "Документация у вас. Если замечаний нет, отметьте, что заключение готово, иначе пришлите рекомендации по приведению объекта в соответствие",
+          text: audit
+            ? "Документы у вас. Когда отчёт об аудите будет готов, отметьте это. Если документов не хватает или есть замечания, напишите заказчику"
+            : "Документация у вас. Если замечаний нет, отметьте, что заключение готово, иначе пришлите рекомендации по приведению объекта в соответствие",
           action: remarksOpen ? null : (
             <>
               <button
@@ -239,7 +259,7 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
                 Есть замечания
               </button>
               <Button loading={actions.pending} onClick={() => void actions.conclusionReady()}>
-                Заключение готово
+                {words.resultReady}
               </Button>
             </>
           ),
@@ -260,12 +280,20 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
 
       case "paid":
         return {
-          text: `Остаток оплачен ${when(expertise.final_paid_at)}. Приложите подписанное заключение`,
-          form: <ConclusionForm pending={actions.pending} onSubmit={actions.submitConclusion} />,
+          text: audit
+            ? `Остаток оплачен ${when(expertise.final_paid_at)}. Приложите подписанный отчёт об аудите`
+            : `Остаток оплачен ${when(expertise.final_paid_at)}. Приложите подписанное заключение`,
+          form: (
+            <ConclusionForm
+              audit={audit}
+              pending={actions.pending}
+              onSubmit={actions.submitConclusion}
+            />
+          ),
         };
 
       case "sent":
-        return { text: `Заключение отправлено ${when(expertise.sent_at)}. Ждём приёмки` };
+        return { text: `${words.resultSent} ${when(expertise.sent_at)}. Ждём приёмки` };
 
       case "accepted":
         return { text: `Работа принята ${when(expertise.accepted_at)}` };

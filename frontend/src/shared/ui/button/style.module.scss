@@ -8,8 +8,8 @@
   padding: 14px 24px;
   gap: 10px;
 
-  background: #f69827;
-  border: 1px solid #f69827;
+  background: var(--accent, #f69827);
+  border: 1px solid var(--accent, #f69827);
   border-radius: 100px;
   cursor: pointer;
   text-decoration: none;
@@ -17,8 +17,8 @@
   transition: background 0.2s ease;
 
   &:hover:not(:disabled) {
-    background: #e9850f;
-    border-color: #e9850f;
+    background: var(--accent-hover, #e9850f);
+    border-color: var(--accent-hover, #e9850f);
   }
 
   &:disabled {

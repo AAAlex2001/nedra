@@ -42,6 +42,20 @@
   height: 24px;
 }
 
+.item {
+  flex: none;
+  padding: 3px 8px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b86108;
+  background: #fff2e2;
+  border-radius: 100px;
+}
+
 .name {
   overflow: hidden;
 

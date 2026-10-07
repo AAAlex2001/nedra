@@ -11,21 +11,25 @@ const RESULTS: ExpertiseResult[] = ["positive", "negative"];
 const ACCEPT = ".pdf,.doc,.docx,.sig,.p7s";
 
 type ConclusionFormProps = {
+  audit: boolean;
   pending: boolean;
   onSubmit: (formData: FormData) => void;
 };
 
-const ConclusionForm = ({ pending, onSubmit }: ConclusionFormProps) => {
+const ConclusionForm = ({ audit, pending, onSubmit }: ConclusionFormProps) => {
   const [result, setResult] = useState<ExpertiseResult | null>(null);
   const [files, setFiles] = useState<File[]>([]);
 
-  const canSubmit = result !== null && files.length > 0 && !pending;
+  const resultChosen = audit || result !== null;
+  const canSubmit = resultChosen && files.length > 0 && !pending;
 
   const submit = () => {
-    if (!canSubmit || result === null) return;
+    if (!canSubmit) return;
 
     const formData = new FormData();
-    formData.append("result", result);
+    if (!audit && result !== null) {
+      formData.append("result", result);
+    }
     for (const file of files) {
       formData.append("files", file);
     }
@@ -35,28 +39,34 @@ const ConclusionForm = ({ pending, onSubmit }: ConclusionFormProps) => {
 
   return (
     <div className={styles.form}>
-      <div className={styles.group}>
-        <span className={styles.label}>Исход экспертизы</span>
-        <div className={styles.row} role="group" aria-label="Исход экспертизы">
-          {RESULTS.map((item) => (
-            <Chip
-              key={item}
-              active={result === item}
-              className={styles.rowChip}
-              onClick={() => setResult(item)}
-            >
-              {EXPERTISE_RESULT_LABELS[item]}
-            </Chip>
-          ))}
+      {!audit && (
+        <div className={styles.group}>
+          <span className={styles.label}>Исход экспертизы</span>
+          <div className={styles.row} role="group" aria-label="Исход экспертизы">
+            {RESULTS.map((item) => (
+              <Chip
+                key={item}
+                active={result === item}
+                className={styles.rowChip}
+                onClick={() => setResult(item)}
+              >
+                {EXPERTISE_RESULT_LABELS[item]}
+              </Chip>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <FilesField
-        label="Заключение"
+        label={audit ? "Отчёт об аудите" : "Заключение"}
         required
         files={files}
         accept={ACCEPT}
-        hint="Подпишите заключение ЭЦП и приложите подписанный PDF. Если подпись отсоединённая, добавьте файл .sig или .p7s."
+        hint={
+          audit
+            ? "Подпишите отчёт об аудите ЭЦП и приложите подписанный PDF. Если подпись отсоединённая, добавьте файл .sig или .p7s."
+            : "Подпишите заключение ЭЦП и приложите подписанный PDF. Если подпись отсоединённая, добавьте файл .sig или .p7s."
+        }
         onAdd={(chosen) => setFiles([...files, ...chosen])}
         onRemove={(index) => setFiles(files.filter((file, position) => position !== index))}
       />

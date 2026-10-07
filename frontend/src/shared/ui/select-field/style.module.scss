@@ -18,7 +18,7 @@
 }
 
 .required {
-  color: #f69827;
+  color: var(--accent, #f69827);
 }
 
 .control {
@@ -43,7 +43,7 @@
 
 .control:hover,
 .controlOpen {
-  border-color: #f69827;
+  border-color: var(--accent, #f69827);
 }
 
 .avatar {

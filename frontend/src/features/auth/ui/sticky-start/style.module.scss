@@ -1,0 +1,32 @@
+.bar {
+  position: fixed;
+  right: 20px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  left: 20px;
+  z-index: 40;
+
+  box-sizing: border-box;
+  display: flex;
+  padding: 6px;
+
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid #e6e6e6;
+  border-radius: 100px;
+}
+
+.button {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .bar {
+    right: auto;
+    bottom: 20px;
+    left: 50%;
+
+    width: 420px;
+
+    transform: translateX(-50%);
+  }
+}

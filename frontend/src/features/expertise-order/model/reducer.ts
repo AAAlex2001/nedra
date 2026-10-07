@@ -39,6 +39,7 @@ export const INITIAL_STATE: OrderState = {
   company: EMPTY_COMPANY,
   individual: EMPTY_INDIVIDUAL,
   files: [],
+  auditFiles: [],
   companyCard: null,
   comment: "",
   status: "idle",
@@ -113,6 +114,18 @@ export const orderReducer = (state: OrderState, action: OrderAction): OrderState
 
     case "files/remove":
       return { ...state, files: state.files.filter((file, index) => index !== action.index) };
+
+    case "auditFiles/add": {
+      const added = action.files.map((file) => ({ item: action.item, file }));
+
+      return { ...state, auditFiles: [...state.auditFiles, ...added], error: null };
+    }
+
+    case "auditFiles/remove":
+      return {
+        ...state,
+        auditFiles: state.auditFiles.filter((entry) => entry !== action.target),
+      };
 
     case "card/set":
       return { ...state, companyCard: action.file, error: null };

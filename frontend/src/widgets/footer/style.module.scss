@@ -256,6 +256,13 @@ a.contactText:hover {
   color: transparent;
 }
 
+.legal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
 .privacy {
   font-family: "Manrope";
   font-style: normal;
@@ -295,6 +302,10 @@ a.contactText:hover {
     text-align: left;
   }
 
+  .legal {
+    align-items: flex-end;
+  }
+
   .privacy {
     text-align: right;
   }
@@ -318,5 +329,12 @@ a.contactText:hover {
   .sitemapGrid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
     gap: 30px 50px;
+  }
+
+  .legal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px 24px;
   }
 }

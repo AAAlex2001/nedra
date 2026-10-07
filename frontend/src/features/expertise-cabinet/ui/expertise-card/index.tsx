@@ -7,12 +7,17 @@ import {
   type ExpertCatalog,
 } from "@/entities/expert";
 import {
+  AUDIT_CHECKLIST_SIZE,
   CONTRACT_KIND_LABELS,
   CUSTOMER_TYPE_LABELS,
   DEADLINE_LABELS,
   EXPERTISE_RESULT_LABELS,
-  EXPERTISE_STATUS_LABELS,
   EXPERTISE_STATUS_TONES,
+  SERVICE_LABELS,
+  auditDocumentsReportUrl,
+  isAudit,
+  statusLabel,
+  wordingFor,
   type Expertise,
 } from "@/entities/expertise";
 import { formatRequestDate } from "@/entities/request";
@@ -37,7 +42,13 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
 
   const shownInRemarks = new Set(remarks.flatMap((remark) => remark.documents.map((item) => item.id)));
 
-  const documentation = documents.filter((item) => item.kind === "documentation");
+  const audit = isAudit(expertise);
+  const words = wordingFor(expertise);
+
+  const documentation = documents.filter(
+    (item) => item.kind === "documentation" || item.kind === "audit_item",
+  );
+  const coveredItems = new Set(documentation.map((item) => item.item_number)).size;
   const revisions = documents.filter(
     (item) => item.kind === "revision" && !shownInRemarks.has(item.id),
   );
@@ -50,20 +61,23 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
     <article className={styles.card}>
       <div className={styles.head}>
         <span className={styles.badge}>
-          {expertise.object_code ? objectLabel(catalog, expertise.object_code) : "—"}
+          {audit && SERVICE_LABELS.audit}
+          {!audit && (expertise.object_code ? objectLabel(catalog, expertise.object_code) : "—")}
         </span>
         <div className={styles.heading}>
           <h3 className={styles.title}>
-            {expertise.object_code
-              ? objectTitle(catalog, expertise.object_code)
-              : "Объект определит эксперт"}
+            {audit && words.title}
+            {!audit &&
+              (expertise.object_code
+                ? objectTitle(catalog, expertise.object_code)
+                : "Объект определит эксперт")}
           </h3>
           <p className={styles.meta}>
             Заявка №{expertise.id} · {formatRequestDate(expertise.created_at)}
           </p>
         </div>
         <span className={`${styles.status} ${styles[EXPERTISE_STATUS_TONES[expertise.status]]}`}>
-          {EXPERTISE_STATUS_LABELS[expertise.status]}
+          {statusLabel(expertise)}
         </span>
       </div>
 
@@ -71,27 +85,33 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
 
       <DetailsTable>
         {expertise.object_name && (
-          <DetailsRow label="Документация">{expertise.object_name}</DetailsRow>
+          <DetailsRow label={audit ? "Объект аудита" : "Документация"}>
+            {expertise.object_name}
+          </DetailsRow>
         )}
-        <DetailsRow label="Вид договора">
-          {expertise.contract_kind
-            ? CONTRACT_KIND_LABELS[expertise.contract_kind]
-            : "Определит эксперт"}
-        </DetailsRow>
+        {!audit && (
+          <DetailsRow label="Вид договора">
+            {expertise.contract_kind
+              ? CONTRACT_KIND_LABELS[expertise.contract_kind]
+              : "Определит эксперт"}
+          </DetailsRow>
+        )}
         <DetailsRow label={CUSTOMER_TYPE_LABELS[expertise.customer_type]}>
           {company && `${company.name}, ИНН ${company.inn} · оплата по счёту`}
           {individual && `${individual.full_name} · оплата картой`}
         </DetailsRow>
-        <DetailsRow label="Область аттестации">
-          {expertise.area_code ? (
-            <>
-              <span className={styles.code}>{expertise.area_code}</span>
-              {areaTitle(catalog, expertise.area_code)}
-            </>
-          ) : (
-            "Определит эксперт"
-          )}
-        </DetailsRow>
+        {!audit && (
+          <DetailsRow label="Область аттестации">
+            {expertise.area_code ? (
+              <>
+                <span className={styles.code}>{expertise.area_code}</span>
+                {areaTitle(catalog, expertise.area_code)}
+              </>
+            ) : (
+              "Определит эксперт"
+            )}
+          </DetailsRow>
+        )}
         {expertise.hazard_class !== null && (
           <DetailsRow label="Класс опасности ОПО">{expertise.hazard_class}</DetailsRow>
         )}
@@ -104,7 +124,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
         <DetailsRow label="Цена заказчика">{formatRub(expertise.price)}</DetailsRow>
         {role === "expert" && <DetailsRow label="Заказчик">{expertise.customer_name}</DetailsRow>}
         {role === "customer" && expertise.expert_name && (
-          <DetailsRow label="Эксперт">{expertise.expert_name}</DetailsRow>
+          <DetailsRow label={words.executor}>{expertise.expert_name}</DetailsRow>
         )}
         {expertise.comment && (
           <DetailsRow label="Комментарий">
@@ -116,8 +136,23 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
             <FilesList expertiseId={expertise.id} documents={contract} />
           </DetailsRow>
         )}
-        <DetailsRow label="Файлы документации">
+        <DetailsRow label={audit ? "Документы по перечню" : "Файлы документации"}>
+          {audit && (
+            <p className={styles.coverage}>
+              Загружены документы по {coveredItems} из {AUDIT_CHECKLIST_SIZE} пунктов перечня
+            </p>
+          )}
           <FilesList expertiseId={expertise.id} documents={documentation} />
+          {audit && role === "expert" && (
+            <a
+              className={styles.report}
+              href={auditDocumentsReportUrl(expertise.id)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Отчёт о представленных документах, Word
+            </a>
+          )}
         </DetailsRow>
         {revisions.length > 0 && (
           <DetailsRow label="Исправленная документация">
@@ -128,13 +163,15 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
           <DetailsRow label="Результат">{EXPERTISE_RESULT_LABELS[expertise.result]}</DetailsRow>
         )}
         {conclusion.length > 0 && (
-          <DetailsRow label="Заключение">
+          <DetailsRow label={words.result}>
             <FilesList expertiseId={expertise.id} documents={conclusion} />
           </DetailsRow>
         )}
       </DetailsTable>
 
-      {remarks.length > 0 && <RemarksThread expertiseId={expertise.id} remarks={remarks} />}
+      {remarks.length > 0 && (
+        <RemarksThread expertiseId={expertise.id} remarks={remarks} audit={audit} />
+      )}
 
       <ExpertiseActions expertise={expertise} role={role} onChange={onChange} />
     </article>

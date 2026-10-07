@@ -85,7 +85,7 @@
 }
 
 .question:hover .questionText {
-  color: #b86108;
+  color: var(--accent-text, #b86108);
 }
 
 .chevron {

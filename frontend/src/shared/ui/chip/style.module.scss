@@ -25,9 +25,9 @@
 
 .chip.active,
 .chip.active:hover {
-  color: #b86108;
-  background: #fff2e2;
-  border-color: #f69827;
+  color: var(--accent-text, #b86108);
+  background: var(--accent-soft, #fff2e2);
+  border-color: var(--accent, #f69827);
 }
 
 .chip:disabled {
@@ -36,6 +36,6 @@
 }
 
 .chip:focus-visible {
-  outline: 2px solid #f69827;
+  outline: 2px solid var(--accent, #f69827);
   outline-offset: 2px;
 }

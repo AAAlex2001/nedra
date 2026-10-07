@@ -7,7 +7,7 @@ import { useSession } from "@/entities/user";
 import Button from "@/shared/ui/button";
 import styles from "./style.module.scss";
 
-const HIDDEN_ON = ["/blits-ekspert", "/kabinet"];
+const HIDDEN_ON = ["/blits-ekspert", "/blits-audit", "/kabinet"];
 
 const SCROLL_BEFORE_SHOW = 160;
 

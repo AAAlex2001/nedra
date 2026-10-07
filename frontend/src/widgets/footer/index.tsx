@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { COMPANY_CONTACTS } from "@/shared/config/company";
+import { LEGAL_LINKS } from "@/shared/config/legal";
 import ContactRow from "@/shared/ui/contact-row";
 import { LocationIcon, MailIcon, NedraLogo, PhoneIcon } from "@/shared/ui/icons";
 import { FOOTER_DATA, FOOTER_SITEMAP } from "./data";
@@ -63,9 +64,13 @@ const Footer = () => {
 
       <div className={styles.bottom}>
         <span className={styles.copyright}>{FOOTER_DATA.copyright}</span>
-        <Link className={styles.privacy} href={FOOTER_DATA.privacy.href}>
-          {FOOTER_DATA.privacy.label}
-        </Link>
+        <nav className={styles.legal} aria-label="Правовая информация">
+          {LEGAL_LINKS.map((item) => (
+            <Link key={item.href} className={styles.privacy} href={item.href}>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
       </div>
     </footer>
   );

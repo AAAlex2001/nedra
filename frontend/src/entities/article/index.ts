@@ -31,3 +31,4 @@ export { splitAtHeadings } from "./lib/split-content";
 
 export { default as ArticleCard } from "./ui/article-card";
 export { default as ArticlesSlider } from "./ui/articles-slider";
+export { default as ArticlesPanel } from "./ui/articles-panel";

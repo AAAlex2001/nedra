@@ -1,0 +1,23 @@
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #0b0b0b;
+}
+
+.note {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #6c7078;
+}

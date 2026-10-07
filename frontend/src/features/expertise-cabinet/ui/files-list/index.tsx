@@ -21,6 +21,9 @@ const FilesList = ({ expertiseId, documents }: FilesListProps) => (
           <span className={styles.tile}>
             <DocumentIcon className={styles.icon} />
           </span>
+          {document.item_number !== null && (
+            <span className={styles.item}>п. {document.item_number}</span>
+          )}
           <span className={styles.name}>{document.original_name}</span>
         </a>
       </li>

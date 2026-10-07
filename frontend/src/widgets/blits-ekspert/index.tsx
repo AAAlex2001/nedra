@@ -1,21 +1,28 @@
-import type { ArticleCardData } from "@/entities/article";
+import { ArticlesPanel, type ArticleCardData } from "@/entities/article";
 import type { ExpertCatalog } from "@/entities/expert";
 import type { Tariff } from "@/entities/tariff";
+import { StartButtons, StickyStart } from "@/features/auth";
 import { PAGE_SEO } from "@/shared/config/seo";
 import { buildBreadcrumbsJsonLd, buildFaqJsonLd, buildServiceJsonLd } from "@/shared/lib/json-ld";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import Faq from "@/shared/ui/faq";
-import { ARTICLE_SLUGS, FAQ_ITEMS } from "./data";
+import LandingCta from "@/shared/ui/landing-cta";
+import LandingFeatures from "@/shared/ui/landing-features";
+import LandingHero from "@/shared/ui/landing-hero";
+import LandingSteps from "@/shared/ui/landing-steps";
+import {
+  ARTICLE_SLUGS,
+  CTA_DECOR,
+  CTA_POINTS,
+  FAQ_ITEMS,
+  FEATURES,
+  HERO,
+  SLIDES,
+  STEPS,
+} from "./data";
 import AreasList from "./ui/areas-list";
-import Articles from "./ui/articles";
 import Calculator from "./ui/calculator";
-import Cta from "./ui/cta";
-import Features from "./ui/features";
-import Flow from "./ui/flow";
-import Hero from "./ui/hero";
 import ObjectsTiles from "./ui/objects-tiles";
-import StartButtons from "./ui/start-buttons";
-import StickyCta from "./ui/sticky-cta";
 import styles from "./style.module.scss";
 
 type BlitsEkspertLandingProps = {
@@ -25,6 +32,8 @@ type BlitsEkspertLandingProps = {
 };
 
 const PAGE_PATH = "/blits-ekspert";
+
+const START_TEXT = "Отправить документацию";
 
 const buildJsonLd = (tariffs: Tariff[]) => [
   buildBreadcrumbsJsonLd([
@@ -55,26 +64,63 @@ const BlitsEkspertLanding = ({ catalog, tariffs, articles }: BlitsEkspertLanding
     />
 
     <div className={styles.inner}>
-      <Hero action={<StartButtons secondaryHref="#stoimost" secondaryText="Узнать стоимость" />} />
+      <LandingHero
+        title={HERO.title}
+        text={HERO.text}
+        slides={SLIDES}
+        action={
+          <StartButtons
+            text={START_TEXT}
+            secondaryHref="#stoimost"
+            secondaryText="Узнать стоимость"
+          />
+        }
+      />
 
       {catalog && <ObjectsTiles catalog={catalog} />}
 
       {catalog && <Calculator catalog={catalog} tariffs={tariffs} />}
 
-      <Features />
+      <LandingFeatures title="Экспертиза без переписки и ожидания" items={FEATURES} />
 
-      <Flow />
+      <LandingSteps
+        id="kak-prohodit"
+        title="Как проходит экспертиза"
+        lead="Девять шагов от загрузки документации до акта выполненных работ."
+        imagePrefix="Экспертиза промышленной безопасности"
+        steps={STEPS}
+      />
 
       {catalog && <AreasList catalog={catalog} />}
 
-      {articles.length > 0 && <Articles items={articles} />}
+      {articles.length > 0 && (
+        <ArticlesPanel
+          title="Разбираем экспертизу по шагам"
+          lead="Сроки, штрафы, документы и требования Ростехнадзора — без канцелярита, со ссылками на первоисточники."
+          items={articles}
+        />
+      )}
 
       <Faq items={FAQ_ITEMS} title="Частые вопросы" />
 
-      <Cta />
+      <LandingCta
+        badge="Экспертиза от 1 дня"
+        title="Отправьте документацию на экспертизу"
+        points={CTA_POINTS}
+        image="/blitz/18.webp"
+        imageAlt="Документация, заключение с электронной подписью и технические устройства опасного производственного объекта"
+        decor={CTA_DECOR}
+        action={
+          <StartButtons
+            text={START_TEXT}
+            secondaryHref="#kak-prohodit"
+            secondaryText="Как это работает"
+          />
+        }
+      />
     </div>
 
-    <StickyCta />
+    <StickyStart text={START_TEXT} />
   </main>
 );
 

@@ -1,0 +1,228 @@
+.price {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 20px;
+
+  width: 100%;
+
+  background: #f5f6f8;
+  border-radius: 28px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.title {
+  max-width: 700px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 34px;
+  text-align: center;
+  letter-spacing: -0.02em;
+
+  color: #0b0b0b;
+}
+
+.lead {
+  max-width: 620px;
+
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25px;
+  text-align: center;
+
+  color: #6b6f78;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notes {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px 20px;
+
+  list-style: none;
+
+  background: #fff;
+  border-radius: 24px;
+}
+
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.noteIcon {
+  flex: none;
+
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+.noteIcon path {
+  fill: var(--accent, #f69827);
+}
+
+.noteText {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+
+  color: #4a5060;
+}
+
+.noteBold {
+  font-weight: 700;
+
+  color: #0b0b0b;
+}
+
+.result {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 26px 24px;
+
+  background: linear-gradient(150deg, #fff 0%, var(--accent-soft, #ffe6c9) 100%);
+  border-radius: 24px;
+}
+
+.resultLabel {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  color: var(--accent-text, #b5813c);
+}
+
+.resultPrice {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 42px;
+  letter-spacing: -0.02em;
+
+  color: #0b0b0b;
+}
+
+.resultSplit {
+  max-width: 320px;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 19px;
+
+  color: #5c6370;
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+  margin-bottom: 20px;
+  padding-top: 18px;
+
+  border-top: 1px solid rgba(11, 11, 11, 0.1);
+}
+
+.fact {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.factLabel {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: #5c6370;
+}
+
+.factValue {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: right;
+
+  color: #0b0b0b;
+}
+
+.submit {
+  margin-top: auto;
+
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .price {
+    gap: 32px;
+    padding: 48px 40px;
+  }
+
+  .title {
+    font-size: 36px;
+    line-height: 42px;
+  }
+
+  .notes,
+  .result {
+    padding: 28px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .price {
+    padding: 56px;
+  }
+
+  .body {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .notes {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .result {
+    flex: none;
+
+    width: 360px;
+  }
+
+  .resultPrice {
+    font-size: 42px;
+    line-height: 48px;
+  }
+}

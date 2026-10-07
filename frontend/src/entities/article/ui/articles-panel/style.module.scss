@@ -1,0 +1,163 @@
+.articles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  width: 100%;
+}
+
+.panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 32px 20px;
+
+  width: 100%;
+
+  background: var(--accent-soft, #fff2e2);
+  border-radius: 28px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.title {
+  max-width: 700px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 34px;
+  text-align: center;
+  letter-spacing: -0.02em;
+
+  color: #0b0b0b;
+}
+
+.lead {
+  max-width: 620px;
+
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25px;
+  text-align: center;
+
+  color: #6b6f78;
+}
+
+.viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slide {
+  box-sizing: border-box;
+  flex: none;
+  display: flex;
+
+  width: 340px !important;
+  max-width: 340px;
+}
+
+.slide > * {
+  width: 100%;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  width: 100%;
+}
+
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.arrows .more {
+  margin-right: 6px;
+  padding: 12px 22px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+
+  background: #e0e3ea;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+
+.dotActive {
+  width: 24px;
+
+  background: var(--accent, #f69827);
+}
+
+.arrows {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+}
+
+.button {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  color: var(--accent, #f69827);
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px solid var(--accent, #f69827);
+  border-radius: 12px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.button:hover {
+  color: #fff;
+  background: var(--accent, #f69827);
+}
+
+@media (min-width: 768px) {
+  .panel {
+    gap: 32px;
+    padding: 48px 40px;
+  }
+
+  .title {
+    font-size: 36px;
+    line-height: 42px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .panel {
+    padding: 56px;
+  }
+}

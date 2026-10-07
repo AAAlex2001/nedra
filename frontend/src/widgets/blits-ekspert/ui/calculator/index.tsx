@@ -3,12 +3,12 @@
 import { useState } from "react";
 import type { ExpertCatalog } from "@/entities/expert";
 import { tariffKey, type Tariff } from "@/entities/tariff";
+import { useStartAction } from "@/features/auth";
 import { formatRub, halfOf } from "@/shared/lib/money";
 import Button from "@/shared/ui/button";
 import { CheckIcon } from "@/shared/ui/icons";
 import SelectField from "@/shared/ui/select-field";
 import { Tabs } from "@/shared/ui/tabs";
-import { useStartAction } from "../../model/use-start-action";
 import styles from "./style.module.scss";
 
 type CalculatorProps = {

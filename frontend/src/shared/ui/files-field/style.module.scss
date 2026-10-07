@@ -16,7 +16,7 @@
 }
 
 .required {
-  color: #f69827;
+  color: var(--accent, #f69827);
 }
 
 .dropzone {
@@ -35,7 +35,7 @@
 }
 
 .dropzone:hover {
-  border-color: #f69827;
+  border-color: var(--accent, #f69827);
 }
 
 .button {

@@ -43,11 +43,22 @@ const ProfileBar = ({ user, pending, onLogout }: ProfileBarProps) => (
         <span className={styles.role}>{ROLE_LABELS[user.role]}</span>
       </div>
       <span className={styles.contacts}>
-        {user.email} · {user.phone}
+        <span>{user.email}</span>
+        <span>{user.phone}</span>
       </span>
     </div>
 
     <div className={styles.controls}>
+      {user.role === "customer" && (
+        <>
+          <Button href="/blits-ekspert" className={styles.newOrder}>
+            Новая ЭПБ
+          </Button>
+          <Button href="/blits-audit" className={styles.newOrder}>
+            Новый аудит
+          </Button>
+        </>
+      )}
       <button type="button" className={styles.logout} disabled={pending} onClick={onLogout}>
         {pending ? <Spinner size={14} /> : "Выйти"}
       </button>
@@ -119,10 +130,7 @@ const CustomerCabinet = ({ user }: CabinetPanelProps) => {
 
   return (
     <>
-      <div className={styles.toolbar}>
-        <Tabs items={tabs} active={tab} onSelect={setTab} label="Разделы кабинета" stretch />
-        <Button href="/blits-ekspert">Новая заявка</Button>
-      </div>
+      <Tabs items={tabs} active={tab} onSelect={setTab} label="Разделы кабинета" stretch />
 
       <section className={styles.panel}>
         {tab === "mine" && <MyExpertises kind="active" />}

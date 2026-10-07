@@ -19,6 +19,11 @@ export type IndividualField = keyof ExpertiseIndividual;
 
 export type IndividualFields = Record<IndividualField, string>;
 
+export type AuditFile = {
+  item: number;
+  file: File;
+};
+
 export type OrderState = {
   objectCode: string;
   contractKind: ContractKind | "";
@@ -33,6 +38,7 @@ export type OrderState = {
   company: CompanyFields;
   individual: IndividualFields;
   files: File[];
+  auditFiles: AuditFile[];
   companyCard: File | null;
   comment: string;
   status: SubmitStatus;
@@ -56,6 +62,8 @@ export type OrderAction =
   | { type: "individual/fill"; individual: ExpertiseIndividual }
   | { type: "files/add"; files: File[] }
   | { type: "files/remove"; index: number }
+  | { type: "auditFiles/add"; item: number; files: File[] }
+  | { type: "auditFiles/remove"; target: AuditFile }
   | { type: "card/set"; file: File }
   | { type: "card/remove" }
   | { type: "comment/change"; value: string }

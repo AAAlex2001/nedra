@@ -6,19 +6,21 @@ import styles from "./style.module.scss";
 type RemarksThreadProps = {
   expertiseId: number;
   remarks: ExpertiseRemark[];
+  audit: boolean;
 };
 
 type MessageProps = {
   expertiseId: number;
-  author: "Эксперт" | "Заказчик";
+  author: string;
+  fromExecutor: boolean;
   date: string;
   text: string | null;
   documents: ExpertiseDocument[];
 };
 
-const Message = ({ expertiseId, author, date, text, documents }: MessageProps) => {
-  const tone = author === "Эксперт" ? styles.fromExpert : styles.fromCustomer;
-  const fallback = documents.length === 0 ? "Исправленная документация отправлена повторно" : null;
+const Message = ({ expertiseId, author, fromExecutor, date, text, documents }: MessageProps) => {
+  const tone = fromExecutor ? styles.fromExpert : styles.fromCustomer;
+  const fallback = documents.length === 0 ? "Исправления отправлены повторно" : null;
 
   return (
     <div className={styles.message}>
@@ -37,7 +39,7 @@ const Message = ({ expertiseId, author, date, text, documents }: MessageProps) =
   );
 };
 
-const RemarksThread = ({ expertiseId, remarks }: RemarksThreadProps) => {
+const RemarksThread = ({ expertiseId, remarks, audit }: RemarksThreadProps) => {
   const last = remarks[remarks.length - 1];
   const resolved = last !== undefined && last.resolved_at !== null;
 
@@ -45,8 +47,9 @@ const RemarksThread = ({ expertiseId, remarks }: RemarksThreadProps) => {
     <section className={styles.root}>
       <header className={styles.head}>
         <h4 className={styles.title}>
-          Рекомендации по приведению объекта экспертизы в соответствие с требованиями промышленной
-          безопасности
+          {audit
+            ? "Замечания аудитора по представленным документам"
+            : "Рекомендации по приведению объекта экспертизы в соответствие с требованиями промышленной безопасности"}
         </h4>
         <span className={resolved ? styles.done : styles.wait}>
           {resolved ? "Исправления отправлены" : "Ждём исправления"}
@@ -58,7 +61,8 @@ const RemarksThread = ({ expertiseId, remarks }: RemarksThreadProps) => {
           <li key={remark.id} className={styles.round}>
             <Message
               expertiseId={expertiseId}
-              author="Эксперт"
+              author={audit ? "Аудитор" : "Эксперт"}
+              fromExecutor
               date={remark.created_at}
               text={remark.text}
               documents={remark.documents.filter((item) => item.kind === "remarks")}
@@ -67,6 +71,7 @@ const RemarksThread = ({ expertiseId, remarks }: RemarksThreadProps) => {
               <Message
                 expertiseId={expertiseId}
                 author="Заказчик"
+                fromExecutor={false}
                 date={remark.resolved_at}
                 text={remark.response_text}
                 documents={remark.documents.filter((item) => item.kind === "revision")}

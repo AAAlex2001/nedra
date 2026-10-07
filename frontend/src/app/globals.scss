@@ -27,8 +27,6 @@
 
 html {
   scroll-behavior: smooth;
-  scrollbar-color: #f69827 transparent;
-  scrollbar-width: thin;
 }
 
 ::-webkit-scrollbar {
@@ -53,6 +51,13 @@ html {
   display: none;
   width: 0;
   height: 0;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: #f69827 transparent;
+    scrollbar-width: thin;
+  }
 }
 
 html,
@@ -83,6 +88,13 @@ body > main {
 section[id],
 footer[id] {
   scroll-margin-top: 100px;
+}
+
+.theme-green {
+  --accent: #7cb073;
+  --accent-hover: #6aa061;
+  --accent-soft: #eaf4e8;
+  --accent-text: #3f7a3a;
 }
 
 .nedra-logo-fill {

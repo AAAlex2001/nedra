@@ -5,10 +5,12 @@ import type {
   ExpertiseCompany,
   ExpertiseIndividual,
   ExpertiseStatus,
+  ServiceKind,
 } from "@/entities/expertise";
 
 export type ExpertiseAdminRecord = {
   id: number;
+  service: ServiceKind;
   customer_id: number;
   customer_name: string;
   expert_id: number | null;

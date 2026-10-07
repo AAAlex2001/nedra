@@ -108,6 +108,39 @@
   white-space: pre-line;
 }
 
+.coverage {
+  margin-bottom: 10px;
+
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #0b0b0b;
+}
+
+.report {
+  display: inline-flex;
+  margin-top: 12px;
+  padding: 10px 18px;
+
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  text-decoration: none;
+
+  color: #b86108;
+  background: #fff2e2;
+  border-radius: 100px;
+
+  transition: background 0.15s ease;
+}
+
+.report:hover {
+  background: #ffe6c7;
+}
+
 @media (min-width: 768px) {
   .head {
     grid-template-columns: 48px 1fr auto;

@@ -1,4 +1,5 @@
 import type { Expertise, ExpertiseResult } from "./types";
+import { wordingFor, type ServiceWording } from "./wording";
 
 export type StageState = "done" | "current" | "future";
 
@@ -16,37 +17,47 @@ type StageRow = {
   startedAt: string | null;
 };
 
-const conclusionLabel = (result: ExpertiseResult | null): string => {
-  if (result === "positive") return "Заключение отправлено: положительное";
-  if (result === "negative") return "Заключение отправлено: отрицательное";
+const sentLabel = (words: ServiceWording, result: ExpertiseResult | null): string => {
+  if (result === "positive") return `${words.resultSent}: положительное`;
+  if (result === "negative") return `${words.resultSent}: отрицательное`;
 
-  return "Заключение отправлено";
+  return words.resultSent;
 };
 
 const collectRows = (expertise: Expertise): StageRow[] => {
+  const words = wordingFor(expertise);
+
   const rows: StageRow[] = [
     { key: "new", label: "Заявка подана", startedAt: expertise.created_at },
-    { key: "expert_ready", label: "Эксперт готов провести экспертизу", startedAt: expertise.expert_ready_at },
+    {
+      key: "expert_ready",
+      label: `${words.executor} готов провести ${words.work}`,
+      startedAt: expertise.expert_ready_at,
+    },
     { key: "contract", label: "Договор заключён", startedAt: expertise.contract_at },
-    { key: "advance", label: "Аванс оплачен, эксперт в работе", startedAt: expertise.advance_paid_at },
+    {
+      key: "advance",
+      label: `Аванс оплачен, ${words.executorLower} в работе`,
+      startedAt: expertise.advance_paid_at,
+    },
   ];
 
   for (const remark of expertise.remarks ?? []) {
     rows.push({
       key: `remarks-${remark.id}`,
-      label: "Рекомендации эксперта",
+      label: words.remarksStage,
       startedAt: remark.created_at,
     });
     rows.push({
       key: `revision-${remark.id}`,
-      label: "Исправленная документация",
+      label: words.revisionStage,
       startedAt: remark.resolved_at,
     });
   }
 
-  rows.push({ key: "conclusion", label: "Заключение готово", startedAt: expertise.conclusion_ready_at });
+  rows.push({ key: "conclusion", label: words.resultReady, startedAt: expertise.conclusion_ready_at });
   rows.push({ key: "paid", label: "Остаток оплачен", startedAt: expertise.final_paid_at });
-  rows.push({ key: "sent", label: conclusionLabel(expertise.result), startedAt: expertise.sent_at });
+  rows.push({ key: "sent", label: sentLabel(words, expertise.result), startedAt: expertise.sent_at });
   rows.push({ key: "accepted", label: "Работа принята", startedAt: expertise.accepted_at });
 
   return rows;

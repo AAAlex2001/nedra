@@ -6,6 +6,7 @@ import {
   CONTRACT_KIND_LABELS,
   DEADLINE_LABELS,
   EXPERTISE_STATUS_LABELS,
+  SERVICE_LABELS,
   contractKindsFor,
 } from "@/entities/expertise";
 import { formatRequestDate } from "@/entities/request";
@@ -46,8 +47,12 @@ const ExpertiseCard = ({
 }: ExpertiseCardProps) => {
   const [editing, setEditing] = useState(false);
 
+  const audit = expertise.service === "audit";
+
   let subject = "Область определит эксперт";
-  if (expertise.area_code) {
+  if (audit) {
+    subject = "Аудит системы управления промышленной безопасностью";
+  } else if (expertise.area_code) {
     subject = catalog ? areaTitle(catalog, expertise.area_code) : expertise.area_code;
   }
 
@@ -97,6 +102,7 @@ const ExpertiseCard = ({
       <h3 className={styles.subject}>{subject}</h3>
 
       <div className={styles.chips}>
+        <span className={styles.chip}>{SERVICE_LABELS[expertise.service]}</span>
         {expertise.area_code && <span className={styles.chip}>{expertise.area_code}</span>}
         {object && <span className={styles.chip}>{object}</span>}
         {expertise.expert_category !== null && (
@@ -124,7 +130,9 @@ const ExpertiseCard = ({
             value={`${expertise.individual.full_name}, паспорт ${expertise.individual.passport_number}`}
           />
         )}
-        {expertise.object_name && <Fact label="Документация" value={expertise.object_name} />}
+        {expertise.object_name && (
+          <Fact label={audit ? "Объект аудита" : "Документация"} value={expertise.object_name} />
+        )}
         <Fact
           label="Вид договора"
           value={
@@ -133,7 +141,7 @@ const ExpertiseCard = ({
               : "определит эксперт"
           }
         />
-        <Fact label="Эксперт" value={expertise.expert_name ?? "не назначен"} />
+        <Fact label={audit ? "Аудитор" : "Эксперт"} value={expertise.expert_name ?? "не назначен"} />
         <Fact
           label="Цена заказчика"
           value={expertise.price === null ? "не задана" : formatRub(expertise.price)}

@@ -23,11 +23,11 @@
 }
 
 a.crumb:hover {
-  color: #f69827;
+  color: var(--accent, #f69827);
 }
 
 .current {
-  color: #f69827;
+  color: var(--accent, #f69827);
 }
 
 .list,

@@ -34,10 +34,17 @@ type ServiceParams = {
   description: string;
   path: string;
   prices: number[];
+  serviceType?: string;
 };
 
 /** Разметка Service с вилкой цен: даёт в выдаче блок услуги и стоимость. */
-export const buildServiceJsonLd = ({ name, description, path, prices }: ServiceParams) => {
+export const buildServiceJsonLd = ({
+  name,
+  description,
+  path,
+  prices,
+  serviceType = "Экспертиза промышленной безопасности",
+}: ServiceParams) => {
   const offers =
     prices.length === 0
       ? {}
@@ -56,7 +63,7 @@ export const buildServiceJsonLd = ({ name, description, path, prices }: ServiceP
     "@type": "Service",
     name,
     description,
-    serviceType: "Экспертиза промышленной безопасности",
+    serviceType,
     url: `${SITE_URL}${path}`,
     areaServed: { "@type": "Country", name: "Россия" },
     provider: {

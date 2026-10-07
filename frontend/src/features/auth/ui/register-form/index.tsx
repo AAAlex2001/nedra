@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import Button from "@/shared/ui/button";
+import LegalConsents from "@/shared/ui/legal-consents";
 import TextField from "@/shared/ui/text-field";
 import { useRegisterForm } from "../../model/use-register-form";
 import styles from "../form.module.scss";
@@ -75,19 +75,13 @@ const RegisterForm = ({ onSuccess, onSwitchToLogin, onClose }: RegisterFormProps
       />
       <p className={styles.hint}>Минимум 8 символов, хотя бы одна буква и одна цифра.</p>
 
+      <LegalConsents />
+
       {state.error && <p className={styles.error}>{state.error}</p>}
 
       <Button type="submit" className={styles.submit} loading={state.status === "loading"}>
         Зарегистрироваться
       </Button>
-
-      <p className={styles.consent}>
-        Нажимая кнопку, вы соглашаетесь с{" "}
-        <Link href="/politika-konfidencialnosti" className={styles.consentLink}>
-          политикой конфиденциальности
-        </Link>
-        .
-      </p>
 
       <div className={styles.notice}>
         <p className={styles.noticeTitle}>Вы эксперт?</p>

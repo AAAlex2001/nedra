@@ -1,4 +1,5 @@
 export type {
+  AuditChecklistItem,
   ContractKind,
   CustomerType,
   Deadline,
@@ -12,8 +13,12 @@ export type {
   ExpertiseResult,
   ExpertiseStatus,
   ExpertiseStatusTone,
+  ServiceKind,
 } from "./model/types";
+export type { ServiceWording } from "./model/wording";
+export { SERVICE_LABELS, isAudit, statusLabel, wordingFor } from "./model/wording";
 export {
+  AUDIT_CHECKLIST_SIZE,
   CONTRACT_KIND_LABELS,
   CUSTOMER_TYPE_LABELS,
   DEADLINE_LABELS,
@@ -30,6 +35,9 @@ export { buildStages, currentStage, doneCount } from "./model/stages";
 export {
   acceptExpertise,
   acceptWork,
+  auditDocumentsReportUrl,
+  createAudit,
+  fetchAuditChecklist,
   confirmExpertise,
   createExpertise,
   createExpertisePayment,

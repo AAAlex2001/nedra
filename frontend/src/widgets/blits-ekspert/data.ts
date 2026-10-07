@@ -1,12 +1,7 @@
 import type { FaqItem } from "@/shared/ui/faq";
-
-export type IconKey = "document" | "clock" | "check" | "people" | "certificate" | "shield";
-
-export type FeatureCard = {
-  title: string;
-  text: string;
-  icon: IconKey;
-};
+import type { LandingFeature } from "@/shared/ui/landing-features";
+import type { LandingSlide } from "@/shared/ui/landing-hero";
+import type { LandingStep } from "@/shared/ui/landing-steps";
 
 export const ARTICLE_SLUGS = [
   "skolko-stoit-ekspertiza-promyshlennoy-bezopasnosti-v-2026-godu",
@@ -34,13 +29,7 @@ export const HERO = {
   text: "Загрузите документацию, и заявку сразу увидят эксперты, аттестованные по вашей области. Договор, оплата и заключение с ЭЦП — в одном кабинете.",
 };
 
-export type Slide = {
-  title: string;
-  text: string;
-  image: string;
-};
-
-export const SLIDES: Slide[] = [
+export const SLIDES: LandingSlide[] = [
   {
     title: "Заявку берёт первый свободный эксперт",
     text: "Не нужно ждать конкретного специалиста и согласовывать сроки по телефону. Документация уходит всем, кто аттестован по вашей области, — работа начинается в день подачи.",
@@ -58,7 +47,7 @@ export const SLIDES: Slide[] = [
   },
 ];
 
-export const FEATURES: FeatureCard[] = [
+export const FEATURES: LandingFeature[] = [
   {
     title: "Заявку видит профильный эксперт",
     text: "Система сверяет область аттестации, объект и категорию с удостоверениями. Уведомление уходит только тем, кто вправе подписать ваше заключение.",
@@ -91,7 +80,7 @@ export const FEATURES: FeatureCard[] = [
   },
 ];
 
-export const STEPS = [
+export const STEPS: LandingStep[] = [
   {
     title: "Загружаете документацию",
     text: "Указываете объект экспертизы, область аттестации и класс опасности ОПО, прикладываете файлы в PDF, Word или фото.",
@@ -138,6 +127,14 @@ export const STEPS = [
     image: "/blitz/13.webp",
   },
 ];
+
+export const CTA_POINTS = [
+  "Заявку сразу видят эксперты с нужной аттестацией",
+  "Цену предлагаете вы, тариф института — ориентир",
+  "Заключение с ЭЦП, счёт и акт — в личном кабинете",
+];
+
+export const CTA_DECOR = ["/blitz/19.webp", "/blitz/20.webp", "/blitz/21.webp", "/blitz/22.webp"];
 
 export const FAQ_ITEMS: FaqItem[] = [
   {

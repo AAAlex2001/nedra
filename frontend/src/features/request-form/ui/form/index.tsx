@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { formatServiceCount, type DirectionOption } from "@/entities/service";
 import { keepDigits } from "@/shared/lib/text";
 import Button from "@/shared/ui/button";
+import LegalConsents from "@/shared/ui/legal-consents";
 import SelectField from "@/shared/ui/select-field";
 import TextField from "@/shared/ui/text-field";
 import { useRequestForm } from "../../model/use-request-form";
@@ -139,19 +139,13 @@ const RequestForm = ({ directions, onDirectionChange }: RequestFormProps) => {
         onChange={(value) => changeField("comment", value)}
       />
 
+      <LegalConsents />
+
       {state.error && <p className={styles.error}>{state.error}</p>}
 
       <Button type="submit" disabled={!service} loading={state.status === "loading"}>
         Отправить заявку
       </Button>
-
-      <p className={styles.consent}>
-        Нажимая кнопку, вы соглашаетесь с{" "}
-        <Link href="/politika-konfidencialnosti" className={styles.consentLink}>
-          политикой конфиденциальности
-        </Link>
-        .
-      </p>
     </form>
   );
 };

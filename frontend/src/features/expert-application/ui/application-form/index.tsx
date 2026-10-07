@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import type { ExpertCatalog } from "@/entities/expert";
 import Button from "@/shared/ui/button";
+import LegalConsents from "@/shared/ui/legal-consents";
 import Modal from "@/shared/ui/modal";
 import TextField from "@/shared/ui/text-field";
 import { useExpertApplication } from "../../model/use-expert-application";
@@ -145,6 +145,8 @@ const ExpertApplicationForm = ({ catalog }: ExpertApplicationFormProps) => {
         />
       </section>
 
+      <LegalConsents />
+
       {state.error && <p className={styles.error}>{state.error}</p>}
 
       <Button
@@ -155,14 +157,6 @@ const ExpertApplicationForm = ({ catalog }: ExpertApplicationFormProps) => {
       >
         Отправить заявку
       </Button>
-
-      <p className={styles.consent}>
-        Нажимая кнопку, вы соглашаетесь с{" "}
-        <Link href="/politika-konfidencialnosti" className={styles.consentLink}>
-          политикой конфиденциальности
-        </Link>
-        .
-      </p>
     </form>
   );
 };

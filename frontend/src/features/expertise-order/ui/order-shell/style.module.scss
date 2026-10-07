@@ -1,0 +1,33 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  width: 100%;
+}
+
+.error {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b23b2c;
+}
+
+.submit {
+  width: 100%;
+}
+
+.successText {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #0b0b0b;
+}
+
+.successLink {
+  color: var(--accent, #f69827);
+}
