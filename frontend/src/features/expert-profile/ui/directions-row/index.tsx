@@ -73,7 +73,6 @@ const DirectionsRow = ({ profile, catalog, onChange }: DirectionsRowProps) => {
         onCancel={() => setEditing(false)}
       >
         <MultiSelectField
-          label="Направления работы"
           placeholder="Выберите направления"
           options={catalog.directions.map((direction) => ({
             value: direction.code,

@@ -48,7 +48,7 @@ const TextRow = ({ label, value, type = "text", inputMode, onSave }: TextRowProp
         onCancel={() => setEditing(false)}
       >
         <TextField
-          label={label}
+          placeholder={label}
           type={type}
           inputMode={inputMode}
           maxLength={255}

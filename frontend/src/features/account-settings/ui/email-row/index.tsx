@@ -63,10 +63,9 @@ const EmailRow = ({ email, onChanged }: EmailRowProps) => {
           onCancel={() => setStep("view")}
         >
           <TextField
-            label="Новый email"
             type="email"
             inputMode="email"
-            placeholder="name@company.ru"
+            placeholder="Новый email"
             maxLength={320}
             value={draft}
             onChange={setDraft}
@@ -97,10 +96,9 @@ const EmailRow = ({ email, onChanged }: EmailRowProps) => {
           </button>
         </p>
         <TextField
-          label="Код из письма"
           inputMode="numeric"
           autoComplete="one-time-code"
-          placeholder="6 цифр"
+          placeholder="Код из письма"
           maxLength={6}
           value={code}
           onChange={(value) => setCode(keepDigits(value))}

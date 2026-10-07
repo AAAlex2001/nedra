@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 
 type TextFieldProps = {
-  label: string;
+  label?: string;
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -32,10 +32,12 @@ const TextField = ({
   rows = 4,
 }: TextFieldProps) => (
   <label className={styles.field}>
-    <span className={styles.label}>
-      {label}
-      {required && <span className={styles.required}> *</span>}
-    </span>
+    {label && (
+      <span className={styles.label}>
+        {label}
+        {required && <span className={styles.required}> *</span>}
+      </span>
+    )}
 
     {multiline ? (
       <textarea
@@ -51,6 +53,7 @@ const TextField = ({
       <input
         className={styles.input}
         type={type}
+        aria-label={label ? undefined : placeholder}
         inputMode={inputMode}
         autoComplete={autoComplete}
         placeholder={placeholder}

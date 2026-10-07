@@ -10,7 +10,7 @@ export type MultiSelectOption = {
 };
 
 type MultiSelectFieldProps = {
-  label: string;
+  label?: string;
   placeholder: string;
   options: MultiSelectOption[];
   value: string[];
@@ -46,7 +46,7 @@ const MultiSelectField = ({ label, placeholder, options, value, onChange }: Mult
 
   return (
     <div className={styles.field} ref={rootRef}>
-      <span className={styles.label}>{label}</span>
+      {label && <span className={styles.label}>{label}</span>}
 
       <button
         type="button"
