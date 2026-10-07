@@ -13,6 +13,7 @@ from app.dependencies.users import (
 from app.models.user import User
 from app.schemas.user import (
     EmailChangeSchema,
+    EmailCodeSentSchema,
     EmailConfirmSchema,
     LoginSchema,
     ProfileUpdateSchema,
@@ -24,6 +25,7 @@ from app.services.security.tokens import create_access_token
 from app.services.users.exceptions import (
     EmailAlreadyTakenError,
     EmailChangeError,
+    EmailCodeCooldownError,
     InvalidCredentialsError,
     InvalidPhoneError,
     WeakPasswordError,
@@ -125,23 +127,28 @@ async def update_me(
     return UserOutSchema.model_validate(updated)
 
 
-@router.post("/me/email", status_code=status.HTTP_204_NO_CONTENT)
+@router.post("/me/email")
 async def request_email_change(
     payload: EmailChangeSchema,
     background_tasks: BackgroundTasks,
     user: User = Depends(get_current_user),
     usecase: RequestEmailChangeUseCase = Depends(get_request_email_change_usecase),
-) -> None:
-    """Отправить код подтверждения на новый email."""
+) -> EmailCodeSentSchema:
+    """Отправить код подтверждения на новый email. Пока прежний код действует, новый не шлём."""
 
     try:
-        email, code = await usecase.execute(user, payload.email)
+        sent = await usecase.execute(user, payload.email)
     except EmailChangeError as error:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
     except EmailAlreadyTakenError as error:
         raise HTTPException(status.HTTP_409_CONFLICT, "Этот email уже занят") from error
+    except EmailCodeCooldownError as error:
+        raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS, str(error)) from error
 
-    background_tasks.add_task(send_email_change_code, email, user.full_name, code)
+    if sent.code is not None:
+        background_tasks.add_task(send_email_change_code, sent.email, user.full_name, sent.code)
+
+    return EmailCodeSentSchema(email=sent.email, resend_in=sent.resend_in)
 
 
 @router.post("/me/email/confirm")

@@ -1,0 +1,83 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.pill {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 6px;
+
+  background: var(--accent-soft, #fff3e4);
+  border-radius: 999px;
+}
+
+.ring {
+  width: 22px;
+  height: 22px;
+
+  transform: rotate(-90deg);
+}
+
+.track,
+.progress {
+  fill: none;
+  stroke-width: 3;
+}
+
+.track {
+  stroke: #fff;
+}
+
+.progress {
+  stroke: var(--accent, #f69827);
+  stroke-linecap: round;
+
+  transition: stroke-dashoffset 1s linear;
+}
+
+.time {
+  min-width: 34px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+
+  color: var(--accent-text, #c46a00);
+}
+
+.caption,
+.expired {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: #6c7078;
+}
+
+.resend {
+  padding: 0;
+
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: var(--accent, #f69827);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.resend:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

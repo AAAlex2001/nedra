@@ -12,7 +12,7 @@ async def send_email_change_code(email: str, full_name: str, code: str) -> None:
         text=(
             f"{full_name}, здравствуйте!\n\n"
             f"Код для смены email в личном кабинете НПИ «Недра»: {code}\n"
-            "Код действует 15 минут.\n\n"
+            "Код действует 5 минут.\n\n"
             "Если вы не меняли email, просто проигнорируйте это письмо."
         ),
     )

@@ -12,5 +12,6 @@ export {
   confirmEmailChange,
   requestEmailChange,
   updateProfile,
+  type EmailCodeSent,
   type ProfilePayload,
 } from "./api/account";

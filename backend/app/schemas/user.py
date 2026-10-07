@@ -35,6 +35,13 @@ class EmailChangeSchema(BaseModel):
     email: EmailStr = Field(..., description="Новый email")
 
 
+class EmailCodeSentSchema(BaseModel):
+    """Куда ушёл код и через сколько секунд можно запросить новый."""
+
+    email: str = Field(..., description="Адрес, на который отправлен код")
+    resend_in: int = Field(..., description="Секунд до истечения кода и повторной отправки")
+
+
 class EmailConfirmSchema(BaseModel):
     """Код из письма."""
 

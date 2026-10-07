@@ -8,7 +8,10 @@ import EditButton from "@/shared/ui/edit-button";
 import RowEditor from "@/shared/ui/row-editor";
 import TextField from "@/shared/ui/text-field";
 import { useAction } from "../../model/use-action";
+import ResendTimer from "../resend-timer";
 import styles from "./style.module.scss";
+
+const CODE_LIFETIME = 300;
 
 type Step = "view" | "email" | "code";
 
@@ -21,6 +24,7 @@ const EmailRow = ({ email, onChanged }: EmailRowProps) => {
   const [step, setStep] = useState<Step>("view");
   const [draft, setDraft] = useState("");
   const [code, setCode] = useState("");
+  const [deadline, setDeadline] = useState(0);
   const action = useAction();
 
   const open = () => {
@@ -31,7 +35,11 @@ const EmailRow = ({ email, onChanged }: EmailRowProps) => {
   };
 
   const sendCode = async () => {
-    const sent = await action.run(() => requestEmailChange(draft.trim()));
+    const sent = await action.run(async () => {
+      const result = await requestEmailChange(draft.trim());
+      setDeadline(Date.now() + result.resend_in * 1000);
+    });
+
     if (sent) setStep("code");
   };
 
@@ -85,16 +93,14 @@ const EmailRow = ({ email, onChanged }: EmailRowProps) => {
         onCancel={() => setStep("view")}
       >
         <p className={styles.note}>
-          Отправили код на <strong>{draft.trim()}</strong>. Он действует 15 минут.{" "}
-          <button
-            type="button"
-            className={styles.resend}
-            disabled={action.pending}
-            onClick={() => void sendCode()}
-          >
-            Отправить ещё раз
-          </button>
+          Отправили код на <strong>{draft.trim()}</strong>. Он действует 5 минут.
         </p>
+        <ResendTimer
+          deadline={deadline}
+          total={CODE_LIFETIME}
+          pending={action.pending}
+          onResend={() => void sendCode()}
+        />
         <TextField
           inputMode="numeric"
           autoComplete="one-time-code"

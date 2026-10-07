@@ -19,3 +19,11 @@ class InvalidCredentialsError(Exception):
 
 class EmailChangeError(Exception):
     """Смена email не прошла: адрес тот же, кода нет, он истёк или неверный."""
+
+
+class EmailCodeCooldownError(Exception):
+    """Код на смену email уже отправлен и ещё действует: новый пока не шлём."""
+
+    def __init__(self, seconds: int) -> None:
+        self.seconds = seconds
+        super().__init__(f"Новый код можно запросить через {seconds // 60}:{seconds % 60:02d}")

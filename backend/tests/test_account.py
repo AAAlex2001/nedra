@@ -5,7 +5,11 @@ import pytest
 
 from app.models.email_change import EmailChange
 from app.models.user import User, UserRole
-from app.services.users.exceptions import EmailAlreadyTakenError, EmailChangeError
+from app.services.users.exceptions import (
+    EmailAlreadyTakenError,
+    EmailChangeError,
+    EmailCodeCooldownError,
+)
 from app.services.users.usecases.change_email import (
     ConfirmEmailChangeUseCase,
     RequestEmailChangeUseCase,
@@ -62,12 +66,13 @@ def test_email_change_with_correct_code() -> None:
     users = FakeUserRepository([user])
     changes = FakeChangeRepository()
 
-    email, code = asyncio.run(RequestEmailChangeUseCase(users, changes).execute(user, " New@Mail.ru "))
-    assert email == "new@mail.ru"
-    assert len(code) == 6
+    sent = asyncio.run(RequestEmailChangeUseCase(users, changes).execute(user, " New@Mail.ru "))
+    assert sent.email == "new@mail.ru"
+    assert len(sent.code) == 6
+    assert sent.resend_in == 300
 
     confirm = ConfirmEmailChangeUseCase(users, changes, FakeApplicationRepository())
-    updated = asyncio.run(confirm.execute(user, code))
+    updated = asyncio.run(confirm.execute(user, sent.code))
 
     assert updated.email == "new@mail.ru"
     assert changes.items == {}
@@ -89,21 +94,44 @@ def test_email_change_limits_attempts_and_lifetime() -> None:
     user = make_user(1, "ivan@mail.ru")
     users = FakeUserRepository([user])
     changes = FakeChangeRepository()
-    email, code = asyncio.run(RequestEmailChangeUseCase(users, changes).execute(user, "new@mail.ru"))
+    sent = asyncio.run(RequestEmailChangeUseCase(users, changes).execute(user, "new@mail.ru"))
     confirm = ConfirmEmailChangeUseCase(users, changes, FakeApplicationRepository())
-    wrong = "000000" if code != "000000" else "111111"
+    wrong = "000000" if sent.code != "000000" else "111111"
 
     for attempt in range(5):
         with pytest.raises(EmailChangeError):
             asyncio.run(confirm.execute(user, wrong))
 
     with pytest.raises(EmailChangeError):
-        asyncio.run(confirm.execute(user, code))
+        asyncio.run(confirm.execute(user, sent.code))
 
-    email, fresh = asyncio.run(RequestEmailChangeUseCase(users, changes).execute(user, email))
+    fresh = asyncio.run(RequestEmailChangeUseCase(users, changes).execute(user, sent.email))
     changes.items[1].expires_at = datetime.now(timezone.utc) - timedelta(minutes=1)
 
     with pytest.raises(EmailChangeError):
-        asyncio.run(confirm.execute(user, fresh))
+        asyncio.run(confirm.execute(user, fresh.code))
 
     assert user.email == "ivan@mail.ru"
+
+
+def test_email_code_is_not_resent_while_active() -> None:
+    user = make_user(1, "ivan@mail.ru")
+    users = FakeUserRepository([user])
+    changes = FakeChangeRepository()
+    request = RequestEmailChangeUseCase(users, changes)
+
+    first = asyncio.run(request.execute(user, "new@mail.ru"))
+    again = asyncio.run(request.execute(user, "new@mail.ru"))
+
+    assert first.code is not None
+    assert again.code is None
+    assert 0 < again.resend_in <= 300
+
+    with pytest.raises(EmailCodeCooldownError):
+        asyncio.run(request.execute(user, "other@mail.ru"))
+
+    changes.items[1].expires_at = datetime.now(timezone.utc) - timedelta(seconds=1)
+    renewed = asyncio.run(request.execute(user, "other@mail.ru"))
+
+    assert renewed.code is not None
+    assert changes.items[1].email == "other@mail.ru"

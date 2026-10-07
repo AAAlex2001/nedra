@@ -2,19 +2,34 @@
 
 import hashlib
 import hmac
+import math
 import secrets
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
 from app.models.email_change import EmailChange
 from app.models.user import User
 from app.services.experts.repo import ExpertApplicationRepository
 from app.services.users.email_changes import EmailChangeRepository
-from app.services.users.exceptions import EmailAlreadyTakenError, EmailChangeError
+from app.services.users.exceptions import (
+    EmailAlreadyTakenError,
+    EmailChangeError,
+    EmailCodeCooldownError,
+)
 from app.services.users.repo import UserRepository
 from app.services.users.validators import normalize_email
 
-CODE_LIFETIME = timedelta(minutes=15)
+CODE_LIFETIME = timedelta(minutes=5)
 MAX_ATTEMPTS = 5
+
+
+@dataclass(frozen=True)
+class EmailCode:
+    """Итог запроса кода. code=None — прежний код ещё действует, письмо не шлём."""
+
+    email: str
+    code: str | None
+    resend_in: int
 
 
 def hash_code(user_id: int, code: str) -> str:
@@ -23,15 +38,30 @@ def hash_code(user_id: int, code: str) -> str:
     return hashlib.sha256(f"{user_id}:{code}".encode()).hexdigest()
 
 
+def is_active(change: EmailChange, now: datetime) -> bool:
+    """Код ещё можно ввести: не истёк и попытки не кончились."""
+
+    return change.expires_at > now and change.attempts < MAX_ATTEMPTS
+
+
+def seconds_left(change: EmailChange, now: datetime) -> int:
+    """Сколько секунд осталось до истечения кода, с округлением вверх."""
+
+    return math.ceil((change.expires_at - now).total_seconds())
+
+
 class RequestEmailChangeUseCase:
-    """Проверить новый адрес и выдать код, который уйдёт на него письмом."""
+    """Проверить новый адрес и выдать код, который уйдёт на него письмом.
+
+    Пока прежний код действует, новый не выдаём: так письма не шлют пачками.
+    """
 
     def __init__(self, users: UserRepository, changes: EmailChangeRepository) -> None:
         self.users = users
         self.changes = changes
 
-    async def execute(self, user: User, email: str) -> tuple[str, str]:
-        """Вернуть нормализованный адрес и код. Бросает EmailChangeError, EmailAlreadyTakenError."""
+    async def execute(self, user: User, email: str) -> EmailCode:
+        """Бросает EmailChangeError, EmailAlreadyTakenError, EmailCodeCooldownError."""
 
         normalized = normalize_email(email)
 
@@ -41,6 +71,17 @@ class RequestEmailChangeUseCase:
         if await self.users.get_by_email(normalized) is not None:
             raise EmailAlreadyTakenError(f"Email {normalized} уже занят")
 
+        now = datetime.now(timezone.utc)
+        current = await self.changes.get(user.id)
+
+        if current is not None and is_active(current, now):
+            resend_in = seconds_left(current, now)
+
+            if current.email != normalized:
+                raise EmailCodeCooldownError(resend_in)
+
+            return EmailCode(email=normalized, code=None, resend_in=resend_in)
+
         code = f"{secrets.randbelow(10**6):06d}"
 
         await self.changes.put(
@@ -49,15 +90,17 @@ class RequestEmailChangeUseCase:
                 email=normalized,
                 code_hash=hash_code(user.id, code),
                 attempts=0,
-                expires_at=datetime.now(timezone.utc) + CODE_LIFETIME,
+                expires_at=now + CODE_LIFETIME,
             )
         )
 
-        return normalized, code
+        resend_in = int(CODE_LIFETIME.total_seconds())
+
+        return EmailCode(email=normalized, code=code, resend_in=resend_in)
 
 
 class ConfirmEmailChangeUseCase:
-    """Сверить код и поменять email. Попыток ограниченное число, код живёт 15 минут."""
+    """Сверить код и поменять email. Попыток ограниченное число, код живёт 5 минут."""
 
     def __init__(
         self,
@@ -76,7 +119,7 @@ class ConfirmEmailChangeUseCase:
         if change is None:
             raise EmailChangeError("Сначала запросите код")
 
-        if change.expires_at < datetime.now(timezone.utc) or change.attempts >= MAX_ATTEMPTS:
+        if not is_active(change, datetime.now(timezone.utc)):
             raise EmailChangeError("Код устарел, запросите новый")
 
         if not hmac.compare_digest(change.code_hash, hash_code(user.id, code.strip())):

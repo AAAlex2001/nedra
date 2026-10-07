@@ -29,8 +29,16 @@ export const updateProfile = async (payload: ProfilePayload): Promise<User> => {
   return user;
 };
 
-export const requestEmailChange = async (email: string): Promise<void> => {
-  await send("me/email", "POST", { email });
+export type EmailCodeSent = {
+  email: string;
+  resend_in: number;
+};
+
+export const requestEmailChange = async (email: string): Promise<EmailCodeSent> => {
+  const response = await send("me/email", "POST", { email });
+  const sent: EmailCodeSent = await response.json();
+
+  return sent;
 };
 
 export const confirmEmailChange = async (code: string): Promise<User> => {
