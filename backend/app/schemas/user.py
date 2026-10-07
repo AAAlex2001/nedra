@@ -22,6 +22,25 @@ class RegisterSchema(BaseModel):
     phone: str = Field(..., min_length=10, max_length=32, description="Телефон для связи")
 
 
+class ProfileUpdateSchema(BaseModel):
+    """Имя и телефон, которые пользователь меняет в кабинете."""
+
+    full_name: str = Field(..., min_length=2, max_length=255, description="Имя и фамилия")
+    phone: str = Field(..., min_length=10, max_length=32, description="Телефон для связи")
+
+
+class EmailChangeSchema(BaseModel):
+    """Новый email, на который отправить код."""
+
+    email: EmailStr = Field(..., description="Новый email")
+
+
+class EmailConfirmSchema(BaseModel):
+    """Код из письма."""
+
+    code: str = Field(..., pattern=r"^\s*\d{6}\s*$", description="Шесть цифр из письма")
+
+
 class LoginSchema(BaseModel):
     """Данные формы входа."""
 

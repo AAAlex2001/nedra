@@ -8,9 +8,15 @@ from app.database import get_session
 from app.models.user import User, UserRole
 from app.services.experts.repo import ExpertApplicationRepository
 from app.services.security.tokens import read_user_id
+from app.services.users.email_changes import EmailChangeRepository
 from app.services.users.repo import UserRepository
+from app.services.users.usecases.change_email import (
+    ConfirmEmailChangeUseCase,
+    RequestEmailChangeUseCase,
+)
 from app.services.users.usecases.login import LoginUserUseCase
 from app.services.users.usecases.register import RegisterUserUseCase
+from app.services.users.usecases.update_profile import UpdateProfileUseCase
 
 AUTH_COOKIE = "access_token"
 SECONDS_IN_DAY = 60 * 60 * 24
@@ -39,6 +45,35 @@ def get_login_usecase(
     """Сценарий входа. Репозиторий заявок нужен, чтобы отличить ожидающего эксперта."""
 
     return LoginUserUseCase(users, ExpertApplicationRepository(session))
+
+
+def get_update_profile_usecase(
+    users: UserRepository = Depends(get_user_repository),
+    session: AsyncSession = Depends(get_session),
+) -> UpdateProfileUseCase:
+    """Сценарий смены имени и телефона."""
+
+    return UpdateProfileUseCase(users, ExpertApplicationRepository(session))
+
+
+def get_request_email_change_usecase(
+    users: UserRepository = Depends(get_user_repository),
+    session: AsyncSession = Depends(get_session),
+) -> RequestEmailChangeUseCase:
+    """Сценарий запроса кода на новый email."""
+
+    return RequestEmailChangeUseCase(users, EmailChangeRepository(session))
+
+
+def get_confirm_email_change_usecase(
+    users: UserRepository = Depends(get_user_repository),
+    session: AsyncSession = Depends(get_session),
+) -> ConfirmEmailChangeUseCase:
+    """Сценарий подтверждения нового email кодом."""
+
+    return ConfirmEmailChangeUseCase(
+        users, EmailChangeRepository(session), ExpertApplicationRepository(session)
+    )
 
 
 def set_auth_cookie(response: Response, token: str) -> None:

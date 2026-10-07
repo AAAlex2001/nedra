@@ -25,6 +25,7 @@ from app.models.expertise import (
 )
 from app.models.notification import Notification
 from app.models.commission import CommissionApplication
+from app.models.email_change import EmailChange
 
 __all__ = [
     "Base",
@@ -56,4 +57,5 @@ __all__ = [
     "ServiceKind",
     "Notification",
     "CommissionApplication",
+    "EmailChange",
 ]

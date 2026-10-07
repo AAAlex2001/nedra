@@ -1,0 +1,33 @@
+.note {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: #6c7078;
+}
+
+.note strong {
+  font-weight: 600;
+
+  color: #0b0b0b;
+}
+
+.resend {
+  padding: 0;
+
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: var(--accent, #f69827);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.resend:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

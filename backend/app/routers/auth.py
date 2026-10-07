@@ -1,24 +1,41 @@
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Response, status
 
 from app.dependencies.users import (
     clear_auth_cookie,
+    get_confirm_email_change_usecase,
     get_current_user,
     get_login_usecase,
     get_register_usecase,
+    get_request_email_change_usecase,
+    get_update_profile_usecase,
     set_auth_cookie,
 )
 from app.models.user import User
-from app.schemas.user import LoginSchema, RegisterSchema, UserOutSchema
+from app.schemas.user import (
+    EmailChangeSchema,
+    EmailConfirmSchema,
+    LoginSchema,
+    ProfileUpdateSchema,
+    RegisterSchema,
+    UserOutSchema,
+)
 from app.services.experts.exceptions import ApplicationPendingError
 from app.services.security.tokens import create_access_token
 from app.services.users.exceptions import (
     EmailAlreadyTakenError,
+    EmailChangeError,
     InvalidCredentialsError,
     InvalidPhoneError,
     WeakPasswordError,
 )
+from app.services.users.letters import send_email_change_code
+from app.services.users.usecases.change_email import (
+    ConfirmEmailChangeUseCase,
+    RequestEmailChangeUseCase,
+)
 from app.services.users.usecases.login import LoginUserUseCase
 from app.services.users.usecases.register import RegisterUserUseCase
+from app.services.users.usecases.update_profile import UpdateProfileUseCase
 
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -90,3 +107,56 @@ async def me(user: User = Depends(get_current_user)) -> UserOutSchema:
     """Текущий пользователь по cookie. Фронт вызывает при рендере страницы."""
 
     return UserOutSchema.model_validate(user)
+
+
+@router.patch("/me")
+async def update_me(
+    payload: ProfileUpdateSchema,
+    user: User = Depends(get_current_user),
+    usecase: UpdateProfileUseCase = Depends(get_update_profile_usecase),
+) -> UserOutSchema:
+    """Сменить имя и телефон."""
+
+    try:
+        updated = await usecase.execute(user, payload.full_name, payload.phone)
+    except InvalidPhoneError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+
+    return UserOutSchema.model_validate(updated)
+
+
+@router.post("/me/email", status_code=status.HTTP_204_NO_CONTENT)
+async def request_email_change(
+    payload: EmailChangeSchema,
+    background_tasks: BackgroundTasks,
+    user: User = Depends(get_current_user),
+    usecase: RequestEmailChangeUseCase = Depends(get_request_email_change_usecase),
+) -> None:
+    """Отправить код подтверждения на новый email."""
+
+    try:
+        email, code = await usecase.execute(user, payload.email)
+    except EmailChangeError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+    except EmailAlreadyTakenError as error:
+        raise HTTPException(status.HTTP_409_CONFLICT, "Этот email уже занят") from error
+
+    background_tasks.add_task(send_email_change_code, email, user.full_name, code)
+
+
+@router.post("/me/email/confirm")
+async def confirm_email_change(
+    payload: EmailConfirmSchema,
+    user: User = Depends(get_current_user),
+    usecase: ConfirmEmailChangeUseCase = Depends(get_confirm_email_change_usecase),
+) -> UserOutSchema:
+    """Подтвердить новый email кодом из письма."""
+
+    try:
+        updated = await usecase.execute(user, payload.code)
+    except EmailChangeError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+    except EmailAlreadyTakenError as error:
+        raise HTTPException(status.HTTP_409_CONFLICT, "Этот email уже занят") from error
+
+    return UserOutSchema.model_validate(updated)

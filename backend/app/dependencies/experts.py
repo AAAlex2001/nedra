@@ -18,6 +18,7 @@ from app.services.experts.usecases.manage_certificates import (
 )
 from app.services.experts.usecases.reject_application import RejectExpertApplicationUseCase
 from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
+from app.services.experts.usecases.update_directions import UpdateDirectionsUseCase
 from app.services.experts.usecases.update_expert import UpdateExpertUseCase
 from app.services.files.storage import PrivateStorage
 from app.services.users.repo import UserRepository
@@ -81,6 +82,15 @@ def get_update_expert_usecase(
     """Сценарий правки данных эксперта."""
 
     return UpdateExpertUseCase(users, profiles, applications)
+
+
+def get_update_directions_usecase(
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+    applications: ExpertApplicationRepository = Depends(get_application_repository),
+) -> UpdateDirectionsUseCase:
+    """Сценарий смены направлений работы экспертом."""
+
+    return UpdateDirectionsUseCase(profiles, applications)
 
 
 def get_add_certificate_usecase(

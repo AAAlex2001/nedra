@@ -1,0 +1,157 @@
+.field {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  width: 100%;
+}
+
+.label {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #0b0b0b;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+
+  width: 100%;
+  min-height: 52px;
+
+  font-family: "Manrope";
+  text-align: left;
+
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 14px;
+  cursor: pointer;
+
+  transition: border-color 0.2s ease;
+}
+
+.control:hover,
+.controlOpen {
+  border-color: var(--accent, #f69827);
+}
+
+.summary,
+.placeholder {
+  flex: 1;
+  min-width: 0;
+
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.summary {
+  font-weight: 600;
+
+  color: #0b0b0b;
+}
+
+.placeholder {
+  font-weight: 400;
+
+  color: #9aa0ad;
+}
+
+.chevron {
+  flex: none;
+
+  color: #7b8190;
+
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+
+  width: 100%;
+  max-height: 320px;
+  overflow-y: auto;
+
+  list-style: none;
+
+  background: #fff;
+  border: 1px solid #e3e6ec;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(11, 11, 11, 0.12);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+
+  width: 100%;
+
+  font-family: "Manrope";
+  text-align: left;
+
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.option:hover,
+.optionActive {
+  background: #fdf3e6;
+}
+
+.box {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+
+  background: #fff;
+  border: 1.5px solid #c9ced8;
+  border-radius: 6px;
+}
+
+.boxChecked {
+  background: var(--accent, #f69827);
+  border-color: var(--accent, #f69827);
+}
+
+.check {
+  width: 14px;
+  height: 14px;
+}
+
+.check path {
+  fill: #fff;
+}
+
+.optionLabel {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+
+  color: #0b0b0b;
+}

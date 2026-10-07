@@ -1,0 +1,47 @@
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  width: 100%;
+}
+
+.error {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+
+  color: #b23b2c;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cancel {
+  padding: 10px 18px;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #0b0b0b;
+  background: #f5f6f8;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.cancel:hover:not(:disabled) {
+  background: #e6e9ef;
+}
+
+.buttons .save {
+  padding: 9px 20px;
+}

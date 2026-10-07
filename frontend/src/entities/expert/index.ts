@@ -25,6 +25,7 @@ export {
   myCertificateScanUrl,
   submitExpertApplication,
   updateMyCertificate,
+  updateMyDirections,
   type ApplicationCreated,
   type CertificateInput,
 } from "./api/experts";

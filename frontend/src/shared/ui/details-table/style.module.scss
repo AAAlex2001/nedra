@@ -4,7 +4,6 @@
 
   border: 1px solid #eceef3;
   border-radius: 14px;
-  overflow: hidden;
 }
 
 .row {
@@ -40,6 +39,28 @@
   color: #0b0b0b;
 }
 
+.withAction {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "term action"
+    "value action";
+  gap: 4px 12px;
+  align-items: center;
+}
+
+.withAction .term {
+  grid-area: term;
+}
+
+.withAction .value {
+  grid-area: value;
+}
+
+.action {
+  grid-area: action;
+}
+
 @media (min-width: 768px) {
   .row {
     display: grid;
@@ -47,6 +68,11 @@
     gap: 16px;
     align-items: center;
     padding: 12px 18px;
+  }
+
+  .withAction {
+    grid-template-columns: 200px minmax(0, 1fr) auto;
+    grid-template-areas: "term value action";
   }
 
   .term {

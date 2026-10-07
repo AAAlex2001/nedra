@@ -146,6 +146,12 @@ class ExpertOutSchema(BaseModel):
     certificates: list[CertificateOutSchema]
 
 
+class DirectionsUpdateSchema(BaseModel):
+    """Направления работы, которые эксперт выбрал в кабинете."""
+
+    directions: list[str] = Field(..., min_length=1, description="Коды направлений работы")
+
+
 class ExpertProfileOutSchema(BaseModel):
     """Профиль эксперта для личного кабинета."""
 

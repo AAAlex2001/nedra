@@ -15,3 +15,7 @@ class EmailAlreadyTakenError(Exception):
 
 class InvalidCredentialsError(Exception):
     """Неверная пара email и пароль. Что именно неверно — не сообщаем."""
+
+
+class EmailChangeError(Exception):
+    """Смена email не прошла: адрес тот же, кода нет, он истёк или неверный."""

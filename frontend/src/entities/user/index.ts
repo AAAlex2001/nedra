@@ -8,3 +8,9 @@ export {
   type LoginPayload,
   type RegisterPayload,
 } from "./api/auth";
+export {
+  confirmEmailChange,
+  requestEmailChange,
+  updateProfile,
+  type ProfilePayload,
+} from "./api/account";

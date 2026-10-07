@@ -9,6 +9,7 @@ from app.dependencies.experts import (
     get_profile_repository,
     get_submit_application_usecase,
     get_update_certificate_usecase,
+    get_update_directions_usecase,
 )
 from app.dependencies.users import require_expert
 from app.models.user import User
@@ -17,6 +18,7 @@ from app.schemas.expert import (
     CertificateInSchema,
     CertificateOutSchema,
     DirectionSchema,
+    DirectionsUpdateSchema,
     ExpertApplicationCreatedSchema,
     ExpertApplicationInSchema,
     ExpertCatalogSchema,
@@ -46,6 +48,7 @@ from app.services.experts.usecases.manage_certificates import (
     UpdateCertificateUseCase,
 )
 from app.services.experts.usecases.submit_application import SubmitExpertApplicationUseCase
+from app.services.experts.usecases.update_directions import UpdateDirectionsUseCase
 from app.services.files.storage import PrivateStorage
 from app.services.users.exceptions import EmailAlreadyTakenError, InvalidPhoneError, WeakPasswordError
 
@@ -154,6 +157,23 @@ async def get_my_profile(
     profiles: ExpertProfileRepository = Depends(get_profile_repository),
 ) -> ExpertProfileOutSchema:
     """Профиль текущего эксперта для личного кабинета."""
+
+    return await profile_schema(user, profiles)
+
+
+@router.put("/me/directions")
+async def update_my_directions(
+    payload: DirectionsUpdateSchema,
+    user: User = Depends(require_expert),
+    usecase: UpdateDirectionsUseCase = Depends(get_update_directions_usecase),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> ExpertProfileOutSchema:
+    """Эксперт меняет направления работы."""
+
+    try:
+        await usecase.execute(user.id, payload.directions)
+    except InvalidDirectionError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
 
     return await profile_schema(user, profiles)
 

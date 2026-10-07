@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  directionTitle,
   type CertificateInput,
   type ExpertCatalog,
   type ExpertProfile,
@@ -13,6 +12,7 @@ import Button from "@/shared/ui/button";
 import { useCertificates } from "../../model/use-certificates";
 import CertificateCard from "../certificate-card";
 import CertificateForm from "../certificate-form";
+import DirectionsRow from "../directions-row";
 import styles from "./style.module.scss";
 
 type ExpertAttestationProps = {
@@ -27,7 +27,6 @@ const ExpertAttestation = ({ profile, catalog, onChange }: ExpertAttestationProp
   const [editing, setEditing] = useState<Editing>(null);
   const actions = useCertificates(onChange);
 
-  const directions = profile.directions.map((code) => directionTitle(catalog, code));
   const certificates = profile.certificates;
   const removable = certificates.length > 1;
 
@@ -53,7 +52,7 @@ const ExpertAttestation = ({ profile, catalog, onChange }: ExpertAttestationProp
   return (
     <div className={styles.attestation}>
       <DetailsTable>
-        <DetailsRow label="Направления работы">{directions.join(", ")}</DetailsRow>
+        <DirectionsRow profile={profile} catalog={catalog} onChange={onChange} />
         <DetailsRow label="Эксперт платформы">с {formatDate(profile.approved_at)}</DetailsRow>
       </DetailsTable>
 

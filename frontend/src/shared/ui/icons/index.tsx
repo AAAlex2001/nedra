@@ -1,4 +1,5 @@
 export { PhoneIcon } from "./phone-icon";
+export { PencilIcon } from "./pencil-icon";
 export { MailIcon } from "./mail-icon";
 export { PersonIcon } from "./person-icon";
 export { DocumentIcon } from "./document-icon";

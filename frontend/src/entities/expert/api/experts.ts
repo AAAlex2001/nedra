@@ -82,6 +82,24 @@ export const updateMyCertificate = (
 export const deleteMyCertificate = (certificateId: number): Promise<ExpertProfile> =>
   sendMyCertificate(`${API_URL}/v1/experts/me/certificates/${certificateId}`, "DELETE", null);
 
+export const updateMyDirections = async (directions: string[]): Promise<ExpertProfile> => {
+  const response = await fetch(`${API_URL}/v1/experts/me/directions`, {
+    method: "PUT",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ directions }),
+  });
+
+  if (!response.ok) {
+    const message = await readErrorMessage(response);
+    throw new Error(message);
+  }
+
+  const profile: ExpertProfile = await response.json();
+
+  return profile;
+};
+
 export const fetchExpertProfile = async (): Promise<ExpertProfile> => {
   const response = await fetch(`${API_URL}/v1/experts/me`, {
     credentials: "include",
