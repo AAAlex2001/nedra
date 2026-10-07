@@ -3,6 +3,7 @@
 from app.models.tariff import Tariff
 from app.schemas.tariff import TariffInSchema
 from app.services.experts.catalog import AREA_BY_CODE, OBJECT_BY_CODE
+from app.services.tariffs.audit import is_audit_tariff
 from app.services.tariffs.exceptions import InvalidTariffError
 from app.services.tariffs.repo import TariffRepository
 
@@ -33,7 +34,7 @@ class SaveTariffsUseCase:
     def check_cell(self, cell: TariffInSchema) -> None:
         """Ячейка с ценой должна быть допустимой парой по справочнику. Удаление не проверяем."""
 
-        if cell.price is None:
+        if cell.price is None or is_audit_tariff(cell.area_code, cell.object_code):
             return
 
         area = AREA_BY_CODE.get(cell.area_code)

@@ -58,6 +58,10 @@
   border-collapse: collapse;
 }
 
+.tableNarrow {
+  min-width: 0;
+}
+
 .headArea,
 .headObject {
   padding: 12px 14px;

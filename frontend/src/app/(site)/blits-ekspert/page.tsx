@@ -1,6 +1,6 @@
 import { getArticle, type ArticleCardData } from "@/entities/article";
 import type { ExpertCatalog } from "@/entities/expert";
-import type { Tariff } from "@/entities/tariff";
+import { isAuditTariff, type Tariff } from "@/entities/tariff";
 import { getCurrentUser } from "@/entities/user/api/session-server";
 import { internalFetch } from "@/shared/api/server";
 import { buildMetadata } from "@/shared/config/seo";
@@ -36,7 +36,7 @@ const loadTariffs = async (): Promise<Tariff[]> => {
 
     const items: Tariff[] = await response.json();
 
-    return items;
+    return items.filter((item) => !isAuditTariff(item));
   } catch {
     return [];
   }

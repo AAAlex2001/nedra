@@ -1,6 +1,6 @@
 import type { ExpertCatalog } from "@/entities/expert";
 import type { Tariff } from "@/entities/tariff";
-import { TariffGrid } from "@/features/tariffs-admin";
+import { AuditTariff, TariffGrid } from "@/features/tariffs-admin";
 import AccentLine from "@/shared/ui/accent-line";
 import styles from "./style.module.scss";
 
@@ -27,6 +27,17 @@ const AdminTariffs = ({ catalog, tariffs, error, basePath }: AdminTariffsProps) 
     ) : (
       <TariffGrid catalog={catalog} initialTariffs={tariffs} basePath={basePath} />
     )}
+
+    <div className={styles.heading}>
+      <h2 className={styles.title}>Тариф на аудит СУПБ</h2>
+      <AccentLine width={30} />
+      <p className={styles.subtitle}>
+        Одна цена на аудит системы управления промышленной безопасностью. Её видят заказчики
+        на странице «Блиц-аудит».
+      </p>
+    </div>
+
+    {!error && <AuditTariff initialTariffs={tariffs} basePath={basePath} />}
   </section>
 );
 

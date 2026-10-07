@@ -2,7 +2,7 @@
 
 import { useReducer } from "react";
 import type { ExpertCatalog } from "@/entities/expert";
-import { tariffKey, type Tariff } from "@/entities/tariff";
+import { isAuditTariff, tariffKey, type Tariff } from "@/entities/tariff";
 import { keepDigits } from "@/shared/lib/text";
 import { saveTariffs, type TariffChange } from "../api/tariffs";
 import { tariffGridReducer } from "./reducer";
@@ -11,6 +11,8 @@ const toValues = (tariffs: Tariff[]): Record<string, string> => {
   const values: Record<string, string> = {};
 
   for (const tariff of tariffs) {
+    if (isAuditTariff(tariff)) continue;
+
     const key = tariffKey(tariff.area_code, tariff.object_code);
     values[key] = String(Math.round(Number(tariff.price)));
   }

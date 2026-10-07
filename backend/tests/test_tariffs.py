@@ -68,6 +68,17 @@ def test_save_adds_updates_and_removes() -> None:
     assert ("Э4", "d") not in repo.items
 
 
+def test_save_accepts_audit_tariff() -> None:
+    repo = FakeTariffRepository()
+    usecase = SaveTariffsUseCase(repo)
+
+    asyncio.run(
+        usecase.execute([TariffInSchema(area_code="audit", object_code="supb", price=Decimal("80000"))])
+    )
+
+    assert repo.items[("audit", "supb")].price == Decimal("80000")
+
+
 def test_save_rejects_unknown_pair() -> None:
     usecase = SaveTariffsUseCase(FakeTariffRepository())
 
