@@ -14,7 +14,7 @@ from app.schemas.expertise import (
     ExpertiseCompanySchema,
     ExpertiseIndividualSchema,
 )
-from app.services.expertise.exceptions import ExpertiseNotFoundError
+from app.services.expertise.exceptions import ExpertiseNotFoundError, InvalidExpertiseError
 from app.services.expertise.repo import ExpertiseRepository
 from app.services.expertise.usecases.manage_expertise import (
     DeleteExpertiseUseCase,
@@ -83,12 +83,16 @@ async def update_expertise(
     usecase: UpdateExpertiseUseCase = Depends(get_update_expertise_usecase),
     users: UserRepository = Depends(get_user_repository),
 ) -> ExpertiseAdminSchema:
-    """Поменять статус и стоимость заявки."""
+    """Поменять статус, стоимость, эксперта и вид договора заявки."""
 
     try:
-        updated = await usecase.execute(expertise_id, payload.status, payload.price)
+        updated = await usecase.execute(
+            expertise_id, payload.status, payload.price, payload.expert_id, payload.contract_kind
+        )
     except ExpertiseNotFoundError as error:
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from error
+    except InvalidExpertiseError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
 
     return await to_admin_schema(updated, users)
 

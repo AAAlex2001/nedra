@@ -1,6 +1,5 @@
-import type { ExpertiseStatus } from "@/entities/expertise";
 import { readErrorMessage } from "@/shared/api";
-import type { ExpertiseAdminRecord } from "../model/types";
+import type { ExpertiseAdminRecord, ExpertiseDraft } from "../model/types";
 
 export const fetchExpertises = async (basePath: string): Promise<ExpertiseAdminRecord[]> => {
   const response = await fetch(`${basePath}/api/expertises`, { cache: "no-store" });
@@ -18,13 +17,19 @@ export const fetchExpertises = async (basePath: string): Promise<ExpertiseAdminR
 export const updateExpertise = async (
   basePath: string,
   id: number,
-  status: ExpertiseStatus,
-  price: string | null,
+  draft: ExpertiseDraft,
 ): Promise<ExpertiseAdminRecord> => {
+  const body = {
+    status: draft.status,
+    price: draft.price === "" ? null : draft.price,
+    expert_id: draft.expertId === "" ? null : Number(draft.expertId),
+    contract_kind: draft.contractKind === "" ? null : draft.contractKind,
+  };
+
   const response = await fetch(`${basePath}/api/expertises/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ status, price }),
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {

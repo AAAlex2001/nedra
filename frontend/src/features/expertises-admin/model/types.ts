@@ -29,6 +29,18 @@ export type ExpertiseAdminRecord = {
   created_at: string;
 };
 
+export type ExpertOption = {
+  user_id: number;
+  full_name: string;
+};
+
+export type ExpertiseDraft = {
+  status: ExpertiseStatus;
+  price: string;
+  expertId: string;
+  contractKind: ContractKind | "";
+};
+
 export type StatusGroup = "waiting" | "work" | "done";
 
 export type StatusFilter = StatusGroup | "all";

@@ -1,37 +1,66 @@
 "use client";
 
 import { useState } from "react";
-import { EXPERTISE_STATUS_LABELS, type ExpertiseStatus } from "@/entities/expertise";
+import {
+  CONTRACT_KIND_LABELS,
+  EXPERTISE_STATUS_LABELS,
+  type ContractKind,
+  type ExpertiseStatus,
+} from "@/entities/expertise";
 import { keepDigits } from "@/shared/lib/text";
 import Button from "@/shared/ui/button";
 import SelectField from "@/shared/ui/select-field";
 import TextField from "@/shared/ui/text-field";
+import type { ExpertiseDraft, ExpertOption } from "../../model/types";
 import styles from "./style.module.scss";
 
 type ExpertiseFormProps = {
-  status: ExpertiseStatus;
-  price: string | null;
+  draft: ExpertiseDraft;
+  experts: ExpertOption[];
+  contractKinds: ContractKind[];
   pending: boolean;
-  onSave: (status: ExpertiseStatus, price: string | null) => void;
+  onSave: (draft: ExpertiseDraft) => void;
   onCancel: () => void;
 };
 
 const STATUSES = Object.keys(EXPERTISE_STATUS_LABELS) as ExpertiseStatus[];
 
-const toWhole = (price: string | null): string =>
-  price === null ? "" : String(Math.round(Number(price)));
-
-const ExpertiseForm = ({ status, price, pending, onSave, onCancel }: ExpertiseFormProps) => {
-  const [draftStatus, setDraftStatus] = useState(status);
-  const [draftPrice, setDraftPrice] = useState(toWhole(price));
+const ExpertiseForm = ({
+  draft,
+  experts,
+  contractKinds,
+  pending,
+  onSave,
+  onCancel,
+}: ExpertiseFormProps) => {
+  const [status, setStatus] = useState(draft.status);
+  const [price, setPrice] = useState(draft.price);
+  const [expertId, setExpertId] = useState(draft.expertId);
+  const [contractKind, setContractKind] = useState(draft.contractKind);
 
   const selectStatus = (value: string) => {
     const found = STATUSES.find((item) => item === value);
 
-    if (found) setDraftStatus(found);
+    if (found) setStatus(found);
   };
 
-  const save = () => onSave(draftStatus, draftPrice === "" ? null : draftPrice);
+  const selectKind = (value: string) => {
+    const found = contractKinds.find((item) => item === value);
+
+    if (found) setContractKind(found);
+  };
+
+  const expertOptions = [
+    { value: "", label: "Не назначен" },
+    ...experts.map((expert) => ({ value: String(expert.user_id), label: expert.full_name })),
+  ];
+
+  const kindOptions = contractKinds.map((kind) => ({
+    value: kind,
+    label: CONTRACT_KIND_LABELS[kind],
+  }));
+
+  const save = () => onSave({ status, price, expertId, contractKind });
 
   return (
     <div className={styles.form}>
@@ -39,7 +68,7 @@ const ExpertiseForm = ({ status, price, pending, onSave, onCancel }: ExpertiseFo
         <SelectField
           label="Статус"
           placeholder="Выберите статус"
-          value={draftStatus}
+          value={status}
           onChange={selectStatus}
           options={STATUSES.map((item) => ({
             value: item,
@@ -50,9 +79,25 @@ const ExpertiseForm = ({ status, price, pending, onSave, onCancel }: ExpertiseFo
           label="Стоимость, ₽"
           inputMode="numeric"
           placeholder="не задана"
-          value={draftPrice}
-          onChange={(value) => setDraftPrice(keepDigits(value))}
+          value={price}
+          onChange={(value) => setPrice(keepDigits(value))}
         />
+        <SelectField
+          label="Эксперт"
+          placeholder="Не назначен"
+          value={expertId}
+          onChange={setExpertId}
+          options={expertOptions}
+        />
+        {kindOptions.length > 1 && (
+          <SelectField
+            label="Вид договора"
+            placeholder="Определит эксперт"
+            value={contractKind}
+            onChange={selectKind}
+            options={kindOptions}
+          />
+        )}
       </div>
 
       <div className={styles.buttons}>

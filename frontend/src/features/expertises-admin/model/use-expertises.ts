@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import type { ExpertiseStatus } from "@/entities/expertise";
 import { deleteExpertise, fetchExpertises, updateExpertise } from "../api/expertises";
 import { matchesFilter } from "./groups";
-import type { ExpertiseAdminRecord, StatusFilter } from "./types";
+import type { ExpertiseAdminRecord, ExpertiseDraft, StatusFilter } from "./types";
 
 const describe = (error: unknown, fallback: string): string =>
   error instanceof Error && error.message ? error.message : fallback;
@@ -21,12 +20,12 @@ export const useExpertises = (initialItems: ExpertiseAdminRecord[], basePath: st
   const countFor = (value: StatusFilter): number =>
     items.filter((item) => matchesFilter(item.status, value)).length;
 
-  const save = async (id: number, status: ExpertiseStatus, price: string | null) => {
+  const save = async (id: number, draft: ExpertiseDraft) => {
     setPendingId(id);
     setError(null);
 
     try {
-      const updated = await updateExpertise(basePath, id, status, price);
+      const updated = await updateExpertise(basePath, id, draft);
       setItems(items.map((item) => (item.id === id ? updated : item)));
     } catch (caught) {
       setError(describe(caught, "Не удалось сохранить заявку"));

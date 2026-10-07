@@ -171,10 +171,14 @@ class ExpertiseAcceptSchema(BaseModel):
 
 
 class ExpertiseAdminUpdateSchema(BaseModel):
-    """Что админ правит в заявке: статус и стоимость."""
+    """Что админ правит в заявке: статус, стоимость, эксперта и вид договора."""
 
     status: ExpertiseStatus
     price: Decimal | None = Field(None, gt=0, max_digits=10, decimal_places=2)
+    expert_id: int | None = Field(None, description="Назначенный эксперт, None — снять")
+    contract_kind: ContractKind | None = Field(
+        None, description="Вид договора, если заказчик его не знал"
+    )
 
 
 class ExpertiseRemarkSchema(BaseModel):

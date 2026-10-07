@@ -4,13 +4,14 @@ import type { ExpertCatalog } from "@/entities/expert";
 import Button from "@/shared/ui/button";
 import { Tabs } from "@/shared/ui/tabs";
 import { useExpertises } from "../../model/use-expertises";
-import type { ExpertiseAdminRecord, StatusFilter } from "../../model/types";
+import type { ExpertiseAdminRecord, ExpertOption, StatusFilter } from "../../model/types";
 import ExpertiseCard from "../expertise-card";
 import styles from "./style.module.scss";
 
 type ExpertisesListProps = {
   initialItems: ExpertiseAdminRecord[];
   catalog: ExpertCatalog | null;
+  experts: ExpertOption[];
   basePath: string;
 };
 
@@ -21,7 +22,7 @@ const FILTERS: { value: StatusFilter; label: string }[] = [
   { value: "all", label: "Все" },
 ];
 
-const ExpertisesList = ({ initialItems, catalog, basePath }: ExpertisesListProps) => {
+const ExpertisesList = ({ initialItems, catalog, experts, basePath }: ExpertisesListProps) => {
   const {
     visibleItems,
     filter,
@@ -67,8 +68,9 @@ const ExpertisesList = ({ initialItems, catalog, basePath }: ExpertisesListProps
               <ExpertiseCard
                 expertise={item}
                 catalog={catalog}
+                experts={experts}
                 pending={pendingId === item.id}
-                onSave={(id, status, price) => void save(id, status, price)}
+                onSave={(id, draft) => void save(id, draft)}
                 onRemove={(id) => void remove(id)}
               />
             </li>

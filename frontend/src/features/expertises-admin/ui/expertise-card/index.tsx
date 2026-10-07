@@ -6,20 +6,21 @@ import {
   CONTRACT_KIND_LABELS,
   DEADLINE_LABELS,
   EXPERTISE_STATUS_LABELS,
-  type ExpertiseStatus,
+  contractKindsFor,
 } from "@/entities/expertise";
 import { formatRequestDate } from "@/entities/request";
 import { formatRub } from "@/shared/lib/money";
 import { statusGroup } from "../../model/groups";
-import type { ExpertiseAdminRecord } from "../../model/types";
+import type { ExpertiseAdminRecord, ExpertiseDraft, ExpertOption } from "../../model/types";
 import ExpertiseForm from "../expertise-form";
 import styles from "./style.module.scss";
 
 type ExpertiseCardProps = {
   expertise: ExpertiseAdminRecord;
   catalog: ExpertCatalog | null;
+  experts: ExpertOption[];
   pending: boolean;
-  onSave: (id: number, status: ExpertiseStatus, price: string | null) => void;
+  onSave: (id: number, draft: ExpertiseDraft) => void;
   onRemove: (id: number) => void;
 };
 
@@ -35,7 +36,14 @@ const Fact = ({ label, value }: FactProps) => (
   </div>
 );
 
-const ExpertiseCard = ({ expertise, catalog, pending, onSave, onRemove }: ExpertiseCardProps) => {
+const ExpertiseCard = ({
+  expertise,
+  catalog,
+  experts,
+  pending,
+  onSave,
+  onRemove,
+}: ExpertiseCardProps) => {
   const [editing, setEditing] = useState(false);
 
   let subject = "Область определит эксперт";
@@ -48,8 +56,20 @@ const ExpertiseCard = ({ expertise, catalog, pending, onSave, onRemove }: Expert
     object = catalog ? objectLabel(catalog, expertise.object_code) : expertise.object_code;
   }
 
-  const save = (status: ExpertiseStatus, price: string | null) => {
-    onSave(expertise.id, status, price);
+  const draft: ExpertiseDraft = {
+    status: expertise.status,
+    price: expertise.price === null ? "" : String(Math.round(Number(expertise.price))),
+    expertId: expertise.expert_id === null ? "" : String(expertise.expert_id),
+    contractKind: expertise.contract_kind ?? "",
+  };
+
+  const contractKinds =
+    expertise.contract_kind === null && expertise.object_code
+      ? contractKindsFor(expertise.object_code)
+      : [];
+
+  const save = (changed: ExpertiseDraft) => {
+    onSave(expertise.id, changed);
     setEditing(false);
   };
 
@@ -124,8 +144,9 @@ const ExpertiseCard = ({ expertise, catalog, pending, onSave, onRemove }: Expert
 
       {editing ? (
         <ExpertiseForm
-          status={expertise.status}
-          price={expertise.price}
+          draft={draft}
+          experts={experts}
+          contractKinds={contractKinds}
           pending={pending}
           onSave={save}
           onCancel={() => setEditing(false)}

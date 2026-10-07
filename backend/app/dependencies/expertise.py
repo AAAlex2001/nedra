@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_session
 from app.dependencies.experts import get_private_storage, get_profile_repository
 from app.dependencies.payments import get_create_payment_usecase, get_payment_repository
-from app.dependencies.users import get_current_user
+from app.dependencies.users import get_current_user, get_user_repository
 from app.models.expertise import Expertise
 from app.models.user import User, UserRole
 from app.services.experts.repo import ExpertProfileRepository
@@ -30,6 +30,7 @@ from app.services.files.storage import PrivateStorage
 from app.services.notifications.repo import NotificationRepository
 from app.services.payments.repo import PaymentRepository
 from app.services.payments.usecases.create_payment import CreatePaymentUseCase
+from app.services.users.repo import UserRepository
 
 
 def get_expertise_repository(
@@ -148,10 +149,11 @@ def get_accept_work_usecase(
 
 def get_update_expertise_usecase(
     expertises: ExpertiseRepository = Depends(get_expertise_repository),
+    users: UserRepository = Depends(get_user_repository),
 ) -> UpdateExpertiseUseCase:
     """Сценарий правки заявки администратором."""
 
-    return UpdateExpertiseUseCase(expertises)
+    return UpdateExpertiseUseCase(expertises, users)
 
 
 def get_delete_expertise_usecase(
