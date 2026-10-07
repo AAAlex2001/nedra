@@ -6,6 +6,7 @@ type RowEditorProps = {
   pending: boolean;
   error: string | null;
   saveText?: string;
+  saveDisabled?: boolean;
   onSave: () => void;
   onCancel: () => void;
   children: ReactNode;
@@ -15,6 +16,7 @@ const RowEditor = ({
   pending,
   error,
   saveText = "Сохранить",
+  saveDisabled = false,
   onSave,
   onCancel,
   children,
@@ -28,7 +30,7 @@ const RowEditor = ({
       <button type="button" className={styles.cancel} disabled={pending} onClick={onCancel}>
         Отмена
       </button>
-      <Button className={styles.save} loading={pending} onClick={onSave}>
+      <Button className={styles.save} loading={pending} disabled={saveDisabled} onClick={onSave}>
         {saveText}
       </Button>
     </div>

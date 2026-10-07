@@ -6,6 +6,15 @@ export type ProfilePayload = {
   phone: string;
 };
 
+export class EmailCooldownError extends Error {
+  seconds: number;
+
+  constructor(message: string, seconds: number) {
+    super(message);
+    this.seconds = seconds;
+  }
+}
+
 const send = async (path: string, method: "PATCH" | "POST", body: object): Promise<Response> => {
   const response = await fetch(`${API_URL}/v1/auth/${path}`, {
     method,
@@ -14,12 +23,16 @@ const send = async (path: string, method: "PATCH" | "POST", body: object): Promi
     body: JSON.stringify(body),
   });
 
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
+  if (response.ok) return response;
+
+  const message = await readErrorMessage(response);
+  const retryAfter = Number(response.headers.get("Retry-After"));
+
+  if (response.status === 429 && retryAfter > 0) {
+    throw new EmailCooldownError(message, retryAfter);
   }
 
-  return response;
+  throw new Error(message);
 };
 
 export const updateProfile = async (payload: ProfilePayload): Promise<User> => {

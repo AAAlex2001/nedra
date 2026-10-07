@@ -10,6 +10,7 @@ export {
 } from "./api/auth";
 export {
   confirmEmailChange,
+  EmailCooldownError,
   requestEmailChange,
   updateProfile,
   type EmailCodeSent,

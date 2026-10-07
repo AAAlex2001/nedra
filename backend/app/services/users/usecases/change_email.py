@@ -44,10 +44,16 @@ def is_active(change: EmailChange, now: datetime) -> bool:
     return change.expires_at > now and change.attempts < MAX_ATTEMPTS
 
 
-def seconds_left(change: EmailChange, now: datetime) -> int:
-    """Сколько секунд осталось до истечения кода, с округлением вверх."""
+def resend_at(change: EmailChange) -> datetime:
+    """Когда можно выслать новый код: код истёк или с отправки прошло CODE_LIFETIME."""
 
-    return math.ceil((change.expires_at - now).total_seconds())
+    return min(change.expires_at, change.created_at + CODE_LIFETIME)
+
+
+def seconds_until(moment: datetime, now: datetime) -> int:
+    """Сколько секунд осталось до момента, с округлением вверх."""
+
+    return math.ceil((moment - now).total_seconds())
 
 
 class RequestEmailChangeUseCase:
@@ -74,8 +80,8 @@ class RequestEmailChangeUseCase:
         now = datetime.now(timezone.utc)
         current = await self.changes.get(user.id)
 
-        if current is not None and is_active(current, now):
-            resend_in = seconds_left(current, now)
+        if current is not None and is_active(current, now) and resend_at(current) > now:
+            resend_in = seconds_until(resend_at(current), now)
 
             if current.email != normalized:
                 raise EmailCodeCooldownError(resend_in)
@@ -91,6 +97,7 @@ class RequestEmailChangeUseCase:
                 code_hash=hash_code(user.id, code),
                 attempts=0,
                 expires_at=now + CODE_LIFETIME,
+                created_at=now,
             )
         )
 

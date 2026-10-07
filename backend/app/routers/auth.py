@@ -143,7 +143,11 @@ async def request_email_change(
     except EmailAlreadyTakenError as error:
         raise HTTPException(status.HTTP_409_CONFLICT, "Этот email уже занят") from error
     except EmailCodeCooldownError as error:
-        raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS, str(error)) from error
+        raise HTTPException(
+            status.HTTP_429_TOO_MANY_REQUESTS,
+            str(error),
+            headers={"Retry-After": str(error.seconds)},
+        ) from error
 
     if sent.code is not None:
         background_tasks.add_task(send_email_change_code, sent.email, user.full_name, sent.code)

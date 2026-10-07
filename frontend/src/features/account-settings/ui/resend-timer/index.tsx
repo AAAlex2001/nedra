@@ -1,16 +1,12 @@
-"use client";
-
-import { useCountdown } from "../../model/use-countdown";
 import styles from "./style.module.scss";
 
 const RADIUS = 9;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 type ResendTimerProps = {
-  deadline: number;
+  left: number;
   total: number;
-  pending: boolean;
-  onResend: () => void;
+  caption: string;
 };
 
 const formatTime = (seconds: number): string => {
@@ -20,25 +16,12 @@ const formatTime = (seconds: number): string => {
   return `${minutes}:${rest}`;
 };
 
-const ResendTimer = ({ deadline, total, pending, onResend }: ResendTimerProps) => {
-  const left = useCountdown(deadline);
-
-  if (left === 0) {
-    return (
-      <div className={styles.root}>
-        <span className={styles.expired}>Код истёк.</span>
-        <button type="button" className={styles.resend} disabled={pending} onClick={onResend}>
-          Отправить новый код
-        </button>
-      </div>
-    );
-  }
-
+const ResendTimer = ({ left, total, caption }: ResendTimerProps) => {
   const share = Math.min(1, left / total);
   const offset = CIRCUMFERENCE * (1 - share);
 
   return (
-    <div className={styles.root} role="timer" aria-live="off">
+    <div className={styles.root} role="timer">
       <span className={styles.pill}>
         <svg className={styles.ring} viewBox="0 0 22 22" aria-hidden="true">
           <circle className={styles.track} cx="11" cy="11" r={RADIUS} />
@@ -53,7 +36,7 @@ const ResendTimer = ({ deadline, total, pending, onResend }: ResendTimerProps) =
         </svg>
         <span className={styles.time}>{formatTime(left)}</span>
       </span>
-      <span className={styles.caption}>до повторной отправки</span>
+      <span className={styles.caption}>{caption}</span>
     </div>
   );
 };

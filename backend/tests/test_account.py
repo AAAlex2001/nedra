@@ -135,3 +135,28 @@ def test_email_code_is_not_resent_while_active() -> None:
 
     assert renewed.code is not None
     assert changes.items[1].email == "other@mail.ru"
+
+
+def test_email_cooldown_counts_from_sending() -> None:
+    user = make_user(1, "ivan@mail.ru")
+    changes = FakeChangeRepository()
+    request = RequestEmailChangeUseCase(FakeUserRepository([user]), changes)
+    now = datetime.now(timezone.utc)
+    changes.items[1] = EmailChange(
+        user_id=1,
+        email="new@mail.ru",
+        code_hash="x",
+        attempts=0,
+        expires_at=now + timedelta(minutes=13),
+        created_at=now - timedelta(minutes=2),
+    )
+
+    with pytest.raises(EmailCodeCooldownError) as caught:
+        asyncio.run(request.execute(user, "other@mail.ru"))
+
+    assert 170 <= caught.value.seconds <= 180
+
+    changes.items[1].created_at = now - timedelta(minutes=6)
+    renewed = asyncio.run(request.execute(user, "other@mail.ru"))
+
+    assert renewed.code is not None
