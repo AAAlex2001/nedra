@@ -96,6 +96,7 @@ const EmailRow = ({ email, onChanged }: EmailRowProps) => {
           Отправили код на <strong>{draft.trim()}</strong>. Он действует 5 минут.
         </p>
         <ResendTimer
+          key={deadline}
           deadline={deadline}
           total={CODE_LIFETIME}
           pending={action.pending}
