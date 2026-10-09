@@ -14,7 +14,7 @@ from app.services.expertise.exceptions import (
     PriceMissingError,
 )
 from app.services.expertise.repo import ExpertiseRepository, executor_fits
-from app.services.expertise.wording import wording_for
+from app.services.expertise.wording import executor_title, wording_for
 from app.services.notifications.repo import NotificationRepository
 
 
@@ -25,7 +25,8 @@ class AcceptExpertiseUseCase:
     Цену назначил заказчик: беря заявку, эксперт соглашается с ней.
     Если заказчик не знал вид проекта, вид договора определяет эксперт: у него
     право первой подписи, а заказчику остаётся согласиться с одним вариантом.
-    У аудита вид договора один и ставится при подаче.
+    У аудита вид договора один и ставится при подаче, а взять заявку может
+    только руководитель аудиторской группы.
     """
 
     def __init__(
@@ -50,12 +51,12 @@ class AcceptExpertiseUseCase:
             raise ExpertiseStateError("Заявку уже взял другой исполнитель")
 
         certificates = await self.profiles.list_certificates(expert.id)
-        auditor = await self.profiles.is_auditor(expert.id)
-        if not executor_fits(expertise, certificates, auditor):
+        audit_lead = await self.profiles.is_audit_lead(expert.id)
+        if not executor_fits(expertise, certificates, audit_lead):
             raise ExpertiseAccessError("Ваша аттестация не подходит под эту заявку")
 
         if expertise.price is None:
-            raise PriceMissingError("В заявке не указана цена")
+            raise PriceMissingError("В заявке не указана цена: предложите свою")
 
         if expertise.contract_kind is None:
             expertise.contract_kind = resolve_kind(expertise.object_code, contract_kind)
@@ -67,14 +68,13 @@ class AcceptExpertiseUseCase:
         expertise.expert_ready_at = datetime.now(timezone.utc)
         expertise.status = ExpertiseStatus.EXPERT_READY
 
-        words = wording_for(expertise)
         self.notifications.add_all(
             [
                 Notification(
                     user_id=expertise.customer_id,
                     expertise_id=expertise.id,
-                    text=f"{words.executor} {expert.full_name} готов провести {words.work_accusative} "
-                    f"по заявке №{expertise.id}",
+                    text=f"{executor_title(expertise, expert)} готов провести "
+                    f"{wording_for(expertise).work_accusative} по заявке №{expertise.id}",
                 )
             ]
         )

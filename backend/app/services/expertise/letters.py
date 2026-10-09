@@ -3,7 +3,8 @@
 from app.models.expertise import Expertise, ServiceKind
 from app.models.user import User
 from app.services.experts.catalog import AREA_BY_CODE, OBJECT_BY_CODE
-from app.services.expertise.wording import wording_for
+from app.services.expertise.money import format_rub
+from app.services.expertise.wording import executor_title, wording_for
 from app.services.mail.sender import send_email
 
 SITE_URL = "https://nedra-npi.ru"
@@ -37,10 +38,7 @@ def describe_expertise(expertise: Expertise) -> str:
 def format_price(expertise: Expertise) -> str:
     """Стоимость в рублях без копеек для письма."""
 
-    if expertise.price is None:
-        return "по запросу"
-
-    return f"{int(expertise.price):,} ₽".replace(",", " ")
+    return format_rub(expertise.price)
 
 
 async def send_new_expertise_letters(expertise: Expertise, experts: list[User]) -> None:
@@ -69,12 +67,13 @@ async def send_expert_ready_letter(expertise: Expertise, customer: User, expert:
     """Заказчику: исполнитель готов, ознакомьтесь с договором и подпишите его."""
 
     words = wording_for(expertise)
+    title = executor_title(expertise, expert)
 
     await send_email(
         recipients=[customer.email],
         subject=f"{words.executor} готов провести {words.work_accusative} №{expertise.id} — НПИ «Недра»",
         text=(
-            f"{customer.full_name}, {words.executor_lower} {expert.full_name} готов провести "
+            f"{customer.full_name}, {title[:1].lower()}{title[1:]} готов провести "
             f"{words.work_accusative} по вашей заявке.\n\n{describe_expertise(expertise)}.\n"
             f"Стоимость: {format_price(expertise)}, оплата двумя частями по 50 %.\n\n"
             "Ознакомьтесь с договором в кабинете и согласитесь с его условиями, "

@@ -11,6 +11,7 @@ from app.models.expertise import Expertise
 from app.models.user import User, UserRole
 from app.services.experts.repo import ExpertProfileRepository
 from app.services.expertise.access import can_view
+from app.services.expertise.presenter import ExpertisePresenter
 from app.services.expertise.repo import ExpertiseRepository
 from app.services.expertise.usecases.accept_expertise import AcceptExpertiseUseCase
 from app.services.expertise.usecases.accept_work import AcceptWorkUseCase
@@ -150,10 +151,12 @@ def get_accept_work_usecase(
 def get_update_expertise_usecase(
     expertises: ExpertiseRepository = Depends(get_expertise_repository),
     users: UserRepository = Depends(get_user_repository),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+    notifications: NotificationRepository = Depends(get_notification_repository),
 ) -> UpdateExpertiseUseCase:
     """Сценарий правки заявки администратором."""
 
-    return UpdateExpertiseUseCase(expertises, users)
+    return UpdateExpertiseUseCase(expertises, users, profiles, notifications)
 
 
 def get_delete_expertise_usecase(
@@ -163,6 +166,17 @@ def get_delete_expertise_usecase(
     """Сценарий удаления заявки вместе с файлами."""
 
     return DeleteExpertiseUseCase(expertises, storage)
+
+
+def get_expertise_presenter(
+    user: User = Depends(get_current_user),
+    users: UserRepository = Depends(get_user_repository),
+    payments: PaymentRepository = Depends(get_payment_repository),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
+) -> ExpertisePresenter:
+    """Сборщик ответа по заявке для текущего пользователя."""
+
+    return ExpertisePresenter(user, users, payments, profiles)
 
 
 async def get_visible_expertise(
@@ -176,12 +190,12 @@ async def get_visible_expertise(
     expertise = await expertises.get_by_id(expertise_id)
 
     certificates = []
-    auditor = False
+    audit_lead = False
     if user.role == UserRole.EXPERT:
         certificates = await profiles.list_certificates(user.id)
-        auditor = await profiles.is_auditor(user.id)
+        audit_lead = await profiles.is_audit_lead(user.id)
 
-    if expertise is None or not can_view(expertise, user, certificates, auditor):
+    if expertise is None or not can_view(expertise, user, certificates, audit_lead):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Экспертиза не найдена",

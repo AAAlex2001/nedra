@@ -12,6 +12,7 @@ from app.models.expert import (
 from app.models.billing import Invoice, InvoiceStage
 from app.models.tariff import Tariff
 from app.models.expertise import (
+    AuditTeamMember,
     ContractKind,
     Expertise,
     CustomerType,
@@ -45,6 +46,7 @@ __all__ = [
     "Invoice",
     "InvoiceStage",
     "Tariff",
+    "AuditTeamMember",
     "ContractKind",
     "Expertise",
     "CustomerType",

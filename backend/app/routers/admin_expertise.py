@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
 from app.dependencies.admin import require_admin
 from app.dependencies.expertise import (
@@ -8,6 +8,7 @@ from app.dependencies.expertise import (
 )
 from app.dependencies.users import get_user_repository
 from app.models.expertise import Expertise
+from app.schemas.audit_details import AuditDetailsSchema
 from app.schemas.expertise import (
     ExpertiseAdminSchema,
     ExpertiseAdminUpdateSchema,
@@ -15,6 +16,7 @@ from app.schemas.expertise import (
     ExpertiseIndividualSchema,
 )
 from app.services.expertise.exceptions import ExpertiseNotFoundError, InvalidExpertiseError
+from app.services.expertise.letters import send_new_expertise_letters
 from app.services.expertise.repo import ExpertiseRepository
 from app.services.expertise.usecases.manage_expertise import (
     DeleteExpertiseUseCase,
@@ -57,6 +59,9 @@ async def to_admin_schema(expertise: Expertise, users: UserRepository) -> Expert
         individual=ExpertiseIndividualSchema.model_validate(expertise.individual)
         if expertise.individual
         else None,
+        audit_details=AuditDetailsSchema.model_validate(expertise.audit_details)
+        if expertise.audit_details
+        else None,
         comment=expertise.comment,
         status=expertise.status,
         price=expertise.price,
@@ -80,13 +85,17 @@ async def list_expertises(
 async def update_expertise(
     expertise_id: int,
     payload: ExpertiseAdminUpdateSchema,
+    background_tasks: BackgroundTasks,
     usecase: UpdateExpertiseUseCase = Depends(get_update_expertise_usecase),
     users: UserRepository = Depends(get_user_repository),
 ) -> ExpertiseAdminSchema:
-    """Поменять статус, стоимость, эксперта и вид договора заявки."""
+    """Поменять статус, стоимость, эксперта и вид договора заявки.
+
+    Аудит после консультации открывается руководителям групп: им уходит письмо.
+    """
 
     try:
-        updated = await usecase.execute(
+        result = await usecase.execute(
             expertise_id, payload.status, payload.price, payload.expert_id, payload.contract_kind
         )
     except ExpertiseNotFoundError as error:
@@ -94,7 +103,10 @@ async def update_expertise(
     except InvalidExpertiseError as error:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
 
-    return await to_admin_schema(updated, users)
+    if result.released_to:
+        background_tasks.add_task(send_new_expertise_letters, result.expertise, result.released_to)
+
+    return await to_admin_schema(result.expertise, users)
 
 
 @router.delete("/{expertise_id}", status_code=status.HTTP_204_NO_CONTENT)

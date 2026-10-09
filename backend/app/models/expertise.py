@@ -3,7 +3,19 @@ from decimal import Decimal
 from enum import StrEnum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Date, DateTime, ForeignKey, Integer, Numeric, SmallInteger, String, Text, func
+from sqlalchemy import (
+    JSON,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    SmallInteger,
+    String,
+    Text,
+    func,
+)
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
@@ -24,11 +36,23 @@ class ExpertiseStatus(StrEnum):
     paid — остаток оплачен, эксперт подписывает заключение и отправляет;
     sent — заключение отправлено заказчику;
     accepted — заказчик принял работу.
+
+    Только у аудита:
+    consultation — заказчику нужна консультация по типу аудита, заявку сначала видит менеджер;
+    offer — руководитель группы предложил свою цену, ждём ответа заказчика;
+    counter — заказчик понизил цену, ждём ответа руководителя группы;
+    plan — аванс оплачен, руководитель группы готовит План аудита;
+    plan_review — План отправлен, ждём согласования заказчика.
     """
 
     NEW = "new"
+    CONSULTATION = "consultation"
+    OFFER = "offer"
+    COUNTER = "counter"
     EXPERT_READY = "expert_ready"
     CONTRACT = "contract"
+    PLAN = "plan"
+    PLAN_REVIEW = "plan_review"
     IN_PROGRESS = "in_progress"
     REMARKS = "remarks"
     CONCLUSION_READY = "conclusion_ready"
@@ -70,10 +94,20 @@ class ContractKind(StrEnum):
 
 
 class CustomerType(StrEnum):
-    """Кто заказчик. Юрлицо платит по счёту, физлицо — картой."""
+    """Кто заказчик. Юрлицо и ИП платят по счёту, физлицо — картой."""
 
     LEGAL = "legal"
+    ENTREPRENEUR = "entrepreneur"
     INDIVIDUAL = "individual"
+
+
+COMPANY_CUSTOMERS = (CustomerType.LEGAL, CustomerType.ENTREPRENEUR)
+
+
+def uses_company(customer_type: str) -> bool:
+    """Заказчик с реквизитами организации: юрлицо или ИП. Платит по счёту."""
+
+    return customer_type in COMPANY_CUSTOMERS
 
 
 class Expertise(Base):
@@ -88,6 +122,12 @@ class Expertise(Base):
     Вид договора выбирает заказчик, а если не знает — эксперт, когда берёт
     заявку. От вида зависит, какая организация выступает исполнителем.
     Реквизиты лежат в company у юрлица и в individual у физлица.
+
+    У аудита в audit_details хранятся сведения о заявителе, масштаб, ОПО, этапы,
+    параметры, сроки и бюджет. В offer_price — цена, которую предложил
+    руководитель группы, в counter_price — сниженная цена заказчика.
+    audit_plan — последняя версия Плана аудита, plan_comment — просьба заказчика
+    скорректировать План. Аудиторы группы, кроме руководителя, лежат в team.
     """
 
     __tablename__ = "expertises"
@@ -115,8 +155,13 @@ class Expertise(Base):
     customer_type: Mapped[str] = mapped_column(String(16), default=CustomerType.LEGAL)
 
     comment: Mapped[str | None] = mapped_column(Text)
+    audit_details: Mapped[dict | None] = mapped_column(JSON().with_variant(JSONB, "postgresql"))
     status: Mapped[str] = mapped_column(String(32), index=True, default=ExpertiseStatus.NEW)
     price: Mapped[Decimal | None] = mapped_column(Numeric(10, 2))
+    offer_price: Mapped[Decimal | None] = mapped_column(Numeric(10, 2))
+    counter_price: Mapped[Decimal | None] = mapped_column(Numeric(10, 2))
+    audit_plan: Mapped[dict | None] = mapped_column(JSON().with_variant(JSONB, "postgresql"))
+    plan_comment: Mapped[str | None] = mapped_column(Text)
     result: Mapped[str | None] = mapped_column(String(16))
 
     advance_payment_id: Mapped[int | None] = mapped_column(
@@ -132,6 +177,8 @@ class Expertise(Base):
     expert_ready_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     contract_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     advance_paid_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    plan_sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    plan_approved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     conclusion_ready_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     final_paid_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
@@ -171,6 +218,28 @@ class Expertise(Base):
         cascade="all, delete-orphan",
         uselist=False,
     )
+
+    team: Mapped[list["AuditTeamMember"]] = relationship(
+        back_populates="expertise",
+        lazy="selectin",
+        cascade="all, delete-orphan",
+        order_by="AuditTeamMember.user_id",
+    )
+
+
+class AuditTeamMember(Base):
+    """Аудитор в группе по заявке на аудит. Руководитель группы — expert_id заявки."""
+
+    __tablename__ = "audit_team_members"
+
+    expertise_id: Mapped[int] = mapped_column(
+        ForeignKey("expertises.id", ondelete="CASCADE"), primary_key=True
+    )
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+
+    expertise: Mapped["Expertise"] = relationship(back_populates="team")
 
 
 class ExpertiseIndividual(Base):

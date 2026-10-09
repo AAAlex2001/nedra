@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 
 from app.models.expertise import Expertise, ServiceKind
+from app.models.user import User
 
 
 @dataclass(frozen=True)
@@ -48,6 +49,9 @@ AUDIT_WORDING = Wording(
 )
 
 
+AUDIT_EXECUTOR = "Аудитор НПИ «Недра»"
+
+
 def wording_for(expertise: Expertise) -> Wording:
     """Формулировки под сервис заявки."""
 
@@ -55,3 +59,12 @@ def wording_for(expertise: Expertise) -> Wording:
         return AUDIT_WORDING
 
     return EXPERTISE_WORDING
+
+
+def executor_title(expertise: Expertise, executor: User) -> str:
+    """Как назвать исполнителя заказчику. ФИО аудиторов заказчик узнаёт только из Плана аудита."""
+
+    if expertise.service == ServiceKind.AUDIT:
+        return AUDIT_EXECUTOR
+
+    return f"Эксперт {executor.full_name}"

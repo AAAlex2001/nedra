@@ -11,6 +11,7 @@ from app.models.expertise import (
     ExpertiseDocument,
     ExpertiseIndividual,
     ExpertiseStatus,
+    uses_company,
 )
 from app.models.notification import Notification
 from app.models.user import User
@@ -80,7 +81,7 @@ class CreateExpertiseUseCase:
 
         company = None
         individual = None
-        if data.customer_type == CustomerType.LEGAL and data.company is not None:
+        if uses_company(data.customer_type) and data.company is not None:
             company = build_company(data.company)
         if data.customer_type == CustomerType.INDIVIDUAL and data.individual is not None:
             individual = build_individual(data.individual)

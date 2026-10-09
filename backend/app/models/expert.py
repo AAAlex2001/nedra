@@ -1,7 +1,17 @@
 from datetime import date, datetime
 from enum import StrEnum
 
-from sqlalchemy import JSON, Date, DateTime, ForeignKey, Integer, SmallInteger, String, func
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    SmallInteger,
+    String,
+    func,
+)
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -94,7 +104,11 @@ class ExpertCertificate(Base):
 
 
 class ExpertProfile(Base):
-    """Профиль одобренного эксперта: направления работы и дата одобрения."""
+    """Профиль одобренного эксперта: направления работы и дата одобрения.
+
+    audit_lead ставит администратор по квалификации: только такой аудитор
+    берёт заявки на аудит и руководит аудиторской группой.
+    """
 
     __tablename__ = "expert_profiles"
 
@@ -105,6 +119,8 @@ class ExpertProfile(Base):
     directions: Mapped[list[str]] = mapped_column(
         JSON().with_variant(JSONB, "postgresql"), default=list
     )
+
+    audit_lead: Mapped[bool] = mapped_column(Boolean, default=False)
 
     approved_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

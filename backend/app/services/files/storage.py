@@ -28,8 +28,20 @@ SIGNATURE_TYPES = {
     "application/octet-stream": ".sig",
 }
 CONCLUSION_TYPES = {**DOCUMENT_TYPES, **SIGNATURE_TYPES}
+AUDIT_TYPES = {
+    "application/pdf": ".pdf",
+    **SIGNATURE_TYPES,
+    "image/jpeg": ".jpg",
+    "image/png": ".png",
+    "image/heic": ".heic",
+    "video/mp4": ".mp4",
+    "video/quicktime": ".mov",
+}
+DOCUMENT_TYPES_LABEL = "PDF, Word, JPEG и PNG"
+AUDIT_TYPES_LABEL = "PDF, файлы электронной подписи, фото и видео"
 DOCUMENT_MAX_SIZE_BYTES = 10 * MEGABYTE
 DOCUMENTATION_MAX_SIZE_BYTES = 50 * MEGABYTE
+AUDIT_MAX_SIZE_BYTES = 500 * MEGABYTE
 
 
 class UploadError(ValueError):
@@ -78,11 +90,13 @@ class PrivateStorage:
         folder: str,
         max_size_bytes: int = DOCUMENT_MAX_SIZE_BYTES,
         allowed_types: dict[str, str] = DOCUMENT_TYPES,
+        types_label: str = DOCUMENT_TYPES_LABEL,
     ) -> StoredFile:
         """Сохранить файл допустимого типа в подкаталог folder. Бросает UploadError.
 
         По умолчанию принимаются PDF, Word и картинки. Для заключений
-        передаётся CONCLUSION_TYPES, где есть ещё файлы отсоединённой ЭЦП.
+        передаётся CONCLUSION_TYPES, где есть ещё файлы отсоединённой ЭЦП,
+        для аудита — AUDIT_TYPES: без Word, зато с фото и видео.
         """
 
         content_type = file.content_type
@@ -91,7 +105,7 @@ class PrivateStorage:
 
         extension = allowed_types.get(content_type)
         if extension is None:
-            raise UploadError("Допустимы только PDF, Word, JPEG и PNG")
+            raise UploadError(f"Допустимы только {types_label}")
 
         directory = self.root / folder
         directory.mkdir(parents=True, exist_ok=True)

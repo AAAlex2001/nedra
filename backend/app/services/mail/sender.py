@@ -1,6 +1,7 @@
 """Единственное место, где есть SMTP. Остальной код собирает текст и зовёт send_email."""
 
 import logging
+from dataclasses import dataclass
 from email.message import EmailMessage
 
 import aiosmtplib
@@ -12,12 +13,22 @@ logger = logging.getLogger(__name__)
 TIMEOUT_SECONDS = 15
 
 
+@dataclass(frozen=True)
+class Attachment:
+    """Файл во вложении письма."""
+
+    filename: str
+    content_type: str
+    content: bytes
+
+
 async def send_email(
     recipients: list[str],
     subject: str,
     text: str,
     html: str | None = None,
     reply_to: str | None = None,
+    attachments: list[Attachment] | None = None,
 ) -> None:
     """Отправить письмо. Ошибки логируются, а не пробрасываются: письмо не должно ронять запрос."""
 
@@ -37,6 +48,12 @@ async def send_email(
     message.set_content(text)
     if html:
         message.add_alternative(html, subtype="html")
+
+    for attachment in attachments or []:
+        maintype, subtype = attachment.content_type.split("/", 1)
+        message.add_attachment(
+            attachment.content, maintype=maintype, subtype=subtype, filename=attachment.filename
+        )
 
     try:
         await aiosmtplib.send(

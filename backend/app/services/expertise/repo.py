@@ -6,6 +6,7 @@ from sqlalchemy.orm import selectinload
 
 from app.models.expert import ExpertCertificate
 from app.models.expertise import (
+    AuditTeamMember,
     Expertise,
     ExpertiseDocument,
     ExpertiseRemark,
@@ -17,6 +18,7 @@ RELATIONS = (
     selectinload(Expertise.documents),
     selectinload(Expertise.remarks).selectinload(ExpertiseRemark.documents),
     selectinload(Expertise.invoices),
+    selectinload(Expertise.team),
 )
 
 
@@ -71,11 +73,12 @@ class ExpertiseRepository:
         return list(result.scalars().all())
 
     async def list_for_expert(self, expert_id: int) -> list[Expertise]:
-        """Экспертизы, которые эксперт взял в работу, новые первыми."""
+        """Заявки, которые эксперт взял в работу или в чьей аудиторской группе он состоит."""
 
+        team = select(AuditTeamMember.expertise_id).where(AuditTeamMember.user_id == expert_id)
         stmt = (
             select(Expertise)
-            .where(Expertise.expert_id == expert_id)
+            .where(or_(Expertise.expert_id == expert_id, Expertise.id.in_(team)))
             .order_by(Expertise.created_at.desc())
         )
         result = await self.db.execute(stmt)
@@ -85,7 +88,7 @@ class ExpertiseRepository:
     async def list_incoming(
         self,
         certificates: list[ExpertCertificate],
-        auditor: bool,
+        audit_lead: bool,
         object_code: str | None,
         area_code: str | None,
     ) -> list[Expertise]:
@@ -93,8 +96,8 @@ class ExpertiseRepository:
 
         Экспертизу подбираем по удостоверениям: совпадают объект и область,
         а категория эксперта не хуже требуемой — 1 самая высокая, поэтому
-        сравниваем «меньше или равно». Аудит видят эксперты с направлением
-        «Аудит СУПБ». Фильтры object_code и area_code сужают выдачу для кабинета.
+        сравниваем «меньше или равно». Аудит видят аудиторы, которым админ
+        разрешил руководить группой. Фильтры object_code и area_code сужают выдачу.
         """
 
         matching: list[Expertise] = []
@@ -112,7 +115,7 @@ class ExpertiseRepository:
         result = await self.db.execute(stmt)
 
         for expertise in result.scalars().all():
-            if executor_fits(expertise, certificates, auditor):
+            if executor_fits(expertise, certificates, audit_lead):
                 matching.append(expertise)
 
         return matching
@@ -162,12 +165,12 @@ class ExpertiseRepository:
 
 
 def executor_fits(
-    expertise: Expertise, certificates: list[ExpertCertificate], auditor: bool
+    expertise: Expertise, certificates: list[ExpertCertificate], audit_lead: bool
 ) -> bool:
-    """Может ли эксперт взять заявку: аудит — по направлению, экспертизу — по удостоверениям."""
+    """Может ли эксперт взять заявку: аудит — руководитель группы, экспертизу — по удостоверениям."""
 
     if expertise.service == ServiceKind.AUDIT:
-        return auditor
+        return audit_lead
 
     return certificate_fits(certificates, expertise)
 

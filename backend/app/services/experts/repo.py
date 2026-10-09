@@ -137,12 +137,34 @@ class ExpertProfileRepository:
 
         return [user for user, profile in experts if AUDIT_DIRECTION in profile.directions]
 
+    async def list_audit_leads(self) -> list[User]:
+        """Аудиторы, которым администратор разрешил руководить группой: они берут заявки на аудит."""
+
+        experts = await self.list_experts()
+
+        return [
+            user
+            for user, profile in experts
+            if profile.audit_lead and AUDIT_DIRECTION in profile.directions
+        ]
+
     async def is_auditor(self, user_id: int) -> bool:
         """Отмечен ли у эксперта аудит СУПБ в направлениях работы."""
 
         profile = await self.get_by_user(user_id)
 
         return profile is not None and AUDIT_DIRECTION in profile.directions
+
+    async def is_audit_lead(self, user_id: int) -> bool:
+        """Может ли аудитор брать заявки на аудит и руководить группой."""
+
+        profile = await self.get_by_user(user_id)
+
+        return (
+            profile is not None
+            and profile.audit_lead
+            and AUDIT_DIRECTION in profile.directions
+        )
 
     async def save(self) -> None:
         """Зафиксировать правки профиля, удостоверения или аккаунта эксперта."""

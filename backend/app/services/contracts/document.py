@@ -17,11 +17,11 @@ from docx.text.paragraph import Paragraph
 
 from app.models.expertise import (
     ContractKind,
-    CustomerType,
     Expertise,
     ExpertiseCompany,
     ExpertiseIndividual,
     ServiceKind,
+    uses_company,
 )
 from app.models.user import User
 from app.services.contracts.executors import executor_for
@@ -56,7 +56,7 @@ DEFAULT_DAYS = 5
 def contract_problem(expertise: Expertise) -> str | None:
     """Чего не хватает, чтобы составить договор. None — всё на месте."""
 
-    legal = expertise.customer_type == CustomerType.LEGAL
+    legal = uses_company(expertise.customer_type)
 
     if legal and expertise.company is None:
         return "В заявке нет реквизитов заказчика"
@@ -225,7 +225,7 @@ def document_values(
     Телефон и почту для связи берём из аккаунта заказчика, который подписывает.
     """
 
-    if expertise.company is not None and expertise.customer_type == CustomerType.LEGAL:
+    if expertise.company is not None and uses_company(expertise.customer_type):
         party = company_values(expertise.company, customer)
     elif expertise.individual is not None:
         party = individual_values(expertise.individual, customer)

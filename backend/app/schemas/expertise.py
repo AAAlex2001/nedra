@@ -10,8 +10,14 @@ from app.models.expertise import (
     ExpertiseResult,
     ExpertiseStatus,
     ServiceKind,
+    uses_company,
 )
 from app.models.payment import PaymentStatus
+from app.schemas.audit_details import (
+    AuditDetailsSchema,
+    AuditPlanSchema,
+    AuditTeamMemberSchema,
+)
 
 
 Deadline = Literal["today", "three_days", "week", "any"]
@@ -116,7 +122,7 @@ class ExpertiseInSchema(BaseModel):
     def require_customer_data(self) -> "ExpertiseInSchema":
         """Юрлицу нужны реквизиты, физлицу — паспортные данные."""
 
-        if self.customer_type == CustomerType.LEGAL and self.company is None:
+        if uses_company(self.customer_type) and self.company is None:
             raise ValueError("Укажите реквизиты организации")
 
         if self.customer_type == CustomerType.INDIVIDUAL and self.individual is None:
@@ -158,6 +164,7 @@ class ExpertiseAdminSchema(BaseModel):
     customer_type: CustomerType = CustomerType.LEGAL
     company: ExpertiseCompanySchema | None = None
     individual: ExpertiseIndividualSchema | None = None
+    audit_details: AuditDetailsSchema | None = None
     comment: str | None
     status: ExpertiseStatus
     price: Decimal | None
@@ -239,10 +246,16 @@ class ExpertiseOutSchema(BaseModel):
     customer_type: CustomerType = CustomerType.LEGAL
     company: ExpertiseCompanySchema | None = None
     individual: ExpertiseIndividualSchema | None = None
+    audit_details: AuditDetailsSchema | None = None
     comment: str | None
     status: ExpertiseStatus
     result: ExpertiseResult | None
     price: Decimal | None
+    offer_price: Decimal | None = None
+    counter_price: Decimal | None = None
+    audit_plan: AuditPlanSchema | None = None
+    plan_comment: str | None = None
+    team: list[AuditTeamMemberSchema] = []
     advance_payment: ExpertisePaymentSchema | None
     final_payment: ExpertisePaymentSchema | None
     invoice: ExpertiseInvoiceSchema | None
@@ -250,6 +263,8 @@ class ExpertiseOutSchema(BaseModel):
     expert_ready_at: datetime | None
     contract_at: datetime | None
     advance_paid_at: datetime | None
+    plan_sent_at: datetime | None = None
+    plan_approved_at: datetime | None = None
     conclusion_ready_at: datetime | None
     final_paid_at: datetime | None
     sent_at: datetime | None

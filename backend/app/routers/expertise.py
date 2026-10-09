@@ -26,6 +26,7 @@ from app.dependencies.expertise import (
     get_confirm_expertise_usecase,
     get_create_expertise_payment_usecase,
     get_create_expertise_usecase,
+    get_expertise_presenter,
     get_expertise_repository,
     get_mark_conclusion_ready_usecase,
     get_resubmit_documentation_usecase,
@@ -38,15 +39,10 @@ from app.dependencies.users import get_user_repository, require_customer, requir
 from app.models.expertise import Expertise
 from app.models.payment import PaymentStatus
 from app.models.user import User
-from app.models.billing import Invoice
 from app.schemas.expertise import (
     ExpertiseAcceptSchema,
-    ExpertiseCompanySchema,
-    ExpertiseIndividualSchema,
     ExpertiseInSchema,
-    ExpertiseInvoiceSchema,
     ExpertiseOutSchema,
-    ExpertisePaymentSchema,
 )
 from app.services.billing.exceptions import InvalidCompanyError
 from app.services.contracts.document import (
@@ -57,7 +53,6 @@ from app.services.contracts.document import (
 )
 from app.services.contracts.executors import executor_for, executor_requisites
 from app.services.documents.company import CompanyRequisitesMissingError
-from app.services.documents.invoice_pdf import invoice_number
 from app.schemas.payment import PaymentOutSchema
 from app.services.experts.repo import ExpertProfileRepository
 from app.services.expertise.exceptions import (
@@ -78,6 +73,7 @@ from app.services.expertise.letters import (
     send_revision_letter,
     send_work_accepted_letter,
 )
+from app.services.expertise.presenter import ExpertisePresenter
 from app.services.expertise.repo import ExpertiseRepository
 from app.services.expertise.usecases.accept_expertise import AcceptExpertiseUseCase
 from app.services.expertise.usecases.accept_work import AcceptWorkUseCase
@@ -98,85 +94,6 @@ from app.services.users.repo import UserRepository
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/expertise", tags=["expertise"])
-
-
-def pending_invoice(expertise: Expertise) -> Invoice | None:
-    """Последний неоплаченный счёт заявки: по нему заказчик сообщает об оплате."""
-
-    unpaid = [item for item in expertise.invoices if item.paid_at is None]
-
-    return unpaid[-1] if unpaid else None
-
-
-def to_invoice_schema(invoice: Invoice) -> ExpertiseInvoiceSchema:
-    """Счёт для карточки заявки вместе с человеческим номером."""
-
-    return ExpertiseInvoiceSchema(
-        id=invoice.id,
-        number=invoice_number(invoice),
-        amount=invoice.amount,
-        reported_at=invoice.reported_at,
-        paid_at=invoice.paid_at,
-    )
-
-
-async def to_schema(
-    expertise: Expertise, users: UserRepository, payments: PaymentRepository
-) -> ExpertiseOutSchema:
-    """Собрать схему с именами сторон и платежами по этапам."""
-
-    customer = await users.get_by_id(expertise.customer_id)
-    expert = await users.get_by_id(expertise.expert_id) if expertise.expert_id else None
-
-    advance = None
-    if expertise.advance_payment_id is not None:
-        advance = await payments.get_by_id(expertise.advance_payment_id)
-
-    final = None
-    if expertise.final_payment_id is not None:
-        final = await payments.get_by_id(expertise.final_payment_id)
-
-    unpaid = pending_invoice(expertise)
-
-    return ExpertiseOutSchema(
-        id=expertise.id,
-        service=expertise.service,
-        customer_id=expertise.customer_id,
-        customer_name=customer.full_name if customer else "—",
-        expert_id=expertise.expert_id,
-        expert_name=expert.full_name if expert else None,
-        object_code=expertise.object_code,
-        area_code=expertise.area_code,
-        hazard_class=expertise.hazard_class,
-        expert_category=expertise.expert_category,
-        deadline=expertise.deadline,
-        object_name=expertise.object_name,
-        contract_kind=expertise.contract_kind,
-        customer_type=expertise.customer_type,
-        company=ExpertiseCompanySchema.model_validate(expertise.company)
-        if expertise.company
-        else None,
-        individual=ExpertiseIndividualSchema.model_validate(expertise.individual)
-        if expertise.individual
-        else None,
-        comment=expertise.comment,
-        status=expertise.status,
-        result=expertise.result,
-        price=expertise.price,
-        advance_payment=ExpertisePaymentSchema.model_validate(advance) if advance else None,
-        final_payment=ExpertisePaymentSchema.model_validate(final) if final else None,
-        invoice=to_invoice_schema(unpaid) if unpaid else None,
-        created_at=expertise.created_at,
-        expert_ready_at=expertise.expert_ready_at,
-        contract_at=expertise.contract_at,
-        advance_paid_at=expertise.advance_paid_at,
-        conclusion_ready_at=expertise.conclusion_ready_at,
-        final_paid_at=expertise.final_paid_at,
-        sent_at=expertise.sent_at,
-        accepted_at=expertise.accepted_at,
-        documents=expertise.documents,
-        remarks=expertise.remarks,
-    )
 
 
 def raise_for_flow_error(error: Exception) -> NoReturn:
@@ -203,8 +120,7 @@ async def create_expertise(
     ),
     customer: User = Depends(require_customer),
     usecase: CreateExpertiseUseCase = Depends(get_create_expertise_usecase),
-    users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> ExpertiseOutSchema:
     """Подать документацию на экспертизу. Подходящие эксперты получат уведомление и письмо."""
 
@@ -226,21 +142,20 @@ async def create_expertise(
 
     background_tasks.add_task(send_new_expertise_letters, created.expertise, created.notified_experts)
 
-    return await to_schema(created.expertise, users, payments)
+    return await presenter.build(created.expertise)
 
 
 @router.get("/my")
 async def list_my_expertises(
     customer: User = Depends(require_customer),
     expertises: ExpertiseRepository = Depends(get_expertise_repository),
-    users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> list[ExpertiseOutSchema]:
     """Заявки текущего заказчика."""
 
     items = await expertises.list_for_customer(customer.id)
 
-    return [await to_schema(item, users, payments) for item in items]
+    return [await presenter.build(item) for item in items]
 
 
 @router.get("/incoming")
@@ -250,41 +165,38 @@ async def list_incoming_expertises(
     expert: User = Depends(require_expert),
     expertises: ExpertiseRepository = Depends(get_expertise_repository),
     profiles: ExpertProfileRepository = Depends(get_profile_repository),
-    users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> list[ExpertiseOutSchema]:
-    """Новые заявки, подходящие эксперту: экспертизы по удостоверениям, аудит по направлению."""
+    """Новые заявки, подходящие эксперту: экспертизы по удостоверениям, аудит — руководителям групп."""
 
     certificates = await profiles.list_certificates(expert.id)
-    auditor = await profiles.is_auditor(expert.id)
-    items = await expertises.list_incoming(certificates, auditor, object_code, area_code)
+    audit_lead = await profiles.is_audit_lead(expert.id)
+    items = await expertises.list_incoming(certificates, audit_lead, object_code, area_code)
 
-    return [await to_schema(item, users, payments) for item in items]
+    return [await presenter.build(item) for item in items]
 
 
 @router.get("/assigned")
 async def list_assigned_expertises(
     expert: User = Depends(require_expert),
     expertises: ExpertiseRepository = Depends(get_expertise_repository),
-    users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> list[ExpertiseOutSchema]:
-    """Заявки, которые эксперт взял в работу, на любом шаге."""
+    """Заявки, которые эксперт взял в работу или где он в аудиторской группе, на любом шаге."""
 
     items = await expertises.list_for_expert(expert.id)
 
-    return [await to_schema(item, users, payments) for item in items]
+    return [await presenter.build(item) for item in items]
 
 
 @router.get("/{expertise_id}")
 async def get_expertise(
     expertise: Expertise = Depends(get_visible_expertise),
-    users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> ExpertiseOutSchema:
     """Одна экспертиза для заказчика или эксперта."""
 
-    return await to_schema(expertise, users, payments)
+    return await presenter.build(expertise)
 
 
 @router.post("/{expertise_id}/accept")
@@ -295,7 +207,7 @@ async def accept_expertise(
     expert: User = Depends(require_expert),
     usecase: AcceptExpertiseUseCase = Depends(get_accept_expertise_usecase),
     users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> ExpertiseOutSchema:
     """Шаг 3: эксперт готов провести экспертизу. Заказчику уходит уведомление и письмо.
 
@@ -318,7 +230,7 @@ async def accept_expertise(
     if customer is not None:
         background_tasks.add_task(send_expert_ready_letter, updated, customer, expert)
 
-    return await to_schema(updated, users, payments)
+    return await presenter.build(updated)
 
 
 @router.post("/{expertise_id}/confirm")
@@ -328,7 +240,7 @@ async def confirm_expertise(
     customer: User = Depends(require_customer),
     usecase: ConfirmExpertiseUseCase = Depends(get_confirm_expertise_usecase),
     users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> ExpertiseOutSchema:
     """Шаг 5–6: заказчик согласился с условиями, договор заключён и сохранён в заявке."""
 
@@ -346,7 +258,7 @@ async def confirm_expertise(
     if expert is not None:
         background_tasks.add_task(send_contract_letter, updated, expert)
 
-    return await to_schema(updated, users, payments)
+    return await presenter.build(updated)
 
 
 @router.post("/{expertise_id}/payment", status_code=status.HTTP_201_CREATED)
@@ -380,6 +292,7 @@ async def refresh_expertise_payment(
     sync: SyncPaymentStatusUseCase = Depends(get_sync_payment_usecase),
     apply: ApplyExpertisePaymentUseCase = Depends(get_apply_expertise_payment_usecase),
     users: UserRepository = Depends(get_user_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> ExpertiseOutSchema:
     """Проверить оплату текущего этапа у ЮKassa. Фронт зовёт после возврата со страницы оплаты."""
 
@@ -411,7 +324,7 @@ async def refresh_expertise_payment(
             updated = applied
             schedule_payment_letter(background_tasks, applied, synced.id, users)
 
-    return await to_schema(updated, users, payments)
+    return await presenter.build(updated)
 
 
 async def notify_expert_about_payment(
@@ -447,7 +360,7 @@ async def mark_conclusion_ready(
     expert: User = Depends(require_expert),
     usecase: MarkConclusionReadyUseCase = Depends(get_mark_conclusion_ready_usecase),
     users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> ExpertiseOutSchema:
     """Шаг 8: эксперт сообщает, что заключение готово."""
 
@@ -460,7 +373,7 @@ async def mark_conclusion_ready(
     if customer is not None:
         background_tasks.add_task(send_conclusion_ready_letter, updated, customer)
 
-    return await to_schema(updated, users, payments)
+    return await presenter.build(updated)
 
 
 @router.post("/{expertise_id}/remarks")
@@ -472,7 +385,7 @@ async def send_remarks(
     expert: User = Depends(require_expert),
     usecase: SendRemarksUseCase = Depends(get_send_remarks_usecase),
     users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> ExpertiseOutSchema:
     """Шаг 8а: эксперт выдаёт замечания вместо готового заключения."""
 
@@ -485,7 +398,7 @@ async def send_remarks(
     if customer is not None:
         background_tasks.add_task(send_remarks_letter, updated, customer, text)
 
-    return await to_schema(updated, users, payments)
+    return await presenter.build(updated)
 
 
 @router.post("/{expertise_id}/revision")
@@ -497,7 +410,7 @@ async def resubmit_documentation(
     customer: User = Depends(require_customer),
     usecase: ResubmitDocumentationUseCase = Depends(get_resubmit_documentation_usecase),
     users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> ExpertiseOutSchema:
     """Шаг 8б: заказчик исправил замечания и отправляет документацию повторно."""
 
@@ -510,7 +423,7 @@ async def resubmit_documentation(
     if expert is not None:
         background_tasks.add_task(send_revision_letter, updated, expert, text)
 
-    return await to_schema(updated, users, payments)
+    return await presenter.build(updated)
 
 
 @router.post("/{expertise_id}/conclusion")
@@ -522,7 +435,7 @@ async def send_conclusion(
     expert: User = Depends(require_expert),
     usecase: SendConclusionUseCase = Depends(get_send_conclusion_usecase),
     users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> ExpertiseOutSchema:
     """Шаг 10: эксперт отправляет подписанное заключение заказчику."""
 
@@ -535,7 +448,7 @@ async def send_conclusion(
     if customer is not None:
         background_tasks.add_task(send_conclusion_sent_letter, updated, customer)
 
-    return await to_schema(updated, users, payments)
+    return await presenter.build(updated)
 
 
 @router.post("/{expertise_id}/accept-work")
@@ -545,7 +458,7 @@ async def accept_work(
     customer: User = Depends(require_customer),
     usecase: AcceptWorkUseCase = Depends(get_accept_work_usecase),
     users: UserRepository = Depends(get_user_repository),
-    payments: PaymentRepository = Depends(get_payment_repository),
+    presenter: ExpertisePresenter = Depends(get_expertise_presenter),
 ) -> ExpertiseOutSchema:
     """Шаг 12: заказчик принял работу."""
 
@@ -558,7 +471,7 @@ async def accept_work(
     if expert is not None:
         background_tasks.add_task(send_work_accepted_letter, updated, expert)
 
-    return await to_schema(updated, users, payments)
+    return await presenter.build(updated)
 
 
 @router.get("/{expertise_id}/signing/{kind}")

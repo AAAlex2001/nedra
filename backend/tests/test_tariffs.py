@@ -73,10 +73,15 @@ def test_save_accepts_audit_tariff() -> None:
     usecase = SaveTariffsUseCase(repo)
 
     asyncio.run(
-        usecase.execute([TariffInSchema(area_code="audit", object_code="supb", price=Decimal("80000"))])
+        usecase.execute([TariffInSchema(area_code="audit", object_code="supb", price=Decimal("180000"))])
     )
 
-    assert repo.items[("audit", "supb")].price == Decimal("80000")
+    assert repo.items[("audit", "supb")].price == Decimal("180000")
+
+    with pytest.raises(InvalidTariffError):
+        asyncio.run(
+            usecase.execute([TariffInSchema(area_code="audit", object_code="supb", price=Decimal("80000"))])
+        )
 
 
 def test_save_rejects_unknown_pair() -> None:

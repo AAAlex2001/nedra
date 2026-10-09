@@ -2,12 +2,13 @@
 
 Оплатить можно картой через ЮKassa или по счёту для юрлица. Дальше экспертиза
 движется одинаково, поэтому сдвиг статуса живёт здесь, а не в каждом сценарии.
+Аудит после аванса не уходит сразу в работу: сначала заказчик согласует План аудита.
 """
 
 from datetime import datetime, timezone
 
 from app.models.billing import InvoiceStage
-from app.models.expertise import Expertise, ExpertiseStatus
+from app.models.expertise import Expertise, ExpertiseStatus, ServiceKind
 
 STAGE_TITLES = {
     InvoiceStage.ADVANCE: "Аванс 50%",
@@ -52,6 +53,14 @@ def mark_stage_paid(expertise: Expertise, stage: InvoiceStage) -> str | None:
 
     if stage == InvoiceStage.ADVANCE and expertise.status == ExpertiseStatus.CONTRACT:
         expertise.advance_paid_at = now
+
+        if expertise.service == ServiceKind.AUDIT:
+            expertise.status = ExpertiseStatus.PLAN
+            return (
+                f"Заказчик оплатил аванс по заявке №{expertise.id}: сформируйте группу "
+                "и отправьте заказчику План аудита"
+            )
+
         expertise.status = ExpertiseStatus.IN_PROGRESS
 
         return f"Заказчик оплатил аванс по заявке №{expertise.id}, можно приступать к работе"

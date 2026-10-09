@@ -2,6 +2,7 @@
 
 from app.models.tariff import Tariff
 from app.schemas.tariff import TariffInSchema
+from app.services.audit.options import MIN_AUDIT_PRICE
 from app.services.experts.catalog import AREA_BY_CODE, OBJECT_BY_CODE
 from app.services.tariffs.audit import is_audit_tariff
 from app.services.tariffs.exceptions import InvalidTariffError
@@ -32,9 +33,17 @@ class SaveTariffsUseCase:
         return await self.tariffs.list_all()
 
     def check_cell(self, cell: TariffInSchema) -> None:
-        """Ячейка с ценой должна быть допустимой парой по справочнику. Удаление не проверяем."""
+        """Ячейка с ценой должна быть допустимой парой по справочнику. Удаление не проверяем.
 
-        if cell.price is None or is_audit_tariff(cell.area_code, cell.object_code):
+        Тариф на аудит не ниже минимальной цены аудита — 100 000 ₽.
+        """
+
+        if cell.price is None:
+            return
+
+        if is_audit_tariff(cell.area_code, cell.object_code):
+            if cell.price < MIN_AUDIT_PRICE:
+                raise InvalidTariffError("Тариф на аудит — не менее 100 000 ₽")
             return
 
         area = AREA_BY_CODE.get(cell.area_code)

@@ -8,7 +8,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from app.models.expertise import CustomerType, Expertise
+from app.models.expertise import Expertise, uses_company
 from app.services.documents.company import CompanyRequisites
 from app.services.documents.fonts import register_fonts
 from app.services.documents.layout import (
@@ -51,7 +51,7 @@ def act_payer(expertise: Expertise) -> ActPayer | None:
     """Заказчик из заявки: организация у юрлица, паспортные данные у физлица."""
 
     company = expertise.company
-    if expertise.customer_type == CustomerType.LEGAL and company is not None:
+    if uses_company(expertise.customer_type) and company is not None:
         kpp = company.kpp or "—"
         return ActPayer(company.name, f"{company.name}, ИНН {company.inn}, КПП {kpp}", company.address)
 

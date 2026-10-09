@@ -4,9 +4,10 @@ from datetime import datetime, timezone
 
 from fastapi import UploadFile
 
-from app.models.expertise import Expertise, ExpertiseDocument, ExpertiseStatus
+from app.models.expertise import Expertise, ExpertiseDocument, ExpertiseStatus, ServiceKind
 from app.models.notification import Notification
 from app.models.user import User
+from app.services.audit.files import save_audit_file
 from app.services.expertise.exceptions import (
     ExpertiseAccessError,
     ExpertiseStateError,
@@ -58,7 +59,10 @@ class ResubmitDocumentationUseCase:
         comment = text.strip() if text else None
 
         for file in files:
-            stored = await self.storage.save(file, REVISIONS_FOLDER, DOCUMENTATION_MAX_SIZE_BYTES)
+            if expertise.service == ServiceKind.AUDIT:
+                stored = await save_audit_file(self.storage, file, REVISIONS_FOLDER)
+            else:
+                stored = await self.storage.save(file, REVISIONS_FOLDER, DOCUMENTATION_MAX_SIZE_BYTES)
             document = ExpertiseDocument(
                 uploaded_by=customer.id,
                 kind="revision",

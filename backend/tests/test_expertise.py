@@ -88,16 +88,24 @@ class FakeProfileRepository:
         experts: list[User],
         certificates: list[ExpertCertificate] | None = None,
         auditors: list[User] | None = None,
+        leads: list[User] | None = None,
     ) -> None:
         self.experts = experts
         self.certificates = certificates or []
         self.auditors = auditors or []
+        self.leads = leads if leads is not None else self.auditors
 
     async def list_auditors(self) -> list[User]:
         return self.auditors
 
+    async def list_audit_leads(self) -> list[User]:
+        return self.leads
+
     async def is_auditor(self, user_id: int) -> bool:
         return any(auditor.id == user_id for auditor in self.auditors)
+
+    async def is_audit_lead(self, user_id: int) -> bool:
+        return any(lead.id == user_id for lead in self.leads)
 
     async def list_certified(self, object_code: str, area_code: str, max_category: int) -> list[User]:
         return self.experts
@@ -149,7 +157,9 @@ class FakeStorage:
     def __init__(self) -> None:
         self.written: list[bytes] = []
 
-    async def save(self, file, folder: str, max_size_bytes: int, allowed_types=None) -> StoredFile:
+    async def save(
+        self, file, folder: str, max_size_bytes: int, allowed_types=None, types_label=None
+    ) -> StoredFile:
         return StoredFile(
             path=f"{folder}/fake.pdf",
             original_name=file.name,

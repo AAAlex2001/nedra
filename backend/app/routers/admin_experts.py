@@ -71,25 +71,41 @@ async def get_application_or_404(
     return application
 
 
+async def to_application_schema(
+    application: ExpertApplication, profiles: ExpertProfileRepository
+) -> ExpertApplicationOutSchema:
+    """Заявка с отметкой, может ли одобренный эксперт руководить аудиторской группой."""
+
+    schema = ExpertApplicationOutSchema.model_validate(application)
+
+    if application.user_id is not None:
+        profile = await profiles.get_by_user(application.user_id)
+        schema.audit_lead = profile.audit_lead if profile else False
+
+    return schema
+
+
 @router.get("/applications")
 async def list_applications(
     status_filter: ApplicationStatus | None = Query(None, alias="status"),
     applications: ExpertApplicationRepository = Depends(get_application_repository),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
 ) -> list[ExpertApplicationOutSchema]:
     """Заявки экспертов, новые первыми. По умолчанию все, можно отфильтровать по статусу."""
 
     items = await applications.list_all(status_filter)
 
-    return [ExpertApplicationOutSchema.model_validate(item) for item in items]
+    return [await to_application_schema(item, profiles) for item in items]
 
 
 @router.get("/applications/{application_id}")
 async def get_application(
     application: ExpertApplication = Depends(get_application_or_404),
+    profiles: ExpertProfileRepository = Depends(get_profile_repository),
 ) -> ExpertApplicationOutSchema:
     """Одна заявка со всеми удостоверениями."""
 
-    return ExpertApplicationOutSchema.model_validate(application)
+    return await to_application_schema(application, profiles)
 
 
 @router.post("/applications/{application_id}/approve")
@@ -151,6 +167,7 @@ async def list_experts(
                 full_name=user.full_name,
                 phone=user.phone,
                 directions=profile.directions,
+                audit_lead=profile.audit_lead,
                 approved_at=profile.approved_at,
                 certificates=[CertificateOutSchema.model_validate(item) for item in certificates],
             )
@@ -167,7 +184,7 @@ async def update_expert(
     profiles: ExpertProfileRepository = Depends(get_profile_repository),
     users: UserRepository = Depends(get_user_repository),
 ) -> ExpertOutSchema:
-    """Поменять имя, телефон и направления эксперта."""
+    """Поменять имя, телефон, направления эксперта и право руководить аудиторской группой."""
 
     try:
         user, profile = await usecase.execute(user_id, payload)
@@ -184,6 +201,7 @@ async def update_expert(
         full_name=user.full_name,
         phone=user.phone,
         directions=profile.directions,
+        audit_lead=profile.audit_lead,
         approved_at=profile.approved_at,
         certificates=[CertificateOutSchema.model_validate(item) for item in certificates],
     )

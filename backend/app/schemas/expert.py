@@ -105,6 +105,7 @@ class ExpertApplicationOutSchema(BaseModel):
     full_name: str
     phone: str
     directions: list[str]
+    audit_lead: bool = False
     status: ApplicationStatus
     admin_comment: str | None
     user_id: int | None
@@ -132,6 +133,7 @@ class ExpertUpdateSchema(BaseModel):
     full_name: str = Field(..., min_length=2, max_length=255)
     phone: str = Field(..., min_length=10, max_length=32)
     directions: list[str] = Field(..., min_length=1, description="Коды направлений работы")
+    audit_lead: bool = Field(False, description="Может быть руководителем аудиторской группы")
 
 
 class ExpertOutSchema(BaseModel):
@@ -142,6 +144,7 @@ class ExpertOutSchema(BaseModel):
     full_name: str
     phone: str
     directions: list[str]
+    audit_lead: bool = False
     approved_at: datetime
     certificates: list[CertificateOutSchema]
 
