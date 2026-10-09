@@ -193,7 +193,7 @@ export const EXPERTISE_STATUS_LABELS: Record<ExpertiseStatus, string> = {
   contract: "Договор заключён",
   plan: "Готовится План",
   plan_review: "Согласование Плана",
-  in_progress: "В работе",
+  in_progress: "Аванс оплачен, в работе",
   remarks: "Замечания эксперта",
   conclusion_ready: "Заключение готово",
   paid: "Оплачено полностью",
