@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import type { ReactNode } from "react";
 import styles from "./style.module.scss";
 
@@ -16,7 +17,7 @@ export const DetailsTable = ({ children }: DetailsTableProps) => (
 );
 
 export const DetailsRow = ({ label, action, children }: DetailsRowProps) => (
-  <div className={`${styles.row} ${action ? styles.withAction : ""}`}>
+  <div className={classNames(styles.row, action && styles.withAction)}>
     <dt className={styles.term}>{label}</dt>
     <dd className={styles.value}>{children}</dd>
     {action && <div className={styles.action}>{action}</div>}

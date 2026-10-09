@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Link from "next/link";
 import styles from "./style.module.scss";
 
@@ -36,7 +37,7 @@ const Badge = ({ count }: { count: number }) => (
 
 export const Tabs = ({ items, active, onSelect, label, stretch }: TabsProps) => (
   <div
-    className={`${styles.tabs} ${stretch ? styles.stretched : ""}`}
+    className={classNames(styles.tabs, stretch && styles.stretched)}
     role="tablist"
     aria-label={label}
   >
@@ -46,7 +47,7 @@ export const Tabs = ({ items, active, onSelect, label, stretch }: TabsProps) => 
         type="button"
         role="tab"
         aria-selected={active === item.key}
-        className={`${styles.tab} ${active === item.key ? styles.tabActive : ""}`}
+        className={classNames(styles.tab, active === item.key && styles.tabActive)}
         onClick={() => onSelect(item.key)}
       >
         {item.label}
@@ -57,13 +58,13 @@ export const Tabs = ({ items, active, onSelect, label, stretch }: TabsProps) => 
 );
 
 export const TabLinks = ({ items, active, label, stretch }: TabLinksProps) => (
-  <nav className={`${styles.tabs} ${stretch ? styles.stretched : ""}`} aria-label={label}>
+  <nav className={classNames(styles.tabs, stretch && styles.stretched)} aria-label={label}>
     {items.map((item) => (
       <Link
         key={item.key}
         href={item.href}
         aria-current={active === item.key ? "page" : undefined}
-        className={`${styles.tab} ${active === item.key ? styles.tabActive : ""}`}
+        className={classNames(styles.tab, active === item.key && styles.tabActive)}
       >
         {item.label}
       </Link>

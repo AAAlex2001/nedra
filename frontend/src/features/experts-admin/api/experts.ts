@@ -4,6 +4,7 @@ export type ExpertUpdate = {
   full_name: string;
   phone: string;
   directions: string[];
+  audit_lead: boolean;
 };
 
 export type CertificateUpdate = {

@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "@/entities/user";
@@ -59,7 +60,7 @@ const Header = () => {
                 <button
                   id={`header-trigger-${item.id}`}
                   type="button"
-                  className={`${styles.tab} ${activeGroup === item.id ? styles.active : ""}`}
+                  className={classNames(styles.tab, activeGroup === item.id && styles.active)}
                   aria-expanded={activeGroup === item.id}
                   aria-controls={`header-panel-${item.id}`}
                   onClick={() => setActiveGroup((current) => current === item.id ? null : item.id)}

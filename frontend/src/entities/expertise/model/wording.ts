@@ -57,10 +57,15 @@ export const isAudit = (expertise: Expertise): boolean => expertise.service === 
 export const wordingFor = (expertise: Expertise): ServiceWording =>
   isAudit(expertise) ? AUDIT_WORDING : EXPERTISE_WORDING;
 
-const AUDIT_STATUS_LABELS: Record<ExpertiseStatus, string> = {
+export const AUDIT_STATUS_LABELS: Record<ExpertiseStatus, string> = {
   new: "Ждёт аудитора",
+  consultation: "Нужна консультация",
+  offer: "Аудитор предложил цену",
+  counter: "Заказчик предложил цену",
   expert_ready: "Аудитор готов",
   contract: "Договор заключён",
+  plan: "Готовится План аудита",
+  plan_review: "Согласование Плана аудита",
   in_progress: "В работе",
   remarks: "Замечания аудитора",
   conclusion_ready: "Отчёт готов",

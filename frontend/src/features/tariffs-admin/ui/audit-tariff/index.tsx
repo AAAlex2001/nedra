@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import type { Tariff } from "@/entities/tariff";
 import Button from "@/shared/ui/button";
 import { useAuditTariff } from "../../model/use-audit-tariff";
@@ -27,7 +28,7 @@ const AuditTariff = ({ initialTariffs, basePath }: AuditTariffProps) => {
       {error && <p className={styles.error}>{error}</p>}
 
       <div className={styles.tableWrap}>
-        <table className={`${styles.table} ${styles.tableNarrow}`}>
+        <table className={classNames(styles.table, styles.tableNarrow)}>
           <thead>
             <tr>
               <th className={styles.headArea}>Услуга</th>
@@ -58,7 +59,7 @@ const AuditTariff = ({ initialTariffs, basePath }: AuditTariffProps) => {
       </div>
 
       <p className={styles.hint}>
-        Цена в рублях без копеек. Пустое поле означает «по запросу».
+        Цена в рублях без копеек, не менее 100 000 ₽. Пустое поле означает «по запросу».
       </p>
     </div>
   );

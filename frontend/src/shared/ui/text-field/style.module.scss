@@ -57,3 +57,9 @@
   outline: none;
   border-color: var(--accent, #f69827);
 }
+
+.invalid .input,
+.invalid .textarea {
+  background: #fff8f7;
+  border-color: #e5484d;
+}

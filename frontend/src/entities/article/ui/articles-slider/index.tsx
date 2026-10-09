@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import type { ArticleCard as ArticleCardType } from "../../model/types";
@@ -37,7 +38,7 @@ const ArticlesSlider = ({ articles, title, ariaLabel }: ArticlesSliderProps) => 
 
   return (
     <section className={styles.section} aria-label={ariaLabel}>
-      <div className={`${styles.head} ${title ? "" : styles.headControlsOnly}`}>
+      <div className={classNames(styles.head, !title && styles.headControlsOnly)}>
         {title && <h2 className={styles.title}>{title}</h2>}
 
         <div className={styles.controls}>
@@ -60,9 +61,9 @@ const ArticlesSlider = ({ articles, title, ariaLabel }: ArticlesSliderProps) => 
         </div>
       </div>
 
-      <div ref={sliderRef} className={`keen-slider ${styles.viewport}`}>
+      <div ref={sliderRef} className={classNames("keen-slider", styles.viewport)}>
         {articles.map((article) => (
-          <div key={article.slug} className={`keen-slider__slide ${styles.slide}`}>
+          <div key={article.slug} className={classNames("keen-slider__slide", styles.slide)}>
             <ArticleCard article={article} />
           </div>
         ))}

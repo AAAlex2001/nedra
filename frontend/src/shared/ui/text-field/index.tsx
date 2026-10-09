@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import styles from "./style.module.scss";
 
 type TextFieldProps = {
@@ -14,6 +15,7 @@ type TextFieldProps = {
   autoComplete?: string;
   multiline?: boolean;
   rows?: number;
+  invalid?: boolean;
 };
 
 const TextField = ({
@@ -30,8 +32,9 @@ const TextField = ({
   autoComplete,
   multiline,
   rows = 4,
+  invalid,
 }: TextFieldProps) => (
-  <label className={styles.field}>
+  <label className={classNames(styles.field, invalid && styles.invalid)}>
     {label && (
       <span className={styles.label}>
         {label}

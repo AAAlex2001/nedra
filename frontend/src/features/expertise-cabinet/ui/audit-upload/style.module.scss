@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+
+  background: #fff;
+  border-radius: 12px;
+}
+
+.submit {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .submit {
+    align-self: flex-start;
+    width: auto;
+  }
+}

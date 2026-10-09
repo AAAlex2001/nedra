@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import type { ExpertiseDocument, ExpertiseRemark } from "@/entities/expertise";
 import { formatRequestDate } from "@/entities/request";
 import FilesList from "../files-list";
@@ -24,7 +25,7 @@ const Message = ({ expertiseId, author, fromExecutor, date, text, documents }: M
 
   return (
     <div className={styles.message}>
-      <span className={`${styles.avatar} ${tone}`} aria-hidden="true">
+      <span className={classNames(styles.avatar, tone)} aria-hidden="true">
         {author[0]}
       </span>
 

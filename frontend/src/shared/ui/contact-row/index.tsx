@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import type { ReactNode } from "react";
 import styles from "./style.module.scss";
 
@@ -9,7 +10,7 @@ type ContactRowProps = {
 };
 
 const ContactRow = ({ icon, href, align = "center", children }: ContactRowProps) => (
-  <div className={`${styles.row} ${align === "top" ? styles.top : ""}`}>
+  <div className={classNames(styles.row, align === "top" && styles.top)}>
     {icon}
     {href ? (
       <a className={styles.link} href={href}>

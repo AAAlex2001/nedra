@@ -1,0 +1,77 @@
+.checkbox {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  cursor: pointer;
+}
+
+.input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+
+  opacity: 0;
+}
+
+.box {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+
+  color: #fff;
+  background: #fff;
+  border: 1.5px solid #d5d8df;
+  border-radius: 6px;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.mark {
+  width: 13px;
+  height: 13px;
+
+  opacity: 0;
+  transform: scale(0.6);
+
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.checkbox:hover .box {
+  border-color: var(--accent, #f69827);
+}
+
+.input:checked + .box {
+  background: var(--accent, #f69827);
+  border-color: var(--accent, #f69827);
+}
+
+.input:checked + .box .mark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.input:focus-visible + .box {
+  outline: 2px solid var(--accent, #f69827);
+  outline-offset: 2px;
+}
+
+.label {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: #3d414a;
+}

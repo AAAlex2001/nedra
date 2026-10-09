@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import type { ReactNode } from "react";
 import Card from "@/shared/ui/card";
 import styles from "./style.module.scss";
@@ -21,7 +22,7 @@ const InfoCard = ({ rows, children }: InfoCardProps) => (
       {rows.map((row, index) => (
         <div
           key={index}
-          className={`${styles.row} ${index < rows.length - 1 ? styles.divider : ""}`}
+          className={classNames(styles.row, index < rows.length - 1 && styles.divider)}
         >
           <dt className={styles.label}>{row.label}</dt>
           <dd className={styles.value}>

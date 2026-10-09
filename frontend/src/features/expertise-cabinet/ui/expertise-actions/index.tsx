@@ -1,16 +1,18 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import classNames from "classnames";
+import { useState } from "react";
 import { invoicePdfUrl, type PaymentDocumentKind } from "@/entities/billing";
 import {
   cardPaymentAllowed,
   contractKindsFor,
   isAudit,
+  statusLabel,
   wordingFor,
   type ContractKind,
   type Expertise,
 } from "@/entities/expertise";
-import { formatRequestDate } from "@/entities/request";
+import { useSession } from "@/entities/user";
 import { formatRub, halfOf } from "@/shared/lib/money";
 import Button from "@/shared/ui/button";
 import { CheckIcon, ClockIcon } from "@/shared/ui/icons";
@@ -21,6 +23,8 @@ import ContractKindPicker from "../contract-kind-picker";
 import PaymentProofForm from "../payment-proof-form";
 import RemarksForm from "../remarks-form";
 import RevisionForm from "../revision-form";
+import { auditCustomerStep, auditExpertStep } from "./audit-steps";
+import { when, type Step } from "./step";
 import styles from "./style.module.scss";
 
 type ExpertiseActionsProps = {
@@ -29,14 +33,6 @@ type ExpertiseActionsProps = {
   onChange: (item: Expertise) => void;
 };
 
-type Step = {
-  text: string;
-  action?: ReactNode;
-  form?: ReactNode;
-};
-
-const when = (value: string | null): string => (value ? formatRequestDate(value) : "");
-
 const PROOF_BUTTONS: { kind: PaymentDocumentKind; label: string }[] = [
   { kind: "payment_order", label: "Я оплатил" },
   { kind: "guarantee_letter", label: "Гарантийное письмо" },
@@ -44,6 +40,7 @@ const PROOF_BUTTONS: { kind: PaymentDocumentKind; label: string }[] = [
 
 const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) => {
   const actions = useExpertiseActions(expertise, onChange);
+  const { user } = useSession();
   const [remarksOpen, setRemarksOpen] = useState(false);
   const [proofKind, setProofKind] = useState<PaymentDocumentKind | null>(null);
   const [sentKind, setSentKind] = useState<PaymentDocumentKind | null>(null);
@@ -60,6 +57,8 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
   const kindUnknown = expertise.contract_kind === null;
   const audit = isAudit(expertise);
   const words = wordingFor(expertise);
+  const lead = user !== null && expertise.expert_id === user.id;
+  const executorName = expertise.expert_name ?? `${words.executor} НПИ «Недра»`;
 
   const toggleProof = (kind: PaymentDocumentKind) =>
     setProofKind(proofKind === kind ? null : kind);
@@ -103,7 +102,7 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
             <button
               key={item.kind}
               type="button"
-              className={`${styles.secondary} ${proofKind === item.kind ? styles.secondaryActive : ""}`}
+              className={classNames(styles.secondary, proofKind === item.kind && styles.secondaryActive)}
               disabled={actions.pending}
               onClick={() => toggleProof(item.kind)}
             >
@@ -151,7 +150,7 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
 
       case "expert_ready":
         return {
-          text: `${expertise.expert_name} готов провести ${words.work} за ${price}, оплата двумя частями по 50 %. Прочитайте договор и соглашение о конфиденциальности и подпишите их`,
+          text: `${executorName} готов провести ${words.work} за ${price}, оплата двумя частями по 50 %. Прочитайте договор и соглашение о конфиденциальности и подпишите их`,
           form: (
             <ContractConsent
               expertiseId={expertise.id}
@@ -181,7 +180,9 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
           text: audit
             ? "Аудитор прислал замечания. Дополните или исправьте документы и отправьте их повторно"
             : "Эксперт прислал замечания. Внесите изменения в документацию и отправьте её повторно",
-          form: <RevisionForm pending={actions.pending} onSubmit={actions.submitRevision} />,
+          form: (
+            <RevisionForm audit={audit} pending={actions.pending} onSubmit={actions.submitRevision} />
+          ),
         };
 
       case "conclusion_ready":
@@ -209,6 +210,9 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
 
       case "accepted":
         return { text: `Работа принята ${when(expertise.accepted_at)}` };
+
+      default:
+        return { text: statusLabel(expertise) };
     }
   };
 
@@ -297,17 +301,29 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
 
       case "accepted":
         return { text: `Работа принята ${when(expertise.accepted_at)}` };
+
+      default:
+        return { text: statusLabel(expertise) };
     }
   };
 
-  const step = role === "customer" ? customerStep() : expertStep();
+  const auditStep = (): Step | null => {
+    if (!audit) return null;
+
+    return role === "customer"
+      ? auditCustomerStep(expertise, actions)
+      : auditExpertStep(expertise, actions, lead);
+  };
+
+  const ownStep = (): Step => (role === "customer" ? customerStep() : expertStep());
+  const step = auditStep() ?? ownStep();
   const finished = expertise.status === "accepted";
   const waiting = !step.action && !step.form && !finished;
 
   return (
     <div className={styles.footer}>
       <div className={styles.row}>
-        <p className={`${styles.text} ${finished ? styles.textDone : ""}`}>
+        <p className={classNames(styles.text, finished && styles.textDone)}>
           {waiting && <ClockIcon className={styles.icon} />}
           {finished && <CheckIcon className={styles.icon} />}
           {step.text}

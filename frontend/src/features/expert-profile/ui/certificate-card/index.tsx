@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useState } from "react";
 import {
   areaTitle,
@@ -45,9 +46,11 @@ const CertificateCard = ({
   const expired = left < 0;
   const expiring = !expired && left <= EXPIRY_WARNING_DAYS;
 
-  let termClass = styles.term;
-  if (expired) termClass = `${styles.term} ${styles.termExpired}`;
-  if (expiring) termClass = `${styles.term} ${styles.termExpiring}`;
+  const termClass = classNames(
+    styles.term,
+    expired && styles.termExpired,
+    expiring && styles.termExpiring,
+  );
 
   let termText = `до ${formatDate(certificate.valid_until)}`;
   if (expired) termText = `истёк ${formatDate(certificate.valid_until)}`;
@@ -70,7 +73,7 @@ const CertificateCard = ({
           {certificate.number ? (
             <span className={styles.chip}>№ {certificate.number}</span>
           ) : (
-            <span className={`${styles.chip} ${styles.chipMissing}`}>Номер не указан</span>
+            <span className={classNames(styles.chip, styles.chipMissing)}>Номер не указан</span>
           )}
           {certificate.scan_name && (
             <a

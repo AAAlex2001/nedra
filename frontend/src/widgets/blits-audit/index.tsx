@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { ArticlesPanel, type ArticleCardData } from "@/entities/article";
 import type { AuditChecklistItem } from "@/entities/expertise";
 import { StartButtons, StickyStart } from "@/features/auth";
@@ -49,7 +50,7 @@ const JSON_LD = [
 ];
 
 const BlitsAuditLanding = ({ checklist, price, articles }: BlitsAuditLandingProps) => (
-  <main className={`${styles.page} theme-green`}>
+  <main className={classNames(styles.page, "theme-green")}>
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
@@ -78,7 +79,7 @@ const BlitsAuditLanding = ({ checklist, price, articles }: BlitsAuditLandingProp
 
       {checklist.length > 0 && <ChecklistPreview checklist={checklist} />}
 
-      <LandingFeatures title="Аудит без выезда и долгих согласований" items={FEATURES} />
+      <LandingFeatures title="Аудит без долгих согласований" items={FEATURES} />
 
       <AuditPrice price={price} startText={START_TEXT} />
 

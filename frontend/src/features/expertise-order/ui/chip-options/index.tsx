@@ -1,29 +1,25 @@
+import classNames from "classnames";
 import Chip from "@/shared/ui/chip";
 import styles from "./style.module.scss";
 
-type ChipOption<T extends string | number> = {
-  value: T;
+type ChipOption = {
+  value: string;
   label: string;
   title?: string;
   disabled?: boolean;
 };
 
-type ChipOptionsProps<T extends string | number> = {
+type ChipOptionsProps = {
   label: string;
-  options: ChipOption<T>[];
-  value: T | null;
-  layout: "row" | "wrap";
-  onChange: (value: T) => void;
+  options: ChipOption[];
+  value: string | null;
+  layout: "row" | "wrap" | "grid";
+  invalid?: boolean;
+  onChange: (value: string) => void;
 };
 
-const ChipOptions = <T extends string | number>({
-  label,
-  options,
-  value,
-  layout,
-  onChange,
-}: ChipOptionsProps<T>) => (
-  <div className={styles[layout]} role="group" aria-label={label}>
+const ChipOptions = ({ label, options, value, layout, invalid, onChange }: ChipOptionsProps) => (
+  <div className={classNames(styles[layout], invalid && styles.invalid)} role="group" aria-label={label}>
     {options.map((option) => (
       <Chip
         key={option.value}

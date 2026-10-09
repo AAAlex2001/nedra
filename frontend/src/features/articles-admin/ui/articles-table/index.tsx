@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { SECTION_TITLE, articlePath, type ArticleAdminCard } from "@/entities/article";
@@ -45,7 +46,7 @@ const ArticlesTable = ({ basePath, initialItems }: ArticlesTableProps) => {
           return (
             <li
               key={article.id}
-              className={`${styles.row} ${pending ? styles.rowPending : ""}`}
+              className={classNames(styles.row, pending && styles.rowPending)}
             >
               <Link href={editHref} className={styles.thumb}>
                 {article.cover_image && (
@@ -59,7 +60,7 @@ const ArticlesTable = ({ basePath, initialItems }: ArticlesTableProps) => {
                 </Link>
 
                 <div className={styles.meta}>
-                  <span className={`${styles.status} ${statusClass}`}>{statusText}</span>
+                  <span className={classNames(styles.status, statusClass)}>{statusText}</span>
                   <span className={styles.section}>{SECTION_TITLE[article.section]}</span>
                   <span className={styles.date}>
                     {formatDate(article.published_at ?? article.created_at)}

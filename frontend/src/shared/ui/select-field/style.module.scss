@@ -21,6 +21,11 @@
   color: var(--accent, #f69827);
 }
 
+.invalid .control {
+  background: #fff8f7;
+  border-color: #e5484d;
+}
+
 .control {
   display: flex;
   align-items: center;

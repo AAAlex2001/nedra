@@ -1,8 +1,11 @@
 "use client";
 
+import classNames from "classnames";
 import { useState } from "react";
 import { areaTitle, objectLabel, type ExpertCatalog } from "@/entities/expert";
 import {
+  AUDIT_STATUS_LABELS,
+  AuditSummary,
   CONTRACT_KIND_LABELS,
   DEADLINE_LABELS,
   EXPERTISE_STATUS_LABELS,
@@ -11,6 +14,7 @@ import {
 } from "@/entities/expertise";
 import { formatRequestDate } from "@/entities/request";
 import { formatRub } from "@/shared/lib/money";
+import { DetailsTable } from "@/shared/ui/details-table";
 import { statusGroup } from "../../model/groups";
 import type { ExpertiseAdminRecord, ExpertiseDraft, ExpertOption } from "../../model/types";
 import ExpertiseForm from "../expertise-form";
@@ -94,8 +98,8 @@ const ExpertiseCard = ({
           </time>
         </div>
 
-        <span className={`${styles.status} ${styles[statusGroup(expertise.status)]}`}>
-          {EXPERTISE_STATUS_LABELS[expertise.status]}
+        <span className={classNames(styles.status, styles[statusGroup(expertise.status)])}>
+          {audit ? AUDIT_STATUS_LABELS[expertise.status] : EXPERTISE_STATUS_LABELS[expertise.status]}
         </span>
       </header>
 
@@ -120,7 +124,7 @@ const ExpertiseCard = ({
         <Fact label="Заказчик" value={expertise.customer_name} />
         {expertise.company && (
           <Fact
-            label="Юрлицо, по счёту"
+            label={expertise.customer_type === "entrepreneur" ? "ИП, по счёту" : "Юрлицо, по счёту"}
             value={`${expertise.company.name}, ИНН ${expertise.company.inn}`}
           />
         )}
@@ -148,11 +152,18 @@ const ExpertiseCard = ({
         />
       </dl>
 
+      {expertise.audit_details && (
+        <DetailsTable>
+          <AuditSummary details={expertise.audit_details} />
+        </DetailsTable>
+      )}
+
       {expertise.comment && <p className={styles.comment}>{expertise.comment}</p>}
 
       {editing ? (
         <ExpertiseForm
           draft={draft}
+          audit={audit}
           experts={experts}
           contractKinds={contractKinds}
           pending={pending}

@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { CheckIcon, ChevronIcon } from "@/shared/ui/icons";
 import styles from "./style.module.scss";
@@ -50,14 +51,14 @@ const MultiSelectField = ({ label, placeholder, options, value, onChange }: Mult
 
       <button
         type="button"
-        className={`${styles.control} ${open ? styles.controlOpen : ""}`}
+        className={classNames(styles.control, open && styles.controlOpen)}
         aria-expanded={open}
         onClick={() => setOpen(!open)}
       >
         <span className={summary ? styles.summary : styles.placeholder}>
           {summary || placeholder}
         </span>
-        <ChevronIcon className={`${styles.chevron} ${open ? styles.chevronOpen : ""}`} />
+        <ChevronIcon className={classNames(styles.chevron, open && styles.chevronOpen)} />
       </button>
 
       {open && (
@@ -71,10 +72,10 @@ const MultiSelectField = ({ label, placeholder, options, value, onChange }: Mult
                   type="button"
                   role="option"
                   aria-selected={checked}
-                  className={`${styles.option} ${checked ? styles.optionActive : ""}`}
+                  className={classNames(styles.option, checked && styles.optionActive)}
                   onClick={() => toggle(option.value)}
                 >
-                  <span className={`${styles.box} ${checked ? styles.boxChecked : ""}`}>
+                  <span className={classNames(styles.box, checked && styles.boxChecked)}>
                     {checked && <CheckIcon className={styles.check} />}
                   </span>
                   <span className={styles.optionLabel}>{option.label}</span>

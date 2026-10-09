@@ -12,6 +12,7 @@ type ExpertEditorProps = {
   fullName: string;
   phone: string;
   directions: string[];
+  auditLead: boolean;
   certificates: Certificate[];
   catalog: ExpertCatalog | null;
   basePath: string;
@@ -23,6 +24,7 @@ const ExpertEditor = ({
   fullName,
   phone,
   directions,
+  auditLead,
   certificates,
   catalog,
   basePath,
@@ -37,6 +39,7 @@ const ExpertEditor = ({
         fullName={fullName}
         phone={phone}
         directions={directions}
+        auditLead={auditLead}
         catalog={catalog}
         basePath={basePath}
         onUpdated={onUpdated}

@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import type { ReactNode } from "react";
 import styles from "./style.module.scss";
 
@@ -17,7 +18,7 @@ const Chip = ({ active, onClick, children, disabled, title, className }: ChipPro
     aria-checked={active}
     title={title}
     disabled={disabled}
-    className={`${styles.chip} ${active ? styles.active : ""} ${className ?? ""}`}
+    className={classNames(styles.chip, active && styles.active, className)}
     onClick={onClick}
   >
     {children}

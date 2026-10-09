@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Image from "next/image";
 import { ChevronIcon } from "@/shared/ui/icons";
 import { type Direction, formatServiceCount } from "@/entities/service";
@@ -13,7 +14,7 @@ const DirectionHeader = ({ direction, isOpen, onSelect }: DirectionHeaderProps) 
   <button
     type="button"
     aria-expanded={isOpen}
-    className={`${styles.header} ${isOpen ? styles.open : ""}`}
+    className={classNames(styles.header, isOpen && styles.open)}
     onClick={onSelect}
   >
     <span className={styles.picture}>
@@ -28,7 +29,7 @@ const DirectionHeader = ({ direction, isOpen, onSelect }: DirectionHeaderProps) 
 
     <span className={styles.number}>{direction.id}</span>
     <span className={styles.count}>{formatServiceCount(direction.serviceCount)}</span>
-    <ChevronIcon className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ""}`} />
+    <ChevronIcon className={classNames(styles.chevron, isOpen && styles.chevronOpen)} />
     <span className={styles.title}>{direction.title}</span>
   </button>
 );

@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import type { Direction } from "@/entities/expert";
 import { ChevronIcon } from "@/shared/ui/icons";
@@ -46,7 +47,7 @@ const DirectionsPicker = ({ directions, selected, onToggle }: DirectionsPickerPr
 
       <button
         type="button"
-        className={`${styles.control} ${open ? styles.controlOpen : ""}`}
+        className={classNames(styles.control, open && styles.controlOpen)}
         aria-expanded={open}
         onClick={() => setOpen(!open)}
       >
@@ -62,7 +63,7 @@ const DirectionsPicker = ({ directions, selected, onToggle }: DirectionsPickerPr
           <span className={styles.count}>{selectedTitles.length}</span>
         )}
 
-        <ChevronIcon className={`${styles.chevron} ${open ? styles.chevronOpen : ""}`} />
+        <ChevronIcon className={classNames(styles.chevron, open && styles.chevronOpen)} />
       </button>
 
       {open && (
@@ -76,10 +77,10 @@ const DirectionsPicker = ({ directions, selected, onToggle }: DirectionsPickerPr
                   type="button"
                   role="option"
                   aria-selected={checked}
-                  className={`${styles.option} ${checked ? styles.optionActive : ""}`}
+                  className={classNames(styles.option, checked && styles.optionActive)}
                   onClick={() => onToggle(direction.code)}
                 >
-                  <span className={`${styles.box} ${checked ? styles.boxChecked : ""}`} aria-hidden="true">
+                  <span className={classNames(styles.box, checked && styles.boxChecked)} aria-hidden="true">
                     {checked && (
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <path

@@ -1,69 +1,59 @@
 "use client";
 
-import type { AuditChecklistItem } from "@/entities/expertise";
+import {
+  AUDIT_FILES_ACCEPT,
+  AuditChecklist,
+  type AuditChecklistItem,
+} from "@/entities/expertise";
 import TextField from "@/shared/ui/text-field";
 import { useAuditOrder } from "../../model/use-audit-order";
-import AuditChecklist from "../audit-checklist";
+import AuditDetails from "../audit-details";
 import CustomerSection from "../customer-section";
-import DeadlineSection from "../deadline-section";
 import OrderShell from "../order-shell";
-import PriceSection from "../price-section";
 
 type AuditFormProps = {
   checklist: AuditChecklistItem[];
 };
 
+const CHECKLIST_NOTE =
+  "Загрузите имеющиеся документы сейчас или после согласования Плана аудита. Аудитор проанализирует комплектность и направит запрос на недостающие сведения. Принимаются PDF, файлы электронной подписи, фото и видео.";
+
 const AuditForm = ({ checklist }: AuditFormProps) => {
   const audit = useAuditOrder();
   const { order } = audit;
-  const { state } = order;
 
   return (
     <OrderShell
       order={order}
       executors="Аудиторы"
       submitText="Отправить на аудит"
-      canSubmit={audit.canSubmit}
+      errors={audit.errors}
       onSubmit={audit.submit}
     >
-      <TextField
-        label="Объект аудита"
-        required
-        placeholder="Организация или опасный производственный объект"
-        maxLength={500}
-        value={state.objectName}
-        onChange={order.changeObjectName}
-      />
-
-      <DeadlineSection
-        label="Когда нужен отчёт"
-        executor="аудитора"
-        value={state.deadline}
-        onSelect={order.selectDeadline}
-      />
-
-      <PriceSection
-        label="Ваша цена за аудит, ₽"
-        executors="Аудиторы"
-        value={state.price}
-        onChange={order.changePrice}
+      <AuditDetails
+        form={audit.form}
+        errors={audit.errors}
+        onChange={audit.changeForm}
+        price={order.state.price}
+        onPriceChange={order.changePrice}
       />
 
       <AuditChecklist
         checklist={checklist}
-        files={state.auditFiles}
+        files={order.state.auditFiles}
+        note={CHECKLIST_NOTE}
         onAdd={audit.addFiles}
         onRemove={audit.removeFile}
       />
 
-      <CustomerSection order={order} />
+      <CustomerSection order={order} errors={audit.errors} cardAccept={AUDIT_FILES_ACCEPT} />
 
       <TextField
         label="Комментарий"
         multiline
         placeholder="Что важно знать аудитору: структура организации, количество ОПО, на что обратить внимание"
         maxLength={4000}
-        value={state.comment}
+        value={order.state.comment}
         onChange={order.changeComment}
       />
     </OrderShell>

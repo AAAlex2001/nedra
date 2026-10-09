@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { ExpertCatalog } from "@/entities/expert";
 import Button from "@/shared/ui/button";
+import Checkbox from "@/shared/ui/checkbox";
 import Chip from "@/shared/ui/chip";
 import TextField from "@/shared/ui/text-field";
 import { useAdminAction } from "../../model/use-admin-action";
@@ -14,16 +15,20 @@ type ExpertContactsProps = {
   fullName: string;
   phone: string;
   directions: string[];
+  auditLead: boolean;
   catalog: ExpertCatalog | null;
   basePath: string;
   onUpdated: () => void;
 };
+
+const AUDIT_DIRECTION = "sms_audit";
 
 const ExpertContacts = ({
   userId,
   fullName,
   phone,
   directions,
+  auditLead,
   catalog,
   basePath,
   onUpdated,
@@ -31,7 +36,9 @@ const ExpertContacts = ({
   const [name, setName] = useState(fullName);
   const [contact, setContact] = useState(phone);
   const [chosen, setChosen] = useState(directions);
+  const [lead, setLead] = useState(auditLead);
   const { pending, error, run } = useAdminAction();
+  const auditor = chosen.includes(AUDIT_DIRECTION);
 
   const toggleDirection = (code: string) => {
     if (chosen.includes(code)) {
@@ -48,6 +55,7 @@ const ExpertContacts = ({
         full_name: name.trim(),
         phone: contact.trim(),
         directions: chosen,
+        audit_lead: auditor && lead,
       });
       onUpdated();
     });
@@ -75,6 +83,12 @@ const ExpertContacts = ({
           ))}
         </div>
       </div>
+
+      {auditor && (
+        <Checkbox checked={lead} onChange={setLead}>
+          Может быть руководителем аудиторской группы: берёт заявки на аудит и формирует группу
+        </Checkbox>
+      )}
 
       {error && <p className={styles.error}>{error}</p>}
 

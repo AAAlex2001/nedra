@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { fetchExpertCatalog, type ExpertCatalog } from "@/entities/expert";
@@ -84,7 +85,7 @@ const CommissionPopup = () => {
                   aria-label="Назад"
                   onClick={() => showStep("intro")}
                 >
-                  <ChevronIcon className={`${styles.roundIcon} ${styles.backIcon}`} />
+                  <ChevronIcon className={classNames(styles.roundIcon, styles.backIcon)} />
                 </button>
                 <p className={styles.title}>Заявка в конкурсную комиссию</p>
                 <button type="button" className={styles.round} aria-label="Закрыть" onClick={close}>

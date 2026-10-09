@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { SVEDENIYA_BASE, SVEDENIYA_SECTIONS } from "./data";
 import styles from "./style.module.scss";
 
@@ -15,7 +16,7 @@ const SvedeniyaNav = ({ activeSlug }: SvedeniyaNavProps) => (
       return (
         <a
           key={section.slug}
-          className={`${styles.pill} ${isActive ? styles.active : ""}`}
+          className={classNames(styles.pill, isActive && styles.active)}
           href={`${SVEDENIYA_BASE}/${section.slug}`}
           aria-current={isActive ? "page" : undefined}
         >

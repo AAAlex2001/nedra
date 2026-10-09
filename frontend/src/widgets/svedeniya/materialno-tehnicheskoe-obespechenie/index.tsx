@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Card from "@/shared/ui/card";
 import SectionHeading from "@/shared/ui/section-heading";
 import { MATERIALNO } from "./data";
@@ -14,9 +15,7 @@ const SvedeniyaMaterialno = () => {
         {sections.map((section, index) => (
           <div
             key={section.number}
-            className={`${styles.section} ${
-              index < sections.length - 1 ? styles.divider : ""
-            }`}
+            className={classNames(styles.section, index < sections.length - 1 && styles.divider)}
           >
             <div className={styles.head}>
               <span className={styles.number}>{section.number}.</span>
@@ -34,7 +33,7 @@ const SvedeniyaMaterialno = () => {
                 return (
                   <div
                     key={item.code}
-                    className={`${styles.item} ${isFull ? styles.itemFull : ""}`}
+                    className={classNames(styles.item, isFull && styles.itemFull)}
                   >
                     <div className={styles.itemHead}>
                       <span className={styles.itemCode}>{item.code}.</span>

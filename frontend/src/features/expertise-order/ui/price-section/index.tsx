@@ -5,10 +5,11 @@ type PriceSectionProps = {
   label: string;
   executors: string;
   value: string;
+  invalid: boolean;
   onChange: (value: string) => void;
 };
 
-const PriceSection = ({ label, executors, value, onChange }: PriceSectionProps) => (
+const PriceSection = ({ label, executors, value, invalid, onChange }: PriceSectionProps) => (
   <FieldGroup
     note={`${executors} увидят цену и возьмут заявку, если согласны с ней. Эта сумма войдёт в договор, оплата — двумя частями по 50 %.`}
   >
@@ -18,6 +19,7 @@ const PriceSection = ({ label, executors, value, onChange }: PriceSectionProps) 
       inputMode="numeric"
       placeholder="Например, 50 000"
       maxLength={14}
+      invalid={invalid}
       value={value}
       onChange={onChange}
     />

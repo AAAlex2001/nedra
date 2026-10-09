@@ -1,6 +1,5 @@
 import { API_URL, readErrorMessage } from "@/shared/api";
 import type {
-  AuditChecklistItem,
   ContractKind,
   Expertise,
   ExpertisePayment,
@@ -243,36 +242,3 @@ export const expertiseDocumentUrl = (expertiseId: number, documentId: number): s
 
 export const expertiseSigningUrl = (expertiseId: number, kind: "contract" | "nda"): string =>
   `${API_URL}/v1/expertise/${expertiseId}/signing/${kind}`;
-
-export const createAudit = async (formData: FormData): Promise<Expertise> => {
-  const response = await fetch(`${API_URL}/v1/audit`, {
-    method: "POST",
-    credentials: "include",
-    body: formData,
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const audit: Expertise = await response.json();
-
-  return audit;
-};
-
-export const fetchAuditChecklist = async (): Promise<AuditChecklistItem[]> => {
-  const response = await fetch(`${API_URL}/v1/audit/checklist`);
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const checklist: AuditChecklistItem[] = await response.json();
-
-  return checklist;
-};
-
-export const auditDocumentsReportUrl = (expertiseId: number): string =>
-  `${API_URL}/v1/audit/${expertiseId}/documents-report`;

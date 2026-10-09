@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import AccentLine from "@/shared/ui/accent-line";
 import ContactRow from "@/shared/ui/contact-row";
 import {
@@ -37,7 +38,7 @@ const Contacts = () => {
         </div>
 
         <address className={styles.list} style={{ fontStyle: "normal" }}>
-          <div className={`${styles.row} ${styles.rowTop}`}>
+          <div className={classNames(styles.row, styles.rowTop)}>
             <DirectorIcon className={styles.icon} />
             <div className={styles.person}>
               <span className={styles.personLabel}>{CONTACTS_DATA.director.label}</span>

@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import Spinner from "@/shared/ui/spinner";
@@ -30,7 +31,7 @@ const Button = ({
         href={href}
         scroll={scroll}
         onClick={onClick}
-        className={`${styles.button} ${className ?? ""}`}
+        className={classNames(styles.button, className)}
       >
         <span className={styles.text}>{children}</span>
       </Link>
@@ -40,7 +41,7 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`${styles.button} ${loading ? styles.loading : ""} ${className ?? ""}`}
+      className={classNames(styles.button, loading && styles.loading, className)}
       disabled={disabled || loading}
       onClick={onClick}
     >

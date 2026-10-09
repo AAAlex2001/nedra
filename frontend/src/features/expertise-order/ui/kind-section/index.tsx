@@ -11,7 +11,7 @@ type KindSectionProps = {
 const KindSection = ({ kinds, value, onSelect }: KindSectionProps) => {
   const options = [
     ...kinds.map((kind) => ({ value: kind, label: CONTRACT_KIND_LABELS[kind] })),
-    { value: "" as const, label: "Не знаю" },
+    { value: "", label: "Не знаю" },
   ];
 
   const note = value
@@ -25,7 +25,7 @@ const KindSection = ({ kinds, value, onSelect }: KindSectionProps) => {
         layout="wrap"
         options={options}
         value={value}
-        onChange={onSelect}
+        onChange={(kind) => onSelect(kind as ContractKind | "")}
       />
     </FieldGroup>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AUDIT_FILES_ACCEPT } from "@/entities/expertise";
 import Button from "@/shared/ui/button";
 import FilesField from "@/shared/ui/files-field";
 import TextField from "@/shared/ui/text-field";
@@ -9,11 +10,12 @@ import styles from "./style.module.scss";
 const ACCEPT = ".pdf,.doc,.docx,.jpg,.jpeg,.png";
 
 type RevisionFormProps = {
+  audit: boolean;
   pending: boolean;
   onSubmit: (formData: FormData) => void;
 };
 
-const RevisionForm = ({ pending, onSubmit }: RevisionFormProps) => {
+const RevisionForm = ({ audit, pending, onSubmit }: RevisionFormProps) => {
   const [text, setText] = useState("");
   const [files, setFiles] = useState<File[]>([]);
 
@@ -34,17 +36,21 @@ const RevisionForm = ({ pending, onSubmit }: RevisionFormProps) => {
   return (
     <div className={styles.form}>
       <FilesField
-        label="Исправленная документация"
+        label={audit ? "Исправленные документы" : "Исправленная документация"}
         required
         files={files}
-        accept={ACCEPT}
-        hint="Приложите документацию с внесёнными изменениями. Эксперт проверит её повторно."
+        accept={audit ? AUDIT_FILES_ACCEPT : ACCEPT}
+        hint={
+          audit
+            ? "PDF, файлы электронной подписи, фото или видео. Аудитор проверит документы повторно."
+            : "Приложите документацию с внесёнными изменениями. Эксперт проверит её повторно."
+        }
         onAdd={(chosen) => setFiles([...files, ...chosen])}
         onRemove={(index) => setFiles(files.filter((file, position) => position !== index))}
       />
 
       <TextField
-        label="Комментарий эксперту"
+        label={audit ? "Комментарий аудитору" : "Комментарий эксперту"}
         multiline
         rows={4}
         placeholder="Что именно исправили: раздел, суть правки"
@@ -59,7 +65,7 @@ const RevisionForm = ({ pending, onSubmit }: RevisionFormProps) => {
         loading={pending}
         onClick={submit}
       >
-        Повторно отправить на экспертизу
+        {audit ? "Отправить аудитору повторно" : "Повторно отправить на экспертизу"}
       </Button>
     </div>
   );

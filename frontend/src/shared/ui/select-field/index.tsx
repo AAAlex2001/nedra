@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ChevronIcon } from "@/shared/ui/icons";
@@ -19,6 +20,7 @@ type SelectFieldProps = {
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
+  invalid?: boolean;
 };
 
 const SelectField = ({
@@ -28,6 +30,7 @@ const SelectField = ({
   value,
   onChange,
   required,
+  invalid,
 }: SelectFieldProps) => {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -47,7 +50,7 @@ const SelectField = ({
   }, [open]);
 
   return (
-    <div className={styles.field} ref={rootRef}>
+    <div className={classNames(styles.field, invalid && styles.invalid)} ref={rootRef}>
       <span className={styles.label}>
         {label}
         {required && <span className={styles.required}> *</span>}
@@ -55,7 +58,7 @@ const SelectField = ({
 
       <button
         type="button"
-        className={`${styles.control} ${open ? styles.controlOpen : ""}`}
+        className={classNames(styles.control, open && styles.controlOpen)}
         onClick={() => setOpen(!open)}
       >
         {selected?.image && (
@@ -76,7 +79,7 @@ const SelectField = ({
         </span>
 
         <ChevronIcon
-          className={`${styles.chevron} ${open ? styles.chevronOpen : ""}`}
+          className={classNames(styles.chevron, open && styles.chevronOpen)}
         />
       </button>
 
@@ -86,9 +89,7 @@ const SelectField = ({
             <li key={option.value}>
               <button
                 type="button"
-                className={`${styles.option} ${
-                  option.value === value ? styles.optionActive : ""
-                }`}
+                className={classNames(styles.option, option.value === value && styles.optionActive)}
                 onClick={() => {
                   onChange(option.value);
                   setOpen(false);

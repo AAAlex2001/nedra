@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {
+  AUDIT_STATUS_LABELS,
   CONTRACT_KIND_LABELS,
   EXPERTISE_STATUS_LABELS,
   type ContractKind,
@@ -16,6 +17,7 @@ import styles from "./style.module.scss";
 
 type ExpertiseFormProps = {
   draft: ExpertiseDraft;
+  audit: boolean;
   experts: ExpertOption[];
   contractKinds: ContractKind[];
   pending: boolean;
@@ -25,21 +27,26 @@ type ExpertiseFormProps = {
 
 const STATUSES = Object.keys(EXPERTISE_STATUS_LABELS) as ExpertiseStatus[];
 
+const AUDIT_ONLY: ExpertiseStatus[] = ["consultation", "offer", "counter", "plan", "plan_review"];
+
 const ExpertiseForm = ({
   draft,
+  audit,
   experts,
   contractKinds,
   pending,
   onSave,
   onCancel,
 }: ExpertiseFormProps) => {
+  const labels = audit ? AUDIT_STATUS_LABELS : EXPERTISE_STATUS_LABELS;
+  const statuses = audit ? STATUSES : STATUSES.filter((item) => !AUDIT_ONLY.includes(item));
   const [status, setStatus] = useState(draft.status);
   const [price, setPrice] = useState(draft.price);
   const [expertId, setExpertId] = useState(draft.expertId);
   const [contractKind, setContractKind] = useState(draft.contractKind);
 
   const selectStatus = (value: string) => {
-    const found = STATUSES.find((item) => item === value);
+    const found = statuses.find((item) => item === value);
 
     if (found) setStatus(found);
   };
@@ -70,9 +77,9 @@ const ExpertiseForm = ({
           placeholder="Выберите статус"
           value={status}
           onChange={selectStatus}
-          options={STATUSES.map((item) => ({
+          options={statuses.map((item) => ({
             value: item,
-            label: EXPERTISE_STATUS_LABELS[item],
+            label: labels[item],
           }))}
         />
         <TextField
@@ -99,6 +106,13 @@ const ExpertiseForm = ({
           />
         )}
       </div>
+
+      {audit && draft.status === "consultation" && (
+        <p className={styles.hint}>
+          После консультации поставьте статус «Ждёт аудитора»: заявку увидят руководители
+          аудиторских групп.
+        </p>
+      )}
 
       <div className={styles.buttons}>
         <button type="button" className={styles.cancel} disabled={pending} onClick={onCancel}>

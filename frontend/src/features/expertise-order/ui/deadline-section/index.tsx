@@ -21,7 +21,13 @@ const DeadlineSection = ({ label, executor, value, onSelect }: DeadlineSectionPr
     label={label}
     note={`Срок влияет на подбор ${executor}: чем он короче, тем меньше специалистов смогут взять заявку.`}
   >
-    <ChipOptions label="Срок" layout="row" options={DEADLINES} value={value} onChange={onSelect} />
+    <ChipOptions
+      label="Срок"
+      layout="row"
+      options={DEADLINES}
+      value={value}
+      onChange={(deadline) => onSelect(deadline as Deadline)}
+    />
   </FieldGroup>
 );
 

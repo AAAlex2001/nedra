@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useState } from "react";
 import type { ExpertCatalog } from "@/entities/expert";
 import styles from "./style.module.scss";
@@ -31,7 +32,7 @@ const AreasList = ({ catalog }: AreasListProps) => {
               key={area.code}
               type="button"
               aria-pressed={area.code === areaCode}
-              className={`${styles.railItem} ${area.code === areaCode ? styles.railItemActive : ""}`}
+              className={classNames(styles.railItem, area.code === areaCode && styles.railItemActive)}
               onClick={() => setAreaCode(area.code)}
             >
               <span className={styles.railCode}>{area.code}</span>

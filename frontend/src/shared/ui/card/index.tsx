@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import type { CSSProperties, ReactNode } from "react";
 import styles from "./style.module.scss";
 
@@ -9,7 +10,7 @@ type CardProps = {
 
 const Card = ({ children, tone = "light", gap = 20 }: CardProps) => (
   <div
-    className={`${styles.card} ${tone === "soft" ? styles.soft : ""}`}
+    className={classNames(styles.card, tone === "soft" && styles.soft)}
     style={{ gap: `${gap}px` } as CSSProperties}
   >
     {children}

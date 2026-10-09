@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import styles from "./style.module.scss";
@@ -13,7 +14,7 @@ type OutlineButtonProps = {
 const OutlineButton = ({ href, children, onClick, disabled, className }: OutlineButtonProps) => {
   if (href) {
     return (
-      <Link className={`${styles.button} ${className ?? ""}`} href={href}>
+      <Link className={classNames(styles.button, className)} href={href}>
         <span className={styles.text}>{children}</span>
       </Link>
     );
@@ -22,7 +23,7 @@ const OutlineButton = ({ href, children, onClick, disabled, className }: Outline
   return (
     <button
       type="button"
-      className={`${styles.button} ${className ?? ""}`}
+      className={classNames(styles.button, className)}
       disabled={disabled}
       onClick={onClick}
     >

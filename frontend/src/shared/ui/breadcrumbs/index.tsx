@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { SITE_URL } from "@/shared/config/seo";
 import styles from "./style.module.scss";
 
@@ -61,7 +62,7 @@ const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
                   </a>
                 ) : (
                   <span
-                    className={`${styles.crumb} ${isLast ? styles.current : ""}`}
+                    className={classNames(styles.crumb, isLast && styles.current)}
                     aria-current={isLast ? "page" : undefined}
                   >
                     {item.label}

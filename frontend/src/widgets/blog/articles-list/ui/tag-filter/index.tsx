@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Tag } from "@/entities/article";
@@ -45,13 +46,13 @@ const TagFilter = ({ basePath, tags, activeTag }: TagFilterProps) => {
     <div className={styles.root} ref={rootRef}>
       <button
         type="button"
-        className={`${styles.control} ${open ? styles.controlOpen : ""} ${selected ? styles.controlActive : ""}`}
+        className={classNames(styles.control, open && styles.controlOpen, selected && styles.controlActive)}
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen(!open)}
       >
         <span className={styles.controlText}>{title}</span>
-        <ChevronIcon className={`${styles.chevron} ${open ? styles.chevronOpen : ""}`} />
+        <ChevronIcon className={classNames(styles.chevron, open && styles.chevronOpen)} />
       </button>
 
       {open && (
@@ -59,7 +60,7 @@ const TagFilter = ({ basePath, tags, activeTag }: TagFilterProps) => {
           <li>
             <Link
               href={basePath}
-              className={`${styles.option} ${selected ? "" : styles.optionActive}`}
+              className={classNames(styles.option, !selected && styles.optionActive)}
               onClick={() => setOpen(false)}
             >
               <span>{ALL_LABEL}</span>
@@ -74,7 +75,7 @@ const TagFilter = ({ basePath, tags, activeTag }: TagFilterProps) => {
               <li key={tag.slug}>
                 <Link
                   href={`${basePath}?tag=${tag.slug}`}
-                  className={`${styles.option} ${active ? styles.optionActive : ""}`}
+                  className={classNames(styles.option, active && styles.optionActive)}
                   onClick={() => setOpen(false)}
                 >
                   <span>{tag.title}</span>

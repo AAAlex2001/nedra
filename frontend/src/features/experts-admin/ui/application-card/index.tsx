@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import {
   APPLICATION_STATUS_LABELS,
   areaTitle,
@@ -72,14 +73,14 @@ const ApplicationCard = ({
   const canDeleteExpert = application.status === "approved" && application.user_id !== null;
 
   return (
-    <article className={`${styles.card} ${pending ? styles.cardPending : ""}`}>
+    <article className={classNames(styles.card, pending && styles.cardPending)}>
       <header className={styles.head}>
         <div className={styles.headMain}>
           <span className={styles.id}>№{application.id}</span>
           <time className={styles.date} dateTime={application.created_at}>
             {formatRequestDate(application.created_at)}
           </time>
-          <span className={`${styles.status} ${styles[STATUS_CLASS[application.status]]}`}>
+          <span className={classNames(styles.status, styles[STATUS_CLASS[application.status]])}>
             {APPLICATION_STATUS_LABELS[application.status]}
           </span>
         </div>
@@ -199,6 +200,7 @@ const ApplicationCard = ({
           fullName={application.full_name}
           phone={application.phone}
           directions={application.directions}
+          auditLead={application.audit_lead}
           certificates={application.certificates}
           catalog={catalog}
           basePath={basePath}

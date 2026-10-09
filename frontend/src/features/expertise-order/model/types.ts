@@ -1,11 +1,14 @@
 import type {
+  AuditFile,
   ContractKind,
   CustomerType,
   ExpertiseCompany,
   ExpertiseIndividual,
 } from "@/entities/expertise";
 
-export type RequirementMode = "hazard" | "category" | "unknown";
+export type FormErrors = Record<string, string>;
+
+export type RequirementMode ="hazard" | "category" | "unknown";
 
 export type Deadline = "today" | "three_days" | "week" | "any";
 
@@ -18,11 +21,6 @@ export type CompanyFields = Record<CompanyField, string>;
 export type IndividualField = keyof ExpertiseIndividual;
 
 export type IndividualFields = Record<IndividualField, string>;
-
-export type AuditFile = {
-  item: number;
-  file: File;
-};
 
 export type OrderState = {
   objectCode: string;

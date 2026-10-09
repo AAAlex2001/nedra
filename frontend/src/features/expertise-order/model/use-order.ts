@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useReducer } from "react";
-import { fetchMyExpertises, type CustomerType } from "@/entities/expertise";
+import { useEffect, useReducer, useState } from "react";
+import { fetchMyExpertises, usesCompany, type CustomerType } from "@/entities/expertise";
+import { customerErrors } from "./customer-validation";
 import { INITIAL_STATE, orderReducer } from "./reducer";
 import type { CompanyField, Deadline, IndividualField } from "./types";
 
@@ -9,15 +10,16 @@ type OrderRequest = (formData: FormData) => Promise<unknown>;
 
 const SUBMIT_FAILED = "Не удалось отправить заявку. Попробуйте ещё раз.";
 
-const OPTIONAL_COMPANY_FIELDS: CompanyField[] = ["kpp"];
+const DEFAULT_CUSTOMER_TYPES: CustomerType[] = ["legal", "individual"];
 
 const parsePrice = (value: string): number => Number(value.replace(/\s/g, "").replace(",", "."));
 
-const allFilled = (fields: Record<string, string>, optional: string[] = []): boolean =>
-  Object.entries(fields).every(([field, value]) => optional.includes(field) || value.trim() !== "");
-
-export const useOrder = () => {
-  const [state, dispatch] = useReducer(orderReducer, INITIAL_STATE);
+export const useOrder = (customerTypes: CustomerType[] = DEFAULT_CUSTOMER_TYPES) => {
+  const [state, dispatch] = useReducer(orderReducer, {
+    ...INITIAL_STATE,
+    customerType: customerTypes[0],
+  });
+  const [attempted, setAttempted] = useState(false);
 
   useEffect(() => {
     const fillFromLastOrder = async () => {
@@ -25,33 +27,32 @@ export const useOrder = () => {
         const items = await fetchMyExpertises();
         const lastCompany = items.find((item) => item.company !== null)?.company;
         const lastIndividual = items.find((item) => item.individual !== null)?.individual;
+        const lastType = items[0]?.customer_type;
 
         if (lastCompany) dispatch({ type: "company/fill", company: lastCompany });
         if (lastIndividual) dispatch({ type: "individual/fill", individual: lastIndividual });
-        if (items[0]) dispatch({ type: "customer/select", customerType: items[0].customer_type });
+        if (lastType && customerTypes.includes(lastType)) {
+          dispatch({ type: "customer/select", customerType: lastType });
+        }
       } catch {
         return;
       }
     };
 
     void fillFromLastOrder();
-  }, []);
+  }, [customerTypes]);
 
   const price = parsePrice(state.price);
-  const legal = state.customerType === "legal";
-  const customerFilled = legal
-    ? allFilled(state.company, OPTIONAL_COMPANY_FIELDS)
-    : allFilled(state.individual);
+  const company = usesCompany(state.customerType);
+  const customerProblems = customerErrors(state);
 
-  const ready =
-    state.objectName.trim() !== "" && price > 0 && customerFilled && state.status !== "loading";
+  const kpp = state.customerType === "entrepreneur" ? null : state.company.kpp.trim() || null;
 
   const payload = {
-    object_name: state.objectName.trim(),
     price,
     customer_type: state.customerType,
-    company: legal ? { ...state.company, kpp: state.company.kpp.trim() || null } : null,
-    individual: legal ? null : state.individual,
+    company: company ? { ...state.company, kpp } : null,
+    individual: company ? null : state.individual,
     deadline: state.deadline,
     comment: state.comment.trim() || null,
   };
@@ -74,26 +75,33 @@ export const useOrder = () => {
     if (file) dispatch({ type: "card/set", file });
   };
 
-  const send = async (formData: FormData, request: OrderRequest) => {
+  const send = async (formData: FormData, request: OrderRequest): Promise<boolean> => {
     dispatch({ type: "submit/start" });
 
-    if (legal && state.companyCard) {
+    if (company && state.companyCard) {
       formData.append("company_card", state.companyCard);
     }
 
     try {
       await request(formData);
       dispatch({ type: "submit/success" });
+      setAttempted(false);
+      return true;
     } catch (error) {
       const message = error instanceof Error && error.message ? error.message : SUBMIT_FAILED;
       dispatch({ type: "submit/error", message });
+      return false;
     }
   };
 
   return {
     state,
     dispatch,
-    ready,
+    price,
+    customerProblems,
+    customerTypes,
+    attempted,
+    markAttempted: () => setAttempted(true),
     payload,
     changeObjectName,
     selectDeadline,

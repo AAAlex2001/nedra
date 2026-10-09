@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { formatDate } from "@/shared/lib/date";
@@ -21,7 +22,7 @@ const ArticleCard = ({ article, className }: ArticleCardProps) => {
   const tag = article.tags[0];
 
   return (
-    <Link href={articlePath(article)} className={`${styles.card} ${className ?? ""}`}>
+    <Link href={articlePath(article)} className={classNames(styles.card, className)}>
       <div className={styles.cover}>
         {article.cover_image ? (
           <Image
@@ -63,7 +64,7 @@ const ArticleCard = ({ article, className }: ArticleCardProps) => {
             <ThumbDownIcon className={styles.statIcon} />
             {article.dislikes_count}
           </span>
-          <span className={`${styles.stat} ${styles.views}`}>
+          <span className={classNames(styles.stat, styles.views)}>
             <EyeIcon className={styles.statIcon} />
             {article.views_count}
           </span>

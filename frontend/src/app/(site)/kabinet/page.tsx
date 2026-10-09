@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import type { Metadata } from "next";
 import { hasSessionCookie } from "@/entities/user/api/session-server";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
@@ -22,7 +23,7 @@ export default async function CabinetPage() {
         ]}
       />
 
-      <div className={`${styles.body} ${guest ? styles.bodyGuest : ""}`}>
+      <div className={classNames(styles.body, guest && styles.bodyGuest)}>
         <SectionHeading title="Личный кабинет" />
         <Cabinet />
       </div>

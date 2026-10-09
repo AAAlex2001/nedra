@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import type { ReactNode } from "react";
 import styles from "./style.module.scss";
 
@@ -14,7 +15,7 @@ const RadioButton = ({ checked, label, onSelect, className }: RadioButtonProps) 
     role="radio"
     aria-checked={checked}
     onClick={onSelect}
-    className={`${styles.option} ${checked ? styles.checked : ""} ${className ?? ""}`}
+    className={classNames(styles.option, checked && styles.checked, className)}
   >
     <span className={styles.indicator} aria-hidden="true">
       {checked && <span className={styles.dot} />}

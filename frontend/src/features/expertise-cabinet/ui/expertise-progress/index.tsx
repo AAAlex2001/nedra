@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useState } from "react";
 import {
   buildStages,
@@ -67,7 +68,7 @@ const ExpertiseProgress = ({ expertise }: ExpertiseProgressProps) => {
 
         <span className={styles.bar} aria-hidden="true">
           {stages.map((stage) => (
-            <span key={stage.key} className={`${styles.segment} ${styles[stage.state]}`} />
+            <span key={stage.key} className={classNames(styles.segment, styles[stage.state])} />
           ))}
         </span>
 
@@ -82,7 +83,7 @@ const ExpertiseProgress = ({ expertise }: ExpertiseProgressProps) => {
       <Modal open={open} title="История статусов" onClose={() => setOpen(false)}>
         <ol className={styles.history}>
           {stages.map((stage) => (
-            <li key={stage.key} className={`${styles.row} ${styles[stage.state]}`}>
+            <li key={stage.key} className={classNames(styles.row, styles[stage.state])}>
               <StageMarker state={stage.state} />
 
               <span className={styles.text}>

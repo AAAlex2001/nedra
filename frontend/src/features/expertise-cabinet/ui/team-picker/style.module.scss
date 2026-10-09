@@ -1,0 +1,57 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+
+  background: #fff;
+  border-radius: 12px;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+
+  color: #0b0b0b;
+}
+
+.note {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #6c7078;
+}
+
+.error {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 17px;
+
+  color: #b23b2c;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.areas {
+  color: #6c7078;
+}
+
+.save {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .save {
+    align-self: flex-start;
+    width: auto;
+  }
+}

@@ -2,8 +2,18 @@
 
 import type { ExpertCatalog } from "@/entities/expert";
 import { contractKindsFor, createExpertise, type ContractKind } from "@/entities/expertise";
-import type { RequirementMode } from "./types";
+import { orderErrors } from "./order-validation";
+import type { OrderState, RequirementMode } from "./types";
 import { useOrder } from "./use-order";
+
+const categoryFor = (catalog: ExpertCatalog, state: OrderState): number | null => {
+  if (state.mode === "category") return state.category;
+  if (state.mode !== "hazard") return null;
+
+  const rule = catalog.hazard_classes.find((item) => item.hazard_class === state.hazardClass);
+
+  return rule ? rule.category : null;
+};
 
 export const useExpertiseOrder = (catalog: ExpertCatalog) => {
   const order = useOrder();
@@ -12,15 +22,12 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
   const availableAreas = catalog.areas.filter((area) => area.objects.includes(state.objectCode));
   const contractKinds = state.objectCode ? contractKindsFor(state.objectCode) : [];
 
-  const hazardRule = catalog.hazard_classes.find(
-    (rule) => rule.hazard_class === state.hazardClass,
-  );
+  const requiredCategory = categoryFor(catalog, state);
 
-  let requiredCategory: number | null = null;
-  if (state.mode === "hazard") requiredCategory = hazardRule?.category ?? null;
-  if (state.mode === "category") requiredCategory = state.category;
-
-  const canSubmit = order.ready && state.files.length > 0;
+  const objectName = state.objectName.trim();
+  const allErrors = { ...orderErrors(state, order.price), ...order.customerProblems };
+  const hasErrors = Object.keys(allErrors).length > 0;
+  const errors = order.attempted ? allErrors : {};
 
   const selectObject = (code: string) => dispatch({ type: "object/select", code });
   const selectKind = (kind: ContractKind | "") => dispatch({ type: "kind/select", kind });
@@ -32,10 +39,12 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
   const removeFile = (index: number) => dispatch({ type: "files/remove", index });
 
   const submit = async () => {
-    if (!canSubmit) return;
+    order.markAttempted();
+    if (hasErrors) return;
 
     const payload = {
       ...order.payload,
+      object_name: objectName,
       contract_kind: state.contractKind || null,
       object_code: state.objectCode || null,
       area_code: state.areaCode || null,
@@ -58,7 +67,7 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
     availableAreas,
     contractKinds,
     requiredCategory,
-    canSubmit,
+    errors,
     selectObject,
     selectKind,
     setMode,

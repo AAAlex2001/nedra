@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useId } from "react";
 import styles from "./style.module.scss";
 
@@ -11,6 +12,7 @@ type FilesFieldProps = {
   accept?: string;
   hint?: string;
   required?: boolean;
+  invalid?: boolean;
 };
 
 const formatSize = (bytes: number): string => {
@@ -19,11 +21,20 @@ const formatSize = (bytes: number): string => {
   return `${(bytes / (1024 * 1024)).toFixed(1)} МБ`;
 };
 
-const FilesField = ({ label, files, onAdd, onRemove, accept, hint, required }: FilesFieldProps) => {
+const FilesField = ({
+  label,
+  files,
+  onAdd,
+  onRemove,
+  accept,
+  hint,
+  required,
+  invalid,
+}: FilesFieldProps) => {
   const inputId = useId();
 
   return (
-    <div className={styles.field}>
+    <div className={classNames(styles.field, invalid && styles.invalid)}>
       <span className={styles.label}>
         {label}
         {required && <span className={styles.required}> *</span>}

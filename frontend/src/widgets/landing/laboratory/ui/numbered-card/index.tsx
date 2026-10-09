@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import type { NumberedCardItem } from "../../data";
 import styles from "./style.module.scss";
 
@@ -19,7 +20,7 @@ const NumberedCards = ({ cards }: NumberedCardsProps) => {
         ))}
       </div>
 
-      <div className={`${styles.row} ${styles.rowTall}`}>
+      <div className={classNames(styles.row, styles.rowTall)}>
         {cards.slice(3, 6).map((item) => (
           <article key={item.number} className={styles.card}>
             <p className={styles.text}>{item.text}</p>

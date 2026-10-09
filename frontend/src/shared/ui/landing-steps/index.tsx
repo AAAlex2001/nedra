@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import Image from "next/image";
@@ -49,9 +50,9 @@ const LandingSteps = ({ id, title, lead, imagePrefix, steps }: LandingStepsProps
         <p className={styles.lead}>{lead}</p>
       </div>
 
-      <div ref={sliderRef} className={`keen-slider ${styles.viewport}`}>
+      <div ref={sliderRef} className={classNames("keen-slider", styles.viewport)}>
         {steps.map((step, index) => (
-          <article key={step.title} className={`keen-slider__slide ${styles.card}`}>
+          <article key={step.title} className={classNames("keen-slider__slide", styles.card)}>
             <Image
               className={styles.image}
               src={step.image}
@@ -74,7 +75,7 @@ const LandingSteps = ({ id, title, lead, imagePrefix, steps }: LandingStepsProps
               key={step.title}
               type="button"
               aria-label={step.title}
-              className={`${styles.dot} ${index === active ? styles.dotActive : ""}`}
+              className={classNames(styles.dot, index === active && styles.dotActive)}
               onClick={() => slider.current?.moveToIdx(index)}
             />
           ))}

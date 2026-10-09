@@ -1,5 +1,5 @@
 import type { Expertise, ExpertiseResult } from "./types";
-import { wordingFor, type ServiceWording } from "./wording";
+import { isAudit, wordingFor, type ServiceWording } from "./wording";
 
 export type StageState = "done" | "current" | "future";
 
@@ -24,8 +24,14 @@ const sentLabel = (words: ServiceWording, result: ExpertiseResult | null): strin
   return words.resultSent;
 };
 
+const auditPlanRows = (expertise: Expertise): StageRow[] => [
+  { key: "plan_sent", label: "План аудита отправлен", startedAt: expertise.plan_sent_at },
+  { key: "plan_approved", label: "План аудита согласован", startedAt: expertise.plan_approved_at },
+];
+
 const collectRows = (expertise: Expertise): StageRow[] => {
   const words = wordingFor(expertise);
+  const audit = isAudit(expertise);
 
   const rows: StageRow[] = [
     { key: "new", label: "Заявка подана", startedAt: expertise.created_at },
@@ -37,10 +43,14 @@ const collectRows = (expertise: Expertise): StageRow[] => {
     { key: "contract", label: "Договор заключён", startedAt: expertise.contract_at },
     {
       key: "advance",
-      label: `Аванс оплачен, ${words.executorLower} в работе`,
+      label: audit
+        ? "Аванс оплачен, готовится План аудита"
+        : `Аванс оплачен, ${words.executorLower} в работе`,
       startedAt: expertise.advance_paid_at,
     },
   ];
+
+  if (audit) rows.push(...auditPlanRows(expertise));
 
   for (const remark of expertise.remarks ?? []) {
     rows.push({

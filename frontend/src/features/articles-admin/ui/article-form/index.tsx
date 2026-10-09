@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -101,7 +102,7 @@ const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => 
               {SECTIONS.map((item) => (
                 <label
                   key={item}
-                  className={`${styles.tag} ${fields.section === item ? styles.tagActive : ""}`}
+                  className={classNames(styles.tag, fields.section === item && styles.tagActive)}
                 >
                   <input
                     type="radio"
@@ -162,7 +163,7 @@ const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => 
                   return (
                     <label
                       key={tag.id}
-                      className={`${styles.tag} ${checked ? styles.tagActive : ""}`}
+                      className={classNames(styles.tag, checked && styles.tagActive)}
                     >
                       <input
                         type="checkbox"

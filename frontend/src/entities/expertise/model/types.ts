@@ -1,7 +1,14 @@
+import type { AuditDetails, AuditPlan, AuditTeamMember } from "./audit";
+
 export type ExpertiseStatus =
   | "new"
+  | "consultation"
+  | "offer"
+  | "counter"
   | "expert_ready"
   | "contract"
+  | "plan"
+  | "plan_review"
   | "in_progress"
   | "remarks"
   | "conclusion_ready"
@@ -21,13 +28,6 @@ export const DEADLINE_LABELS: Record<Deadline, string> = {
 };
 
 export type ServiceKind = "expertise" | "audit";
-
-export type AuditChecklistItem = {
-  number: number;
-  title: string;
-};
-
-export const AUDIT_CHECKLIST_SIZE = 47;
 
 export type ContractKind =
   | "justification"
@@ -65,12 +65,15 @@ const CONTRACT_KINDS_BY_OBJECT: Record<string, ContractKind[]> = {
 export const contractKindsFor = (objectCode: string | null): ContractKind[] =>
   objectCode ? (CONTRACT_KINDS_BY_OBJECT[objectCode] ?? ALL_CONTRACT_KINDS) : ALL_CONTRACT_KINDS;
 
-export type CustomerType = "legal" | "individual";
+export type CustomerType = "legal" | "entrepreneur" | "individual";
 
 export const CUSTOMER_TYPE_LABELS: Record<CustomerType, string> = {
   legal: "Юридическое лицо",
+  entrepreneur: "Индивидуальный предприниматель",
   individual: "Физическое лицо",
 };
+
+export const usesCompany = (customerType: CustomerType): boolean => customerType !== "individual";
 
 export const cardPaymentAllowed = (expertise: Expertise): boolean =>
   expertise.customer_type === "individual";
@@ -154,10 +157,16 @@ export type Expertise = {
   customer_type: CustomerType;
   company: ExpertiseCompany | null;
   individual: ExpertiseIndividual | null;
+  audit_details: AuditDetails | null;
   comment: string | null;
   status: ExpertiseStatus;
   result: ExpertiseResult | null;
   price: string | null;
+  offer_price: string | null;
+  counter_price: string | null;
+  audit_plan: AuditPlan | null;
+  plan_comment: string | null;
+  team: AuditTeamMember[];
   advance_payment: ExpertisePayment | null;
   final_payment: ExpertisePayment | null;
   invoice: ExpertiseInvoice | null;
@@ -165,6 +174,8 @@ export type Expertise = {
   expert_ready_at: string | null;
   contract_at: string | null;
   advance_paid_at: string | null;
+  plan_sent_at: string | null;
+  plan_approved_at: string | null;
   conclusion_ready_at: string | null;
   final_paid_at: string | null;
   sent_at: string | null;
@@ -175,8 +186,13 @@ export type Expertise = {
 
 export const EXPERTISE_STATUS_LABELS: Record<ExpertiseStatus, string> = {
   new: "Ждёт эксперта",
+  consultation: "Нужна консультация",
+  offer: "Предложена цена",
+  counter: "Встречная цена",
   expert_ready: "Эксперт готов",
   contract: "Договор заключён",
+  plan: "Готовится План",
+  plan_review: "Согласование Плана",
   in_progress: "В работе",
   remarks: "Замечания эксперта",
   conclusion_ready: "Заключение готово",
@@ -189,8 +205,13 @@ export type ExpertiseStatusTone = "wait" | "work" | "alert" | "review" | "done";
 
 export const EXPERTISE_STATUS_TONES: Record<ExpertiseStatus, ExpertiseStatusTone> = {
   new: "wait",
+  consultation: "wait",
+  offer: "alert",
+  counter: "alert",
   expert_ready: "work",
   contract: "work",
+  plan: "work",
+  plan_review: "alert",
   in_progress: "work",
   remarks: "alert",
   conclusion_ready: "work",

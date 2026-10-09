@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import "keen-slider/keen-slider.min.css";
 import Image from "next/image";
 import { useKeenSlider } from "keen-slider/react";
@@ -44,13 +45,11 @@ const DocumentsSlider = ({ slides }: DocumentsSliderProps) => {
 
   return (
     <div className={styles.wrap}>
-      <div ref={sliderRef} className={`keen-slider ${styles.viewport}`}>
+      <div ref={sliderRef} className={classNames("keen-slider", styles.viewport)}>
         {slides.map((src, index) => (
           <div
             key={src}
-            className={`keen-slider__slide ${styles.slide} ${
-              index === activeIndex ? styles.slideActive : ""
-            }`}
+            className={classNames("keen-slider__slide", styles.slide, index === activeIndex && styles.slideActive)}
           >
             <Image
               className={styles.image}

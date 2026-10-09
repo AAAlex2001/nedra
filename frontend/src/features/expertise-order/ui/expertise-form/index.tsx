@@ -23,13 +23,14 @@ const ExpertiseForm = ({ catalog }: ExpertiseFormProps) => {
   const expertise = useExpertiseOrder(catalog);
   const { order } = expertise;
   const { state } = order;
+  const { errors } = expertise;
 
   return (
     <OrderShell
       order={order}
       executors="Эксперты"
       submitText="Отправить на экспертизу"
-      canSubmit={expertise.canSubmit}
+      errors={errors}
       onSubmit={expertise.submit}
     >
       <ObjectSection
@@ -51,6 +52,7 @@ const ExpertiseForm = ({ catalog }: ExpertiseFormProps) => {
         required
         placeholder="Как на титульном листе проекта"
         maxLength={500}
+        invalid={Boolean(errors.objectName)}
         value={state.objectName}
         onChange={order.changeObjectName}
       />
@@ -85,6 +87,7 @@ const ExpertiseForm = ({ catalog }: ExpertiseFormProps) => {
         label="Ваша цена за экспертизу, ₽"
         executors="Эксперты"
         value={state.price}
+        invalid={Boolean(errors.price)}
         onChange={order.changePrice}
       />
 
@@ -93,12 +96,13 @@ const ExpertiseForm = ({ catalog }: ExpertiseFormProps) => {
         required
         files={state.files}
         accept={ACCEPT}
+        invalid={Boolean(errors.files)}
         hint="PDF, Word, JPG или PNG, до 50 МБ каждый. Можно приложить несколько файлов. Если документации нет — приложите техническое задание."
         onAdd={expertise.addFiles}
         onRemove={expertise.removeFile}
       />
 
-      <CustomerSection order={order} />
+      <CustomerSection order={order} errors={errors} />
 
       <TextField
         label="Комментарий"

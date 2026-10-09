@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import Image from "next/image";
 import { useState } from "react";
 import type { ServiceCardItem } from "../../data";
@@ -21,7 +22,7 @@ const ServiceCards = ({ cards }: ServiceCardsProps) => {
           <button
             key={item.title}
             type="button"
-            className={`${styles.card} ${isOpen ? styles.open : ""}`}
+            className={classNames(styles.card, isOpen && styles.open)}
             aria-expanded={isOpen}
             onClick={() => setOpenTitle(isOpen ? null : item.title)}
           >

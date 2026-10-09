@@ -53,6 +53,7 @@ export type ExpertApplicationRecord = {
   full_name: string;
   phone: string;
   directions: string[];
+  audit_lead: boolean;
   status: ApplicationStatus;
   admin_comment: string | null;
   user_id: number | null;

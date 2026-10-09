@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import styles from "./style.module.scss";
 
 type SpinnerProps = {
@@ -10,7 +11,7 @@ const Spinner = ({ size = 20, tone = "dark", className }: SpinnerProps) => (
   <span
     role="status"
     aria-label="Загрузка"
-    className={`${styles.spinner} ${tone === "light" ? styles.light : ""} ${className ?? ""}`}
+    className={classNames(styles.spinner, tone === "light" && styles.light, className)}
     style={{ width: size, height: size }}
   />
 );

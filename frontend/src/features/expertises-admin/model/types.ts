@@ -1,4 +1,5 @@
 import type {
+  AuditDetails,
   ContractKind,
   CustomerType,
   Deadline,
@@ -25,6 +26,7 @@ export type ExpertiseAdminRecord = {
   customer_type: CustomerType;
   company: ExpertiseCompany | null;
   individual: ExpertiseIndividual | null;
+  audit_details: AuditDetails | null;
   comment: string | null;
   status: ExpertiseStatus;
   price: string | null;

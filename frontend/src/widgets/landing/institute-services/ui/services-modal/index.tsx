@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useEffect, type ReactNode } from "react";
 import { CloseIcon } from "@/shared/ui/icons";
 import styles from "./style.module.scss";
@@ -31,7 +32,7 @@ const ServicesModal = ({ open, title, onClose, children }: ServicesModalProps) =
   }, [open, onClose]);
 
   return (
-    <div className={`${styles.root} ${open ? styles.open : ""}`} onClick={onClose}>
+    <div className={classNames(styles.root, open && styles.open)} onClick={onClose}>
       <div
         className={styles.window}
         role="dialog"

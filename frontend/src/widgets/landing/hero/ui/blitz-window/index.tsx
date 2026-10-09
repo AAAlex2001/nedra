@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider, type KeenSliderInstance } from "keen-slider/react";
 import Image from "next/image";
@@ -47,9 +48,9 @@ const BlitzWindow = () => {
         <p className={styles.tagline}>Онлайн экспертиза промышленной безопасности</p>
       </div>
 
-      <div ref={sliderRef} className={`keen-slider ${styles.viewport}`}>
+      <div ref={sliderRef} className={classNames("keen-slider", styles.viewport)}>
         {BLITZ_STEPS.map((step, index) => (
-          <article key={step.title} className={`keen-slider__slide ${styles.slide}`}>
+          <article key={step.title} className={classNames("keen-slider__slide", styles.slide)}>
             <Image
               className={styles.image}
               src={step.image}
@@ -78,7 +79,7 @@ const BlitzWindow = () => {
               role="tab"
               aria-selected={index === active}
               aria-label={step.title}
-              className={`${styles.dot} ${index === active ? styles.dotActive : ""}`}
+              className={classNames(styles.dot, index === active && styles.dotActive)}
               onClick={() => slider.current?.moveToIdx(index)}
             />
           ))}

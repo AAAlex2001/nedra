@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { formatRequestDate } from "@/entities/request";
 import Loader from "@/shared/ui/loader";
 import type { useNotifications } from "../../model/use-notifications";
@@ -54,7 +55,7 @@ const NotificationsTab = ({ notifications }: NotificationsTabProps) => {
         {items.map((item) => (
           <li
             key={item.id}
-            className={`${styles.item} ${item.read_at === null ? styles.itemUnread : ""}`}
+            className={classNames(styles.item, item.read_at === null && styles.itemUnread)}
           >
             <p className={styles.text}>{item.text}</p>
             <div className={styles.foot}>

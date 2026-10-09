@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import {
   areaTitle,
   objectLabel,
@@ -23,11 +24,19 @@ import {
 import { formatRequestDate } from "@/entities/request";
 import { formatRub } from "@/shared/lib/money";
 import { DetailsRow, DetailsTable } from "@/shared/ui/details-table";
+import AuditRows from "../audit-rows";
 import ExpertiseActions from "../expertise-actions";
 import ExpertiseProgress from "../expertise-progress";
 import FilesList from "../files-list";
 import RemarksThread from "../remarks-thread";
 import styles from "./style.module.scss";
+
+const executorTitle = (expertise: Expertise, executor: string): string | null => {
+  if (expertise.expert_name) return expertise.expert_name;
+  if (expertise.expert_id === null) return null;
+
+  return `${executor} НПИ «Недра»`;
+};
 
 type ExpertiseCardProps = {
   expertise: Expertise;
@@ -56,6 +65,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
   const contract = documents.filter((item) => item.kind === "contract" || item.kind === "nda");
   const company = expertise.company;
   const individual = expertise.individual;
+  const executorName = executorTitle(expertise, words.executor);
 
   return (
     <article className={styles.card}>
@@ -76,7 +86,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
             Заявка №{expertise.id} · {formatRequestDate(expertise.created_at)}
           </p>
         </div>
-        <span className={`${styles.status} ${styles[EXPERTISE_STATUS_TONES[expertise.status]]}`}>
+        <span className={classNames(styles.status, styles[EXPERTISE_STATUS_TONES[expertise.status]])}>
           {statusLabel(expertise)}
         </span>
       </div>
@@ -100,6 +110,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
           {company && `${company.name}, ИНН ${company.inn} · оплата по счёту`}
           {individual && `${individual.full_name} · оплата картой`}
         </DetailsRow>
+        {audit && <AuditRows expertise={expertise} />}
         {!audit && (
           <DetailsRow label="Область аттестации">
             {expertise.area_code ? (
@@ -123,8 +134,8 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
         )}
         <DetailsRow label="Цена заказчика">{formatRub(expertise.price)}</DetailsRow>
         {role === "expert" && <DetailsRow label="Заказчик">{expertise.customer_name}</DetailsRow>}
-        {role === "customer" && expertise.expert_name && (
-          <DetailsRow label={words.executor}>{expertise.expert_name}</DetailsRow>
+        {role === "customer" && executorName && expertise.team.length === 0 && (
+          <DetailsRow label={words.executor}>{executorName}</DetailsRow>
         )}
         {expertise.comment && (
           <DetailsRow label="Комментарий">

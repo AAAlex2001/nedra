@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider, type KeenSliderInstance } from "keen-slider/react";
 import Image from "next/image";
@@ -86,9 +87,9 @@ const LandingHero = ({ title, text, slides, action }: LandingHeroProps) => {
       <div className={styles.actions}>{action}</div>
 
       <div className={styles.slider}>
-        <div ref={sliderRef} className={`keen-slider ${styles.viewport}`}>
+        <div ref={sliderRef} className={classNames("keen-slider", styles.viewport)}>
           {slides.map((slide, index) => (
-            <article key={slide.title} className={`keen-slider__slide ${styles.slide}`}>
+            <article key={slide.title} className={classNames("keen-slider__slide", styles.slide)}>
               <div className={styles.slideText}>
                 <h2 className={styles.slideTitle}>{slide.title}</h2>
                 <p className={styles.slideLead}>{slide.text}</p>
@@ -116,7 +117,7 @@ const LandingHero = ({ title, text, slides, action }: LandingHeroProps) => {
                 role="tab"
                 aria-selected={index === active}
                 aria-label={slide.title}
-                className={`${styles.dot} ${index === active ? styles.dotActive : ""}`}
+                className={classNames(styles.dot, index === active && styles.dotActive)}
                 onClick={() => slider.current?.moveToIdx(index)}
               />
             ))}

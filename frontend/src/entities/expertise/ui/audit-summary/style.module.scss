@@ -1,0 +1,29 @@
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.strong {
+  font-weight: 600;
+}
+
+.block {
+  display: block;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.item > span {
+  display: block;
+}
+
+.item::marker {
+  color: var(--accent, #f69827);
+}

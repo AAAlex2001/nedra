@@ -1,5 +1,4 @@
 export type {
-  AuditChecklistItem,
   ContractKind,
   CustomerType,
   Deadline,
@@ -15,10 +14,63 @@ export type {
   ExpertiseStatusTone,
   ServiceKind,
 } from "./model/types";
-export type { ServiceWording } from "./model/wording";
-export { SERVICE_LABELS, isAudit, statusLabel, wordingFor } from "./model/wording";
+export type {
+  AuditApplicant,
+  AuditBudget,
+  AuditChecklistItem,
+  AuditDetails,
+  AuditElement,
+  AuditFile,
+  AuditFleet,
+  AuditKind,
+  AuditObject,
+  AuditParams,
+  AuditPlan,
+  AuditPlanInput,
+  AuditScope,
+  AuditStage,
+  AuditTeamMember,
+  AuditTiming,
+  BudgetMode,
+  HazardClass,
+  HazardSign,
+  Negotiation,
+  OfferAnswer,
+  TimingKind,
+} from "./model/audit";
 export {
   AUDIT_CHECKLIST_SIZE,
+  AUDIT_ELEMENTS,
+  AUDIT_ELEMENT_LABELS,
+  AUDIT_FILES_ACCEPT,
+  AUDIT_KINDS,
+  AUDIT_KIND_LABELS,
+  AUDIT_KIND_TITLES,
+  AUDIT_SCOPE_LABELS,
+  AUDIT_STAGES,
+  AUDIT_STAGE_LABELS,
+  AUDIT_STAGE_TITLES,
+  BUDGET_LABELS,
+  HAZARD_CLASSES,
+  HAZARD_SIGNS,
+  HAZARD_SIGN_LABELS,
+  KINDS_WITH_STO,
+  MIN_AUDIT_PRICE,
+  NEGOTIATIONS,
+  NEGOTIATION_LABELS,
+  TIMING_KINDS,
+  TIMING_LABELS,
+  negotiable,
+} from "./model/audit";
+export type { ServiceWording } from "./model/wording";
+export {
+  AUDIT_STATUS_LABELS,
+  SERVICE_LABELS,
+  isAudit,
+  statusLabel,
+  wordingFor,
+} from "./model/wording";
+export {
   CONTRACT_KIND_LABELS,
   CUSTOMER_TYPE_LABELS,
   DEADLINE_LABELS,
@@ -29,15 +81,13 @@ export {
   contractKindsFor,
   hasPendingPayment,
   isFinished,
+  usesCompany,
 } from "./model/types";
 export type { ExpertiseStage, StageState } from "./model/stages";
 export { buildStages, currentStage, doneCount } from "./model/stages";
 export {
   acceptExpertise,
   acceptWork,
-  auditDocumentsReportUrl,
-  createAudit,
-  fetchAuditChecklist,
   confirmExpertise,
   createExpertise,
   createExpertisePayment,
@@ -52,3 +102,20 @@ export {
   sendConclusion,
   sendRemarks,
 } from "./api/expertise";
+export {
+  answerAuditCounter,
+  answerAuditOffer,
+  approveAuditPlan,
+  auditDocumentsReportUrl,
+  createAudit,
+  fetchAuditChecklist,
+  fetchAuditors,
+  proposeAuditPrice,
+  requestAuditPlanChanges,
+  sendAuditPlan,
+  setAuditTeam,
+  uploadAuditDocuments,
+} from "./api/audit";
+export { default as AuditChecklist } from "./ui/audit-checklist";
+export { default as AuditSummary } from "./ui/audit-summary";
+export { default as PlanSummary } from "./ui/plan-summary";

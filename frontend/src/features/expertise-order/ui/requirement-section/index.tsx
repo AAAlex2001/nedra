@@ -34,6 +34,12 @@ const describe = (mode: RequirementMode, requiredCategory: number | null): strin
   return `Заявку увидят эксперты ${requiredCategory} категории и выше.`;
 };
 
+const toText = (value: number | null): string | null => {
+  if (value === null) return null;
+
+  return String(value);
+};
+
 const RequirementSection = ({
   hazardClasses,
   categories,
@@ -46,26 +52,31 @@ const RequirementSection = ({
   onCategory,
 }: RequirementSectionProps) => {
   const hazardOptions = hazardClasses.map((rule) => ({
-    value: rule.hazard_class,
+    value: String(rule.hazard_class),
     label: `${rule.hazard_class} класс`,
   }));
 
   const categoryOptions = categories.map((item) => ({
-    value: item,
+    value: String(item),
     label: `${item} категория`,
   }));
 
   return (
     <FieldGroup label="Требования к эксперту" note={describe(mode, requiredCategory)}>
-      <Segments label="Как задать требование" options={MODES} value={mode} onChange={onMode} />
+      <Segments
+        label="Как задать требование"
+        options={MODES}
+        value={mode}
+        onChange={(value) => onMode(value as RequirementMode)}
+      />
 
       {mode === "hazard" && (
         <ChipOptions
           label="Класс опасности"
           layout="row"
           options={hazardOptions}
-          value={hazardClass}
-          onChange={onHazard}
+          value={toText(hazardClass)}
+          onChange={(value) => onHazard(Number(value))}
         />
       )}
 
@@ -74,8 +85,8 @@ const RequirementSection = ({
           label="Категория эксперта"
           layout="row"
           options={categoryOptions}
-          value={category}
-          onChange={onCategory}
+          value={toText(category)}
+          onChange={(value) => onCategory(Number(value))}
         />
       )}
     </FieldGroup>

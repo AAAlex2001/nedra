@@ -1,0 +1,82 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+
+  background: #fff;
+  border-radius: 12px;
+}
+
+.document {
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  color: var(--accent, #f69827);
+}
+
+.buttons,
+.changes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.buttons > *,
+.changes > button {
+  width: 100%;
+}
+
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 20px;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  white-space: nowrap;
+
+  color: #0b0b0b;
+  background: #f5f6f8;
+  border: 1px solid #f5f6f8;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.secondary:hover:not(:disabled),
+.secondaryActive {
+  color: #b86108;
+  border-color: #f69827;
+}
+
+.secondary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@media (min-width: 768px) {
+  .buttons {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .buttons > *,
+  .changes > button {
+    width: auto;
+  }
+
+  .changes > button {
+    align-self: flex-start;
+  }
+}

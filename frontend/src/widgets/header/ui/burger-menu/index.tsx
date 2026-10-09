@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import Link from "next/link";
 import { useEffect } from "react";
 import type { HeaderNavItem } from "../../data";
@@ -31,7 +32,7 @@ const BurgerMenu = ({ open, nav, onClose }: BurgerMenuProps) => {
 
   return (
     <div
-      className={`${styles.root} ${open ? styles.open : ""}`}
+      className={classNames(styles.root, open && styles.open)}
       aria-hidden={!open}
     >
       <div className={styles.overlay} onClick={onClose} />

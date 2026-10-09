@@ -2,7 +2,7 @@ import type { ExpertiseStatus } from "@/entities/expertise";
 import type { StatusFilter, StatusGroup } from "./types";
 
 export const statusGroup = (status: ExpertiseStatus): StatusGroup => {
-  if (status === "new") return "waiting";
+  if (status === "new" || status === "consultation") return "waiting";
   if (status === "accepted") return "done";
 
   return "work";

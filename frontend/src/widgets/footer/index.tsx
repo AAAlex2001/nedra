@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Link from "next/link";
 import { COMPANY_CONTACTS } from "@/shared/config/company";
 import { LEGAL_LINKS } from "@/shared/config/legal";
@@ -44,7 +45,7 @@ const Footer = () => {
           {FOOTER_SITEMAP.map((group) => (
             <nav
               key={group.title}
-              className={`${styles.sitemapGroup} ${group.wide ? styles.sitemapGroupWide : ""}`}
+              className={classNames(styles.sitemapGroup, group.wide && styles.sitemapGroupWide)}
               aria-label={group.title}
             >
               <span className={styles.groupTitle}>{group.title}</span>

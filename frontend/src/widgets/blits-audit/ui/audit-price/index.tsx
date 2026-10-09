@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useStartAction } from "@/features/auth";
 import { formatRub, halfOf } from "@/shared/lib/money";
 import Button from "@/shared/ui/button";
@@ -45,7 +46,7 @@ const AuditPrice = ({ price, startText }: AuditPriceProps) => {
           {NOTES.map((note) => (
             <li key={note.text} className={styles.note}>
               <CheckIcon className={styles.noteIcon} />
-              <span className={`${styles.noteText} ${note.bold ? styles.noteBold : ""}`}>
+              <span className={classNames(styles.noteText, note.bold && styles.noteBold)}>
                 {note.text}
               </span>
             </li>
@@ -64,7 +65,7 @@ const AuditPrice = ({ price, startText }: AuditPriceProps) => {
           <dl className={styles.facts}>
             <div className={styles.fact}>
               <dt className={styles.factLabel}>Формат</dt>
-              <dd className={styles.factValue}>по документам, без выезда</dd>
+              <dd className={styles.factValue}>по документам</dd>
             </div>
             <div className={styles.fact}>
               <dt className={styles.factLabel}>Документ</dt>

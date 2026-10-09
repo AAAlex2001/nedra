@@ -1,20 +1,19 @@
 "use client";
 
-import type { AuditChecklistItem } from "@/entities/expertise";
+import classNames from "classnames";
 import { CheckIcon, CloseIcon } from "@/shared/ui/icons";
-import type { AuditFile } from "../../model/types";
+import { AUDIT_FILES_ACCEPT, type AuditChecklistItem, type AuditFile } from "../../model/audit";
 import styles from "./style.module.scss";
-
-const ACCEPT = ".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.zip";
 
 type AuditChecklistProps = {
   checklist: AuditChecklistItem[];
   files: AuditFile[];
+  note: string;
   onAdd: (item: number, files: File[]) => void;
   onRemove: (target: AuditFile) => void;
 };
 
-const AuditChecklist = ({ checklist, files, onAdd, onRemove }: AuditChecklistProps) => {
+const AuditChecklist = ({ checklist, files, note, onAdd, onRemove }: AuditChecklistProps) => {
   const covered = new Set(files.map((entry) => entry.item)).size;
 
   return (
@@ -25,10 +24,7 @@ const AuditChecklist = ({ checklist, files, onAdd, onRemove }: AuditChecklistPro
           Загружено по {covered} из {checklist.length} пунктов
         </span>
       </div>
-      <p className={styles.note}>
-        Загрузите то, что есть: недостающие документы аудитор увидит в отчёте о представленных
-        документах и попросит при необходимости. К одному пункту можно приложить несколько файлов.
-      </p>
+      <p className={styles.note}>{note}</p>
 
       <ol className={styles.list}>
         {checklist.map((item) => {
@@ -36,7 +32,7 @@ const AuditChecklist = ({ checklist, files, onAdd, onRemove }: AuditChecklistPro
           const done = attached.length > 0;
 
           return (
-            <li key={item.number} className={`${styles.item} ${done ? styles.itemDone : ""}`}>
+            <li key={item.number} className={classNames(styles.item, done && styles.itemDone)}>
               <span className={styles.number}>
                 {done ? <CheckIcon className={styles.doneIcon} /> : item.number}
               </span>
@@ -68,7 +64,7 @@ const AuditChecklist = ({ checklist, files, onAdd, onRemove }: AuditChecklistPro
                   className={styles.input}
                   type="file"
                   multiple
-                  accept={ACCEPT}
+                  accept={AUDIT_FILES_ACCEPT}
                   onChange={(event) => {
                     const chosen = Array.from(event.target.files ?? []);
                     if (chosen.length > 0) onAdd(item.number, chosen);

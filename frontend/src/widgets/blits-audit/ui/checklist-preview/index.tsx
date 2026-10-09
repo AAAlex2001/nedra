@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useState } from "react";
 import type { AuditChecklistItem } from "@/entities/expertise";
 import styles from "./style.module.scss";
@@ -30,7 +31,7 @@ const ChecklistPreview = ({ checklist }: ChecklistPreviewProps) => {
               key={item.number}
               type="button"
               aria-pressed={item.number === number}
-              className={`${styles.railItem} ${item.number === number ? styles.railItemActive : ""}`}
+              className={classNames(styles.railItem, item.number === number && styles.railItemActive)}
               onClick={() => setNumber(item.number)}
             >
               <span className={styles.railNumber}>{item.number}</span>

@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -34,7 +35,7 @@ const GuestBar = () => {
     <>
       <div className={styles.spacer} aria-hidden="true" />
 
-      <aside className={`${styles.bar} ${visible ? styles.barVisible : ""}`} aria-hidden={!visible}>
+      <aside className={classNames(styles.bar, visible && styles.barVisible)} aria-hidden={!visible}>
         <Image className={styles.icon} src="/blitz/20.webp" alt="" width={120} height={120} />
 
         <div className={styles.text}>

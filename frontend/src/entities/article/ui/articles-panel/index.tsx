@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { useState } from "react";
@@ -44,9 +45,9 @@ const ArticlesPanel = ({ title, lead, items }: ArticlesPanelProps) => {
           <p className={styles.lead}>{lead}</p>
         </div>
 
-        <div ref={sliderRef} className={`keen-slider ${styles.viewport}`}>
+        <div ref={sliderRef} className={classNames("keen-slider", styles.viewport)}>
           {items.map((item) => (
-            <div key={item.slug} className={`keen-slider__slide ${styles.slide}`}>
+            <div key={item.slug} className={classNames("keen-slider__slide", styles.slide)}>
               <ArticleCard article={item} />
             </div>
           ))}
@@ -60,7 +61,7 @@ const ArticlesPanel = ({ title, lead, items }: ArticlesPanelProps) => {
               key={item.slug}
               type="button"
               aria-label={item.title}
-              className={`${styles.dot} ${index === active ? styles.dotActive : ""}`}
+              className={classNames(styles.dot, index === active && styles.dotActive)}
               onClick={() => slider.current?.moveToIdx(index)}
             />
           ))}

@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { formatRequestDate, type RequestRecord } from "@/entities/request";
 import { findByActivity } from "@/entities/service";
 import Spinner from "@/shared/ui/spinner";
@@ -21,7 +22,7 @@ const RequestCard = ({ request, pending, onDelete }: RequestCardProps) => {
   };
 
   return (
-    <article className={`${styles.card} ${pending ? styles.cardPending : ""}`}>
+    <article className={classNames(styles.card, pending && styles.cardPending)}>
       <header className={styles.head}>
         <div className={styles.headMain}>
           <span className={styles.id}>№{request.request_id}</span>

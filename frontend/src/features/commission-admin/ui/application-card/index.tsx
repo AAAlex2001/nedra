@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import type { CommissionApplicationRecord } from "@/entities/commission";
 import { areaTitle, formatCategory, objectLabel, type ExpertCatalog } from "@/entities/expert";
 import { formatRequestDate } from "@/entities/request";
@@ -21,7 +22,7 @@ const ApplicationCard = ({ application, catalog, pending, onDelete }: Applicatio
   };
 
   return (
-    <article className={`${styles.card} ${pending ? styles.cardPending : ""}`}>
+    <article className={classNames(styles.card, pending && styles.cardPending)}>
       <header className={styles.head}>
         <div className={styles.headMain}>
           <span className={styles.id}>№{application.id}</span>

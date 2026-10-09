@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import type { ArticleStats } from "@/entities/article";
 import { EyeIcon, ThumbDownIcon, ThumbUpIcon } from "@/shared/ui/icons";
 import { useArticleStats } from "../../model/use-article-stats";
@@ -20,7 +21,7 @@ const ReactionBar = ({ slug, initial }: ReactionBarProps) => {
 
         <button
           type="button"
-          className={`${styles.button} ${stats.my_reaction === 1 ? styles.active : ""}`}
+          className={classNames(styles.button, stats.my_reaction === 1 && styles.active)}
           aria-pressed={stats.my_reaction === 1}
           aria-label="Полезно"
           disabled={pending}
@@ -32,7 +33,7 @@ const ReactionBar = ({ slug, initial }: ReactionBarProps) => {
 
         <button
           type="button"
-          className={`${styles.button} ${stats.my_reaction === -1 ? styles.active : ""}`}
+          className={classNames(styles.button, stats.my_reaction === -1 && styles.active)}
           aria-pressed={stats.my_reaction === -1}
           aria-label="Не полезно"
           disabled={pending}
