@@ -1,6 +1,7 @@
 import Directions from "@/widgets/landing/directions";
 import Activities from "@/widgets/landing/activities";
 import Hero from "@/widgets/landing/hero";
+import AuditPromo from "@/widgets/landing/audit-promo";
 import Advantages from "@/widgets/landing/advantages";
 import BlogPreview from "@/widgets/landing/blog-preview";
 import Contacts from "@/widgets/landing/contacts";
@@ -23,6 +24,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <AuditPromo />
       <Directions />
       <WhatIsThis />
       <InstituteServices />

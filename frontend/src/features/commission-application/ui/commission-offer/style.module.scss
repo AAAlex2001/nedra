@@ -6,7 +6,7 @@
 
   width: 100%;
 
-  background: #eaf4e8;
+  background: #eef0fb;
   border-radius: 32px;
 }
 
@@ -24,6 +24,7 @@
   height: 150px;
 
   object-fit: cover;
+  filter: hue-rotate(115deg) saturate(0.65);
 }
 
 .close {
@@ -80,8 +81,8 @@
   font-size: 13px;
   line-height: 17px;
 
-  color: #3f7a3a;
-  background: #eaf4e8;
+  color: #525f9c;
+  background: #eef0fb;
   border-radius: 100px;
 }
 
@@ -127,7 +128,7 @@
 }
 
 .pointIcon path {
-  fill: #7cb073;
+  fill: #7784ba;
 }
 
 .pointText {
@@ -143,13 +144,13 @@
   width: 100%;
   margin-top: 8px;
 
-  background: #9cc79a;
-  border-color: #9cc79a;
+  background: #6676b5;
+  border-color: #6676b5;
 }
 
 .offer .cta:hover {
-  background: #8bbc89;
-  border-color: #8bbc89;
+  background: #52629f;
+  border-color: #52629f;
 }
 
 @media (min-width: 768px) {

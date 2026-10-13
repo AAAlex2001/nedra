@@ -25,40 +25,6 @@
   width: 100%;
 }
 
-.heading {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 20px;
-
-  width: 100%;
-}
-
-.title {
-  width: 100%;
-
-  font-family: "Manrope";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 38px;
-
-  color: #0b0b0b;
-}
-
-.description {
-  width: 100%;
-
-  font-family: "Manrope";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 21px;
-
-  color: #0b0b0b;
-}
-
 .offer {
   box-sizing: border-box;
   padding: 0 20px;
@@ -102,19 +68,6 @@
 
     background: #ffffff;
     flex-grow: 1;
-  }
-
-  .heading {
-    width: 100%;
-  }
-
-  .title {
-    width: 100%;
-    line-height: 39px;
-  }
-
-  .description {
-    width: 100%;
   }
 
   .offer {

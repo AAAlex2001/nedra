@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useState } from "react";
 import Button from "@/shared/ui/button";
 import { BLITZ_ADVANTAGES, BLITZ_STEPS } from "../../data";
+import { AUDIT_ADVANTAGES, AUDIT_STEPS } from "../../audit-data";
 import styles from "./style.module.scss";
 
 const followContainerWidth = (slider: KeenSliderInstance) => {
@@ -29,7 +30,10 @@ const Chevron = ({ direction }: { direction: "left" | "right" }) => (
   </svg>
 );
 
-const BlitzWindow = () => {
+const BlitzWindow = ({ variant = "expert" }: { variant?: "expert" | "audit" }) => {
+  const isAudit = variant === "audit";
+  const steps = isAudit ? AUDIT_STEPS : BLITZ_STEPS;
+  const advantages = isAudit ? AUDIT_ADVANTAGES : BLITZ_ADVANTAGES;
   const [active, setActive] = useState(0);
 
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>(
@@ -42,14 +46,14 @@ const BlitzWindow = () => {
   );
 
   return (
-    <div className={styles.window}>
+    <div className={classNames(styles.window, isAudit && styles.audit)}>
       <div className={styles.head}>
-        <span className={styles.badge}>Блиц-эксперт</span>
-        <p className={styles.tagline}>Онлайн экспертиза промышленной безопасности</p>
+        <span className={styles.badge}>{isAudit ? "Блиц-аудит" : "Блиц-эксперт"}</span>
+        <p className={styles.tagline}>{isAudit ? "Аудит промышленной безопасности онлайн" : "Онлайн экспертиза промышленной безопасности"}</p>
       </div>
 
       <div ref={sliderRef} className={classNames("keen-slider", styles.viewport)}>
-        {BLITZ_STEPS.map((step, index) => (
+        {steps.map((step, index) => (
           <article key={step.title} className={classNames("keen-slider__slide", styles.slide)}>
             <Image
               className={styles.image}
@@ -61,7 +65,7 @@ const BlitzWindow = () => {
             />
             <div className={styles.slideText}>
               <span className={styles.number}>
-                Шаг {index + 1} из {BLITZ_STEPS.length}
+                Шаг {index + 1} из {steps.length}
               </span>
               <p className={styles.slideTitle}>{step.title}</p>
               <p className={styles.slideLead}>{step.text}</p>
@@ -71,13 +75,12 @@ const BlitzWindow = () => {
       </div>
 
       <div className={styles.controls}>
-        <div className={styles.dots} role="tablist" aria-label="Шаги экспертизы">
-          {BLITZ_STEPS.map((step, index) => (
+        <div className={styles.dots} aria-label={isAudit ? "Шаги аудита" : "Шаги экспертизы"}>
+          {steps.map((step, index) => (
             <button
               key={step.title}
               type="button"
-              role="tab"
-              aria-selected={index === active}
+              aria-pressed={index === active}
               aria-label={step.title}
               className={classNames(styles.dot, index === active && styles.dotActive)}
               onClick={() => slider.current?.moveToIdx(index)}
@@ -106,7 +109,7 @@ const BlitzWindow = () => {
       </div>
 
       <ul className={styles.advantages}>
-        {BLITZ_ADVANTAGES.map((item) => (
+        {advantages.map((item) => (
           <li key={item.title} className={styles.advantage}>
             <Image
               className={styles.advantageImage}
@@ -124,8 +127,8 @@ const BlitzWindow = () => {
         ))}
       </ul>
 
-      <Button href="/blits-ekspert" className={styles.cta}>
-        Загрузить документацию
+      <Button href={isAudit ? "/blits-audit" : "/blits-ekspert"} className={styles.cta}>
+        {isAudit ? "Начать аудит" : "Загрузить документацию"}
       </Button>
     </div>
   );
