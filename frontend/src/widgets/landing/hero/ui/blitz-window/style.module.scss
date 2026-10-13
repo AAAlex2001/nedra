@@ -309,6 +309,7 @@
   --blitz-dot: #c8ddca;
 
   background: linear-gradient(135deg, #edf5ed, #e3f0e6);
+  gap: 12px;
 }
 
 .audit .advantages {
@@ -322,13 +323,13 @@
   grid-column: auto;
   flex-direction: row;
   align-items: flex-start;
-  gap: 12px;
-  padding: 16px;
+  gap: 10px;
+  padding: 12px;
 }
 
 .audit .advantageText {
   flex: 1;
-  gap: 6px;
+  gap: 4px;
   width: 100%;
 }
 
@@ -338,22 +339,49 @@
 }
 
 .audit .advantageHint {
-  line-height: 18px;
+  line-height: 16px;
   white-space: pre-line;
 }
 
 @media (min-width: 768px) {
+  .audit {
+    padding: 20px;
+  }
+
+  .audit .slide {
+    min-height: 132px;
+    padding: 12px;
+    gap: 16px;
+  }
+
+  .audit .image {
+    width: 108px;
+    height: 108px;
+  }
+
+  .audit .arrow {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+
+  .audit .advantageImage {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+  }
+
   .audit .advantages {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(12, minmax(0, 1fr));
   }
 
   .audit .advantage,
   .audit .advantage:first-child {
-    grid-column: span 3;
+    grid-column: span 6;
   }
 
-  .audit .advantage:nth-child(n + 3) {
-    grid-column: span 2;
+  .audit .advantage:nth-child(n + 4) {
+    grid-column: span 3;
     flex-direction: column;
   }
 }
