@@ -6,7 +6,8 @@
 не затираются. С флагом --update существующие статьи перезаписываются
 из файлов.
 
-Все новые статьи публикуются сразу: даты расставляются назад от вчерашнего
+Статьи с явным published=false загружаются как черновики без даты и IndexNow.
+Остальные новые статьи публикуются сразу: даты расставляются назад от вчерашнего
 дня по рабочим дням, по --per-week штук в неделю, в 09:00 по Новосибирску.
 Первая статья в плане получает самую свежую дату.
 
@@ -46,7 +47,7 @@ TRUSTED_SUFFIXES = (
     "flickr.com", "openverse.org", "rawpixel.com", "nedra-npi.ru",
     "tass.ru", "ria.ru", "rg.ru", "interfax.ru", "kommersant.ru", "vedomosti.ru",
     "rbc.ru", "iz.ru", "lenta.ru", "gazeta.ru", "pnp.ru", "ancb.ru", "erzrf.ru",
-    "1tv.ru", "reo.ru", "gost.ru", "secnrs.ru",
+    "1tv.ru", "reo.ru", "gost.ru", "secnrs.ru", "gge.ru", "archaeology.nsc.ru",
 )
 
 LINK_PATTERN = re.compile(r"<a\s+[^>]*href=['\"]([^'\"]+)['\"][^>]*>(.*?)</a>", re.S)
@@ -282,7 +283,8 @@ def build_payload(article: dict, tag_ids: dict[str, int], credits: dict, publish
         "cover_image": cover_image,
         "content": clean_links(article["content"]) + credit_paragraph(credit),
         "tag_ids": [tag_ids[tag] for tag in article["tags"]],
-        "published_at": published_at.isoformat(),
+        "published": article.get("published", True),
+        "published_at": published_at.isoformat() if article.get("published", True) else None,
         "seo_title": article.get("seo_title"),
         "seo_description": article.get("seo_description"),
         "seo_keywords": article.get("seo_keywords"),
@@ -312,12 +314,17 @@ def main() -> None:
     existing_by_slug = {article["slug"]: article for article in existing}
 
     new_articles = [article for article in articles if article["slug"] not in existing_by_slug]
-    schedule = build_schedule(len(new_articles), date.fromisoformat(args.start), args.per_week)
+    schedule = iter(build_schedule(
+        sum(article.get("published", True) for article in new_articles),
+        date.fromisoformat(args.start), args.per_week,
+    ))
 
     created = 0
-    for article, published_at in zip(new_articles, schedule):
+    published_slugs = []
+    for article in new_articles:
+        published_at = next(schedule) if article.get("published", True) else datetime.now(NOVOSIBIRSK)
         payload = build_payload(article, tag_ids, credits, published_at)
-        when = published_at.strftime("%d.%m.%Y %H:%M")
+        when = published_at.strftime("%d.%m.%Y %H:%M") if article.get("published", True) else "черновик"
 
         if args.dry_run:
             print(f"  [dry-run] создать {article['slug']} → {when}")
@@ -325,6 +332,8 @@ def main() -> None:
 
         api.post("/articles", payload)
         created += 1
+        if article.get("published", True):
+            published_slugs.append(article["slug"])
         print(f"  создана {article['slug']} → {when}")
 
     updated = 0
@@ -348,8 +357,7 @@ def main() -> None:
     skipped = len(articles) - len(new_articles) - updated
     print(f"\nГотово: создано {created}, обновлено {updated}, оставлено без изменений {skipped}")
 
-    if created and not args.dry_run:
-        published_slugs = [article["slug"] for article in new_articles[:created]]
+    if published_slugs and not args.dry_run:
         notify_indexnow(published_slugs)
 
 

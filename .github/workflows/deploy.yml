@@ -61,6 +61,11 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Validate news and draft imports
+        run: |
+          python scripts/news/validate.py
+          python -m unittest discover -s scripts/news -p 'test_*.py'
+
       - name: Check backend imports and run tests
         working-directory: backend
         env:
