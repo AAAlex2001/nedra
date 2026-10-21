@@ -20,6 +20,7 @@ import argparse
 import json
 import re
 from datetime import date, datetime, time, timedelta, timezone
+from html import escape
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
@@ -47,7 +48,8 @@ TRUSTED_SUFFIXES = (
     "flickr.com", "openverse.org", "rawpixel.com", "nedra-npi.ru",
     "tass.ru", "ria.ru", "rg.ru", "interfax.ru", "kommersant.ru", "vedomosti.ru",
     "rbc.ru", "iz.ru", "lenta.ru", "gazeta.ru", "pnp.ru", "ancb.ru", "erzrf.ru",
-    "1tv.ru", "reo.ru", "gost.ru", "secnrs.ru", "gge.ru", "archaeology.nsc.ru",
+    "1tv.ru", "reo.ru", "gost.ru", "secnrs.ru", "gge.ru", "archaeology.nsc.ru", "faufcc.ru", "nalog.ru",
+    "buildingsmart.org", "ukbimframework.org", "imiframework.org", "rospotrebnadzor.ru", "mos.ru",
 )
 
 LINK_PATTERN = re.compile(r"<a\s+[^>]*href=['\"]([^'\"]+)['\"][^>]*>(.*?)</a>", re.S)
@@ -126,11 +128,17 @@ def credit_paragraph(credit: dict | None) -> str:
     source = credit.get("source") or ""
     license_name = credit.get("license") or ""
 
-    parts = [f"Фото: {author}"]
-    if source:
-        parts.append(f'<a href="{source}">{provider}</a>')
+    parts = [f"Фото: {escape(author)}"]
+    if urlparse(source).scheme in {"http", "https"}:
+        parts.append(f'<a href="{escape(source, quote=True)}">{provider}</a>')
     if license_name:
-        parts.append(license_name)
+        license_url = credit.get("license_url") or ""
+        if urlparse(license_url).scheme in {"http", "https"}:
+            parts.append(f'<a href="{escape(license_url, quote=True)}">{escape(license_name)}</a>')
+        else:
+            parts.append(escape(license_name))
+    if credit.get("modifications"):
+        parts.append(escape(credit["modifications"]))
 
     return f"<p><em>{', '.join(parts)}</em></p>"
 
@@ -352,6 +360,8 @@ def main() -> None:
 
             api.patch(f"/articles/{current['id']}", payload)
             updated += 1
+            if article.get("published", True) and not current["published_at"]:
+                published_slugs.append(article["slug"])
             print(f"  обновлена {article['slug']}")
 
     skipped = len(articles) - len(new_articles) - updated
