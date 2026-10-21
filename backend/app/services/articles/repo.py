@@ -46,7 +46,9 @@ class ArticleRepository:
             count_stmt = count_stmt.where(has_tag)
 
         articles_stmt = (
-            articles_stmt.order_by(Article.published_at.desc()).limit(limit).offset(offset)
+            articles_stmt.order_by(Article.published_at.desc(), Article.id.desc())
+            .limit(limit)
+            .offset(offset)
         )
 
         result = await self.db.execute(articles_stmt)
