@@ -15,6 +15,7 @@ import Partners from "@/widgets/landing/partners";
 import RequestSection from "@/widgets/landing/request-form";
 import WhatIsThis from "@/widgets/landing/what-is-this";
 import { buildMetadata } from "@/shared/config/seo";
+import styles from "./page.module.scss";
 
 export const dynamic = "force-dynamic";
 
@@ -23,9 +24,11 @@ export const metadata = buildMetadata("/");
 export default function Home() {
   return (
     <main>
-      <Hero />
-      <AuditPromo />
-      <Directions />
+      <div className={styles.intro}>
+        <Hero />
+        <AuditPromo />
+        <Directions />
+      </div>
       <WhatIsThis />
       <InstituteServices />
       <Quality />

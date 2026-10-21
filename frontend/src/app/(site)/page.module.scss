@@ -1,0 +1,11 @@
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+@media (min-width: 768px) {
+  .intro {
+    gap: 64px;
+  }
+}
