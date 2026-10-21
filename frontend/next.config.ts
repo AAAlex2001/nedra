@@ -8,6 +8,10 @@ const backendOrigin = (process.env.API_INTERNAL_URL ?? "http://localhost:8000/ap
 const nextConfig: NextConfig = {
   output: "standalone",
   images: {
+    localPatterns: [
+      { pathname: "/news/**" },
+      { pathname: "/**", search: "" },
+    ],
     formats: ["image/webp"],
     qualities: [75, 80, 82, 85, 90],
     minimumCacheTTL: 86400,
