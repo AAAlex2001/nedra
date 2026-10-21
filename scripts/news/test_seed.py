@@ -82,6 +82,16 @@ class SourceLinkTests(unittest.TestCase):
 
 
 class CoverCreditTests(unittest.TestCase):
+    def test_replaced_cover_gets_a_new_cache_key(self):
+        article = dict(slug="cover", title="Cover", description="Text", content="<p>Text</p>", tags=[])
+        def cover(version):
+            return seed.build_payload(
+                article, {}, {"cover": {"asset_version": version}}, datetime.now(seed.NOVOSIBIRSK)
+            )["cover_image"]
+        self.assertEqual(cover("a" * 12), "/news/cover.jpg?v=" + "a" * 12)
+        self.assertNotEqual(cover("a" * 12), cover("b" * 12))
+        self.assertEqual(cover(""), "/news/cover.jpg")
+
     def test_credit_preserves_source_license_and_changes(self):
         credit = seed.credit_paragraph(dict(
             author="Photographer", source="https://example.test/photo",

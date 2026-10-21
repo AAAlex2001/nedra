@@ -9,12 +9,14 @@ CC BY, CC BY-SA), если не нашлось — в Wikimedia Commons. Кар�
 """
 
 import argparse
+import hashlib
 import io
 import json
 import re
 import sys
 import time
 from pathlib import Path
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import requests
 from PIL import Image, ImageStat
@@ -33,6 +35,34 @@ MIN_SOURCE_WIDTH = 900
 MIN_YEAR = 2000
 MIN_SATURATION = 12
 MAX_CANDIDATES_TO_TRY = 4
+
+
+def source_key(url: str) -> str:
+    """Одна исходная фотография остаётся одной при разных tracking-параметрах."""
+
+    parts = urlsplit(url)
+    query = [(key, value) for key, value in parse_qsl(parts.query)
+             if not key.lower().startswith("utm_") and key.lower() not in {"fbclid", "gclid"}]
+    return urlunsplit((parts.scheme.lower(), parts.netloc.lower(), parts.path, urlencode(query), ""))
+
+
+def image_fingerprint(image: Image.Image) -> int:
+    """Разностный отпечаток: распознаёт один кадр с разным JPEG-сжатием."""
+
+    small = image.convert("L").resize((17, 16), Image.Resampling.LANCZOS)
+    pixels = [small.getpixel((col, row)) for row in range(16) for col in range(17)]
+    fingerprint = 0
+    for row in range(16):
+        for col in range(16):
+            fingerprint = (fingerprint << 1) | (pixels[row * 17 + col] > pixels[row * 17 + col + 1])
+    return fingerprint
+
+
+def is_repeated_image(image: Image.Image, used_fingerprints: list[int]) -> bool:
+    fingerprint = image_fingerprint(image)
+    mirrored = image_fingerprint(image.transpose(Image.Transpose.FLIP_LEFT_RIGHT))
+    return any(min((fingerprint ^ used).bit_count(), (mirrored ^ used).bit_count()) <= 10
+               for used in used_fingerprints)
 
 OPENVERSE_LICENSES = {
     "cc0": ("CC0", 0),
@@ -261,13 +291,15 @@ def is_colorful(image: Image.Image) -> bool:
     return saturation >= MIN_SATURATION
 
 
-def download_cover(url: str, target: Path) -> bool:
+def download_cover(url: str, target: Path, used_fingerprints: list[int] | None = None) -> bool:
     """Скачать картинку, проверить цветность, обрезать до 1200×675 и сохранить как JPEG."""
 
     response = requests.get(url, headers=HEADERS, timeout=60)
     response.raise_for_status()
 
     image = Image.open(io.BytesIO(response.content)).convert("RGB")
+    if image.width < MIN_SOURCE_WIDTH:
+        return False
     if not is_colorful(image):
         return False
 
@@ -286,12 +318,17 @@ def download_cover(url: str, target: Path) -> bool:
         box = (0, top, source_width, top + crop_height)
 
     cover = image.crop(box).resize((COVER_WIDTH, COVER_HEIGHT), Image.LANCZOS)
+    if used_fingerprints is not None and is_repeated_image(cover, used_fingerprints):
+        return False
     cover.save(target, "JPEG", quality=82, optimize=True, progressive=True)
 
     return True
 
 
-def find_cover(queries: list[str], used_urls: set[str], target: Path) -> dict | None:
+def find_cover(
+    queries: list[str], used_urls: set[str], target: Path,
+    used_fingerprints: list[int] | None = None, used_sources: set[str] | None = None,
+) -> dict | None:
     """Перебрать источники, запросы и кандидатов, пока картинка не скачается и не пройдёт проверку."""
 
     for search in (search_openverse, search_commons):
@@ -305,11 +342,13 @@ def find_cover(queries: list[str], used_urls: set[str], target: Path) -> dict | 
                 print(f"    {search.__name__} «{query}»: {error}")
                 continue
 
-            fresh = [candidate for candidate in candidates if candidate["url"] not in used_urls]
+            fresh = [candidate for candidate in candidates
+                     if candidate["url"] not in used_urls
+                     and (used_sources is None or source_key(candidate["source"]) not in used_sources)]
 
             for candidate in fresh[:MAX_CANDIDATES_TO_TRY]:
                 try:
-                    saved = download_cover(candidate["url"], target)
+                    saved = download_cover(candidate["url"], target, used_fingerprints)
                 except (requests.RequestException, OSError) as error:
                     print(f"    не скачалась {candidate['title'][:60]}: {error}")
                     continue
@@ -361,6 +400,11 @@ def main() -> None:
         credits.pop(slug, None)
 
     used_urls = {item["url"] for item in credits.values()}
+    used_sources = {source_key(item.get("source", item["url"])) for item in credits.values()}
+    used_fingerprints = []
+    for path in PUBLIC_DIR.glob("*.jpg"):
+        with Image.open(path) as image:
+            used_fingerprints.append(image_fingerprint(image))
 
     for index, item in enumerate(plan, start=1):
         slug = item["slug"]
@@ -372,13 +416,16 @@ def main() -> None:
 
         queries = overrides.get(slug, [item.get("cover_query", "")])
         queries = queries + FALLBACK_QUERIES.get(item.get("direction", ""), [])
-        chosen = find_cover(queries, used_urls, target)
+        chosen = find_cover(queries, used_urls, target, used_fingerprints, used_sources)
 
         if chosen is None:
             print(f"[{index}/{len(plan)}] {slug}: обложка не найдена")
             continue
 
         used_urls.add(chosen["url"])
+        used_sources.add(source_key(chosen["source"]))
+        with Image.open(target) as image:
+            used_fingerprints.append(image_fingerprint(image))
         credits[slug] = {
             "title": chosen["title"],
             "url": chosen["url"],
@@ -387,6 +434,8 @@ def main() -> None:
             "license": chosen["license"],
             "license_url": chosen["license_url"],
             "provider": chosen["provider"],
+            "modifications": "Изображение обрезано до формата 16:9 и уменьшено до 1200×675.",
+            "asset_version": hashlib.sha256(target.read_bytes()).hexdigest()[:12],
         }
         CREDITS_FILE.write_text(
             json.dumps(credits, ensure_ascii=False, indent=2), encoding="utf-8"

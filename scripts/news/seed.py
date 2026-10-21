@@ -282,6 +282,9 @@ def build_payload(article: dict, tag_ids: dict[str, int], credits: dict, publish
     cover_image = None
     if credit is not None:
         cover_image = f"/news/{slug}.jpg"
+        version = credit.get("asset_version", "")
+        if re.fullmatch(r"[0-9a-f]{12,64}", version):
+            cover_image += f"?v={version}"
 
     return {
         "title": article["title"],
