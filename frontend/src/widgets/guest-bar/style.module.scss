@@ -17,6 +17,21 @@
   backdrop-filter: blur(16px);
   box-shadow: 0 8px 32px #2920181a;
   color: #25252b;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(16px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .item {
@@ -125,5 +140,11 @@
   .bar,
   .spacer {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    transition: none;
   }
 }

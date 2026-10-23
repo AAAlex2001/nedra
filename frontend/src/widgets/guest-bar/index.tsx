@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useSession } from "@/entities/user";
 import styles from "./style.module.scss";
 
@@ -28,6 +29,16 @@ const SERVICES = [
 export default function GuestBar() {
   const { status } = useSession();
   const pathname = usePathname();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY >= 150);
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [pathname]);
   const hiddenPaths = ["/blits-ekspert", "/blits-audit", "/kabinet"];
   const hiddenOnPage = hiddenPaths.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`),
@@ -38,7 +49,12 @@ export default function GuestBar() {
   return (
     <>
       <div className={styles.spacer} aria-hidden="true" />
-      <aside className={styles.bar} aria-label="Онлайн-сервисы НПИ «Недра»">
+      <aside
+        className={`${styles.bar} ${visible ? styles.visible : ""}`}
+        aria-label="Онлайн-сервисы НПИ «Недра»"
+        inert={!visible}
+        aria-hidden={!visible}
+      >
         {SERVICES.map((service) => (
           <div key={service.href} className={`${styles.item} ${styles[service.tone]}`}>
             <Link href={service.href} className={styles.text}>
