@@ -120,7 +120,7 @@ const BlitsEkspertLanding = ({ catalog, tariffs, articles }: BlitsEkspertLanding
       />
     </div>
 
-    <StickyStart text={START_TEXT} />
+    <StickyStart text={START_TEXT} secondaryText="Рассчитать" />
   </main>
 );
 

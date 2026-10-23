@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useSession } from "@/entities/user";
 import styles from "./style.module.scss";
 
 const SERVICES = [
@@ -22,6 +26,15 @@ const SERVICES = [
 ];
 
 export default function GuestBar() {
+  const { status } = useSession();
+  const pathname = usePathname();
+  const hiddenPaths = ["/blits-ekspert", "/blits-audit", "/kabinet"];
+  const hiddenOnPage = hiddenPaths.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
+  );
+
+  if (status !== "anonymous" || hiddenOnPage) return null;
+
   return (
     <>
       <div className={styles.spacer} aria-hidden="true" />

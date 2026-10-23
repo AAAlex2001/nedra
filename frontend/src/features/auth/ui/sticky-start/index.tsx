@@ -6,9 +6,10 @@ import styles from "./style.module.scss";
 
 type StickyStartProps = {
   text: string;
+  secondaryText?: string;
 };
 
-const StickyStart = ({ text }: StickyStartProps) => {
+const StickyStart = ({ text, secondaryText }: StickyStartProps) => {
   const start = useStartAction();
 
   return (
@@ -16,6 +17,11 @@ const StickyStart = ({ text }: StickyStartProps) => {
       <Button className={styles.button} onClick={start}>
         {text}
       </Button>
+      {secondaryText && (
+        <a className={styles.secondary} href="#stoimost">
+          {secondaryText}
+        </a>
+      )}
     </div>
   );
 };

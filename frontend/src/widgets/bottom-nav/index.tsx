@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useSession } from "@/entities/user";
 import { useAuthModal } from "@/features/auth";
 import { useCommissionPopup } from "@/features/commission-application";
-import ServiceNavigation from "@/widgets/service-navigation";
 import styles from "./style.module.scss";
 
 export default function BottomNav() {
@@ -14,46 +12,6 @@ export default function BottomNav() {
   const session = useSession();
   const { openModal } = useAuthModal();
   const { openForm } = useCommissionPopup();
-  const [collapsed, setCollapsed] = useState(false);
-
-  useEffect(() => {
-    let previous = Math.max(0, window.scrollY);
-    let distance = 0;
-    let direction = 0;
-    let frame = 0;
-    const onScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        const current = Math.max(
-          0,
-          Math.min(window.scrollY, document.documentElement.scrollHeight - window.innerHeight),
-        );
-        const delta = current - previous;
-        previous = current;
-        if (current < 64) {
-          setCollapsed(false);
-          distance = 0;
-          return;
-        }
-        if (Math.abs(delta) < 2) return;
-        const nextDirection = Math.sign(delta);
-        if (direction !== nextDirection) distance = 0;
-        direction = nextDirection;
-        distance += Math.abs(delta);
-        if (distance >= (direction > 0 ? 56 : 32)) {
-          setCollapsed(direction > 0);
-          distance = 0;
-        }
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
-
   const profile = (
     <>
       <NavIcon type="profile" />
@@ -63,12 +21,7 @@ export default function BottomNav() {
   return (
     <>
       <div className={styles.spacer} aria-hidden="true" />
-      <div className={`${styles.bar} ${collapsed ? styles.collapsed : ""}`}>
-        <div className={styles.promo} inert={collapsed}>
-          <div className={styles.promoInner}>
-            <ServiceNavigation compact />
-          </div>
-        </div>
+      <div className={styles.bar}>
         <nav className={styles.tabs} aria-label="Быстрые разделы">
           {session.user ? (
             <Link

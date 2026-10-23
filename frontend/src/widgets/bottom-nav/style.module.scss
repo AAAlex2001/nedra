@@ -1,5 +1,5 @@
 .spacer {
-  height: calc(148px + env(safe-area-inset-bottom));
+  height: calc(92px + env(safe-area-inset-bottom));
 }
 
 .bar {
@@ -16,25 +16,6 @@
   background: #ffffffed;
   box-shadow: 0 8px 32px #2920181a;
   backdrop-filter: blur(16px);
-}
-
-.promo {
-  display: grid;
-  grid-template-rows: 1fr;
-  opacity: 1;
-  transition:
-    grid-template-rows 0.32s ease,
-    opacity 0.25s ease;
-}
-
-.promoInner {
-  min-height: 0;
-  overflow: hidden;
-}
-
-.collapsed .promo {
-  grid-template-rows: 0fr;
-  opacity: 0;
 }
 
 .tabs {
@@ -104,7 +85,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .promo,
   .tab {
     transition: none;
   }
