@@ -163,3 +163,7 @@
     height: 56px;
   }
 }
+
+@media (max-width: 1439px) {
+  .bar, .spacer { display: none; }
+}

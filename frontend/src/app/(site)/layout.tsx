@@ -4,6 +4,7 @@ import { AuthModalProvider } from "@/features/auth";
 import { CommissionPopupProvider } from "@/features/commission-application";
 import CommissionPopup from "@/widgets/commission-popup";
 import Footer from "@/widgets/footer";
+import BottomNav from "@/widgets/bottom-nav";
 import GuestBar from "@/widgets/guest-bar";
 import Header from "@/widgets/header";
 
@@ -18,6 +19,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
           {children}
           <Footer />
           <GuestBar />
+          <BottomNav />
           <CommissionPopup />
         </CommissionPopupProvider>
       </AuthModalProvider>
