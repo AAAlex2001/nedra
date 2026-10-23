@@ -1,4 +1,129 @@
+.spacer {
+  height: 116px;
+}
 
-.spacer { height: 152px; }
-.bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 40; width: min(860px, calc(100% - 100px)); padding: 6px; border: 1px solid #e5e5e3; border-radius: 24px; background: #ffffffed; backdrop-filter: blur(16px); box-shadow: 0 8px 32px #2920181a; }
-@media (max-width: 1439px) { .bar, .spacer { display: none; } }
+.bar {
+  position: fixed;
+  inset: auto 24px 24px;
+  z-index: 70;
+  display: flex;
+  align-items: stretch;
+  max-width: 736px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid #e5e5e3;
+  border-radius: 999px;
+  background: #ffffffed;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px #2920181a;
+  color: #25252b;
+}
+
+.item {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px 12px 8px 8px;
+}
+
+.expert {
+  padding-right: 24px;
+  background: linear-gradient(90deg, #f698272e, #f698270f 60%, #f6982705);
+}
+
+.audit {
+  margin-left: -28px;
+  padding-right: 10px;
+  padding-left: 40px;
+  background: linear-gradient(90deg, #739c6338, #739c631a 55%, #739c630a);
+  clip-path: polygon(28px 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.text {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.artwork {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.caption {
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.35;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #686b73;
+}
+
+.pill {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.expert .pill {
+  color: #3c2205;
+  background: #f69827;
+  &:hover {
+    background: #eb8a18;
+  }
+}
+
+.audit .pill {
+  color: #33562f;
+  background: #dcebd5;
+  &:hover {
+    background: #cce0c3;
+  }
+}
+
+.text:focus-visible,
+.pill:focus-visible {
+  outline: 2px solid #b86108;
+  outline-offset: -2px;
+}
+
+@media (max-width: 1439px) {
+  .bar,
+  .spacer {
+    display: none;
+  }
+}

@@ -1,28 +1,143 @@
-
 .drawer {
-  position: fixed; inset: 0 0 auto; width: 100%; max-width: none; max-height: 100dvh; margin: 0; padding: 0;
-  border: 0; border-radius: 0 0 24px 24px; background: #fff; color: #25252b; font-family: "Manrope", sans-serif; overflow-y: auto;
-  opacity: 0; transform: translateY(-24px); transition: opacity .25s ease, transform .3s ease, display .3s allow-discrete, overlay .3s allow-discrete;
-  &[open] { opacity: 1; transform: translateY(0); }
-  &::backdrop { background: #0b0b0b80; }
+  position: fixed;
+  inset: 0 0 auto;
+  width: 100%;
+  max-width: none;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0 0 24px 24px;
+  background: #fff;
+  color: #25252b;
+  font-family: "Manrope", sans-serif;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(-24px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s ease,
+    display 0.3s allow-discrete,
+    overlay 0.3s allow-discrete;
+  &[open] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  &::backdrop {
+    background: #0b0b0b80;
+  }
 }
-@starting-style { .drawer[open] { opacity: 0; transform: translateY(-24px); } }
-.content { max-width: 768px; margin: auto; }
-.header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 15px 20px; border-bottom: 1px solid #e6e6e6; }
-.logo { display: block; width: auto; height: 54px; }
-.close { display: grid; place-items: center; width: 48px; height: 48px; padding: 0; background: transparent; border: 0; cursor: pointer; }
-.nav { display: flex; flex-direction: column; gap: 20px; padding: 16px 16px 24px; }
-.group { display: flex; flex-direction: column; gap: 8px; }
-.groupTitle { padding: 0 4px; color: #6c7078; font-size: 12px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; }
-.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+
+@starting-style {
+  .drawer[open] {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+}
+
+.content {
+  max-width: 768px;
+  margin: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.logo {
+  display: block;
+  width: auto;
+  height: 54px;
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px 16px 24px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.groupTitle {
+  padding: 0 4px;
+  color: #6c7078;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
 .tile {
-  display: flex; align-items: center; gap: 10px; min-width: 0; min-height: 48px; padding: 12px;
-  color: #25252b; background: #f6f6f8; border-radius: 12px; text-decoration: none; font-size: 14px; line-height: 18px;
-  svg { flex: none; width: 20px; height: 20px; }
-  span { overflow-wrap: anywhere; }
-  &:hover { box-shadow: inset 0 0 0 1px #f69827; }
-  &[aria-current="page"] { background: #fff2e2; color: #b86108; }
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px;
+  color: #25252b;
+  background: #f6f6f8;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 18px;
+  svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+  }
+  span {
+    overflow-wrap: anywhere;
+  }
+  &:hover {
+    box-shadow: inset 0 0 0 1px #f69827;
+  }
+  &[aria-current="page"] {
+    background: #fff2e2;
+    color: #b86108;
+  }
 }
-.tile:focus-visible, .close:focus-visible { outline: 2px solid #b86108; outline-offset: 2px; }
-@media (min-width: 768px) { .nav { padding: 20px 24px 28px; } }
-@media (prefers-reduced-motion: reduce) { .drawer { transition: none; } }
+
+.tile:focus-visible,
+.close:focus-visible {
+  outline: 2px solid #b86108;
+  outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    padding: 20px 24px 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer {
+    transition: none;
+  }
+}
