@@ -10,6 +10,16 @@ import seed
 
 
 class DraftImportTests(unittest.TestCase):
+    def test_rostechnadzor_sources_survive_import_filter(self):
+        for url in (
+            "https://www.gosnadzor.ru/service/list/reestr-zaklyucheniy-EPB/document%203.pdf",
+            "https://volok.gosnadzor.ru/activity/publichnye-meropriyatiya/2024-go/",
+        ):
+            with self.subTest(url=url):
+                content = f'<p><a href="{url}">Официальный источник</a></p>'
+                self.assertEqual(seed.clean_links(content), content)
+        self.assertFalse(seed.is_trusted("https://gosnadzor.ru.example.test/"))
+
     def article(self, slug, **extra):
         return dict(slug=slug, title=slug, description="Description", content="<p>Text</p>", tags=[], **extra)
 
@@ -51,6 +61,26 @@ class DraftImportTests(unittest.TestCase):
         calls, notifications = self.run_import([self.article("draft", published=False)])
         self.assertEqual(len(calls), 1)
         self.assertEqual(notifications, [])
+
+    def test_current_batch_is_not_backdated(self):
+        before = datetime.now(seed.NOVOSIBIRSK)
+        calls, notifications = self.run_import([
+            self.article("current", published=True, publish_on_import=True),
+        ])
+        after = datetime.now(seed.NOVOSIBIRSK)
+        published_at = datetime.fromisoformat(calls[0].args[1]["published_at"])
+        self.assertLessEqual(before, published_at)
+        self.assertLessEqual(published_at, after)
+        self.assertEqual(notifications[0].args[0], ["current"])
+
+    def test_current_batch_does_not_consume_legacy_schedule_dates(self):
+        calls, _ = self.run_import([
+            self.article("current", publish_on_import=True),
+            self.article("legacy"),
+        ])
+        legacy_at = datetime.fromisoformat(calls[1].args[1]["published_at"])
+        expected = seed.build_schedule(1, datetime.now(seed.NOVOSIBIRSK).date(), 5)[0]
+        self.assertEqual(legacy_at, expected)
 
     def test_publishing_existing_draft_announces_its_url(self):
         calls, notifications = self.run_import(

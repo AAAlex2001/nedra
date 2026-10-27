@@ -10,6 +10,8 @@
 Остальные новые статьи публикуются сразу: даты расставляются назад от вчерашнего
 дня по рабочим дням, по --per-week штук в неделю, в 09:00 по Новосибирску.
 Первая статья в плане получает самую свежую дату.
+Для статей с publish_on_import=true используется фактическое время импорта;
+при обновлении уже опубликованной статьи её существующая дата сохраняется.
 
 Запуск:
   python scripts/news/seed.py --api https://nedra-npi.ru --token <ADMIN_API_TOKEN>
@@ -44,7 +46,7 @@ TRUSTED_SUFFIXES = (
     ".gov.ru", "government.ru", "kremlin.ru", "consultant.ru", "garant.ru",
     "regulation.gov.ru", "pravo.gov.ru", "duma.gov.ru", "council.gov.ru",
     "eaeunion.org", "eec.eaeunion.org", "tpprf.ru", "rosatom.ru", "nostroy.ru",
-    "nopriz.ru", "docs.cntd.ru", "meganorm.ru", "gosuslugi.ru", "wikimedia.org",
+    "nopriz.ru", "docs.cntd.ru", "meganorm.ru", "gosuslugi.ru", "gosnadzor.ru", "wikimedia.org",
     "flickr.com", "openverse.org", "rawpixel.com", "nedra-npi.ru",
     "tass.ru", "ria.ru", "rg.ru", "interfax.ru", "kommersant.ru", "vedomosti.ru",
     "rbc.ru", "iz.ru", "lenta.ru", "gazeta.ru", "pnp.ru", "ancb.ru", "erzrf.ru",
@@ -308,7 +310,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--api", required=True, help="Адрес сайта или бэкенда, например https://nedra-npi.ru")
     parser.add_argument("--token", required=True, help="ADMIN_API_TOKEN бэкенда")
-    parser.add_argument("--start", default=date.today().isoformat(), help="Дата отсчёта, ГГГГ-ММ-ДД; даты идут назад от неё")
+    parser.add_argument("--start", default=datetime.now(NOVOSIBIRSK).date().isoformat(), help="Дата отсчёта, ГГГГ-ММ-ДД; даты идут назад от неё")
     parser.add_argument("--per-week", type=int, default=5, help="Сколько статей приходится на одну неделю в прошлом")
     parser.add_argument("--update", action="store_true", help="Перезаписать и уже существующие статьи")
     parser.add_argument("--dry-run", action="store_true", help="Только показать, ничего не отправлять")
@@ -326,14 +328,18 @@ def main() -> None:
 
     new_articles = [article for article in articles if article["slug"] not in existing_by_slug]
     schedule = iter(build_schedule(
-        sum(article.get("published", True) for article in new_articles),
+        sum(article.get("published", True) and not article.get("publish_on_import", False)
+            for article in new_articles),
         date.fromisoformat(args.start), args.per_week,
     ))
 
     created = 0
     published_slugs = []
     for article in new_articles:
-        published_at = next(schedule) if article.get("published", True) else datetime.now(NOVOSIBIRSK)
+        if article.get("published", True) and not article.get("publish_on_import", False):
+            published_at = next(schedule)
+        else:
+            published_at = datetime.now(NOVOSIBIRSK)
         payload = build_payload(article, tag_ids, credits, published_at)
         when = published_at.strftime("%d.%m.%Y %H:%M") if article.get("published", True) else "черновик"
 
