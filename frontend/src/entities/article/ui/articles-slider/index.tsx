@@ -29,10 +29,10 @@ const Chevron = ({ direction }: { direction: "left" | "right" }) => (
 const ArticlesSlider = ({ articles, title, ariaLabel }: ArticlesSliderProps) => {
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     mode: "snap",
-    slides: { perView: 1.1, spacing: 16 },
+    slides: { perView: 1.5, spacing: 12 },
     breakpoints: {
       "(min-width: 768px)": { slides: { perView: 2.2, spacing: 20 } },
-      "(min-width: 1440px)": { slides: { perView: 3, spacing: 30 } },
+      "(min-width: 1440px)": { slides: { perView: 4, spacing: 24 } },
     },
   });
 
@@ -64,7 +64,7 @@ const ArticlesSlider = ({ articles, title, ariaLabel }: ArticlesSliderProps) => 
       <div ref={sliderRef} className={classNames("keen-slider", styles.viewport)}>
         {articles.map((article) => (
           <div key={article.slug} className={classNames("keen-slider__slide", styles.slide)}>
-            <ArticleCard article={article} />
+            <ArticleCard article={article} compact />
           </div>
         ))}
       </div>

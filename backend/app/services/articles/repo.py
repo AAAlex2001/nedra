@@ -1,6 +1,6 @@
 """Репозиторий статей: только запросы к таблице articles."""
 
-from sqlalchemy import and_, func, select
+from sqlalchemy import ColumnElement, Row, and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.article import Article, Tag
@@ -34,6 +34,31 @@ def contains_pattern(text: str) -> str:
     return f"%{escaped}%"
 
 
+def published_filter(
+    section: str | None, tag_slug: str | None, search: str | None
+) -> ColumnElement[bool]:
+    """Условие выборки опубликованных статей.
+
+    Если передан section — только статьи этого раздела (blog или news).
+    Если передан tag_slug — только статьи с этим тегом.
+    Если передан search — только статьи, в заголовке которых есть эта строка без учёта регистра.
+    """
+
+    condition = PUBLISHED
+
+    if section:
+        condition = and_(condition, Article.section == section)
+
+    if tag_slug:
+        condition = and_(condition, Article.tags.any(Tag.slug == tag_slug))
+
+    if search:
+        title_matches = Article.title.ilike(contains_pattern(search), escape=LIKE_ESCAPE)
+        condition = and_(condition, title_matches)
+
+    return condition
+
+
 class ArticleRepository:
     """Доступ к таблице articles. Сессию получает снаружи, коммитит сам."""
 
@@ -50,33 +75,19 @@ class ArticleRepository:
     ) -> tuple[list[Article], int]:
         """Опубликованные статьи, свежие первыми, и их общее количество для пагинации.
 
-        Если передан section — только статьи этого раздела (blog или news).
-        Если передан tag_slug — только статьи с этим тегом.
-        Если передан search — только статьи, в заголовке которых есть эта строка без учёта регистра.
+        Фильтры по разделу, тегу и строке поиска описаны в published_filter.
         """
 
-        articles_stmt = select(Article).where(PUBLISHED)
-        count_stmt = select(func.count()).select_from(Article).where(PUBLISHED)
-
-        if section:
-            articles_stmt = articles_stmt.where(Article.section == section)
-            count_stmt = count_stmt.where(Article.section == section)
-
-        if tag_slug:
-            has_tag = Article.tags.any(Tag.slug == tag_slug)
-            articles_stmt = articles_stmt.where(has_tag)
-            count_stmt = count_stmt.where(has_tag)
-
-        if search:
-            title_matches = Article.title.ilike(contains_pattern(search), escape=LIKE_ESCAPE)
-            articles_stmt = articles_stmt.where(title_matches)
-            count_stmt = count_stmt.where(title_matches)
+        condition = published_filter(section, tag_slug, search)
 
         articles_stmt = (
-            articles_stmt.order_by(Article.published_at.desc(), Article.id.desc())
+            select(Article)
+            .where(condition)
+            .order_by(Article.published_at.desc(), Article.id.desc())
             .limit(limit)
             .offset(offset)
         )
+        count_stmt = select(func.count()).select_from(Article).where(condition)
 
         result = await self.db.execute(articles_stmt)
         articles = list(result.scalars().all())
@@ -86,6 +97,22 @@ class ArticleRepository:
             total = 0
 
         return articles, total
+
+    async def suggest_titles(self, section: str | None, search: str, limit: int) -> list[Row]:
+        """Подсказки для поиска: slug, раздел и заголовок свежих статей, где встречается search.
+
+        Читает только три колонки, без тегов и текста — подсказки запрашиваются на каждый ввод.
+        """
+
+        stmt = (
+            select(Article.slug, Article.section, Article.title)
+            .where(published_filter(section, None, search))
+            .order_by(Article.published_at.desc(), Article.id.desc())
+            .limit(limit)
+        )
+        result = await self.db.execute(stmt)
+
+        return list(result.all())
 
     async def get_published(self, slug: str) -> Article | None:
         """Опубликованная статья по slug. Черновик считается ненайденным."""

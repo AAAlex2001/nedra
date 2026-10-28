@@ -39,7 +39,7 @@ export default async function NewsPage({
           />
 
           <ArticlesList
-            basePath="/novosti"
+            section="news"
             list={list}
             tags={tags}
             activeTag={tag ?? null}

@@ -37,7 +37,7 @@ export default async function BlogPage({
         />
 
         <ArticlesList
-          basePath="/blog"
+          section="blog"
           list={list}
           tags={tags}
           activeTag={tag ?? null}

@@ -60,11 +60,7 @@
 
 .slide {
   box-sizing: border-box;
-  flex: none;
   display: flex;
-
-  width: 340px !important;
-  max-width: 340px;
 }
 
 .slide > * {

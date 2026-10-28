@@ -16,6 +16,12 @@ export type TocItem = {
   title: string;
 };
 
+export type ArticleSuggestion = {
+  slug: string;
+  section: ArticleSection;
+  title: string;
+};
+
 export type ArticleCard = {
   slug: string;
   section: ArticleSection;

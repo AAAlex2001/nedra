@@ -2,7 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { ArticleCard, type ArticleList, type Tag } from "@/entities/article";
+import {
+  ArticleCard,
+  SECTION_PATH,
+  type ArticleList,
+  type ArticleSection,
+  type Tag,
+} from "@/entities/article";
 import Button from "@/shared/ui/button";
 import Spinner from "@/shared/ui/spinner";
 import { buildListHref } from "./lib/list-href";
@@ -11,7 +17,7 @@ import TagFilter from "./ui/tag-filter";
 import styles from "./style.module.scss";
 
 type ArticlesListProps = {
-  basePath: string;
+  section: ArticleSection;
   list: ArticleList;
   tags: Tag[];
   activeTag: string | null;
@@ -21,7 +27,7 @@ type ArticlesListProps = {
 };
 
 const ArticlesList = ({
-  basePath,
+  section,
   list,
   tags,
   activeTag,
@@ -32,6 +38,7 @@ const ArticlesList = ({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
+  const basePath = SECTION_PATH[section];
   const hasMore = list.articles.length < list.total;
   const emptyMessage = search ? `По запросу «${search}» ничего не найдено.` : emptyText;
   const moreHref = buildListHref(basePath, { tag: activeTag, search, page: page + 1 });
@@ -48,7 +55,13 @@ const ArticlesList = ({
         {tags.length > 0 && (
           <TagFilter basePath={basePath} tags={tags} activeTag={activeTag} search={search} />
         )}
-        <SearchForm key={search} initialValue={search} pending={pending} onSearch={runSearch} />
+        <SearchForm
+          key={search}
+          section={section}
+          initialValue={search}
+          pending={pending}
+          onSearch={runSearch}
+        />
       </div>
 
       <div className={styles.results} aria-busy={pending}>

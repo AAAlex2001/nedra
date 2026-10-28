@@ -33,7 +33,11 @@ const ArticlesPanel = ({ title, lead, items }: ArticlesPanelProps) => {
 
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     loop: true,
-    slides: { perView: "auto", spacing: 16 },
+    slides: { perView: 1.5, spacing: 12 },
+    breakpoints: {
+      "(min-width: 768px)": { slides: { perView: 2.2, spacing: 16 } },
+      "(min-width: 1440px)": { slides: { perView: 4, spacing: 16 } },
+    },
     slideChanged: (instance) => setActive(instance.track.details.rel),
   });
 
@@ -48,7 +52,7 @@ const ArticlesPanel = ({ title, lead, items }: ArticlesPanelProps) => {
         <div ref={sliderRef} className={classNames("keen-slider", styles.viewport)}>
           {items.map((item) => (
             <div key={item.slug} className={classNames("keen-slider__slide", styles.slide)}>
-              <ArticleCard article={item} />
+              <ArticleCard article={item} compact />
             </div>
           ))}
         </div>

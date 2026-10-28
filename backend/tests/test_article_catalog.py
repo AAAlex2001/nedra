@@ -89,6 +89,37 @@ def test_search_matches_title_case_insensitively():
     engine.dispose()
 
 
+def test_suggestions_return_fresh_matching_titles_of_section():
+    engine = create_catalog_engine()
+    articles = [
+        (1, "news", "Expert review deadline", datetime(2020, 1, 1, tzinfo=timezone.utc)),
+        (2, "news", "New EXPERT rules", datetime(2020, 2, 1, tzinfo=timezone.utc)),
+        (3, "blog", "Expert blog post", datetime(2020, 3, 1, tzinfo=timezone.utc)),
+        (4, "news", "Audit checklist", datetime(2020, 4, 1, tzinfo=timezone.utc)),
+    ]
+
+    with Session(engine) as session:
+        for number, section, title, published in articles:
+            session.add(Article(
+                id=number,
+                slug=f"article-{number}",
+                section=section,
+                title=title,
+                content="<p>Article</p>",
+                published_at=published,
+            ))
+        session.commit()
+        repo = ArticleRepository(SessionAdapter(session))
+
+        rows = asyncio.run(repo.suggest_titles("news", "expert", 5))
+
+        assert [(row.slug, row.section, row.title) for row in rows] == [
+            ("article-2", "news", "New EXPERT rules"),
+            ("article-1", "news", "Expert review deadline"),
+        ]
+    engine.dispose()
+
+
 def test_search_pattern_escapes_wildcards():
     assert contains_pattern("100%") == "%100\\%%"
     assert contains_pattern("snake_case") == "%snake\\_case%"
