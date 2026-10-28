@@ -1,0 +1,19 @@
+{
+  "expected": 500,
+  "checked": 500,
+  "existing_plan_unchanged": true,
+  "existing_cover_credits_unchanged": true,
+  "metadata_matches_existing_articles": [],
+  "markup_errors": [],
+  "duplicate_metadata": {
+    "seo_title": [],
+    "seo_keywords": []
+  },
+  "links_removed_by_importer": [],
+  "internal_links": [
+    "/#request",
+    "/blits-audit",
+    "/blits-ekspert"
+  ],
+  "cover_payloads_checked": 500
+}

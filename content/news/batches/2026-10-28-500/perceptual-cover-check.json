@@ -1,0 +1,7 @@
+{
+  "new_images": 500,
+  "old_images_compared": 2190,
+  "near_duplicates_within_batch": [],
+  "near_duplicates_with_old_library": [],
+  "method": "256-bit perceptual hash; Hamming distance <=10 rejected"
+}

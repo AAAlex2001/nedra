@@ -1,0 +1,23 @@
+{
+  "selected": 500,
+  "missing": [],
+  "old_images_compared": 2190,
+  "rejected_similar_to_old": [],
+  "pool_sizes": {
+    "plans": 93,
+    "fuel": 52,
+    "boiler": 38,
+    "heat": 95,
+    "power": 40,
+    "electric": 59,
+    "industry": 31,
+    "nuclear": 61,
+    "crane": 56,
+    "geology": 68,
+    "lift": 24,
+    "city": 80,
+    "heritage": 26,
+    "welding": 25,
+    "security": 21
+  }
+}

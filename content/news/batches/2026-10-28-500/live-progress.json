@@ -1,0 +1,10 @@
+{
+  "expected": 500,
+  "saved": 500,
+  "valid": 500,
+  "errors": [],
+  "status": "ready_for_publication",
+  "published": true,
+  "publish_on_import": true,
+  "main_plan_total": 2690
+}
