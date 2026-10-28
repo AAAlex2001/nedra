@@ -33,13 +33,15 @@ router = APIRouter(tags=["articles"])
 async def get_articles(
     section: Section | None = Query(None, description="Раздел: blog или news"),
     tag: str | None = Query(None, description="Slug тега для фильтрации"),
+    q: str | None = Query(None, max_length=100, description="Поиск по заголовку"),
     limit: int = Query(12, ge=1, le=50),
     offset: int = Query(0, ge=0),
     articles: ArticleRepository = Depends(get_article_repository),
 ) -> ArticleListSchema:
     """Список опубликованных статей."""
 
-    items, total = await articles.list_published(section, tag, limit, offset)
+    search = q.strip() if q else None
+    items, total = await articles.list_published(section, tag, limit, offset, search)
 
     return ArticleListSchema(
         articles=[ArticleCardSchema.model_validate(item) for item in items],

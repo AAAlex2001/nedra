@@ -27,6 +27,7 @@ export { ClockIcon } from "./clock-icon";
 export { MechelLogo } from "./mechel-logo";
 export { KmarudaLogo } from "./kmaruda-logo";
 export { NedraLogo } from "./nedra-logo";
+export { NedraMarkIcon } from "./nedra-mark-icon";
 export { BurgerIcon } from "./burger-icon";
 export { CloseIcon } from "./close-icon";
 export { PdfIcon } from "./pdf-icon";

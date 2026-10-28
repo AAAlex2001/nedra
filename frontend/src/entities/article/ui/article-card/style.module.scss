@@ -43,21 +43,16 @@
 }
 
 .tag {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-
-  padding: 5px 12px;
+  overflow: hidden;
 
   font-family: "Manrope";
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 15px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 17px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   color: #f69827;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #fde3c2;
-  border-radius: 100px;
 }
 
 .body {
@@ -166,16 +161,6 @@
   margin-left: auto;
 }
 
-.compact .tag {
-  top: 8px;
-  right: 8px;
-
-  padding: 3px 8px;
-
-  font-size: 11px;
-  line-height: 14px;
-}
-
 .compact .body {
   gap: 8px;
   padding: 12px;
@@ -213,16 +198,6 @@
 }
 
 @media (min-width: 768px) {
-  .compact .tag {
-    top: 12px;
-    right: 12px;
-
-    padding: 5px 12px;
-
-    font-size: 12px;
-    line-height: 15px;
-  }
-
   .compact .body {
     gap: 12px;
     padding: 18px 18px 16px;

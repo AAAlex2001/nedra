@@ -20,7 +20,8 @@ type ArticleCardProps = {
 };
 
 const ArticleCard = ({ article, className, compact }: ArticleCardProps) => {
-  const tag = article.tags[0];
+  const tagTitles = article.tags.map((tag) => tag.title);
+  const tagLine = tagTitles.join(" · ");
 
   return (
     <Link
@@ -40,10 +41,11 @@ const ArticleCard = ({ article, className, compact }: ArticleCardProps) => {
         ) : (
           <div className={styles.placeholder} />
         )}
-        {tag && <span className={styles.tag}>{tag.title}</span>}
       </div>
 
       <div className={styles.body}>
+        {tagLine !== "" && <span className={styles.tag}>{tagLine}</span>}
+
         <h3 className={styles.title}>{article.title}</h3>
 
         {article.description && (

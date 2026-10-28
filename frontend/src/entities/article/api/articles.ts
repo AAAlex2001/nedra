@@ -7,12 +7,18 @@ const MAX_PAGE_SIZE = 50;
 type ListParams = {
   section: ArticleSection;
   tag?: string;
+  search?: string;
   page?: number;
 };
 
 const EMPTY_LIST: ArticleList = { articles: [], total: 0 };
 
-export const getArticles = async ({ section, tag, page = 1 }: ListParams): Promise<ArticleList> => {
+export const getArticles = async ({
+  section,
+  tag,
+  search,
+  page = 1,
+}: ListParams): Promise<ArticleList> => {
   const wanted = page * ARTICLES_PER_PAGE;
   const articles: ArticleCard[] = [];
   let total = 0;
@@ -25,6 +31,7 @@ export const getArticles = async ({ section, tag, page = 1 }: ListParams): Promi
         offset: String(articles.length),
       });
       if (tag) params.set("tag", tag);
+      if (search) params.set("q", search);
 
       const response = await internalFetch(`/v1/articles?${params}`, { cache: "no-store" });
       if (!response.ok) return EMPTY_LIST;

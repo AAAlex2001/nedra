@@ -17,6 +17,22 @@ ADMIN_SORTS = {
     "dislikes": Article.dislikes_count,
 }
 
+LIKE_ESCAPE = "\\"
+
+
+def contains_pattern(text: str) -> str:
+    """Шаблон ILIKE «содержит text».
+
+    Символы % и _ в запросе экранируются, чтобы искались буквально,
+    а не работали как подстановочные знаки.
+    """
+
+    escaped = text.replace(LIKE_ESCAPE, LIKE_ESCAPE * 2)
+    escaped = escaped.replace("%", LIKE_ESCAPE + "%")
+    escaped = escaped.replace("_", LIKE_ESCAPE + "_")
+
+    return f"%{escaped}%"
+
 
 class ArticleRepository:
     """Доступ к таблице articles. Сессию получает снаружи, коммитит сам."""
@@ -25,12 +41,18 @@ class ArticleRepository:
         self.db = db
 
     async def list_published(
-        self, section: str | None, tag_slug: str | None, limit: int, offset: int
+        self,
+        section: str | None,
+        tag_slug: str | None,
+        limit: int,
+        offset: int,
+        search: str | None = None,
     ) -> tuple[list[Article], int]:
         """Опубликованные статьи, свежие первыми, и их общее количество для пагинации.
 
         Если передан section — только статьи этого раздела (blog или news).
         Если передан tag_slug — только статьи с этим тегом.
+        Если передан search — только статьи, в заголовке которых есть эта строка без учёта регистра.
         """
 
         articles_stmt = select(Article).where(PUBLISHED)
@@ -44,6 +66,11 @@ class ArticleRepository:
             has_tag = Article.tags.any(Tag.slug == tag_slug)
             articles_stmt = articles_stmt.where(has_tag)
             count_stmt = count_stmt.where(has_tag)
+
+        if search:
+            title_matches = Article.title.ilike(contains_pattern(search), escape=LIKE_ESCAPE)
+            articles_stmt = articles_stmt.where(title_matches)
+            count_stmt = count_stmt.where(title_matches)
 
         articles_stmt = (
             articles_stmt.order_by(Article.published_at.desc(), Article.id.desc())

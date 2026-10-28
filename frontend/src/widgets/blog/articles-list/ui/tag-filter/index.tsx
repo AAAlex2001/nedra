@@ -5,17 +5,19 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Tag } from "@/entities/article";
 import { CheckIcon, ChevronIcon } from "@/shared/ui/icons";
+import { buildListHref } from "../../lib/list-href";
 import styles from "./style.module.scss";
 
 type TagFilterProps = {
   basePath: string;
   tags: Tag[];
   activeTag: string | null;
+  search: string;
 };
 
 const ALL_LABEL = "Все направления";
 
-const TagFilter = ({ basePath, tags, activeTag }: TagFilterProps) => {
+const TagFilter = ({ basePath, tags, activeTag, search }: TagFilterProps) => {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -59,7 +61,7 @@ const TagFilter = ({ basePath, tags, activeTag }: TagFilterProps) => {
         <ul className={styles.list} role="listbox" aria-label="Направления">
           <li>
             <Link
-              href={basePath}
+              href={buildListHref(basePath, { tag: null, search })}
               className={classNames(styles.option, !selected && styles.optionActive)}
               onClick={() => setOpen(false)}
             >
@@ -74,7 +76,7 @@ const TagFilter = ({ basePath, tags, activeTag }: TagFilterProps) => {
             return (
               <li key={tag.slug}>
                 <Link
-                  href={`${basePath}?tag=${tag.slug}`}
+                  href={buildListHref(basePath, { tag: tag.slug, search })}
                   className={classNames(styles.option, active && styles.optionActive)}
                   onClick={() => setOpen(false)}
                 >

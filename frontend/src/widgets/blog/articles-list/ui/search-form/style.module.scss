@@ -1,0 +1,94 @@
+.form {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 4px 4px 16px;
+
+  width: 100%;
+  height: 48px;
+
+  background: #fff;
+  border: 1px solid #f69827;
+  border-radius: 100px;
+  box-shadow: 0 6px 24px rgba(246, 152, 39, 0.18);
+
+  transition: box-shadow 0.2s ease;
+}
+
+.form:focus-within {
+  box-shadow: 0 6px 28px rgba(246, 152, 39, 0.32);
+}
+
+.mark {
+  flex: none;
+
+  width: 34px;
+  height: 19px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+
+  color: #0b0b0b;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.input::placeholder {
+  color: #9aa0ad;
+}
+
+.input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.submit {
+  flex: none;
+  padding: 0 20px;
+
+  height: 38px;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+
+  color: #fff;
+  background: #f69827;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.submit:hover:not(:disabled) {
+  background: #e9850f;
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.submit:focus-visible {
+  outline: 2px solid #f69827;
+  outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .form {
+    flex: 1;
+
+    width: auto;
+  }
+}

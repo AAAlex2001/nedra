@@ -1,6 +1,12 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { ArticleCard, type ArticleList, type Tag } from "@/entities/article";
-import { pluralize } from "@/shared/lib/text";
 import Button from "@/shared/ui/button";
+import Spinner from "@/shared/ui/spinner";
+import { buildListHref } from "./lib/list-href";
+import SearchForm from "./ui/search-form";
 import TagFilter from "./ui/tag-filter";
 import styles from "./style.module.scss";
 
@@ -9,46 +15,65 @@ type ArticlesListProps = {
   list: ArticleList;
   tags: Tag[];
   activeTag: string | null;
+  search: string;
   page: number;
   emptyText: string;
 };
 
-const buildMoreHref = (basePath: string, tag: string | null, page: number) => {
-  const params = new URLSearchParams();
-  if (tag) params.set("tag", tag);
-  params.set("page", String(page));
+const ArticlesList = ({
+  basePath,
+  list,
+  tags,
+  activeTag,
+  search,
+  page,
+  emptyText,
+}: ArticlesListProps) => {
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
 
-  return `${basePath}?${params}`;
-};
-
-const ArticlesList = ({ basePath, list, tags, activeTag, page, emptyText }: ArticlesListProps) => {
   const hasMore = list.articles.length < list.total;
-  const countText = `${list.total} ${pluralize(list.total, ["материал", "материала", "материалов"])}`;
+  const emptyMessage = search ? `По запросу «${search}» ничего не найдено.` : emptyText;
+  const moreHref = buildListHref(basePath, { tag: activeTag, search, page: page + 1 });
+
+  const runSearch = (value: string) => {
+    const href = buildListHref(basePath, { tag: activeTag, search: value });
+
+    startTransition(() => router.push(href, { scroll: false }));
+  };
 
   return (
     <div className={styles.root}>
-      {(tags.length > 0 || list.total > 0) && (
-        <div className={styles.toolbar}>
-          {tags.length > 0 && <TagFilter basePath={basePath} tags={tags} activeTag={activeTag} />}
-          {list.total > 0 && <span className={styles.count}>{countText}</span>}
-        </div>
-      )}
+      <div className={styles.toolbar}>
+        {tags.length > 0 && (
+          <TagFilter basePath={basePath} tags={tags} activeTag={activeTag} search={search} />
+        )}
+        <SearchForm key={search} initialValue={search} pending={pending} onSearch={runSearch} />
+      </div>
 
-      {list.articles.length === 0 ? (
-        <p className={styles.empty}>{emptyText}</p>
-      ) : (
-        <ul className={styles.grid}>
-          {list.articles.map((article) => (
-            <li key={article.slug} className={styles.cell}>
-              <ArticleCard article={article} compact />
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className={styles.results} aria-busy={pending}>
+        {list.articles.length === 0 ? (
+          <p className={styles.empty}>{emptyMessage}</p>
+        ) : (
+          <ul className={styles.grid}>
+            {list.articles.map((article) => (
+              <li key={article.slug} className={styles.cell}>
+                <ArticleCard article={article} compact />
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {pending && (
+          <div className={styles.overlay}>
+            <Spinner size={36} />
+          </div>
+        )}
+      </div>
 
       {hasMore && (
         <div className={styles.more}>
-          <Button href={buildMoreHref(basePath, activeTag, page + 1)} scroll={false}>
+          <Button href={moreHref} scroll={false}>
             Ещё
           </Button>
         </div>

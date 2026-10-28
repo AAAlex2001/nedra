@@ -19,36 +19,6 @@
   width: 100%;
 }
 
-.heading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-
-  width: 100%;
-  text-align: center;
-}
-
-.title {
-  font-family: "Manrope";
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 38px;
-
-  color: #0b0b0b;
-}
-
-.subtitle {
-  max-width: 640px;
-
-  font-family: "Manrope";
-  font-weight: 500;
-  font-size: 17px;
-  line-height: 24px;
-
-  color: #3d4250;
-}
-
 @media (min-width: 768px) {
   .body {
     padding: 25px 29px 50px;

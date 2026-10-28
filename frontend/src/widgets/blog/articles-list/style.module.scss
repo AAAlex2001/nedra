@@ -14,13 +14,25 @@
   width: 100%;
 }
 
-.count {
-  font-family: "Manrope";
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
+.results {
+  position: relative;
 
-  color: #8a8f9c;
+  width: 100%;
+}
+
+.overlay {
+  position: absolute;
+  inset: -8px;
+  z-index: 5;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 120px;
+
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 20px;
+  cursor: progress;
 }
 
 .grid {
@@ -63,7 +75,7 @@
   .toolbar {
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    gap: 16px;
   }
 
   .grid {
@@ -73,7 +85,7 @@
 
 @media (min-width: 1440px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 30px;
   }
 }
