@@ -13,7 +13,7 @@ import {
   PencilIcon,
   GlobeIcon,
   PhoneIcon,
-  OfficialCertificateIcon,
+  ProcedureDocumentIcon,
 } from "@/shared/ui/icons";
 import ServiceNavigation from "@/widgets/service-navigation";
 import type { HeaderNavItem } from "../../data";
@@ -22,7 +22,7 @@ const ICONS = [
   InfoIcon,
   DocumentIcon,
   PeopleIcon,
-  OfficialCertificateIcon,
+  ProcedureDocumentIcon,
   GraduationIcon,
   GlobeIcon,
   PencilIcon,

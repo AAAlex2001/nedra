@@ -40,7 +40,7 @@ const ArticlesList = ({ basePath, list, tags, activeTag, page, emptyText }: Arti
         <ul className={styles.grid}>
           {list.articles.map((article) => (
             <li key={article.slug} className={styles.cell}>
-              <ArticleCard article={article} />
+              <ArticleCard article={article} compact />
             </li>
           ))}
         </ul>

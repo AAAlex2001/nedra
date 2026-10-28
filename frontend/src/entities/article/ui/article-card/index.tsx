@@ -16,13 +16,17 @@ import styles from "./style.module.scss";
 type ArticleCardProps = {
   article: ArticleCardType;
   className?: string;
+  compact?: boolean;
 };
 
-const ArticleCard = ({ article, className }: ArticleCardProps) => {
+const ArticleCard = ({ article, className, compact }: ArticleCardProps) => {
   const tag = article.tags[0];
 
   return (
-    <Link href={articlePath(article)} className={classNames(styles.card, className)}>
+    <Link
+      href={articlePath(article)}
+      className={classNames(styles.card, compact && styles.compact, className)}
+    >
       <div className={styles.cover}>
         {article.cover_image ? (
           <Image

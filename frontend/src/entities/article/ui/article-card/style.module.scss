@@ -165,3 +165,100 @@
 .views {
   margin-left: auto;
 }
+
+.compact .tag {
+  top: 8px;
+  right: 8px;
+
+  padding: 3px 8px;
+
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.compact .body {
+  gap: 8px;
+  padding: 12px;
+}
+
+.compact .title {
+  font-size: 14px;
+  line-height: 18px;
+
+  -webkit-line-clamp: 3;
+}
+
+.compact .description,
+.compact .read {
+  display: none;
+}
+
+.compact .meta {
+  padding-top: 8px;
+}
+
+.compact .date,
+.compact .stat {
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.compact .stats {
+  gap: 10px;
+}
+
+.compact .statIcon {
+  width: 15px;
+  height: 15px;
+}
+
+@media (min-width: 768px) {
+  .compact .tag {
+    top: 12px;
+    right: 12px;
+
+    padding: 5px 12px;
+
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .compact .body {
+    gap: 12px;
+    padding: 18px 18px 16px;
+  }
+
+  .compact .title {
+    font-size: 17px;
+    line-height: 22px;
+
+    -webkit-line-clamp: 2;
+  }
+
+  .compact .description {
+    display: -webkit-box;
+  }
+
+  .compact .read {
+    display: inline-flex;
+  }
+
+  .compact .meta {
+    padding-top: 12px;
+  }
+
+  .compact .date,
+  .compact .stat {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .compact .stats {
+    gap: 14px;
+  }
+
+  .compact .statIcon {
+    width: 17px;
+    height: 17px;
+  }
+}
