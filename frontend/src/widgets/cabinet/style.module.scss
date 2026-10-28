@@ -210,3 +210,15 @@
     justify-self: end;
   }
 }
+
+@media (min-width: 1440px) {
+  .profile {
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "avatar identity";
+  }
+
+  .controls,
+  .tabs {
+    display: none;
+  }
+}

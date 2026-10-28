@@ -1,0 +1,173 @@
+.sidebar {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 16px 12px;
+
+  width: 100%;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 20px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+
+.avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+
+  color: #fff;
+  background: #f69827;
+  border-radius: 100px;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  text-transform: capitalize;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  color: #0b0b0b;
+}
+
+.role {
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #8a8f9c;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.groupTitle {
+  padding: 0 12px 6px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  color: #8a8f9c;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+
+  width: 100%;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+  text-align: left;
+  text-decoration: none;
+
+  color: #3d414a;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.item svg {
+  flex: none;
+}
+
+.item:hover {
+  background: #f5f6f8;
+}
+
+.itemActive,
+.itemActive:hover {
+  color: #b86108;
+  background: #fff2e2;
+}
+
+.item:focus-visible {
+  outline: 2px solid #f69827;
+  outline-offset: -2px;
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+}
+
+.badge {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 11px;
+
+  color: #fff;
+  background: #e5484d;
+  border-radius: 100px;
+}
+
+.logout {
+  padding-top: 14px;
+
+  color: #b23b2c;
+  border-top: 1px solid #eceef3;
+  border-radius: 0 0 12px 12px;
+}
+
+.logout:hover:not(:disabled) {
+  background: #fdeceb;
+}
+
+.logout:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

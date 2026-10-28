@@ -1,5 +1,6 @@
 import { getArticles, getTags } from "@/entities/article";
-import { buildMetadata } from "@/shared/config/seo";
+import type { Metadata } from "next";
+import { buildListMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import ArticlesHeading from "@/widgets/blog/articles-heading";
 import ArticlesList from "@/widgets/blog/articles-list";
@@ -7,9 +8,17 @@ import styles from "../../articles-page.module.scss";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = buildMetadata("/blog");
-
 type SearchParams = Promise<{ tag?: string; page?: string; q?: string }>;
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}): Promise<Metadata> {
+  const { q } = await searchParams;
+
+  return buildListMetadata("/blog", q);
+}
 
 export default async function BlogPage({
   searchParams,

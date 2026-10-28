@@ -2,7 +2,6 @@ import classNames from "classnames";
 import type { Metadata } from "next";
 import { hasSessionCookie } from "@/entities/user/api/session-server";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
-import SectionHeading from "@/shared/ui/section-heading";
 import Cabinet from "@/widgets/cabinet";
 import styles from "./page.module.scss";
 
@@ -24,7 +23,6 @@ export default async function CabinetPage() {
       />
 
       <div className={classNames(styles.body, guest && styles.bodyGuest)}>
-        <SectionHeading title="Личный кабинет" />
         <Cabinet />
       </div>
     </main>

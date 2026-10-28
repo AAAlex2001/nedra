@@ -1,0 +1,33 @@
+.layout {
+  width: 100%;
+}
+
+.sidebar {
+  display: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  min-width: 0;
+
+  width: 100%;
+}
+
+@media (min-width: 1440px) {
+  .layout {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    align-items: start;
+    gap: 40px;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 110px;
+
+    display: block;
+  }
+}

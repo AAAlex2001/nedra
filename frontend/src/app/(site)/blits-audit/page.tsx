@@ -6,8 +6,10 @@ import { internalFetch } from "@/shared/api/server";
 import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import SectionHeading from "@/shared/ui/section-heading";
+import SidebarLayout from "@/shared/ui/sidebar-layout";
 import AuditOrder from "@/widgets/audit-order";
 import BlitsAuditLanding, { ARTICLE_SLUGS } from "@/widgets/blits-audit";
+import { ServiceSidebar } from "@/widgets/cabinet";
 import styles from "./page.module.scss";
 
 export const dynamic = "force-dynamic";
@@ -71,14 +73,16 @@ export default async function BlitzAuditPage() {
       />
 
       <div className={styles.body}>
-        <SectionHeading title="Блиц-аудит" />
-        <p className={styles.intro}>
-          Аудит системы управления промышленной безопасностью по документам. Укажите объект
-          аудита, предложите цену и загрузите документы по перечню — всё или только то, что
-          есть. Заявку сразу увидят аудиторы.
-        </p>
+        <SidebarLayout sidebar={<ServiceSidebar active="blits-audit" />}>
+          <SectionHeading title="Блиц-аудит" />
+          <p className={styles.intro}>
+            Аудит системы управления промышленной безопасностью по документам. Укажите объект
+            аудита, предложите цену и загрузите документы по перечню — всё или только то, что
+            есть. Заявку сразу увидят аудиторы.
+          </p>
 
-        <AuditOrder checklist={checklist} />
+          <AuditOrder checklist={checklist} />
+        </SidebarLayout>
       </div>
     </main>
   );

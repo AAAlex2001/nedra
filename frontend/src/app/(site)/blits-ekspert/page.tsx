@@ -6,7 +6,9 @@ import { internalFetch } from "@/shared/api/server";
 import { buildMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import SectionHeading from "@/shared/ui/section-heading";
+import SidebarLayout from "@/shared/ui/sidebar-layout";
 import BlitsEkspertLanding, { ARTICLE_SLUGS } from "@/widgets/blits-ekspert";
+import { ServiceSidebar } from "@/widgets/cabinet";
 import ExpertiseOrder from "@/widgets/expertise-order";
 import styles from "./page.module.scss";
 
@@ -70,14 +72,16 @@ export default async function BlitzExpertPage() {
       />
 
       <div className={styles.body}>
-        <SectionHeading title="Блиц-эксперт" />
-        <p className={styles.intro}>
-          Экспертиза промышленной безопасности от 1 дня. Выберите, что проверяем, укажите
-          класс опасности объекта и отрасль, приложите документацию. Заявку сразу увидят
-          эксперты, аттестованные по вашей области.
-        </p>
+        <SidebarLayout sidebar={<ServiceSidebar active="blits-ekspert" />}>
+          <SectionHeading title="Блиц-эксперт" />
+          <p className={styles.intro}>
+            Экспертиза промышленной безопасности от 1 дня. Выберите, что проверяем, укажите
+            класс опасности объекта и отрасль, приложите документацию. Заявку сразу увидят
+            эксперты, аттестованные по вашей области.
+          </p>
 
-        <ExpertiseOrder catalog={catalog} />
+          <ExpertiseOrder catalog={catalog} />
+        </SidebarLayout>
       </div>
     </main>
   );

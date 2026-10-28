@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { ROLE_LABELS, useSession, type User } from "@/entities/user";
 import { useAuthModal, useLogout } from "@/features/auth";
 import { ActsTab, InvoicesTab } from "@/features/billing";
@@ -13,17 +13,19 @@ import {
 import { NotificationsTab, useNotifications } from "@/features/notifications";
 import Button from "@/shared/ui/button";
 import Loader from "@/shared/ui/loader";
+import SectionHeading from "@/shared/ui/section-heading";
+import SidebarLayout from "@/shared/ui/sidebar-layout";
 import Spinner from "@/shared/ui/spinner";
 import { Tabs } from "@/shared/ui/tabs";
+import { initials } from "./lib/initials";
+import { sectionsFor, tabSections } from "./model/sections";
 import AccountDetails from "./ui/account-details";
+import { CabinetSidebar } from "./ui/cabinet-sidebar";
 import styles from "./style.module.scss";
 
-const initials = (fullName: string): string => {
-  const parts = fullName.trim().split(" ").filter((part) => part !== "");
-  const letters = parts.slice(0, 2).map((part) => part[0].toUpperCase());
+export { ServiceSidebar } from "./ui/cabinet-sidebar";
 
-  return letters.join("");
-};
+const TITLE = "Личный кабинет";
 
 type ProfileBarProps = {
   user: User;
@@ -66,14 +68,14 @@ const ProfileBar = ({ user, pending, onLogout }: ProfileBarProps) => (
   </div>
 );
 
-type CabinetPanelProps = {
+type PanelProps = {
   user: User;
+  tab: string;
+  notifications: ReturnType<typeof useNotifications>;
 };
 
-const ExpertCabinet = ({ user }: CabinetPanelProps) => {
-  const [tab, setTab] = useState("incoming");
+const ExpertPanel = ({ user, tab, notifications }: PanelProps) => {
   const { state, replaceProfile } = useExpertProfile();
-  const notifications = useNotifications();
 
   if (state.status === "loading") {
     return <Loader />;
@@ -83,94 +85,102 @@ const ExpertCabinet = ({ user }: CabinetPanelProps) => {
     return <p className={styles.error}>{state.message}</p>;
   }
 
-  const tabs = [
-    { key: "incoming", label: "Входящие заявки" },
-    { key: "assigned", label: "В работе" },
-    { key: "finished", label: "Завершённые" },
-    { key: "notifications", label: "Уведомления", badge: notifications.unread },
-    { key: "account", label: "Мои данные" },
-  ];
-
   return (
     <>
-      <Tabs items={tabs} active={tab} onSelect={setTab} label="Разделы кабинета" stretch />
-
-      <section className={styles.panel}>
-        {tab === "incoming" && <IncomingExpertises certificates={state.profile.certificates} />}
-        {tab === "assigned" && <AssignedExpertises kind="active" />}
-        {tab === "finished" && <AssignedExpertises kind="finished" />}
-        {tab === "notifications" && <NotificationsTab notifications={notifications} />}
-        {tab === "account" && (
-          <>
-            <AccountDetails user={user} />
-            <ExpertAttestation
-              profile={state.profile}
-              catalog={state.catalog}
-              onChange={replaceProfile}
-            />
-          </>
-        )}
-      </section>
+      {tab === "incoming" && <IncomingExpertises certificates={state.profile.certificates} />}
+      {tab === "assigned" && <AssignedExpertises kind="active" />}
+      {tab === "finished" && <AssignedExpertises kind="finished" />}
+      {tab === "notifications" && <NotificationsTab notifications={notifications} />}
+      {tab === "account" && (
+        <>
+          <AccountDetails user={user} />
+          <ExpertAttestation
+            profile={state.profile}
+            catalog={state.catalog}
+            onChange={replaceProfile}
+          />
+        </>
+      )}
     </>
   );
 };
 
-const CustomerCabinet = ({ user }: CabinetPanelProps) => {
-  const [tab, setTab] = useState("mine");
-  const notifications = useNotifications();
+const CustomerPanel = ({ user, tab, notifications }: PanelProps) => (
+  <>
+    {tab === "mine" && <MyExpertises kind="active" />}
+    {tab === "finished" && <MyExpertises kind="finished" />}
+    {tab === "invoices" && <InvoicesTab />}
+    {tab === "acts" && <ActsTab />}
+    {tab === "notifications" && <NotificationsTab notifications={notifications} />}
+    {tab === "account" && <AccountDetails user={user} />}
+  </>
+);
 
-  const tabs = [
-    { key: "mine", label: "В работе" },
-    { key: "finished", label: "Завершённые" },
-    { key: "invoices", label: "Счета" },
-    { key: "acts", label: "Акты" },
-    { key: "notifications", label: "Уведомления", badge: notifications.unread },
-    { key: "account", label: "Мои данные" },
-  ];
+type UserCabinetProps = {
+  user: User;
+};
+
+const UserCabinet = ({ user }: UserCabinetProps) => {
+  const searchParams = useSearchParams();
+  const notifications = useNotifications();
+  const { logout, pending } = useLogout();
+
+  const tabs = tabSections(sectionsFor(user.role));
+  const requestedTab = tabs.find((item) => item.key === searchParams.get("tab"));
+  const tab = requestedTab ? requestedTab.key : tabs[0].key;
+
+  const tabItems = tabs.map((item) => ({
+    key: item.key,
+    label: item.label,
+    badge: item.key === "notifications" ? notifications.unread : undefined,
+  }));
+
+  const showTab = (key: string) => window.history.replaceState(null, "", `?tab=${key}`);
 
   return (
-    <>
-      <Tabs items={tabs} active={tab} onSelect={setTab} label="Разделы кабинета" stretch />
+    <SidebarLayout sidebar={<CabinetSidebar active={tab} unread={notifications.unread} />}>
+      <SectionHeading title={TITLE} />
 
-      <section className={styles.panel}>
-        {tab === "mine" && <MyExpertises kind="active" />}
-        {tab === "finished" && <MyExpertises kind="finished" />}
-        {tab === "invoices" && <InvoicesTab />}
-        {tab === "acts" && <ActsTab />}
-        {tab === "notifications" && <NotificationsTab notifications={notifications} />}
-        {tab === "account" && <AccountDetails user={user} />}
-      </section>
-    </>
+      <div className={styles.cabinet}>
+        <ProfileBar user={user} pending={pending} onLogout={() => void logout()} />
+
+        <div className={styles.tabs}>
+          <Tabs items={tabItems} active={tab} onSelect={showTab} label="Разделы кабинета" stretch />
+        </div>
+
+        <section className={styles.panel}>
+          {user.role === "expert" ? (
+            <ExpertPanel user={user} tab={tab} notifications={notifications} />
+          ) : (
+            <CustomerPanel user={user} tab={tab} notifications={notifications} />
+          )}
+        </section>
+      </div>
+    </SidebarLayout>
   );
 };
 
 const Cabinet = () => {
   const session = useSession();
   const { openModal } = useAuthModal();
-  const { logout, pending } = useLogout();
 
   if (session.status === "anonymous" || !session.user) {
     return (
-      <div className={styles.locked}>
-        <p className={styles.lockedTitle}>Войдите, чтобы открыть личный кабинет</p>
-        <p className={styles.lockedText}>
-          В кабинете заказчик отправляет документацию на экспертизу, а эксперт
-          принимает заявки и выдаёт заключения.
-        </p>
-        <Button onClick={openModal}>Вход / Регистрация</Button>
-      </div>
+      <>
+        <SectionHeading title={TITLE} />
+        <div className={styles.locked}>
+          <p className={styles.lockedTitle}>Войдите, чтобы открыть личный кабинет</p>
+          <p className={styles.lockedText}>
+            В кабинете заказчик отправляет документацию на экспертизу, а эксперт
+            принимает заявки и выдаёт заключения.
+          </p>
+          <Button onClick={openModal}>Вход / Регистрация</Button>
+        </div>
+      </>
     );
   }
 
-  const user = session.user;
-
-  return (
-    <div className={styles.cabinet}>
-      <ProfileBar user={user} pending={pending} onLogout={() => void logout()} />
-
-      {user.role === "expert" ? <ExpertCabinet user={user} /> : <CustomerCabinet user={user} />}
-    </div>
-  );
+  return <UserCabinet user={session.user} />;
 };
 
 export default Cabinet;

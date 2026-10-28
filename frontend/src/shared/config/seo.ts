@@ -234,6 +234,15 @@ export function buildMetadata(path: string): Metadata {
   };
 }
 
+/** Метаданные списка статей. Выдача поиска закрыта от индексации, ссылки с неё робот учитывает. */
+export function buildListMetadata(path: string, search: string | undefined): Metadata {
+  const metadata = buildMetadata(path);
+
+  if (!search?.trim()) return metadata;
+
+  return { ...metadata, robots: { index: false, follow: true } };
+}
+
 /** JSON-LD: организация (для сниппетов и графа знаний). */
 export const organizationJsonLd = {
   "@context": "https://schema.org",
