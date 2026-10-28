@@ -46,7 +46,7 @@ const ArticlesList = ({
   const runSearch = (value: string) => {
     const href = buildListHref(basePath, { tag: activeTag, search: value });
 
-    startTransition(() => router.push(href, { scroll: false }));
+    startTransition(() => router.replace(href, { scroll: false }));
   };
 
   return (
@@ -55,13 +55,7 @@ const ArticlesList = ({
         {tags.length > 0 && (
           <TagFilter basePath={basePath} tags={tags} activeTag={activeTag} search={search} />
         )}
-        <SearchForm
-          key={search}
-          section={section}
-          initialValue={search}
-          pending={pending}
-          onSearch={runSearch}
-        />
+        <SearchForm initialValue={search} pending={pending} onSearch={runSearch} />
       </div>
 
       <div className={styles.results} aria-busy={pending}>

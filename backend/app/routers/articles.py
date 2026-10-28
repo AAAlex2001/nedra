@@ -15,7 +15,6 @@ from app.schemas.article import (
     ArticleListSchema,
     ArticleSchema,
     ArticleStatsSchema,
-    ArticleSuggestionSchema,
     ReactionInSchema,
     Section,
     TagSchema,
@@ -28,8 +27,6 @@ from app.services.articles.usecases.set_reaction import SetReactionUseCase
 
 
 router = APIRouter(tags=["articles"])
-
-SUGGEST_MIN_LENGTH = 2
 
 
 @router.get("/articles")
@@ -50,24 +47,6 @@ async def get_articles(
         articles=[ArticleCardSchema.model_validate(item) for item in items],
         total=total,
     )
-
-
-@router.get("/articles/suggest")
-async def suggest_articles(
-    q: str = Query(..., max_length=100, description="Часть заголовка"),
-    section: Section | None = Query(None, description="Раздел: blog или news"),
-    limit: int = Query(6, ge=1, le=10),
-    articles: ArticleRepository = Depends(get_article_repository),
-) -> list[ArticleSuggestionSchema]:
-    """Подсказки для строки поиска: заголовки опубликованных статей с этой строкой."""
-
-    search = q.strip()
-    if len(search) < SUGGEST_MIN_LENGTH:
-        return []
-
-    rows = await articles.suggest_titles(section, search, limit)
-
-    return [ArticleSuggestionSchema.model_validate(row) for row in rows]
 
 
 @router.get("/tags")

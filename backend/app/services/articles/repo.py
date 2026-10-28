@@ -1,6 +1,6 @@
 """Репозиторий статей: только запросы к таблице articles."""
 
-from sqlalchemy import ColumnElement, Row, and_, func, select
+from sqlalchemy import ColumnElement, and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.article import Article, Tag
@@ -97,22 +97,6 @@ class ArticleRepository:
             total = 0
 
         return articles, total
-
-    async def suggest_titles(self, section: str | None, search: str, limit: int) -> list[Row]:
-        """Подсказки для поиска: slug, раздел и заголовок свежих статей, где встречается search.
-
-        Читает только три колонки, без тегов и текста — подсказки запрашиваются на каждый ввод.
-        """
-
-        stmt = (
-            select(Article.slug, Article.section, Article.title)
-            .where(published_filter(section, None, search))
-            .order_by(Article.published_at.desc(), Article.id.desc())
-            .limit(limit)
-        )
-        result = await self.db.execute(stmt)
-
-        return list(result.all())
 
     async def get_published(self, slug: str) -> Article | None:
         """Опубликованная статья по slug. Черновик считается ненайденным."""

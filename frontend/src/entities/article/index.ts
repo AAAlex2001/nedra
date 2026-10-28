@@ -8,7 +8,6 @@ export type {
   ArticleSection,
   ArticleSort,
   ArticleStats,
-  ArticleSuggestion,
   Tag,
   TagAdmin,
   TocItem,
@@ -23,7 +22,6 @@ export {
   getRelatedArticles,
   getTags,
 } from "./api/articles";
-export { fetchSuggestions } from "./api/suggestions";
 
 export { SECTION_PATH, SECTION_TITLE, articlePath } from "./lib/paths";
 export { NOT_FOUND_METADATA, buildArticleMetadata } from "./lib/metadata";

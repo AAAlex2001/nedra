@@ -49,16 +49,6 @@ class ArticleCardSchema(BaseModel):
     tags: list[TagSchema] = Field(default_factory=list, description="Теги статьи")
 
 
-class ArticleSuggestionSchema(BaseModel):
-    """Подсказка в поиске: заголовок статьи и данные для ссылки на неё."""
-
-    model_config = ConfigDict(from_attributes=True)
-
-    slug: str = Field(..., description="Slug статьи")
-    section: Section = Field(..., description="Раздел: blog или news")
-    title: str = Field(..., description="Заголовок статьи")
-
-
 class ArticleSeoSchema(BaseModel):
     """SEO-поля статьи. Пустые значения подменяются заголовком и описанием на фронте."""
 
