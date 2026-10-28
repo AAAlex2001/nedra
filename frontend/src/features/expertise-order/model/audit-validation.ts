@@ -4,7 +4,8 @@ import type { FormErrors } from "./types";
 
 const isEmpty = (value: string): boolean => value.trim() === "";
 
-const addApplicantErrors = (form: AuditForm, errors: FormErrors) => {
+export const applicantErrors = (form: AuditForm): FormErrors => {
+  const errors: FormErrors = {};
   const { applicant } = form;
 
   if (isEmpty(applicant.full_name)) errors.full_name = "Укажите ФИО представителя";
@@ -14,6 +15,8 @@ const addApplicantErrors = (form: AuditForm, errors: FormErrors) => {
   if (isEmpty(applicant.phone)) errors.phone = "Укажите контактный телефон";
   if (isEmpty(applicant.email)) errors.email = "Укажите корпоративный e-mail";
   if (applicant.by_proxy && !form.proxyFile) errors.proxyFile = "Приложите доверенность";
+
+  return errors;
 };
 
 const addObjectErrors = (item: AuditObject, index: number, errors: FormErrors) => {
@@ -27,26 +30,32 @@ const addObjectErrors = (item: AuditObject, index: number, errors: FormErrors) =
   if (item.hazard_signs.length === 0) errors[`${key}-hazard_signs`] = "Отметьте признаки опасности ОПО";
 };
 
-const addScopeErrors = (form: AuditForm, errors: FormErrors) => {
+export const scopeErrors = (form: AuditForm): FormErrors => {
+  const errors: FormErrors = {};
+
   if (!form.scope) {
     errors.scope = "Выберите масштаб аудита";
-    return;
+    return errors;
   }
 
   if (form.scope !== "all") {
     form.objects.forEach((item, index) => addObjectErrors(item, index, errors));
-    return;
+    return errors;
   }
 
   if (Number(form.fleetCount) < 1) errors.fleetCount = "Укажите количество ОПО";
   if (isEmpty(form.fleetProfile)) errors.fleetProfile = "Укажите основной отраслевой профиль";
   if (form.multiRegion === null) errors.multiRegion = "Укажите, есть ли ОПО в разных субъектах РФ";
+
+  return errors;
 };
 
-const addParamsErrors = (form: AuditForm, errors: FormErrors) => {
+export const paramsErrors = (form: AuditForm): FormErrors => {
+  const errors: FormErrors = {};
   const withSto = needsSto(form.kind);
   const stoChosen = withSto && form.useSto === true;
 
+  if (form.stages.length === 0) errors.stages = "Выберите этапы аудита";
   if (!form.kind) errors.kind = "Выберите тип аудита";
   if (withSto && form.useSto === null) errors.useSto = "Укажите, учитывать ли СТО";
   if (stoChosen && isEmpty(form.stoName)) errors.stoName = "Укажите наименование и реквизиты СТО";
@@ -54,34 +63,26 @@ const addParamsErrors = (form: AuditForm, errors: FormErrors) => {
   if (form.kind === "selective" && form.elements.length === 0) {
     errors.elements = "Выберите направления для аудита";
   }
+
+  return errors;
 };
 
-const addTimingErrors = (form: AuditForm, errors: FormErrors) => {
+export const termsErrors = (form: AuditForm, price: number): FormErrors => {
+  const errors: FormErrors = {};
+
   if (!form.timing) errors.timing = "Выберите сроки аудита";
-  if (form.timing !== "custom") return;
 
-  if (!form.start) errors.start = "Укажите начало периода";
-  if (!form.end) errors.end = "Укажите окончание периода";
-  if (form.start && form.end && form.start > form.end) errors.end = "Окончание раньше начала";
-};
+  if (form.timing === "custom") {
+    if (!form.start) errors.start = "Укажите начало периода";
+    if (!form.end) errors.end = "Укажите окончание периода";
+    if (form.start && form.end && form.start > form.end) errors.end = "Окончание раньше начала";
+  }
 
-const addBudgetErrors = (form: AuditForm, price: number, errors: FormErrors) => {
   if (form.budget === "custom" && price < MIN_AUDIT_PRICE) {
     errors.price = "Стоимость аудита — не менее 100 000 ₽";
   }
 
   if (!form.negotiation) errors.negotiation = "Укажите, возможен ли торг";
-};
-
-export const auditErrors = (form: AuditForm, price: number): FormErrors => {
-  const errors: FormErrors = {};
-
-  addApplicantErrors(form, errors);
-  addScopeErrors(form, errors);
-  if (form.stages.length === 0) errors.stages = "Выберите этапы аудита";
-  addParamsErrors(form, errors);
-  addTimingErrors(form, errors);
-  addBudgetErrors(form, price, errors);
 
   return errors;
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { fetchMyExpertises, usesCompany, type CustomerType } from "@/entities/expertise";
 import { customerErrors } from "./customer-validation";
 import { INITIAL_STATE, orderReducer } from "./reducer";
@@ -19,7 +19,6 @@ export const useOrder = (customerTypes: CustomerType[] = DEFAULT_CUSTOMER_TYPES)
     ...INITIAL_STATE,
     customerType: customerTypes[0],
   });
-  const [attempted, setAttempted] = useState(false);
 
   useEffect(() => {
     const fillFromLastOrder = async () => {
@@ -85,7 +84,6 @@ export const useOrder = (customerTypes: CustomerType[] = DEFAULT_CUSTOMER_TYPES)
     try {
       await request(formData);
       dispatch({ type: "submit/success" });
-      setAttempted(false);
       return true;
     } catch (error) {
       const message = error instanceof Error && error.message ? error.message : SUBMIT_FAILED;
@@ -100,8 +98,6 @@ export const useOrder = (customerTypes: CustomerType[] = DEFAULT_CUSTOMER_TYPES)
     price,
     customerProblems,
     customerTypes,
-    attempted,
-    markAttempted: () => setAttempted(true),
     payload,
     changeObjectName,
     selectDeadline,

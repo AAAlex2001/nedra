@@ -8,12 +8,24 @@
   box-sizing: border-box;
   display: flex;
   gap: 8px;
+  max-width: 728px;
+  margin: 0 auto;
   padding: 6px;
 
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(12px);
   border: 1px solid #e6e6e6;
   border-radius: 100px;
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(calc(100% + 88px + env(safe-area-inset-bottom)));
 }
 
 .button {
@@ -25,18 +37,32 @@
 
 @media (min-width: 768px) {
   .bar {
+    right: 29px;
+    left: 29px;
+
+    max-width: 710px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .bar {
     right: auto;
-    bottom: calc(88px + env(safe-area-inset-bottom));
+    bottom: 24px;
     left: 50%;
 
     width: 420px;
 
     transform: translateX(-50%);
   }
+
+  .hidden {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
-@media (min-width: 1440px) {
+@media (prefers-reduced-motion: reduce) {
   .bar {
-    bottom: 24px;
+    transition: none;
   }
 }

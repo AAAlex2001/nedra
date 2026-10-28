@@ -112,6 +112,12 @@
     width: 20px;
     height: 20px;
   }
+  svg path[stroke] {
+    stroke: #f69827;
+  }
+  svg path[fill]:not([fill="none"]) {
+    fill: #f69827;
+  }
   span {
     overflow-wrap: anywhere;
   }
@@ -131,8 +137,12 @@
 }
 
 @media (min-width: 768px) {
+  .header {
+    padding: 15px 29px;
+  }
+
   .nav {
-    padding: 20px 24px 28px;
+    padding: 20px 29px 28px;
   }
 }
 

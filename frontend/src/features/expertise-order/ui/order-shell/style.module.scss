@@ -4,6 +4,8 @@
   gap: 24px;
 
   width: 100%;
+
+  scroll-margin-top: 120px;
 }
 
 .error {
@@ -15,8 +17,13 @@
   color: #b23b2c;
 }
 
-.submit {
-  width: 100%;
+.nav {
+  display: flex;
+  gap: 12px;
+}
+
+.nav > * {
+  flex: 1;
 }
 
 .successText {
@@ -30,4 +37,18 @@
 
 .successLink {
   color: var(--accent, #f69827);
+}
+
+@media (min-width: 768px) {
+  .nav {
+    justify-content: space-between;
+  }
+
+  .nav > * {
+    flex: none;
+  }
+
+  .next {
+    margin-left: auto;
+  }
 }

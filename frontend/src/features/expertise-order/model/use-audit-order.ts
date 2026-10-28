@@ -4,8 +4,9 @@ import { useState } from "react";
 import { createAudit, type AuditFile, type CustomerType } from "@/entities/expertise";
 import { useSession } from "@/entities/user";
 import { emptyAuditForm, toAuditDetails, type AuditForm } from "./audit-form";
-import { auditErrors } from "./audit-validation";
+import { applicantErrors, paramsErrors, scopeErrors, termsErrors } from "./audit-validation";
 import { useOrder } from "./use-order";
+import { useSteps, type OrderStep } from "./use-steps";
 
 export const AUDIT_CUSTOMER_TYPES: CustomerType[] = ["legal", "entrepreneur"];
 
@@ -16,9 +17,16 @@ export const useAuditOrder = () => {
   const newForm = () => emptyAuditForm(user?.full_name ?? "", user?.phone ?? "", user?.email ?? "");
   const [form, setForm] = useState<AuditForm>(newForm);
 
-  const allErrors = { ...auditErrors(form, order.price), ...order.customerProblems };
-  const hasErrors = Object.keys(allErrors).length > 0;
-  const errors = order.attempted ? allErrors : {};
+  const stepList: OrderStep[] = [
+    { key: "applicant", title: "Заявитель", errors: applicantErrors(form) },
+    { key: "objects", title: "Объект аудита", errors: scopeErrors(form) },
+    { key: "params", title: "Этапы и параметры", errors: paramsErrors(form) },
+    { key: "terms", title: "Сроки и стоимость", errors: termsErrors(form, order.price) },
+    { key: "documents", title: "Документы", errors: {} },
+    { key: "customer", title: "Реквизиты заказчика", errors: order.customerProblems },
+    { key: "comment", title: "Комментарий", errors: {} },
+  ];
+  const steps = useSteps(stepList);
 
   const changeForm = (next: AuditForm) => {
     const organization = next.applicant.organization;
@@ -36,8 +44,7 @@ export const useAuditOrder = () => {
   const removeFile = (target: AuditFile) => order.dispatch({ type: "auditFiles/remove", target });
 
   const submit = async () => {
-    order.markAttempted();
-    if (hasErrors) return;
+    if (!steps.validate()) return;
 
     const payload = {
       customer_type: order.payload.customer_type,
@@ -61,8 +68,11 @@ export const useAuditOrder = () => {
 
     const sent = await order.send(formData, createAudit);
 
-    if (sent) setForm(newForm());
+    if (!sent) return;
+
+    setForm(newForm());
+    steps.reset();
   };
 
-  return { order, form, errors, changeForm, addFiles, removeFile, submit };
+  return { order, steps, form, errors: steps.errors, changeForm, addFiles, removeFile, submit };
 };

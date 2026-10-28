@@ -2,9 +2,10 @@
 
 import type { ExpertCatalog } from "@/entities/expert";
 import { contractKindsFor, createExpertise, type ContractKind } from "@/entities/expertise";
-import { orderErrors } from "./order-validation";
+import { filesErrors, objectErrors, priceErrors } from "./order-validation";
 import type { OrderState, RequirementMode } from "./types";
 import { useOrder } from "./use-order";
+import { useSteps, type OrderStep } from "./use-steps";
 
 const categoryFor = (catalog: ExpertCatalog, state: OrderState): number | null => {
   if (state.mode === "category") return state.category;
@@ -25,9 +26,16 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
   const requiredCategory = categoryFor(catalog, state);
 
   const objectName = state.objectName.trim();
-  const allErrors = { ...orderErrors(state, order.price), ...order.customerProblems };
-  const hasErrors = Object.keys(allErrors).length > 0;
-  const errors = order.attempted ? allErrors : {};
+
+  const stepList: OrderStep[] = [
+    { key: "object", title: "Объект экспертизы", errors: objectErrors(state) },
+    { key: "requirements", title: "Требования к эксперту", errors: {} },
+    { key: "terms", title: "Срок и цена", errors: priceErrors(order.price) },
+    { key: "files", title: "Документация", errors: filesErrors(state) },
+    { key: "customer", title: "Заказчик", errors: order.customerProblems },
+    { key: "comment", title: "Комментарий", errors: {} },
+  ];
+  const steps = useSteps(stepList);
 
   const selectObject = (code: string) => dispatch({ type: "object/select", code });
   const selectKind = (kind: ContractKind | "") => dispatch({ type: "kind/select", kind });
@@ -39,8 +47,7 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
   const removeFile = (index: number) => dispatch({ type: "files/remove", index });
 
   const submit = async () => {
-    order.markAttempted();
-    if (hasErrors) return;
+    if (!steps.validate()) return;
 
     const payload = {
       ...order.payload,
@@ -59,15 +66,18 @@ export const useExpertiseOrder = (catalog: ExpertCatalog) => {
       formData.append("files", file);
     }
 
-    await order.send(formData, createExpertise);
+    const sent = await order.send(formData, createExpertise);
+
+    if (sent) steps.reset();
   };
 
   return {
     order,
+    steps,
     availableAreas,
     contractKinds,
     requiredCategory,
-    errors,
+    errors: steps.errors,
     selectObject,
     selectKind,
     setMode,

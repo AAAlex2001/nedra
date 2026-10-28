@@ -21,97 +21,114 @@ const ACCEPT = ".pdf,.doc,.docx,.jpg,.jpeg,.png";
 
 const ExpertiseForm = ({ catalog }: ExpertiseFormProps) => {
   const expertise = useExpertiseOrder(catalog);
-  const { order } = expertise;
+  const { order, steps, errors } = expertise;
   const { state } = order;
-  const { errors } = expertise;
+  const step = steps.current.key;
 
   return (
     <OrderShell
       order={order}
+      steps={steps}
       executors="Эксперты"
       submitText="Отправить на экспертизу"
       errors={errors}
       onSubmit={expertise.submit}
     >
-      <ObjectSection
-        objects={catalog.objects}
-        value={state.objectCode}
-        onSelect={expertise.selectObject}
-      />
+      {step === "object" && (
+        <>
+          <ObjectSection
+            objects={catalog.objects}
+            value={state.objectCode}
+            onSelect={expertise.selectObject}
+          />
 
-      {expertise.contractKinds.length > 1 && (
-        <KindSection
-          kinds={expertise.contractKinds}
-          value={state.contractKind}
-          onSelect={expertise.selectKind}
+          {expertise.contractKinds.length > 1 && (
+            <KindSection
+              kinds={expertise.contractKinds}
+              value={state.contractKind}
+              onSelect={expertise.selectKind}
+            />
+          )}
+
+          <TextField
+            label="Наименование документации"
+            required
+            placeholder="Как на титульном листе проекта"
+            maxLength={500}
+            invalid={Boolean(errors.objectName)}
+            value={state.objectName}
+            onChange={order.changeObjectName}
+          />
+        </>
+      )}
+
+      {step === "requirements" && (
+        <>
+          <RequirementSection
+            hazardClasses={catalog.hazard_classes}
+            categories={catalog.categories}
+            mode={state.mode}
+            hazardClass={state.hazardClass}
+            category={state.category}
+            requiredCategory={expertise.requiredCategory}
+            onMode={expertise.setMode}
+            onHazard={expertise.selectHazard}
+            onCategory={expertise.selectCategory}
+          />
+
+          <AreaSection
+            areas={catalog.areas}
+            available={expertise.availableAreas}
+            value={state.areaCode}
+            onSelect={expertise.selectArea}
+          />
+        </>
+      )}
+
+      {step === "terms" && (
+        <>
+          <DeadlineSection
+            label="Когда нужно заключение"
+            executor="эксперта"
+            value={state.deadline}
+            onSelect={order.selectDeadline}
+          />
+
+          <PriceSection
+            label="Ваша цена за экспертизу, ₽"
+            executors="Эксперты"
+            value={state.price}
+            invalid={Boolean(errors.price)}
+            onChange={order.changePrice}
+          />
+        </>
+      )}
+
+      {step === "files" && (
+        <FilesField
+          label="Документация"
+          required
+          files={state.files}
+          accept={ACCEPT}
+          invalid={Boolean(errors.files)}
+          hint="PDF, Word, JPG или PNG, до 50 МБ каждый. Можно приложить несколько файлов. Если документации нет — приложите техническое задание."
+          onAdd={expertise.addFiles}
+          onRemove={expertise.removeFile}
         />
       )}
 
-      <TextField
-        label="Наименование документации"
-        required
-        placeholder="Как на титульном листе проекта"
-        maxLength={500}
-        invalid={Boolean(errors.objectName)}
-        value={state.objectName}
-        onChange={order.changeObjectName}
-      />
+      {step === "customer" && <CustomerSection order={order} errors={errors} />}
 
-      <RequirementSection
-        hazardClasses={catalog.hazard_classes}
-        categories={catalog.categories}
-        mode={state.mode}
-        hazardClass={state.hazardClass}
-        category={state.category}
-        requiredCategory={expertise.requiredCategory}
-        onMode={expertise.setMode}
-        onHazard={expertise.selectHazard}
-        onCategory={expertise.selectCategory}
-      />
-
-      <AreaSection
-        areas={catalog.areas}
-        available={expertise.availableAreas}
-        value={state.areaCode}
-        onSelect={expertise.selectArea}
-      />
-
-      <DeadlineSection
-        label="Когда нужно заключение"
-        executor="эксперта"
-        value={state.deadline}
-        onSelect={order.selectDeadline}
-      />
-
-      <PriceSection
-        label="Ваша цена за экспертизу, ₽"
-        executors="Эксперты"
-        value={state.price}
-        invalid={Boolean(errors.price)}
-        onChange={order.changePrice}
-      />
-
-      <FilesField
-        label="Документация"
-        required
-        files={state.files}
-        accept={ACCEPT}
-        invalid={Boolean(errors.files)}
-        hint="PDF, Word, JPG или PNG, до 50 МБ каждый. Можно приложить несколько файлов. Если документации нет — приложите техническое задание."
-        onAdd={expertise.addFiles}
-        onRemove={expertise.removeFile}
-      />
-
-      <CustomerSection order={order} errors={errors} />
-
-      <TextField
-        label="Комментарий"
-        multiline
-        placeholder="Что важно знать эксперту: сроки, особенности объекта, на что обратить внимание"
-        maxLength={4000}
-        value={state.comment}
-        onChange={order.changeComment}
-      />
+      {step === "comment" && (
+        <TextField
+          label="Комментарий"
+          multiline
+          placeholder="Что важно знать эксперту: сроки, особенности объекта, на что обратить внимание"
+          maxLength={4000}
+          value={state.comment}
+          onChange={order.changeComment}
+        />
+      )}
     </OrderShell>
   );
 };

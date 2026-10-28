@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useEffect, useId, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@/shared/ui/icons";
@@ -10,9 +11,10 @@ type ModalProps = {
   title: string;
   onClose: () => void;
   children: ReactNode;
+  className?: string;
 };
 
-const Modal = ({ open, title, onClose, children }: ModalProps) => {
+const Modal = ({ open, title, onClose, children, className }: ModalProps) => {
   const titleId = useId();
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const Modal = ({ open, title, onClose, children }: ModalProps) => {
   if (!open) return null;
 
   return createPortal(
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={classNames(styles.overlay, className)} onClick={onClose}>
       <div
         className={styles.window}
         role="dialog"

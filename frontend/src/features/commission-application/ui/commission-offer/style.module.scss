@@ -148,7 +148,7 @@
   border-color: #6676b5;
 }
 
-.offer .cta:hover {
+.offer .cta:hover:not(:disabled) {
   background: #52629f;
   border-color: #52629f;
 }

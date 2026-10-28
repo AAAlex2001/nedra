@@ -28,6 +28,12 @@
   color: #0b0b0b;
 }
 
+@media (min-width: 768px) {
+  .body {
+    padding: 25px 29px 50px;
+  }
+}
+
 @media (min-width: 1440px) {
   .page {
     max-width: 1440px;

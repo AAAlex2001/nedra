@@ -184,8 +184,8 @@
   border-color: #9cc79a;
 }
 
-.form .submit:hover,
-.done .submit:hover {
+.form .submit:hover:not(:disabled),
+.done .submit:hover:not(:disabled) {
   background: #8bbc89;
   border-color: #8bbc89;
 }

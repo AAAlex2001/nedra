@@ -41,6 +41,12 @@ a.crumb:hover {
   height: 15px;
 }
 
+@media (min-width: 768px) {
+  .breadcrumbs {
+    padding: 30px 29px 10px;
+  }
+}
+
 @media (min-width: 1440px) {
   .breadcrumbs {
     padding: 30px 50px 10px;

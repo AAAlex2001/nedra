@@ -200,6 +200,10 @@
 }
 
 @media (min-width: 768px) {
+  .inner {
+    padding: 15px 29px;
+  }
+
   .controls {
     gap: 20px;
   }
@@ -213,6 +217,7 @@
   .inner {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
+    padding: 15px 20px;
     max-width: 1580px;
     gap: 30px;
   }

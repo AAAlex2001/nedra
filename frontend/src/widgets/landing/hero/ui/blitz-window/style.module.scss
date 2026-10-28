@@ -52,7 +52,8 @@
 .slide {
   box-sizing: border-box;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 14px;
   padding: 14px;
 
@@ -259,6 +260,8 @@
   }
 
   .slide {
+    flex-direction: row;
+    align-items: center;
     gap: 20px;
     padding: 16px;
 
@@ -371,6 +374,26 @@
     border-radius: 9px;
   }
 
+  .audit .head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .audit .advantages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .audit .advantage:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1440px) {
+  .audit .head {
+    flex-direction: row;
+    align-items: center;
+  }
+
   .audit .advantages {
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
@@ -396,28 +419,6 @@
   border-color: #6b9b70;
 }
 
-@media (min-width: 768px) and (max-width: 1099px) {
-  .audit .head {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .audit .advantages {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .audit .advantage,
-  .audit .advantage:first-child,
-  .audit .advantage:nth-child(n + 4) {
-    grid-column: auto;
-    flex-direction: row;
-  }
-
-  .audit .advantage:last-child {
-    grid-column: 1 / -1;
-  }
-}
-
 .badge {
   flex-shrink: 0;
 }
@@ -426,13 +427,6 @@
 .dot:focus-visible {
   outline: 3px solid var(--blitz-accent, #f69827);
   outline-offset: 4px;
-}
-
-@media (max-width: 399px) {
-  .slide {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
