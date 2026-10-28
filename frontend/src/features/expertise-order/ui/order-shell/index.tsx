@@ -72,7 +72,7 @@ const OrderShell = ({
         </p>
       </Modal>
 
-      <OrderSteps steps={steps} theme={theme} />
+      <OrderSteps steps={steps} />
 
       {children}
 

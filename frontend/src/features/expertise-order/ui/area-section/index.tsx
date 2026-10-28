@@ -46,15 +46,14 @@ const AreaSection = ({ areas, available, value, onSelect }: AreaSectionProps) =>
       </div>
 
       <div className={styles.chips}>
-        <FieldGroup label="Область аттестации">
-          <ChipOptions
-            label="Область аттестации"
-            layout="wrap"
-            options={chipOptions}
-            value={value}
-            onChange={onSelect}
-          />
-        </FieldGroup>
+        <span className={styles.label}>Область аттестации</span>
+        <ChipOptions
+          label="Область аттестации"
+          layout="wrap"
+          options={chipOptions}
+          value={value}
+          onChange={onSelect}
+        />
       </div>
 
       <ChipOptions

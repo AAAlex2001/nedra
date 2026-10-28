@@ -1,4 +1,4 @@
-.summary {
+﻿.summary {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -34,7 +34,7 @@
   font-size: 12px;
   line-height: 16px;
 
-  color: var(--accent, #f69827);
+  color: #f69827;
 
   background: none;
   border: none;
@@ -42,7 +42,7 @@
 }
 
 .more:focus-visible {
-  outline: 2px solid var(--accent, #f69827);
+  outline: 2px solid #f69827;
   outline-offset: 2px;
 }
 
@@ -61,7 +61,7 @@
 
 .segment.done,
 .segment.current {
-  background: var(--accent, #f69827);
+  background: #f69827;
 }
 
 .upcoming {
@@ -123,10 +123,6 @@
   height: 20px;
 }
 
-.markerIcon path {
-  fill: var(--accent, #f69827);
-}
-
 .dot {
   width: 16px;
   height: 16px;
@@ -137,9 +133,9 @@
 }
 
 .row.current .dot {
-  border-color: var(--accent, #f69827);
+  border-color: #f69827;
   box-shadow: inset 0 0 0 3px #fff;
-  background: var(--accent, #f69827);
+  background: #f69827;
 }
 
 .label {

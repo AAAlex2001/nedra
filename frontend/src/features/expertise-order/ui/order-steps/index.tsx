@@ -9,7 +9,6 @@ import styles from "./style.module.scss";
 
 type OrderStepsProps = {
   steps: Steps;
-  theme?: string;
 };
 
 type StepState = "done" | "current" | "future";
@@ -26,7 +25,7 @@ const StepMarker = ({ state }: { state: StepState }) => (
   </span>
 );
 
-const OrderSteps = ({ steps, theme }: OrderStepsProps) => {
+const OrderSteps = ({ steps }: OrderStepsProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -51,7 +50,7 @@ const OrderSteps = ({ steps, theme }: OrderStepsProps) => {
 
       {steps.upcoming && <span className={styles.upcoming}>Далее: {steps.upcoming.title}</span>}
 
-      <Modal open={open} title="Шаги заявки" className={theme} onClose={() => setOpen(false)}>
+      <Modal open={open} title="Шаги заявки" onClose={() => setOpen(false)}>
         <ol className={styles.list}>
           {steps.list.map((step, position) => {
             const state = stateOf(position, steps.index);
