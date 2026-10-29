@@ -1,0 +1,1298 @@
+{
+  "released_count": 215,
+  "unfinished_count": 485,
+  "minimum_words": 650,
+  "review_scope": "Current independent full-text reviews and five user-approved pilot articles; no claim of ranking guarantees.",
+  "articles": [
+    {
+      "rewrite_index": 0,
+      "slug": "kotelnaya-snab-aet-posyolok-kak-otsenit-riski-po-ukazu-604",
+      "title": "Котельная отапливает посёлок: как посчитать дефицит тепла при отказе котла",
+      "content_sha256": "88af6adac32a94b3284a3f8b3be65c3018eee5cc4f2fc549931836b74bfe85c9"
+    },
+    {
+      "rewrite_index": 1,
+      "slug": "zavod-ostanovlen-posle-povre-deniya-kakie-dokazatelstva-vosstanovleniya-sobrat",
+      "title": "После повреждения завода восстановили охлаждение: чем подтвердить результат",
+      "content_sha256": "2fcc10a83fdd8f27c7ef16ca385e52fe8948e21c5284d5505ad02ca452809d32"
+    },
+    {
+      "rewrite_index": 2,
+      "slug": "rezervnyy-istochnik-suschestvuet-tolko-v-proekte-chto-proverit-sobstvenniku",
+      "title": "Резервный генератор установлен, но не принят: как закрыть проект без ложной готовности",
+      "content_sha256": "0661ad14cfc3e7cc4aaa06d07f1f66e9a43666aabeb79aac10d2f075d7e2bf16"
+    },
+    {
+      "rewrite_index": 3,
+      "slug": "arendator-ekspluatiruet-kriticheskiy-obekt-kak-razdelit-obyazannosti",
+      "title": "Котельная в аренде: как разделить ремонт, оплату и эксплуатацию",
+      "content_sha256": "de39338997b420c3d8fc9221cee903471477cf43e86aaa856180196e732f84b2"
+    },
+    {
+      "rewrite_index": 4,
+      "slug": "predpriyatie-zavisit-ot-odnoy-podstantsii-kak-vyyavit-kriticheskuyu-tochku",
+      "title": "Два ввода от одной подстанции: как найти общую точку отказа",
+      "content_sha256": "885caa48997f7dd3e0cd457272fddb3835b275cd69d3b593029d0ee23fea4d65"
+    },
+    {
+      "rewrite_index": 5,
+      "slug": "dokumenty-o-zaschite-obekta-est-a-ispytaniy-net-kak-zakryt-razryv",
+      "title": "QoS 1 есть, уведомления нет: сообщение MQTT истекло раньше подключения диспетчера",
+      "content_sha256": "09b10008f878af20dd921f48cdd73b57876ba3e4879574c1d3371a4e56f089e3"
+    },
+    {
+      "rewrite_index": 6,
+      "slug": "sobstvennik-smenilsya-kakie-svedeniya-o-kriticheskom-obekte-peredat",
+      "title": "Передача промышленной площадки покупателю: как зафиксировать незакрытые работы",
+      "content_sha256": "78f61263662caf322cb9d0e6264fbd7a8833b972f2b3428f174fc5126e845222"
+    },
+    {
+      "rewrite_index": 7,
+      "slug": "kriticheskaya-infrastruktura-i-opo-pochemu-odnogo-reestra-nedostatochno",
+      "title": "В реестре ОПО одна площадка, в перечне инфраструктуры другая: как сверить границы",
+      "content_sha256": "3f92391b1e21e35ae669e77d8c0cb7bfabb9619d4d1359f11f7d088d34072557"
+    },
+    {
+      "rewrite_index": 8,
+      "slug": "kontrakt-po-np-071-18-otgruzka-poz-e-kak-soglasovat-perehod-na-np-071-26",
+      "title": "Для атомной поставки выбрали ПО 1.9.9 вместо 1.10.0: ошибка текстовой сортировки версий",
+      "content_sha256": "dab467e60fc826a61a65b7697bc9c949bfde7a83bfc384dbb3647e6ebf13a282"
+    },
+    {
+      "rewrite_index": 9,
+      "slug": "zakazchik-trebuet-novyy-plan-kachestva-chto-sverit-do-dopsoglasheniya",
+      "title": "Образец после коррозии стал тяжелее: почему положительная отметка плана качества ошибочна",
+      "content_sha256": "5a23d4cbc3a7cf2931967f94fd6147cd724def8715109e93e3412475a6725895"
+    },
+    {
+      "rewrite_index": 10,
+      "slug": "izdelie-izgotovleno-priyomka-vperedi-kak-proverit-normativnuyu-osnovu",
+      "title": "Изделие готово, приёмка не завершена: как разобрать четыре неподписанные операции",
+      "content_sha256": "69be9958e26372567f9e3ec6c856aa78269b7913160b9e65ea0716b02e522f42"
+    },
+    {
+      "rewrite_index": 11,
+      "slug": "v-dogovore-raznye-redaktsii-np-071-kak-ubrat-protivorechiya",
+      "title": "В спецификации Rz, в договоре Ra: почему положительная шероховатость не закрыла приёмку",
+      "content_sha256": "29291fb9e77cd578e15a01742dc2acc864b60f7286139948741ff91dda2cae2a"
+    },
+    {
+      "rewrite_index": 13,
+      "slug": "subpodryadchik-rabotaet-po-starym-trebovaniyam-kak-proverit-tsepochku-postavki",
+      "title": "Субподрядчик продолжил термообработку по старой карте: как определить затронутые детали",
+      "content_sha256": "074f5a1331b1a191805210bc47e92f79a6f3ee061103c930f3771bc647edbe7d"
+    },
+    {
+      "rewrite_index": 14,
+      "slug": "priyomka-ostanovlena-iz-za-redaktsii-np-kakie-voprosy-zadat-zakazchiku",
+      "title": "Приёмку остановили словами «не та редакция НП»: как получить проверяемое замечание",
+      "content_sha256": "e80aa244186e638bca55cb8e3989d17bfa0dfbe7bd617fe94141781111551099"
+    },
+    {
+      "rewrite_index": 16,
+      "slug": "arenduete-pomeschenie-s-otopleniem-kakie-dokumenty-gotovnosti-nu-ny-biznesu",
+      "title": "Арендатор закрыл термоголовку витриной: почему в магазине холодно при тёплом датчике",
+      "content_sha256": "fdea8e2c6da4438b5dbbe0b37259e1dae1fc1b0adca4fe465d0decfd3cb8ef60"
+    },
+    {
+      "rewrite_index": 18,
+      "slug": "ispytaniya-vypolneny-pasport-ne-vydan-kak-proverit-komplekt-dokumentov",
+      "title": "В акте испытания указаны 33 минуты: почему это может не подтверждать 30 минут непрерывной выдержки",
+      "content_sha256": "a0a1a9e700bd44f8da337ebd7470e919d959d7ccc417dff09054c87e8dabcbe2"
+    },
+    {
+      "rewrite_index": 21,
+      "slug": "itp-obslu-ivaet-podryadchik-kto-sobiraet-dokumenty-gotovnosti",
+      "title": "Обслуживание ИТП подорожало до 146410 рублей: проверьте, не применили ли годовую индексацию четыре раза",
+      "content_sha256": "348aa0f972d8cae78b24b7f590f87adc3a61738a6ddc39bc5362c4897cdea195"
+    },
+    {
+      "rewrite_index": 22,
+      "slug": "pasport-proshlogo-sezona-nayden-pochemu-ego-nedostatochno-dlya-novogo",
+      "title": "Теплоноситель долили водой после ремонта: почему прежние 40% больше не подтверждены",
+      "content_sha256": "3dc26cf870995c28daa31af4aafc87e53aa883706e5b85a5760f96739b8a788c"
+    },
+    {
+      "rewrite_index": 23,
+      "slug": "uk-ne-peredala-akty-ispytaniy-kak-vosstanovit-dokazatelstva-gotovnosti",
+      "title": "УК прислала тепловизионный кадр труб через стекло вместо акта: что он действительно показывает",
+      "content_sha256": "d5a5e30b7b90138e4c1ca7e7859aebdf3cb8226afd42d50b3e7f5aeda063c338"
+    },
+    {
+      "rewrite_index": 25,
+      "slug": "kotelnaya-perevedena-s-dizelya-na-gaz-chto-peresmotret-v-dokumentah",
+      "title": "После перевода котельной на газ дизель оставили резервным: как описать оба состояния",
+      "content_sha256": "13a917ef45c411019660d34ab6affa0b801858292a5d065742a43dcd121a1715"
+    },
+    {
+      "rewrite_index": 26,
+      "slug": "zamenili-odin-kotyol-kogda-starye-svedeniya-o-kotelnoy-trebuyut-proverki",
+      "title": "В котельной заменили К1, а в сведениях два котла: как сопоставить старый и новый экземпляры",
+      "content_sha256": "6de4e8538556762d405d445a07421d5de87c676f8537e7869f1b4f7eb675a1ae"
+    },
+    {
+      "rewrite_index": 27,
+      "slug": "kotelnaya-bez-para-pochemu-eto-eschyo-ne-otvet-na-vopros-ob-opo",
+      "title": "В котельной только вода, но проект и журнал показывают разную температуру: как проверить основание",
+      "content_sha256": "aa61561f97f4a547592850a896215eef7ce43f9eb172d724189cfa9b4758daef"
+    },
+    {
+      "rewrite_index": 28,
+      "slug": "gazovyy-kotyol-arenduet-predpriyatie-kto-proveryaet-status-kotelnoy",
+      "title": "Предприятие арендует один котёл в общей котельной: что выяснить до проверки статуса",
+      "content_sha256": "1b5835a67e7eb61ce53bf53fdb5599d03aa93da43c512c609cf092bedc87ac91"
+    },
+    {
+      "rewrite_index": 29,
+      "slug": "postavschik-obeschaet-kotelnuyu-bez-registratsii-chto-zaprosit-pismenno",
+      "title": "Продавец обещает котельную «без регистрации»: как уточнить, какую процедуру он исключил",
+      "content_sha256": "24ccb3d90c5cd460f893f4587663b3af9f1c204acb874c821521435cbc5445b0"
+    },
+    {
+      "rewrite_index": 30,
+      "slug": "dve-kotelnye-na-odnoy-territorii-kak-opredelit-granitsy-obektov",
+      "title": "Вторую котельную подключили к общему газовому узлу: в действующих сведениях осталась только первая",
+      "content_sha256": "ebd40361dee20ecaf7d4c87ddb2bf3eddb1739de311a98104acd04f36964eb59"
+    },
+    {
+      "rewrite_index": 31,
+      "slug": "kotelnaya-u-e-rabotaet-svedeniy-opo-net-kak-nachat-dokumentalnuyu-proverku",
+      "title": "В папке котельной только дизельный состав: как найденный последующий комплект изменил вывод о регистрации",
+      "content_sha256": "e50c180ad2c0654af7dcaaa8e9289801b92905eeea3485775c87f7d2fc761c0b"
+    },
+    {
+      "rewrite_index": 32,
+      "slug": "v-instruktsii-stoyat-starye-fnp-kak-ponyat-chto-deystvitelno-menyat",
+      "title": "В инструкции осталась ссылка на ФНП 519: как разобрать основание и содержание отдельно",
+      "content_sha256": "6223e76d8f887165cf44b9b216303196bc62272b81d41bff04bc2a3573585087"
+    },
+    {
+      "rewrite_index": 33,
+      "slug": "fnp-zakanchivaetsya-po-staroy-novosti-kak-proverit-prodlenie-sroka",
+      "title": "Новость обещает отмену всех ФНП в 2027: проверка на примере 461 и 536",
+      "content_sha256": "4c2065cb3dd156e1cfa730a4844430ff1890af9f466b180d5417c175db9b5f3b"
+    },
+    {
+      "rewrite_index": 35,
+      "slug": "na-predpriyatii-net-reestra-norm-kak-sobrat-ego-bez-perepisyvaniya-vsego",
+      "title": "В реестре оставили обслуживание каждые 100 часов: как потеряли отдельное требование первых 20",
+      "content_sha256": "893080d54c13630f492d9ad2db023b64a3eea147811642bd5bbae6c693f95838"
+    },
+    {
+      "rewrite_index": 36,
+      "slug": "podryadchik-ssylaetsya-na-otmenyonnyy-punkt-fnp-kak-proverit-zamechanie",
+      "title": "В журнале сварки 6 мм, в требовании 5 мм: почему катет не равен высоте горла",
+      "content_sha256": "774f9782b61d909c8fec66fef06e6d6f5ba74eb7c9c8bf17700ff76349dad7ef"
+    },
+    {
+      "rewrite_index": 37,
+      "slug": "menyayutsya-trebovaniya-k-oborudovaniyu-kak-svyazat-fnp-s-remontnym-planom",
+      "title": "ФНП продлили, а ремонт крана стоит в плане: почему нельзя сдвигать его до 2032",
+      "content_sha256": "b8a237225f30b63c998bec4eb719f2cb1558298e15de2b3f2d713cd5838ed13f"
+    },
+    {
+      "rewrite_index": 39,
+      "slug": "proverka-rostehnadzora-pered-smenoy-fnp-kak-zafiksirovat-primenimuyu-redaktsiyu",
+      "title": "В проверке запросили старые акты: как показать редакцию ФНП на дату события",
+      "content_sha256": "43b16ddc6430b361f68bd743fa7ce9c00718937332c2595d960520a50ede378c"
+    },
+    {
+      "rewrite_index": 40,
+      "slug": "zavod-ne-rabotaet-dva-goda-pochemu-prostoy-ne-zamenyaet-konservatsiyu-opo",
+      "title": "Цех стоит два года, но общая сеть работает: как разобрать фактическое состояние после остановки",
+      "content_sha256": "0328e6b2183f12a2ef951dddf1d2276bb4feccf176ba4e1a25828fc5360a2348"
+    },
+    {
+      "rewrite_index": 41,
+      "slug": "opo-prodayut-na-metallolom-kakie-dokumenty-proverit-do-demonta-a",
+      "title": "Аппарат продали на лом, общую опору исключили: почему нельзя убрать всё под ним",
+      "content_sha256": "37a395b55483ee054854c732a7f6539f97592be16420196ffc157fbca808392a"
+    },
+    {
+      "rewrite_index": 42,
+      "slug": "posle-ostanovki-ostalis-opasnye-veschestva-kak-opredelit-sleduyuschiy-shag",
+      "title": "Внизу аппарата вода, сверху масляный слой: почему одна проба не описала весь остаток",
+      "content_sha256": "8c104b6b2686a838ce67956d56ec7a2b05d27f863a1a7eec68d542a91c542d56"
+    },
+    {
+      "rewrite_index": 43,
+      "slug": "konservatsiya-ili-likvidatsiya-tseha-kakie-dannye-nu-ny-dlya-vybora",
+      "title": "Сохранять цех или окончательно выводить: какие расходы и условия сравнить до решения",
+      "content_sha256": "56fe028b4758060aaecaf21cc255db2ecfde95d5adaf5e5a9b3d38022f13fbaf"
+    },
+    {
+      "rewrite_index": 44,
+      "slug": "podryadchik-demontiroval-oborudovanie-bez-proekta-kak-sobrat-fakticheskuyu-kartinu",
+      "title": "После демонтажа убрали закрепление стойки: почему прежний расчёт устойчивости не подходит",
+      "content_sha256": "9c4c14dc07c7f833e498e59e5a58bfdc8ed39905e8b0c8c007316b52186f1a97"
+    },
+    {
+      "rewrite_index": 45,
+      "slug": "sobstvennik-bankrotitsya-kak-peredat-dokumenty-ostanovlennogo-opo",
+      "title": "Документы остановленного ОПО не переданы управляющему: почему срок считают не от требования",
+      "content_sha256": "2a2757fc952ad79ae02f44b32c70e0b23ac9b2ecf3e572aecc57e09bada5557d"
+    },
+    {
+      "rewrite_index": 46,
+      "slug": "planiruyut-povtornyy-zapusk-chto-predusmotret-pri-konservatsii-oborudovaniya",
+      "title": "После консервации планируют вернуть оборудование: какие связи сохранить до разборки",
+      "content_sha256": "b0dff771016e7ec5e992dd75dad81557dee6952a7610e88178b58895f0915bab"
+    },
+    {
+      "rewrite_index": 47,
+      "slug": "odin-uchastok-zakryvayut-sosedniy-rabotaet-kak-opredelit-granitsy-rabot",
+      "title": "Участок закрыли, а ввод перегрузили: что изменилось после удаления общей компенсации",
+      "content_sha256": "37e8dd49fd733f9f82a49d11fcc8330b673af174aca012339d8f64e0513eda1e"
+    },
+    {
+      "rewrite_index": 48,
+      "slug": "elektroschity-perestroili-shema-staraya-kak-vosstanovit-dokumenty",
+      "title": "На новой схеме два параллельных пути: почему общий ток нельзя разделить пополам",
+      "content_sha256": "899da9c5d97049da3de162609a1999488fd3c707fa125639778d896c432aae3f"
+    },
+    {
+      "rewrite_index": 49,
+      "slug": "uvolnyaetsya-otvetstvennyy-za-elektrohozyaystvo-chto-prinyat-po-aktu",
+      "title": "При передаче электрохозяйства нашли замену автомата: почему одинаковых 63 А недостаточно",
+      "content_sha256": "d356f87d05286f1d4c7b544ba679cdcdb0074ef323a30f2196abf4d035ac2a39"
+    },
+    {
+      "rewrite_index": 56,
+      "slug": "teplotrassa-prohodit-po-territorii-zavoda-kak-ustanovit-eyo-status",
+      "title": "Теплотрасса пересекает заводской участок: как отделить землю, сеть и обслуживание",
+      "content_sha256": "6c4373d6332095aa8585ead903b5f04f9ecc19498abf01bde04713673d36e11c"
+    },
+    {
+      "rewrite_index": 59,
+      "slug": "beshozyaynyy-uchastok-teploseti-nayden-na-balanse-kakie-svedeniya-sobrat",
+      "title": "Бесхозяйную теплосеть обнаружили в мае, на учёт поставили в августе: откуда считать три месяца",
+      "content_sha256": "3987b4da82cea6d44d5c73d9ea13f96156c760b57618c34e67f490ee96c75adb"
+    },
+    {
+      "rewrite_index": 64,
+      "slug": "zaklyuchenie-epb-ne-nahoditsya-po-nomeru-chto-proverit-do-pretenzii-ekspertu",
+      "title": "Два заключения ЭПБ с номером 17/2026: как не принять чужую запись за свою",
+      "content_sha256": "989645a1f0d028ebce9cec35c396e06ec60da7096d0777de002312d66e8533e7"
+    },
+    {
+      "rewrite_index": 66,
+      "slug": "v-zaklyuchenii-epb-oshibka-v-zavodskom-nomere-kak-oformit-obraschenie",
+      "title": "В реестре ЭПБ номер 741, а в заключении 714: как запросить исправление по существу",
+      "content_sha256": "ec2ea0f6247b672ec5653c34a5e3b392ddb7df138e90a24570a1879a8ea37a7b"
+    },
+    {
+      "rewrite_index": 116,
+      "slug": "otvetstvennyy-za-teplovye-ustanovki-uvolilsya-kak-peredat-ekspluatatsiyu",
+      "title": "Ответственный за тепло уволился, журнал пишет его фамилию: можно ли установить исполнителя по аккаунту",
+      "content_sha256": "64ebe2b9d15920d15f8bcb62dc7a784fb1509a1f3aa420ecf1fc14cfcd69237b"
+    },
+    {
+      "rewrite_index": 120,
+      "slug": "zamestitelya-net-otvetstvennyy-v-otpuske-kak-organizovat-zameschenie",
+      "title": "Заместителя нет, ответственный в отпуске: когда согласие на отзыв не решает проблему",
+      "content_sha256": "6817aed8f6af4f8f4d863a0c973c99ad1685fef293d86b86b5623eeb48f5f391"
+    },
+    {
+      "rewrite_index": 121,
+      "slug": "itp-peredali-arendatoru-kak-raspredelit-funktsii-personala",
+      "title": "ИТП обслуживает другая фирма: когда квалификация мастера не заменяет согласованного исполнителя",
+      "content_sha256": "0d55c0990cb110950a09ad1d9cf88b393b1e5ebb635d1591f6542c04b19bc163"
+    },
+    {
+      "rewrite_index": 122,
+      "slug": "udostoverenie-est-oblast-rabot-drugaya-kak-proverit-podgotovku-spetsialista",
+      "title": "Специалист подготовлен, но тонкая стенка не видна: как мёртвая зона ограничивает УЗ-схему",
+      "content_sha256": "70580ff099968dac2fb73802d8cc40a710bcce307b35693f1c5768018a4cb1be"
+    },
+    {
+      "rewrite_index": 123,
+      "slug": "povtornyy-otkaz-posle-remonta-kak-proverit-prichiny-bez-poiska-vinovnogo",
+      "title": "После ремонта отказов стало меньше: почему пять остановок могут оказаться хуже десяти",
+      "content_sha256": "7cf08989a2c2542ac44242f236de43a02113a921f162a86a6820cdb819e6f33b"
+    },
+    {
+      "rewrite_index": 124,
+      "slug": "defekty-zapisyvayut-no-ne-ustranyayut-kak-proverit-proizvodstvennyy-kontrol",
+      "title": "Дефект закрыли по вибрации 4 мм/с: почему RMS нельзя сравнить с пределом Peak",
+      "content_sha256": "b49a3e1d4ce2178457955300c4df5608d332f0b8688666ec21161b0bcb7380a1"
+    },
+    {
+      "rewrite_index": 125,
+      "slug": "zaschitu-oborudovaniya-otklyuchayut-radi-plana-kakie-dokumenty-analizirovat",
+      "title": "Один вход защиты подавлен в ноль: почему схема «два из трёх» уже работает иначе",
+      "content_sha256": "68c2bf2120312867e92418527b3cc75a39bcf8e14819c28b7a871736bd5f2cef"
+    },
+    {
+      "rewrite_index": 126,
+      "slug": "melkie-utechki-stali-normoy-kak-sobrat-dannye-do-seryoznoy-avarii",
+      "title": "Запах сероводорода исчез: почему это не подтверждает отсутствие газа",
+      "content_sha256": "b87e28a077e6133cd2e13a4f0f331e0bbe2079a5c6abc2ba921446d1b1ca90f8"
+    },
+    {
+      "rewrite_index": 127,
+      "slug": "plan-meropriyatiy-posle-intsidenta-zakryt-formalno-kak-proverit-rezultat",
+      "title": "После инцидента подтвердили статическое давление: почему это не закрыло гидроудар",
+      "content_sha256": "0252c740a8cd49e513a4d2f9c3695dd353fe9b0c4f48a0088a5f6f04e8e35e05"
+    },
+    {
+      "rewrite_index": 128,
+      "slug": "remont-otkladyvayut-ka-dyy-kvartal-kak-obosnovat-prioritet-opasnogo-defekta",
+      "title": "Ремонт снова переносят: почему два режима нагрузки нельзя считать независимыми ресурсами",
+      "content_sha256": "267ce5f34b950b2521ff54493722ba3cbeedabedf72345f9b413a87c8b38bd0d"
+    },
+    {
+      "rewrite_index": 130,
+      "slug": "uk-smenilas-pasport-lifta-ne-peredan-kakie-dokumenty-vosstanovit",
+      "title": "В документах лифта скорости 1 и 2 м/с: когда это кабина и канат, а не ошибка паспорта",
+      "content_sha256": "cf84cfc26e5f87c34bf82895d1dc962a65a2869bf21a1fe6c3f74809c64f982c"
+    },
+    {
+      "rewrite_index": 135,
+      "slug": "v-dome-ustanovili-novyy-lift-kakie-dokumenty-nu-ny-dlya-peredachi",
+      "title": "Новый лифт передают после тяжёлой отделки: почему прежний расчёт противовеса уже не подходит",
+      "content_sha256": "41f1d10267bd29050c12af1487c5bc18f9835b298053f6f91aa142068d8f7b32"
+    },
+    {
+      "rewrite_index": 136,
+      "slug": "lift-v-ne-ilom-korpuse-ilogo-kompleksa-kak-ustanovit-re-im-ekspluatatsii",
+      "title": "Лифт работает только утром: почему 6% за день не подтверждают режим двигателя S3 25%",
+      "content_sha256": "e225a1e0047af6d5bac75198c79382bf8125956108c8b28dbedd480614214972"
+    },
+    {
+      "rewrite_index": 137,
+      "slug": "parovoy-kotyol-pereveli-na-poni-ennoe-davlenie-chto-proverit-po-uchyotu",
+      "title": "Паровой котёл перевели на низкое давление: почему расчёт нагрева воды занижает нужную мощность",
+      "content_sha256": "6e544c73ed95b3f3b220be2603f92d733f903f2edc71909da2073e1e2e3e31fc"
+    },
+    {
+      "rewrite_index": 139,
+      "slug": "pasport-kotla-i-re-imnaya-karta-protivorechat-drug-drugu-kak-razobratsya",
+      "title": "В паспорте котла КПД 95%, в режимной карте 85%: проверьте высшую и низшую теплоту",
+      "content_sha256": "9b217450657646d591c3c0f8e598f6b9d38b452eb05f7887ef71b461b5ce815b"
+    },
+    {
+      "rewrite_index": 146,
+      "slug": "elektronnye-podpisi-est-ne-na-vseh-dokumentah-kak-proverit-komplekt",
+      "title": "Подпись PDF действительна, а обозначения пропали: как проверить шрифты проекта",
+      "content_sha256": "f7d79df6e5575d5ee13fe225b6c140742a3cbd08698734e73bbe556e6e6a387f"
+    },
+    {
+      "rewrite_index": 147,
+      "slug": "na-stroyke-dve-versii-odnogo-lista-kak-ostanovit-putanitsu-s-izmeneniyami",
+      "title": "В двух версиях проекта нагрев стал охлаждением: ошибка перевода разности °F в °C",
+      "content_sha256": "12efbc37253f49568cdb7955a14e4fca34eb8da08b5559c5c1873d41036d7aed"
+    },
+    {
+      "rewrite_index": 148,
+      "slug": "gost-r-21-101-v-dogovore-chto-opredelit-krome-nomera-standarta",
+      "title": "В проект перенесли 10 тс как 10 кН: почему оформление по ГОСТ не исправляет нагрузку",
+      "content_sha256": "0d913abfc123d7835d940a3233ab7d9b8918eaa3fa535c7497903cb6409939dd"
+    },
+    {
+      "rewrite_index": 149,
+      "slug": "pereimenovali-fayly-proekta-pered-sdachey-kakie-svyazi-proverit",
+      "title": "Файл проекта существует, ссылка не открывается: решётка в имени PDF стала фрагментом URL",
+      "content_sha256": "6b049ed19eb08ccb91ebafda9aecbdc9818114d815b7ffded514e7d8e842e9a8"
+    },
+    {
+      "rewrite_index": 150,
+      "slug": "spetsifikatsiya-i-chertyo-soder-at-raznoe-oborudovanie-kak-oformit-zamechanie",
+      "title": "В спецификации PN16, в проекте 200 °C: почему клапан не прошёл проверку при 14 бар",
+      "content_sha256": "38eab3fda55ddae8af44bc01a43ff59f76f1d5614a0cdb69d89da3ce890e1b0d"
+    },
+    {
+      "rewrite_index": 151,
+      "slug": "proektirovschik-isklyuchil-razdel-iz-pp-87-kakoe-obosnovanie-zaprosit",
+      "title": "Пожарную нагрузку разделили на весь склад: почему вывод В4 не подтвердился",
+      "content_sha256": "19c5b5fb36e2184c986330e0508c3dbb06ec80f1ffbe9c29c4b6b4bd1ebc68f2"
+    },
+    {
+      "rewrite_index": 155,
+      "slug": "v-dogovore-proekt-pod-klyuch-razdely-perechisleny-ne-vse-kak-utochnit-obyom",
+      "title": "Подрядчик сделал допработы без сообщения и прислал счёт: что меняет статья 743 ГК",
+      "content_sha256": "dfaf9214e750121b644bac8ad702f5e02aced9aa000d1062fbc172ffe76238c8"
+    },
+    {
+      "rewrite_index": 156,
+      "slug": "zakazchik-menyaet-naznachenie-zdaniya-chto-peresmotret-v-sostave-proekta",
+      "title": "Склад стал цехом: почему статические 0,5 мм не подтвердили колебания 5 мм",
+      "content_sha256": "8697036f589179bc40b900a9af97efa91b958202dd62f20cbb078f62a8b7c7fe"
+    },
+    {
+      "rewrite_index": 175,
+      "slug": "svarochnyy-apparat-zamenili-na-analog-kakie-svedeniya-obnovit",
+      "title": "Сварочный источник заменили аналогом: когда менять учёт, а когда технологию",
+      "content_sha256": "c9caea897a55202c3fb12afe0c183ea1334e8b4a7cb4a655021b01d85d8d8742"
+    },
+    {
+      "rewrite_index": 176,
+      "slug": "starye-dokumenty-svarschikov-zakanchivayutsya-posle-perehoda-chto-proverit",
+      "title": "Удостоверение сварщика истекает после 1 марта 2027: как спланировать работу",
+      "content_sha256": "0149481ee12792eb134e63ffd9bae924ea1d9e5c0c97d00721714a4bf1da67aa"
+    },
+    {
+      "rewrite_index": 177,
+      "slug": "svarochnye-materialy-bez-prosle-ivaemosti-kak-razobrat-komplekt-partii",
+      "title": "Трещина после контроля сварного шва: почему повреждение находят позднее",
+      "content_sha256": "4465012f6dce3d1eaf6fa4bf99c5ac85a733ed36c37a08a05b01de8e8d85c43d"
+    },
+    {
+      "rewrite_index": 178,
+      "slug": "zakazchik-trebuet-gotovnost-organizatsii-chem-ona-otlichaetsya-ot-dokumentov-personala",
+      "title": "У сварщиков документы есть, подрядчик готов? Как проверить обещанный график",
+      "content_sha256": "1f6483334a37bd23a3616b2d390e6547924140ea6b5770eab6e69d72ee57e040"
+    },
+    {
+      "rewrite_index": 179,
+      "slug": "zavodskaya-kotelnaya-i-obekt-tek-kakie-priznaki-proverit-vladeltsu",
+      "title": "Пар есть, нагрева не хватает: как сухость влияет на мощность аппарата",
+      "content_sha256": "a1496972fa686123b542ea78cc5675f670bf9d28a1e642a1e8c0c753f05f62f1"
+    },
+    {
+      "rewrite_index": 180,
+      "slug": "energoobekt-rasshirili-kakie-ishodnye-dannye-kategorirovaniya-obnovit",
+      "title": "Лучистые потери: почему нельзя считать четвёртую степень перепада",
+      "content_sha256": "c153594cd7847abce139c888f8545829a710675c26c4bd2283bfca120f1340a7"
+    },
+    {
+      "rewrite_index": 181,
+      "slug": "opo-zaregistrirovano-kategorirovaniya-tek-net-pochemu-eto-raznye-voprosy",
+      "title": "Уменьшили охват барабана: почему прежнее удерживающее усилие не сохраняется",
+      "content_sha256": "9ff5ee1c7b54530ad49aa3a8b33eedd758767bda8c4345c9285395efd31fca1b"
+    },
+    {
+      "rewrite_index": 182,
+      "slug": "dva-arendatora-na-energeticheskoy-ploschadke-kak-ustanovit-granitsy",
+      "title": "Один агрегат в аренде у двух компаний: как разобрать противоречащие акты",
+      "content_sha256": "6bd296dfb062659205a504517ea7d07950c192c05f3b0eebaf820fd51b95868e"
+    },
+    {
+      "rewrite_index": 183,
+      "slug": "pasport-bezopasnosti-ne-sootvetstvuet-sheme-obekta-s-chego-nachat-proverku",
+      "title": "Паспорт ТЭК расходится со схемой: ошибка названия, проект или изменение объекта",
+      "content_sha256": "538f1c7a36df8724b11f7fac62cb2323f5a8ecff38f9272f84939abdda024535"
+    },
+    {
+      "rewrite_index": 185,
+      "slug": "gazopotreblenie-zavoda-i-gazoraspredelenie-kak-ne-pereputat-naznachenie",
+      "title": "Теплота сгорания газа та же: почему горелка может получить другую нагрузку",
+      "content_sha256": "5dc027371c961ea01e0d2e485fdccdcd1efd62c1e26744c3878477fe38118c72"
+    },
+    {
+      "rewrite_index": 186,
+      "slug": "ekspertiza-proydena-stroit-ne-po-chemu-kak-proverit-stadiyu-r",
+      "title": "Экспертиза пройдена, анкеры не определены: готов ли рабочий комплект фундамента",
+      "content_sha256": "3acb3213c2ad7ded5b3bf7cfc020166739b871d06a537682287a85dede5cfe0d"
+    },
+    {
+      "rewrite_index": 187,
+      "slug": "proektirovschik-vydal-p-vmesto-rabochih-cherte-ey-kak-sverit-dogovor",
+      "title": "Cosφ равен единице, а PF ниже: где расчёт мощности теряет гармоники",
+      "content_sha256": "0550f99d8bcc4087d659c43a6533c3f800a97c16c72a5e2a00ddaad3c98b2fad"
+    },
+    {
+      "rewrite_index": 188,
+      "slug": "v-rabochey-dokumentatsii-izmenili-oborudovanie-kak-proverit-svyaz-s-proektom",
+      "title": "Ошибка чтения d50: почему середина между 0,1 и 1 мм не равна 0,55",
+      "content_sha256": "8b7d67925ec536602fe3eac73a1f50532735943bf6f27e8a6ecef31278fcd324"
+    },
+    {
+      "rewrite_index": 189,
+      "slug": "stroitel-prosit-uzly-kotoryh-net-v-zadanii-kak-utochnit-obyom-vydachi",
+      "title": "Строитель просит два узла: недостающий проект или новый способ монтажа",
+      "content_sha256": "f9d07d9419abe25449de4333193c8a33c2bd7cdfbaa17973c519e02dce4d4fc8"
+    },
+    {
+      "rewrite_index": 192,
+      "slug": "zakazchik-izmenil-planirovku-posle-ekspertizy-kak-oformit-zadachu-proektirovschiku",
+      "title": "После экспертизы нужна учебная комната на 12 человек: как заполнить задание",
+      "content_sha256": "57a4e5471af0142ff534a8a1af1249504955a2bfe484bce048755447f54a831a"
+    },
+    {
+      "rewrite_index": 193,
+      "slug": "v-protokole-narushenie-otopleniya-vinovat-podryadchik-kakie-fakty-sobrat",
+      "title": "Подрядчик ремонтировал ТП-1, в протоколе указан ТП-2: как проверить связь",
+      "content_sha256": "1a7aec611262bbef95925e267ccb8c496134c7fa2e34211ac55ef57b531d3dee"
+    },
+    {
+      "rewrite_index": 194,
+      "slug": "predpisanie-po-teplosnab-eniyu-kak-podtverdit-ustranenie-zamechaniy",
+      "title": "Предписание до 10 октября: ремонт 8-го, проверка 11-го, отчёт 12-го — какие даты указать",
+      "content_sha256": "96cbedd82278bcea4051b5f341bd108c2769ccc584653a10f9db38480c043d7f"
+    },
+    {
+      "rewrite_index": 198,
+      "slug": "remont-soglasovan-podryadchik-ne-vyshel-kakie-dokumenty-sohranyat",
+      "title": "Подрядчик заявил недопуск бригады: одного пропустили, второй отсутствовал в заявке",
+      "content_sha256": "41cb8723b8a0b6005e6ca9c1d62118819e0e234a72056c8082de3a62ed78bf10"
+    },
+    {
+      "rewrite_index": 201,
+      "slug": "edinstvennaya-stantsiya-vodopodgotovki-goroda-gde-prokhodit-granitsa-kriticheskogo-uzla",
+      "title": "В резервном осмосе 20 бар: почему расчёт даёт 40 л/ч вместо обещанных 190",
+      "content_sha256": "3e9b11631c47ac898c80d230687b9281b877a3a52db14fcb3c19104864eb777b"
+    },
+    {
+      "rewrite_index": 225,
+      "slug": "dokumenty-kachestva-soderzhat-staryy-shifr-izdeliya-kak-proverit-proslezhivaemost",
+      "title": "Старый шифр в документе качества: четыре комплекта или восемь новых позиций закупки",
+      "content_sha256": "d28bc2f60cc62ed72666f49934e2ed7ebd004a94378279da6e2c95d3a4a220e2"
+    },
+    {
+      "rewrite_index": 226,
+      "slug": "oborudovanie-dorabatyvayut-na-ploschadke-aes-kakie-operatsii-opisat-v-zakaze",
+      "title": "Деталь доработали на площадке АЭС: почему 25 мм от центра не подтверждают перемычку 20 мм",
+      "content_sha256": "ebe38b7aa26980bb3a5a1909db3e23bcd8b2e6a6a3f8dc337e2af3bc9791b769"
+    },
+    {
+      "rewrite_index": 227,
+      "slug": "zakazchik-trebuet-ispytaniya-posle-otgruzki-kak-opredelit-predmet-raznoglasiy",
+      "title": "После отгрузки требуют повторное испытание: четыре секунды блока и двенадцать всей системы",
+      "content_sha256": "b5a9aec8b7018306c98c7adbaa9eefb351cbfbaacd3af066f70f3181a2a613df"
+    },
+    {
+      "rewrite_index": 228,
+      "slug": "pasport-izdeliya-podpisan-ranshe-finalnogo-kontrolya-chto-proverit-v-komplekte",
+      "title": "Паспорт ротора подписали по статическому нулю: почему двухплоскостная проверка отрицательна",
+      "content_sha256": "9c2ea9bd000e4d6589123dade80a52c2360ee9e007b867514a2e715892660ac3"
+    },
+    {
+      "rewrite_index": 229,
+      "slug": "zakupka-importnogo-komponenta-dlya-aes-kakie-iskhodnye-svedeniya-nuzhny-postavschiku",
+      "title": "Импортный компонент для АЭС: нужные свойства есть в каталоге, но только в разных исполнениях",
+      "content_sha256": "dc9cd20cce9b4d20c4053d28e0312ea458d2faa68fa26c5df0bf6e338adbaa46"
+    },
+    {
+      "rewrite_index": 230,
+      "slug": "izgotovitel-peredal-kontrol-drugoy-ploschadke-kakie-rezultaty-ne-poteryat",
+      "title": "Контроль перенесли на другой стенд: почему прогиб вырос без потери жёсткости",
+      "content_sha256": "ac25d1fe406e0e4a15036bf3154772d1ddb8b86ffc3bdb02e19bb9a84c711d3f"
+    },
+    {
+      "rewrite_index": 231,
+      "slug": "plan-kachestva-ne-soderzhit-khraneniya-produktsii-kak-proverit-propuschennyy-etap",
+      "title": "В плане качества нет строки «хранение»: когда этап уже закрыт ссылкой на процедуру",
+      "content_sha256": "16e085d336a5a614a1dccef6d0b5b3456e6b1fa991b17f879519469e854180e9"
+    },
+    {
+      "rewrite_index": 232,
+      "slug": "izdelie-vozvrascheno-posle-povrezhdeniya-v-puti-kak-peresmotret-podtverzhdeniya-kachestva",
+      "title": "Транспортный удар смял торец трубы: почему средний диаметр скрыл несоответствие",
+      "content_sha256": "4011990068f5459453dcb50f414b06cb9c8e8d7a32a7131038ac48080d6688ad"
+    },
+    {
+      "rewrite_index": 233,
+      "slug": "sertifikat-materiala-otnositsya-k-plavke-a-ne-detali-kak-proverit-svyaz",
+      "title": "Сертификат относится к плавке: как расчёт раскроя обнаруживает разрыв до конкретных деталей",
+      "content_sha256": "16c8420a5247bbe7dda84ac8f1408f9703cfc8a6a1ce783d9f84f2ec651d7e82"
+    },
+    {
+      "rewrite_index": 234,
+      "slug": "tekhnicheskoe-zadanie-izmenilos-posle-ispytaniy-kak-opredelit-zatronutye-rezultaty",
+      "title": "Предельную массу 95 кг приняли за целевую: нужно ли догружать блок с 92 кг",
+      "content_sha256": "55e14497ee32245d8c4ad99e85191d6ae5159f15ddd88f9e10c144868626ec9d"
+    },
+    {
+      "rewrite_index": 235,
+      "slug": "v-postavke-dlya-aes-smeshany-revizii-chertezhey-kak-razdelit-izdeliya",
+      "title": "Две редакции чертежа в одной поставке АЭС: когда разделение по номерам правомерно",
+      "content_sha256": "6596b6dca592e6576d0e6732a0950ab7949ad801a964aeadf8d8da3940c53044"
+    },
+    {
+      "rewrite_index": 236,
+      "slug": "protokol-ispytaniy-oformlen-na-obrazets-chto-on-podtverzhdaet-dlya-partii",
+      "title": "Один образец партии не прошёл испытание: можно ли заменить его шестым удачным протоколом",
+      "content_sha256": "6c1b89c46533bac4d54f63ceccead24b4fc668b4ee6260fc8b0fdb0c55a682a5"
+    },
+    {
+      "rewrite_index": 237,
+      "slug": "transportnuyu-konservatsiyu-izdeliya-dlya-aes-narushili-na-sklade-chto-proverit-do-peredachi",
+      "title": "После осмотра вернули десять пакетов: почему влагопоглотителя всё равно недостаточно",
+      "content_sha256": "4342fac154302354a85886fe5b9d1f60498acd059366106fbe71d5bcb74a1783"
+    },
+    {
+      "rewrite_index": 238,
+      "slug": "v-akte-ispytaniy-otopleniya-net-granits-uchastka-kak-utochnit-rezultat",
+      "title": "В обоих контурах 0,6 МПа: почему разделительная стенка не получила нужного перепада",
+      "content_sha256": "51bcf745eba4be04961e740d7ac3616bd27b50165db5cc5e3eeec77d5d0f0c41"
+    },
+    {
+      "rewrite_index": 239,
+      "slug": "promyvku-otopleniya-vypolnili-bez-predstavitelya-zakazchika-chto-proverit-pri-priyomke",
+      "title": "Промывка без инженера заказчика, но с представителем ЕТО: какие роли нельзя смешивать",
+      "content_sha256": "c4386ed318c9d43b5203b5926c080a8cadafcf4d727d8d5912a7c83c7d38506f"
+    },
+    {
+      "rewrite_index": 240,
+      "slug": "upravlyayuschaya-kompaniya-ne-peredayot-skhemu-vvoda-kak-podgotovit-svedeniya-dlya-gotovnosti",
+      "title": "УК не даёт схему теплового ввода: проверьте, не запрошен ли другой объект",
+      "content_sha256": "da6b65b250a22f8ed4159a199b70e8750ff00ba3da998c60b53991c0a223b951"
+    },
+    {
+      "rewrite_index": 241,
+      "slug": "zimoy-menyayut-naznachenie-zdaniya-kak-proverit-dostatochnost-podgotovki-otopleniya",
+      "title": "Корпус работает круглосуточно, а ночью 16,2°C: что подтверждает фактическое отклонение",
+      "content_sha256": "458f487808d36bba9fcced4fc291edc8e4b2126458f151e6a7958ea5fa0d0d5d"
+    },
+    {
+      "rewrite_index": 242,
+      "slug": "chast-radiatorov-otklyuchena-na-remont-kak-otrazit-sostoyanie-sistemy-do-otsenki",
+      "title": "Часть радиаторов отключена, но в комнате тепло: почему тёплый день не подтверждает зиму",
+      "content_sha256": "451434828831a5bd4ce20dd3201a98a789dd7ecef6f655dfa4aab173ed4f47e5"
+    },
+    {
+      "rewrite_index": 243,
+      "slug": "v-akte-gotovnosti-pereputany-podayuschiy-i-obratnyy-vvody-kak-utochnit-skhemu",
+      "title": "В акте перепутали подачу и обратку: почему отрицательная разность ещё не доказывает переподключение",
+      "content_sha256": "c6e712d2555d55c6ff8ab00835badb172305264995d7cc84db713d2a30e1c87a"
+    },
+    {
+      "rewrite_index": 244,
+      "slug": "zhurnal-zamechaniy-poteryan-pri-smene-inzhenera-kak-vosstanovit-status-podgotovki",
+      "title": "В поздней копии журнала пропало замечание: почему простой откат теряет другое",
+      "content_sha256": "e52a03b81f7796b3f0a95b125bf33a8db670b2e7eab639586cea9868c24317fc"
+    },
+    {
+      "rewrite_index": 264,
+      "slug": "rezervnyy-kotyol-ne-zapuskali-pyat-let-kakie-svedeniya-nuzhny-dlya-otsenki-sostoyaniya",
+      "title": "Котёл после пяти лет простоя мокрый снаружи: почему тёплый воздух не исключает конденсат",
+      "content_sha256": "6fbd41c587b0b5593eedbcd7e1b34ebd46d7b990849d46b0a4ef2d9b5b0d3022"
+    },
+    {
+      "rewrite_index": 265,
+      "slug": "v-pasporte-kotla-raskhodyatsya-edinitsy-davleniya-kak-ustranit-neopredelyonnost",
+      "title": "Манометр класса 1,6: почему погрешность считают от шкалы, а не от показания",
+      "content_sha256": "fa38afc9bdaeb46fc94703404fc9f3ad7e9becc9cbf61d33351b46348208ce92"
+    },
+    {
+      "rewrite_index": 271,
+      "slug": "mobilnaya-kotelnaya-rabotaet-na-ploschadke-sezonno-chto-ustanovit-do-ekspluatatsii",
+      "title": "Мобильной котельной хватает суточной энергии, но не мощности: проверка четырёх пиковых часов",
+      "content_sha256": "5d6af05b26c44ac9eac7061b05f48618cb0d5eefe335c82f41a6c25db4915807"
+    },
+    {
+      "rewrite_index": 291,
+      "slug": "perekhodnoe-polozhenie-kasaetsya-oborudovaniya-a-ne-rabot-kak-ne-rasshirit-isklyuchenie",
+      "title": "Пять изделий из ста прошли проверку: почему это не гарантия нулевого брака",
+      "content_sha256": "37a7312a856e3a72bca2cc71bbc6bd0e04466738fe3f08785de0c219993aa984"
+    },
+    {
+      "rewrite_index": 298,
+      "slug": "obekt-likvidiruyut-chastyami-kak-soglasovat-granitsy-etapov-i-deystvuyuschuyu-chast",
+      "title": "Укоротили общую вытяжную шахту: что пропустил этап ликвидации участка",
+      "content_sha256": "188f3fe2fc57d53f8e53dc6223e50562b6a7b10390cdb8e0bfcbef7f44acd51f"
+    },
+    {
+      "rewrite_index": 329,
+      "slug": "arendator-ustanovil-moschnoe-oborudovanie-bez-skhemy-kakie-dannye-nuzhny-sobstvenniku",
+      "title": "Двигатель 400/690 В в звезде на 400 В: почему пускового момента не хватает",
+      "content_sha256": "dc8098be4722228b715ba8853b8c421fc308d09cff302d498f53959f0725da8a"
+    },
+    {
+      "rewrite_index": 339,
+      "slug": "teplovaya-kamera-zataplivaetsya-posle-blagoustroystva-chto-vklyuchit-v-obsledovanie",
+      "title": "Мокрая стена камеры: почему след влаги не показывает уровень грунтовых вод",
+      "content_sha256": "c9c9aa779b680d37787ca1d89c2b131cb074e92041804e741287c73b3998bf61"
+    },
+    {
+      "rewrite_index": 350,
+      "slug": "v-reestre-epb-ukazano-staroe-nazvanie-zakazchika-kak-ustanovit-svyaz-s-organizatsiey",
+      "title": "В реестре ЭПБ указано старое название заказчика: как установить связь с организацией",
+      "content_sha256": "73aeb92278c8288d094cb6b7d16a4be232cd7c7465c71b2fc6ae8ed238eeb3bc"
+    },
+    {
+      "rewrite_index": 351,
+      "slug": "zaklyuchenie-epb-soderzhit-neskolko-ustroystv-kak-proverit-sostav-reestrovykh-svedeniy",
+      "title": "Заключение ЭПБ содержит несколько устройств: как проверить состав реестровых сведений",
+      "content_sha256": "13c28e3b4efb82f0a49bb7d22a8a498fcf4e4a80e902a501733237dcc76dd1de"
+    },
+    {
+      "rewrite_index": 352,
+      "slug": "posle-podachi-epb-prishyol-otkaz-kakie-osnovaniya-otdelit-ot-tekhnicheskikh-zamechaniy",
+      "title": "После подачи ЭПБ пришёл отказ: какие основания отделить от технических замечаний",
+      "content_sha256": "a5f372461c3e90dbaaf449392703628edd32db8a1c1e6b32a66334053c5a74bd"
+    },
+    {
+      "rewrite_index": 353,
+      "slug": "zayavlenie-o-registratsii-epb-podano-dvazhdy-kak-razobratsya-s-nomerami-obrascheniy",
+      "title": "Заявление о регистрации ЭПБ подано дважды: как разобраться с номерами обращений",
+      "content_sha256": "88775b1202aa1ddad37f797cd1f370328ab5eaf573f162ce53b62dd6859211ff"
+    },
+    {
+      "rewrite_index": 354,
+      "slug": "podryadchik-pokazyvaet-chuzhoy-lichnyy-kabinet-kakie-podtverzhdeniya-zaprosit-zakazchiku",
+      "title": "Подрядчик показывает чужой личный кабинет: какие подтверждения запросить заказчику",
+      "content_sha256": "52e486000aac6d72d64192bd1dad025c7a92367e6a287827040deb421d218ddf"
+    },
+    {
+      "rewrite_index": 355,
+      "slug": "epb-podpisana-elektronno-peredan-tolko-skan-chto-nuzhno-dlya-proverki-ekzemplyara",
+      "title": "ЭПБ подписана электронно, передан только скан: что нужно для проверки экземпляра",
+      "content_sha256": "c4b8c9898cd974b560b85c3e648986c89021d3a266d8a215666573f96c34c1eb"
+    },
+    {
+      "rewrite_index": 356,
+      "slug": "v-reestre-i-zaklyuchenii-raznye-daty-kak-ustanovit-prichinu-raskhozhdeniya",
+      "title": "В реестре и заключении разные даты: как установить причину расхождения",
+      "content_sha256": "da28fab03f412d298f72ce9bdc451478a629efe0cba4d9df6fec5579b28db79b"
+    },
+    {
+      "rewrite_index": 357,
+      "slug": "zaklyuchenie-epb-otnositsya-k-dokumentatsii-a-pokupatel-zhdyot-proverku-oborudovaniya",
+      "title": "Стержень нагрелся, но не удлинился: почему в опоре всё равно появились 120 МПа",
+      "content_sha256": "351ef906d89fc4ab43fe974a840a54a7960eb940e0b39b222ac4fb22e2d248fc"
+    },
+    {
+      "rewrite_index": 358,
+      "slug": "ustroystvo-peremestili-posle-epb-kakie-usloviya-zaklyucheniya-sopostavit",
+      "title": "Противодавление снизили вдвое, расход прежний: что ограничило подачу ресивера",
+      "content_sha256": "10e60f71ad20ad8323bf80e69c16d71f79d9ae3b5b93e75bf72d1b5559c1d23b"
+    },
+    {
+      "rewrite_index": 359,
+      "slug": "v-prilozhenii-k-epb-otsutstvuyut-fotografii-markirovki-kak-podtverdit-identifikatsiyu",
+      "title": "Лазер попал в деталь, термометр захватил фон: почему 48 °C не подтвердили норму",
+      "content_sha256": "3117c9dd2763dc1e6d9bfbdd7e6c53e120862f79923517bd0c9e567414479cdc"
+    },
+    {
+      "rewrite_index": 360,
+      "slug": "v-epb-pereputany-nomera-dvukh-odnotipnykh-apparatov-kak-postavit-vopros-ispolnitelyu",
+      "title": "В ЭПБ перепутаны номера двух однотипных аппаратов: как поставить вопрос исполнителю",
+      "content_sha256": "ce9bf32f6df208e47761e38d0c0e452490ef2dcbd9330fbacd8f4172fac2ece2"
+    },
+    {
+      "rewrite_index": 361,
+      "slug": "reestrovyy-nomer-epb-vklyuchyon-v-dogovor-bez-prilozheniya-chto-zaprosit-do-priyomki",
+      "title": "Реестровый номер ЭПБ включён в договор без приложения: что запросить до приёмки",
+      "content_sha256": "ed2e47f64c494802d1eb03c2e69a3026563c85f22f2691f49bd22cd2113737ec"
+    },
+    {
+      "rewrite_index": 362,
+      "slug": "prodavets-skryvaet-vyvody-epb-kak-kommercheskuyu-taynu-kak-proverit-obekt-sdelki",
+      "title": "Спецификацию перевели в Base64: почему это не стало шифрованием",
+      "content_sha256": "c72ec9e2e106cfb24386de2f363246a05806d46e157fce3ca83da4a275a289bc"
+    },
+    {
+      "rewrite_index": 363,
+      "slug": "dlya-zaloga-oborudovaniya-nuzhen-komplekt-epb-kakie-predely-dokumentalnoy-proverki-uchityvat",
+      "title": "В масле 40 мПа·с вместо 40 мм²/с: почему вязкость не совпала",
+      "content_sha256": "7f54f5193e61993ddb7438233a12ba8f8a57704521baf298c11b4c729b18ca9e"
+    },
+    {
+      "rewrite_index": 364,
+      "slug": "zaklyuchenie-epb-peredano-bez-poslednego-lista-kak-vosstanovit-tselostnost-ekzemplyara",
+      "title": "Заключение ЭПБ передано без последнего листа: как восстановить целостность экземпляра",
+      "content_sha256": "08f6d385ec1ab602c3b11d4e2a8d07b89c6aef6c68c28936df02e147b06b0e76"
+    },
+    {
+      "rewrite_index": 365,
+      "slug": "svedeniya-ob-isklyuchenii-epb-obnaruzheny-posle-pokupki-kakie-podtverzhdeniya-sobrat",
+      "title": "Сведения об исключении ЭПБ обнаружены после покупки: какие подтверждения собрать",
+      "content_sha256": "67bfb1d8c1a8fce084fed0c5460928619a0f98b27d3633e5b45867ecad6cca37"
+    },
+    {
+      "rewrite_index": 366,
+      "slug": "ekspert-ispravil-fayl-posle-registratsii-epb-kak-proverit-versii-dokumenta",
+      "title": "Эксперт исправил файл после регистрации ЭПБ: как проверить версии документа",
+      "content_sha256": "bbfc65702350949951000700512253d3ab56c5d65179b5150a661462a429c68c"
+    },
+    {
+      "rewrite_index": 389,
+      "slug": "sklad-razdelil-partiyu-dlya-aes-me-du-zakazami-kak-sokhranit-istoriyu-raspredeleniya",
+      "title": "Склад разделил партию для АЭС между заказами: как сохранить историю распределения",
+      "content_sha256": "715a06a60ff2d3a6c775dc2c240648e28daeb544bc14ace17d902ef61634ea67"
+    },
+    {
+      "rewrite_index": 390,
+      "slug": "markirovka-detali-aes-stala-nechitaemoy-posle-pokrytiya-kak-razbirat-poteryu-identifikatsii",
+      "title": "Маркировка детали АЭС стала нечитаемой после покрытия: как разбирать потерю идентификации",
+      "content_sha256": "bded427f6d668dc2e9791e88d7a35b9f3f47a8a4d7cf48b5741d6c7e86ebbcb2"
+    },
+    {
+      "rewrite_index": 391,
+      "slug": "chertyo-dlya-aes-obnovili-posle-zakaza-zagotovok-kak-otsenit-prigodnost-zakuplennogo",
+      "title": "После изменения чертежа заготовка 25 мм не даёт деталь 28 мм: как разделить решения по запасу",
+      "content_sha256": "a487d17524db254c044ad5b3cea36c2ab9b0852ad19ee5c5ae3c9d445b03d33d"
+    },
+    {
+      "rewrite_index": 392,
+      "slug": "kontrolnuyu-operatsiyu-postavki-aes-zapisali-do-eyo-vypolneniya-kak-ispravit-nedostovernuyu-zapis",
+      "title": "Контрольную операцию поставки АЭС записали до её выполнения: как исправить недостоверную запись",
+      "content_sha256": "47e8a144ad7347d6436c01c8c07ecca686dd4e4afe71fe91dcf3a75975fce40e"
+    },
+    {
+      "rewrite_index": 393,
+      "slug": "obrazets-materiala-aes-poteryan-pri-dostavke-v-laboratoriyu-kakie-deystviya-dokumentirovat",
+      "title": "Образец материала АЭС потерян при доставке в лабораторию: какие действия документировать",
+      "content_sha256": "0adad7a0e49f8889b2cf266e21e32fc59b0a352441653216ec6b254b86fe680c"
+    },
+    {
+      "rewrite_index": 394,
+      "slug": "zavod-menyaet-metod-ispytaniya-izdeliya-aes-kak-sravnit-trebuemyy-i-predlagaemyy-rezultat",
+      "title": "Завод меняет метод испытания изделия АЭС: как сравнить требуемый и предлагаемый результат",
+      "content_sha256": "d0bd8a0a15643af7c7c71e53a78a2792b8171f800e02143aa0738f394aad186b"
+    },
+    {
+      "rewrite_index": 395,
+      "slug": "v-dokumentakh-aes-raznye-edinitsy-izmereniya-kak-proverit-pereschyot-i-iskhodnye-znacheniya",
+      "title": "В чертеже миллиметры, в протоколе микрометры: как проверить результат у границы допуска",
+      "content_sha256": "6ebed03869ce6ca17539a080c9ef8a0b02fd6ea9db96f7ea47e630ad844116f0"
+    },
+    {
+      "rewrite_index": 396,
+      "slug": "fotografiya-markirovki-aes-raskhoditsya-s-pasportom-chto-proverit-pered-otgruzkoy",
+      "title": "Фотография маркировки АЭС расходится с паспортом: что проверить перед отгрузкой",
+      "content_sha256": "21b889c990aab763b7cf68490d28fd043d1dd92f13ff26a1705b02cbefe6114e"
+    },
+    {
+      "rewrite_index": 397,
+      "slug": "zakazchik-aes-trebuet-podpisat-chu-oy-protokol-kak-opredelit-predely-podtver-deniya",
+      "title": "В протоколе три несоответствия из сорока названы тремя процентами: что подписывает проверяющий",
+      "content_sha256": "f6343092a5205ab708eaa982c927bc1020bd22ec1c9986a9683fa24af41cc570"
+    },
+    {
+      "rewrite_index": 398,
+      "slug": "subpodryadchik-aes-vernul-tolko-skany-kak-proverit-komplektnost-pervichnykh-zapisey",
+      "title": "Субподрядчик АЭС вернул только сканы: как проверить комплектность первичных записей",
+      "content_sha256": "09e83b784d13ec2359a2de15f2fdc75967b707e452e6d9b94a8e69f99d4285b8"
+    },
+    {
+      "rewrite_index": 399,
+      "slug": "neskolko-izdeliy-aes-ispytali-odnim-protokolom-kak-proverit-okhvat-rezultata",
+      "title": "Один протокол на десять изделий, испытаны три: как проверить область результата",
+      "content_sha256": "3fa29936e73c852ca2510d6f01af271992bb816a176ddffbb93a2ded3721e29f"
+    },
+    {
+      "rewrite_index": 400,
+      "slug": "rekvizity-sredstva-izmereniya-otsutstvuyut-v-protokole-aes-kakie-voprosy-zadat-laboratorii",
+      "title": "Реквизиты средства измерения отсутствуют в протоколе АЭС: какие вопросы задать лаборатории",
+      "content_sha256": "0138d493ae0b3c455b0963ecd6972fa33415e66abe06ed282d7dc8bf9890b193"
+    },
+    {
+      "rewrite_index": 401,
+      "slug": "otbrakovannaya-detal-aes-snova-popala-na-sklad-kak-proverit-upravlenie-statusami",
+      "title": "Отбракованная деталь АЭС снова попала на склад: как проверить управление статусами",
+      "content_sha256": "28ecfdcc652ae518f9da0eb11f7f322a30dc6d77c6a5797b350d2e9a0ab22172"
+    },
+    {
+      "rewrite_index": 402,
+      "slug": "programmnuyu-versiyu-pribora-aes-izmenili-posle-ispytaniy-kak-otsledit-konfiguratsiyu",
+      "title": "В версии прибора 1.5 ввели среднее пяти отсчётов: почему прежний постоянный тест не проверяет короткое событие",
+      "content_sha256": "8a6d82e965c5a7501d422da380a7216dae41c57567e8eef76338d4659efbb609"
+    },
+    {
+      "rewrite_index": 403,
+      "slug": "sertifikat-materiala-aes-soder-it-ispravlenie-kak-proverit-proiskho-denie-izmeneniya",
+      "title": "Сертификат материала АЭС содержит исправление: как проверить происхождение изменения",
+      "content_sha256": "ae42f3f0c1c8c1bb0ca9f6ea9626cec8a8ecbfaec6a349808b4e48004675057d"
+    },
+    {
+      "rewrite_index": 404,
+      "slug": "kontrolyor-postavshchika-aes-smenilsya-posredi-zakaza-kak-peredat-nezavershyonnye-operatsii",
+      "title": "Контролёр поставщика АЭС сменился посреди заказа: как передать незавершённые операции",
+      "content_sha256": "51dfd36bb462ab6cd785b179a356359ce4da063329817bb22125f85ea36d3ffd"
+    },
+    {
+      "rewrite_index": 405,
+      "slug": "fayl-priyomki-aes-povre-dyon-posle-otgruzki-kak-vosstanovit-dostovernyy-ekzemplyar",
+      "title": "Повреждённый файл приёмки восстановлен: почему окончательное приложение охватывает восемь изделий, а не десять",
+      "content_sha256": "7c67a7574b2d4b8cfab7c23f7ad00fff17fa6fe49f6d8f7d8a05df4c7dde3509"
+    },
+    {
+      "rewrite_index": 406,
+      "slug": "avtokran-na-ploshchadke-podzemnykh-kommunikatsiy-kakie-iskhodnye-dannye-nu-ny-dlya-ustanovki",
+      "title": "Камера оказалась под отмеченной зоной автокрана: что доказало сопоставление двух схем",
+      "content_sha256": "2dbb3cd63343623bf4a7793d38d0a6d149f1aaa91b1ff438758bb65766fd8dac"
+    },
+    {
+      "rewrite_index": 407,
+      "slug": "gruz-avtokrana-opisan-tolko-obshchey-massoy-kak-utochnit-tsentr-tya-esti-i-skhemu-podyoma",
+      "title": "Масса агрегата осталась 4 т, центр сместился на 1 м: почему прежняя схема обращения требует рассмотрения",
+      "content_sha256": "41822fea4aff885bed8dbcf7f8e09042dd8cecbe7119a452e7fcda5369fbadf1"
+    },
+    {
+      "rewrite_index": 408,
+      "slug": "proezd-krana-prokhodit-nad-perekrytiem-parkovki-chto-proverit-do-dopuska-tekhniki",
+      "title": "Проезд крана проходит над перекрытием парковки: что проверить до допуска техники",
+      "content_sha256": "de631268aeb3112a3b9d66253fce252d539892720dc3fda5d8657df65eaf6c1e"
+    },
+    {
+      "rewrite_index": 409,
+      "slug": "stropalshchik-napravlen-drugoy-organizatsiey-kak-soglasovat-vzaimodeystvie-s-kranovshchikom",
+      "title": "Стропальщик направлен другой организацией: как согласовать взаимодействие с крановщиком",
+      "content_sha256": "6ed9c35fb6e72f431469d72909757742d327f2171a1bbec66580c5115c7254c7"
+    },
+    {
+      "rewrite_index": 410,
+      "slug": "v-pasporte-avtokrana-net-stranitsy-posle-zameny-uzla-kak-proverit-istoriyu-remonta",
+      "title": "После замены стрелы автокрана пропал лист паспорта: как проверить характеристики исполнения",
+      "content_sha256": "a3433f31fa8dc416e821098c00b01035544c5d897da599da485a7b1eab7af5ea"
+    },
+    {
+      "rewrite_index": 411,
+      "slug": "dva-podryadchika-planiruyut-podyomy-v-odnoy-zone-kak-soglasovat-granitsy-rabot",
+      "title": "Два подрядчика планируют подъёмы в одной зоне: как согласовать границы работ",
+      "content_sha256": "4b2588316080b353df16616dd734955ac5a1dcd7634bc3cc6d6a3aa9da1dd41f"
+    },
+    {
+      "rewrite_index": 412,
+      "slug": "ploshchadku-pod-avtokran-otsypali-vchera-kakie-svedeniya-nu-ny-o-podgotovlennom-osnovanii",
+      "title": "Площадку под автокран отсыпали вчера: какие сведения нужны о подготовленном основании",
+      "content_sha256": "3a2f8266433d7c6b564f8795ff95561ca44410069074c734835d749bb164070a"
+    },
+    {
+      "rewrite_index": 413,
+      "slug": "podyomnyy-gruz-ne-sootvetstvuet-zayavke-na-avtokran-kak-ostanovit-dokumentalnoe-raskho-denie",
+      "title": "Подъёмный груз не соответствует заявке на автокран: как остановить документальное расхождение",
+      "content_sha256": "5371fced907c59e9dd470b0dd1d56649c67e90b671ea8cff899dae4acac3b740"
+    },
+    {
+      "rewrite_index": 414,
+      "slug": "u-avtokrana-smenili-sobstvennika-vo-vremya-dogovora-kakie-dannye-proverit-zakazchiku",
+      "title": "У автокрана сменили собственника во время договора: какие данные проверить заказчику",
+      "content_sha256": "449de98b0b3615bb864dbdef673befaa3a6deca95d019b3bbb8ce92347be8b27"
+    },
+    {
+      "rewrite_index": 415,
+      "slug": "raboty-krana-perenosyat-na-nochnuyu-smenu-kakie-usloviya-peresmotret-organizatoru",
+      "title": "Работы крана переносят на ночную смену: какие условия пересмотреть организатору",
+      "content_sha256": "2d50298369483be503bc8de3eb96565418c4d2c16537fef3562a3bebbb30fdf5"
+    },
+    {
+      "rewrite_index": 416,
+      "slug": "kran-berut-s-operatorom-po-ustnoy-dogovoryonnosti-kak-opredelit-obyazannosti-storon",
+      "title": "Кран берут с оператором по устной договорённости: как определить обязанности сторон",
+      "content_sha256": "13263d8e14e24ff858119265c6e5435e4030a61a30c62d06f68d6362577ce508"
+    },
+    {
+      "rewrite_index": 417,
+      "slug": "v-proekte-podyoma-ukazan-drugoy-avtokran-kakie-kharakteristiki-sravnivat",
+      "title": "В проекте подъёма указан другой автокран: какие характеристики сравнивать",
+      "content_sha256": "350568aabd9454ce7fb1c93f0bae12d2d106625a129322cc0456e23eb4b2a7c1"
+    },
+    {
+      "rewrite_index": 418,
+      "slug": "ogranicheniya-ploshchadki-izmenilis-posle-monta-a-lesov-chto-obnovit-dlya-kranovykh-rabot",
+      "title": "Ограничения площадки изменились после монтажа лесов: что обновить для крановых работ",
+      "content_sha256": "d98c0a195a291944f34c3b06469a8a07f773962c9cc6925272f35845a0b9ab97"
+    },
+    {
+      "rewrite_index": 419,
+      "slug": "izgotovitel-gruza-zapretil-privychnuyu-stropovku-kakie-svedeniya-peredat-organizatoru-podyoma",
+      "title": "Изготовитель груза запретил привычную строповку: какие сведения передать организатору подъёма",
+      "content_sha256": "1abc728c107674fcaf87fd00f7222269c2c36cf0ba64a0cdebe4a6fd4a519847"
+    },
+    {
+      "rewrite_index": 488,
+      "slug": "instruktsiya-teplotekhnika-soder-it-oborudovanie-pre-nego-arendatora-kak-aktualizirovat-obyazannosti",
+      "title": "В инструкции 30 литров, в задании 30 % массы: почему состав не совпал",
+      "content_sha256": "ee1584c46f911d0941a5fff8ec0ebfefd86fc18a489b686ab5b0b269f5a40a0e"
+    },
+    {
+      "rewrite_index": 490,
+      "slug": "spetsialist-dopuskaetsya-tolko-k-chasti-teplovykh-ustanovok-kak-oboznachit-granitsy-funktsiy",
+      "title": "Осмотр регулятора поручили специалисту: почему при 68 градусах возможны два правильных состояния",
+      "content_sha256": "37e70f35183561e851ba28f9bde3b1b7f271e1c87d8f58bc1f2579d5c91fbd4b"
+    },
+    {
+      "rewrite_index": 501,
+      "slug": "remont-zakryli-do-proverki-rezultata-kak-perestroit-podtver-denie-ustraneniya",
+      "title": "Срок хранения ещё не истёк, а эпоксидный замес уже нельзя применять: почему",
+      "content_sha256": "f8862286e7a7995996cf1f69fc9b30b9541dc4942965561d646b206439d20fad"
+    },
+    {
+      "rewrite_index": 515,
+      "slug": "na-soveshchanii-zakryvayut-defekty-golosovaniem-chto-dol-no-podtver-dat-realnyy-rezultat",
+      "title": "Гарантия закончилась, дефект закрыли голосованием: когда продавец всё ещё отвечает за недостаток",
+      "content_sha256": "f8cbb5b367845005c25b2feffabab2e25bc646aef5e5c5cd15e95262bc143486"
+    },
+    {
+      "rewrite_index": 522,
+      "slug": "v-dome-dva-lifta-dokumenty-smeshany-kak-vosstanovit-komplekty-po-zavodskim-nomeram",
+      "title": "Две ветви по 100 кН не удерживают 120: почему сумма не учитывает угол",
+      "content_sha256": "31fae8c2789e12816918ac5acc035325a0a772c989028535e76369ea56612a52"
+    },
+    {
+      "rewrite_index": 525,
+      "slug": "iltsy-soobshchayut-o-ryvkakh-tolko-vecherom-kak-sobrat-poleznye-svedeniya-dlya-diagnostiki",
+      "title": "Лифт дёргается только вечером: как добиться проверки повторяющегося дефекта",
+      "content_sha256": "fc261c0c3334091596bb2801b81b658d549de19e0df6e61617526bac5dfb70c0"
+    },
+    {
+      "rewrite_index": 526,
+      "slug": "podryadchik-predlagaet-zamenit-uzel-bez-obyasneniya-prichiny-chto-zaprosit-vladeltsu-lifta",
+      "title": "Подрядчик предлагает заменить узел лифта: как проверить обоснование ремонта",
+      "content_sha256": "fe381120a1b3e48de70107e1ddb7869211fa77be8d26ed6ee65c9fd97941f88c"
+    },
+    {
+      "rewrite_index": 527,
+      "slug": "lift-peredali-drugoy-uk-bez-istorii-neispravnostey-kak-vosstanovit-iskhodnye-dannye",
+      "title": "Новая УК получила лифт без истории поломок: как принять незакрытые проблемы",
+      "content_sha256": "6a0d28955f5a92911f59ed7b7f24bd6b632d2a9437ea568bd7b907c07f3529d4"
+    },
+    {
+      "rewrite_index": 528,
+      "slug": "nakleyka-avariynoy-svyazi-lifta-soder-it-staryy-telefon-kak-proverit-ves-marshrut-obrashcheniya",
+      "title": "На наклейке лифта старый телефон: как исправить информацию без путаницы каналов",
+      "content_sha256": "e0d7baeb943110e0f9ec5a8d5ce0dec7150b74fdbe28dd34fabfa644d9a1ecf5"
+    },
+    {
+      "rewrite_index": 529,
+      "slug": "izgotovitel-lifta-smenil-naimenovanie-kak-svyazat-starye-dokumenty-s-oborudovaniem",
+      "title": "Тормоз лифта удерживает кабину: почему это ещё не проверка остановки",
+      "content_sha256": "8f595f9042b3cc6b9370151e008654f093af3b08ea08edade4fb40c93866b43d"
+    },
+    {
+      "rewrite_index": 530,
+      "slug": "v-pasporte-lifta-ne-otra-ena-zamena-ustroystva-kakie-podtver-deniya-iskat",
+      "title": "В паспорте лифта нет записи о замене устройства: как восстановить доказуемую историю",
+      "content_sha256": "80b86f671173ab3b21e6adff3e1e9fc86165f51308348fdd267100ef72705df0"
+    },
+    {
+      "rewrite_index": 531,
+      "slug": "pri-remonte-lifta-ispolzovali-druguyu-model-komplektuyushchego-kak-proverit-oformlenie-resheniya",
+      "title": "При ремонте лифта заменили буфер: как проверить диапазон массы",
+      "content_sha256": "dd375c9dbc4262f8e51d5f8c611468c8d6fe7b0f806598516ea86d3a9d59de91"
+    },
+    {
+      "rewrite_index": 532,
+      "slug": "garantiynyy-defekt-lifta-peredayut-me-du-tremya-kompaniyami-kak-sobrat-khronologiyu-obrashcheniy",
+      "title": "Гарантийный дефект лифта пересылают между компаниями: как собрать предметное требование",
+      "content_sha256": "0308540b9341b8fbd4e588f0b3959ee9a60db2964bdcc388a204d00df4411781"
+    },
+    {
+      "rewrite_index": 533,
+      "slug": "lift-obslu-ivaet-zakrytyy-eta-zdaniya-kak-proverit-dostup-i-naznachenie-ostanovki",
+      "title": "Лифт выходит на закрытый этаж: что согласовать до изменения доступа",
+      "content_sha256": "8101a640fb4330e979c7e11fb73d5a0de86edba3b9a28417062d600ce81c4f5f"
+    },
+    {
+      "rewrite_index": 534,
+      "slug": "u-dvuh-kotlov-odin-pasport-v-arhive-kak-ustanovit-prinadlenost-dokumenta",
+      "title": "Уровень воды в барабане котла растёт при отборе пара: что такое вспухание",
+      "content_sha256": "1af2a26735b866d340691598060961fb55aa5d0fa69b08937180fa5c32258127"
+    },
+    {
+      "rewrite_index": 551,
+      "slug": "v-dokumentah-kotla-smeshany-daty-izgotovleniya-i-vvoda-kak-vosstanovit-ishodnye-svedeniya",
+      "title": "Котёл передали весной, запустили осенью: когда гарантия не течёт из-за продавца",
+      "content_sha256": "51060404965b53f1be8d5ea8f19bd136201606e2478a02cdab8bc64c37019de2"
+    },
+    {
+      "rewrite_index": 575,
+      "slug": "na-stroyke-nuen-vremennyy-obezd-kak-postavit-zadachu-dlya-organizatsii-stroitelstva",
+      "title": "На временном объезде допустимы 40 т: почему грузовик 32 т не проходит проверку по оси",
+      "content_sha256": "36c185aa7f541c536268db212c8895ce82dab9ddec7077ab652bfb4b7034f520"
+    },
+    {
+      "rewrite_index": 576,
+      "slug": "tehnologicheskoe-oborudovanie-izmenilo-potreblenie-vody-kakie-proektnye-raschety-peresmotret",
+      "title": "Новая мойка соединяет технологический контур с питьевой водой: почему расчёта расхода недостаточно",
+      "content_sha256": "7c08a85295d889825f48268b8c14e0a8fd16b0939a0e78c745e83ed464fb61f7"
+    },
+    {
+      "rewrite_index": 577,
+      "slug": "smeta-ne-uchityvaet-demonta-deystvuyuschih-setey-kak-sopostavit-razdely-proekta",
+      "title": "Сеть стала короче на 20 метров: почему это не означает демонтаж только 20 метров в смете",
+      "content_sha256": "73a58bedaf4a8413f919b6fe95abb9a4560d7723dfc398552583248e85a7cbbf"
+    },
+    {
+      "rewrite_index": 578,
+      "slug": "obekt-vvodyat-po-ocheredyam-kak-proverit-rabotosposobnost-inenernyh-sistem-kadoy-ocheredi",
+      "title": "Первую очередь вводят до замыкания кольца водоснабжения: как проверить отсутствующий путь",
+      "content_sha256": "00e42d21f995850730d22368b89c0c7d02c066af81451bf247f189075affd545"
+    },
+    {
+      "rewrite_index": 579,
+      "slug": "proekt-tseha-ne-uchityvaet-obsluivanie-krupnogo-oborudovaniya-kakie-ishodnye-razmery-nuny",
+      "title": "В проекте цеха предусмотрели ремонтный выключатель, но забыли энергию гидроаккумулятора",
+      "content_sha256": "6f20c86778399fc2f6afb1bf2a475cabdb26216591f794fed5a209a312758c08"
+    },
+    {
+      "rewrite_index": 580,
+      "slug": "proektirovschik-poluchil-protivorechivuyu-chislennost-personala-kakie-razdely-zavisyat-ot-nee",
+      "title": "Работников по-прежнему 60, а гардеробной не хватает: ошибка распределения численности",
+      "content_sha256": "56c7ce733352e6b4d135c2a74b65285fd675d76a8259b96fdc5d63371d3d8d78"
+    },
+    {
+      "rewrite_index": 581,
+      "slug": "v-proekte-ukazana-raznaya-moschnost-obekta-kak-nayti-pervichnyy-istochnik-znacheniya",
+      "title": "Мощность проекта уменьшилась со 100 до 36 кВт: как найти повторный коэффициент",
+      "content_sha256": "79f95373e934c6608753e600f69dd839d4187fece70ead6b93aff956db780e60"
+    },
+    {
+      "rewrite_index": 582,
+      "slug": "pomescheniya-peredayut-raznym-arendatoram-kak-zadat-reimy-dlya-proektirovaniya-inenernyh-sistem",
+      "title": "Два арендатора проходят проверку шума отдельно: почему совместная работа не проходит",
+      "content_sha256": "1c747e7e5b7b7c0fdd8336144901e98ca526a423c81f487ae6f24b963df5da12"
+    },
+    {
+      "rewrite_index": 583,
+      "slug": "zdanie-proektiruyut-ryadom-s-deystvuyuschim-tsehom-kak-uchest-ogranicheniya-proizvodstva",
+      "title": "Стройка рядом с действующим цехом: почему срезанный пик вибрации не подтверждает безопасность",
+      "content_sha256": "fd2619064383d494619adc982b5d19c3cfba5af72dd55b212f815a682741a506"
+    },
+    {
+      "rewrite_index": 584,
+      "slug": "v-zadanii-net-harakteristik-othodov-kakie-resheniya-nelzya-zavershit-dostoverno",
+      "title": "Два отхода IV класса направили в один бак: почему одинаковый класс не подтверждает совместимость",
+      "content_sha256": "c1b0ea5a1e0ed634f263eac0fb678007a1c4b574bdbf73fc2827be4ac8132f95"
+    },
+    {
+      "rewrite_index": 585,
+      "slug": "novyy-sklad-trebuet-zaryadki-pogruzchikov-kak-vklyuchit-uchastok-v-proektnuyu-zadachu",
+      "title": "Литиевая батарея погрузчика подходит по напряжению, но слишком лёгкая: что упускает проект склада",
+      "content_sha256": "37ba77449650a54bae4e431c1bd99e3de21dc32bfdcf7255641ce15b819ed45e"
+    },
+    {
+      "rewrite_index": 586,
+      "slug": "proekt-remontnoy-masterskoy-ne-uchityvaet-moyku-detaley-chto-utochnit-v-tehnologii",
+      "title": "Мойку деталей добавили в мастерскую: почему прежние 90 процентов маслоотделителя больше не подтверждают проект",
+      "content_sha256": "85af25ee9df86f76cdaab6dc75c583e796eba4de9cd4337701ad675b54aa2d52"
+    },
+    {
+      "rewrite_index": 587,
+      "slug": "kuhnyu-vklyuchili-v-administrativnoe-zdanie-posle-nachala-proekta-kakie-ishodnye-dannye-sobrat",
+      "title": "Кухню добавили в административное здание: почему рециркуляционные 1000 м³/ч не заменяют вытяжку наружу",
+      "content_sha256": "987e965f9f146c88fbad91d11d67da97b6da8dd64cac87a6acc15d6951077ee4"
+    },
+    {
+      "rewrite_index": 588,
+      "slug": "postavka-tyaelogo-agregata-trebuet-razborki-steny-kak-uchest-montanyy-stsenariy-v-proekte",
+      "title": "Агрегат проходит в проём только с наклоном: почему свободная траектория ещё не решает доставку",
+      "content_sha256": "bac743a244eb980c709fb815673e691cc2aa4b5a2e931b9079f6784aa22a8a2c"
+    },
+    {
+      "rewrite_index": 589,
+      "slug": "ploschad-zastroyki-v-poyasnitelnoy-zapiske-i-genplane-razlichaetsya-kak-proverit-pokazateli",
+      "title": "В проекте площадь застройки 1000 и 1155 м²: как в сводку попала площадь наклонной кровли",
+      "content_sha256": "c04db747bc64a38051aa254ee26b954e0ece2d03c14437d931830ba09fd1c4dd"
+    },
+    {
+      "rewrite_index": 590,
+      "slug": "pristroyka-ispolzuet-lestnitsu-suschestvuyuschego-zdaniya-kakie-svyazi-proverit-v-dokumentatsii",
+      "title": "Пристройка использует старую лестницу: как новая дверь уменьшает ширину общего пути",
+      "content_sha256": "b89bcfcab9c758d761d23f7e325aad98b71ff2ab355eeb2ca6a2c53daa6d6eb6"
+    },
+    {
+      "rewrite_index": 591,
+      "slug": "uchastok-peresekaet-krasnaya-liniya-chto-vyyasnit-do-vybora-pyatna-zastroyki",
+      "title": "Красная линия пересекла участок: почему 600 м² нельзя автоматически считать уже изъятыми",
+      "content_sha256": "ce79975c8dd8e5edf4f0a4739cfd11cc56b1683a8b5afe4ca051939d346cd5c6"
+    },
+    {
+      "rewrite_index": 592,
+      "slug": "na-uchastke-est-publichnyy-servitut-kak-otrazit-ego-v-zadanii-na-genplan",
+      "title": "Публичный сервитут под водопроводом: можно ли сделать по нему общий проезд к складу",
+      "content_sha256": "0037115628435d3e14f586c949a0457f535da75864c06d24edcfbd1e88b25c66"
+    },
+    {
+      "rewrite_index": 593,
+      "slug": "dostup-k-poarnomu-proezdu-zakryvaetsya-vorotami-arendatora-kak-proverit-planirovochnoe-reshenie",
+      "title": "Ворота на пожарном проезде открылись и снова закрылись: дефект, который пропускает короткая проверка",
+      "content_sha256": "604fadaa753bf71336f6aaa0f3600599c39ba200b5914c82e4b68eea136b7411"
+    },
+    {
+      "rewrite_index": 594,
+      "slug": "sklad-rasshiryayut-za-schet-razvorotnoy-ploschadki-kakie-transportnye-stsenarii-sravnit",
+      "title": "Склад занял часть разворотной площадки: передние колёса проходят, задние срезают поворот",
+      "content_sha256": "d98ab2df53ffe741b4cc510bf294fd8533cbb559dab2600a724a317daa52ee39"
+    },
+    {
+      "rewrite_index": 595,
+      "slug": "perepad-relefa-meshaet-vezdu-gruzovika-kakie-dannye-nuny-dlya-vertikalnoy-planirovki",
+      "title": "Средний уклон въезда нулевой, но низкорамный прицеп не проходит: проверка перелома профиля",
+      "content_sha256": "5b249f7af752c54e32166f002606f04371069c130ec7b4089ff932b7a25fec86"
+    },
+    {
+      "rewrite_index": 596,
+      "slug": "livnevoy-stok-s-ploschadki-uhodit-k-sosedu-chto-vyyasnit-pered-proektom-vodootvedeniya",
+      "title": "Ливневая вода уходит к соседу: почему низкий перелив срабатывает раньше проектного лотка",
+      "content_sha256": "5d98497dc4b027d0e4408b689bf05b7cf26cde4c05805c4d75c74acbc9db61e5"
+    },
+    {
+      "rewrite_index": 597,
+      "slug": "na-uchastke-oboznachena-vodoohrannaya-zona-kakie-ishodnye-dokumenty-sopostavit",
+      "title": "Водоохранную зону приняли 50 м вместо 200: как длина местного участка реки исказила проект",
+      "content_sha256": "d63ead51bce4941728d6e562dd8f8b1e2493494428b4f8eb5a5c5000eefc1094"
+    },
+    {
+      "rewrite_index": 598,
+      "slug": "vezd-raspoloen-ryadom-s-ostanovkoy-kak-podgotovit-transportnoe-zadanie",
+      "title": "Въезд рядом с остановкой: почему хорошая видимость без автобуса не подтверждает проект",
+      "content_sha256": "0aa5f417088fe120eee441b1f842c3c779f5a9510d3bf5c84fb65e1c41226c9a"
+    },
+    {
+      "rewrite_index": 599,
+      "slug": "granitsa-uchastka-v-toposemke-ne-sovpala-s-vypiskoy-kak-organizovat-utochnenie",
+      "title": "Топосъёмка не совпала с ЕГРН: почему линию забора нельзя автоматически назвать границей участка",
+      "content_sha256": "1a231acb996a60d9381a06fc19acad449448794a89edcc2a6962e97895be246d"
+    },
+    {
+      "rewrite_index": 625,
+      "slug": "ranee-zamenennye-elementy-pamyatnika-ne-opisany-v-arhive-kak-zafiksirovat-tekuschee-sostoyanie",
+      "title": "Решётка памятника покрыта латунью: почему анализ поверхности не определил весь металл",
+      "content_sha256": "e20f67557d5b42a1d9ce7260d705d8e379d0bbc95065ec7ff066d00c9157e1c8"
+    },
+    {
+      "rewrite_index": 626,
+      "slug": "v-pamyatnike-razmeschayut-sistemu-poarnoy-signalizatsii-kak-uvyazat-trassy-s-predmetom-ohrany",
+      "title": "Извещатель в памятнике скрыли декором: почему свободный луч важнее площади на плане",
+      "content_sha256": "1c30dcdcbe8b45943c950946b57ac048b08a59d2cd857c8a98620d548f7aa1b2"
+    },
+    {
+      "rewrite_index": 627,
+      "slug": "v-proekte-sohraneniya-okn-net-programmy-naturnyh-issledovaniy-kakie-voprosy-zadat-ispolnitelyu",
+      "title": "Жёлтый пигмент нашли: почему общий анализ краски не установил первый цвет фасада",
+      "content_sha256": "8d1c82714ce469efcc56d54782676fec177770d6a1b612bac2458a4f3c860b91"
+    },
+    {
+      "rewrite_index": 645,
+      "slug": "dannye-svarschika-est-v-propusknoy-sisteme-no-net-v-urnale-chto-eto-podtverdaet",
+      "title": "Два сварщика по 4 минуты: почему ПВ 60 % одного аппарата превышена",
+      "content_sha256": "af03c937e9ed1b35fae0d8d770067c9e16504ab9bceb8de3e05ac1a18aeeadac"
+    },
+    {
+      "rewrite_index": 666,
+      "slug": "stroitelyu-peredali-informatsionnuyu-model-bez-cherteey-kak-utochnit-soglasovannyy-rezultat",
+      "title": "Выгрузка BIM отметила все стены несущими: почему строковое False стало True",
+      "content_sha256": "07b0d3bc64f04e16b7fe23a51c08d9a0d6430f78cc0b3ed96b3c9094f609e3d8"
+    },
+    {
+      "rewrite_index": 680,
+      "slug": "v-modeli-i-rabochih-cherteah-raznye-otmetki-kak-ustanovit-ishodnuyu-versiyu-resheniya",
+      "title": "В IFC образовался цикл размещений: почему модель нельзя исправить общей подвижкой",
+      "content_sha256": "76dcc243200e34ff5f3a665823896252334d2adf7b64a7b13c9127edde775f6d"
+    },
+    {
+      "rewrite_index": 693,
+      "slug": "proverka-prishlas-na-smenu-arendatora-zdaniya-kak-vosstanovit-peredachu-teplovogo-hozyaystva",
+      "title": "Арендатор поставил холодильную камеру: почему конденсатор нагревает цех сильнее, чем показывает мощность компрессора",
+      "content_sha256": "cdb1e6315f6ace5c18494ccb77b0aa41e46c2acf53ebb325c3dad8e39c24569c"
+    },
+    {
+      "rewrite_index": 696,
+      "slug": "ekspluatatsionnaya-organizatsiya-ne-poluchila-akt-ispytaniy-ot-podryadchika-kak-oformit-zapros",
+      "title": "Подрядчик прислал CSV испытаний: почему 1,250 МПа превратились в 1250 после импорта",
+      "content_sha256": "f9438d75ed122ce4cb57d6815423956e8d0ee56ce3731a4d8eeac18b040bd1be"
+    },
+    {
+      "rewrite_index": 697,
+      "slug": "tehnicheskaya-prichina-ne-ustanovlena-obyasnenie-ue-trebuyut-kak-razdelit-fakty-i-versii",
+      "title": "Газоанализатор ничего не показал, но трубку заменили: что проверить до вывода об отсутствии газа",
+      "content_sha256": "7e68365d8d0a13dcc81e96dcaeb8a356a0cac4ce0a4a4eb1482db040a6dfa583"
+    },
+    {
+      "rewrite_index": 698,
+      "slug": "fotografii-ustraneniya-zamechaniya-ne-privyazany-k-obektu-kak-dopolnit-dokazatelnuyu-bazu",
+      "title": "Хеш фотографии ремонта совпал: почему это ещё не подтверждает объект и дату работ",
+      "content_sha256": "89fa066d8ae41f94afe5ebbe32091ab08800411c63a1a36b00a5cbfe966cfb9d"
+    },
+    {
+      "rewrite_index": 699,
+      "slug": "v-otvete-komissii-zabyli-odin-punkt-kak-podgotovit-dopolnyayuschiy-paket-podtverdeniy",
+      "title": "В отчёте забыли замечание комиссии: как фильтр Excel скрыл незавершённый пункт",
+      "content_sha256": "a358209baefc43f39696b290c36645824bd2a0fe205bbe9c05cfc39e43cdd56c"
+    }
+  ]
+}
