@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -13,6 +14,8 @@ import {
 import { ReactionBar } from "@/features/article-reactions";
 import { formatDate } from "@/shared/lib/date";
 import ShareButton from "@/shared/ui/share-button";
+import ArticleToc from "./ui/article-toc";
+import RequestWidget from "./ui/request-widget";
 import styles from "./style.module.scss";
 
 type ArticlePageProps = {
@@ -25,6 +28,7 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
   const sectionPath = SECTION_PATH[article.section];
   const [beforePromo, betweenBlocks, afterServices] = splitAtHeadings(article.content, [1, 3]);
 
+  const hasToc = article.toc.length > 0;
   const jsonLd = buildArticleJsonLd(article);
   const faqJsonLd = buildFaqJsonLd(article);
 
@@ -66,28 +70,18 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
         </div>
       </header>
 
-      <div className={styles.layout}>
-        {article.toc.length > 0 && (
-          <aside className={styles.aside}>
-            <nav className={styles.toc} aria-label="Оглавление">
-              <p className={styles.tocTitle}>Оглавление</p>
-              <ol className={styles.tocList}>
-                {article.toc.map((item, index) => (
-                  <li key={item.id}>
-                    <a href={`#${item.id}`} className={styles.tocLink}>
-                      <span className={styles.tocNumber}>
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      {item.title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          </aside>
-        )}
+      <div className={classNames(styles.layout, hasToc && styles.withToc)}>
+        <aside className={styles.widget}>
+          <RequestWidget />
+        </aside>
 
         <div className={styles.main}>
+          {hasToc && (
+            <div className={styles.inlineToc}>
+              <ArticleToc items={article.toc} variant="collapsible" />
+            </div>
+          )}
+
           <div
             className={styles.content}
             dangerouslySetInnerHTML={{ __html: beforePromo }}
@@ -130,6 +124,12 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
 
           <ReactionBar slug={article.slug} initial={initialStats} />
         </div>
+
+        {hasToc && (
+          <aside className={styles.toc}>
+            <ArticleToc items={article.toc} variant="card" />
+          </aside>
+        )}
       </div>
     </article>
   );

@@ -1,0 +1,42 @@
+.widget {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+
+  background: #e3f1fc;
+  border-radius: 20px;
+  scrollbar-width: thin;
+}
+
+.title {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+
+  color: #0b0b0b;
+}
+
+.text {
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+
+  color: #3d4250;
+}
+
+.card {
+  box-sizing: border-box;
+  margin-top: 4px;
+  padding: 14px;
+
+  background: #fff;
+  border: 1px solid #eceef3;
+  border-radius: 16px;
+}

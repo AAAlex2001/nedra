@@ -75,6 +75,11 @@
   width: 100%;
 }
 
+.widget,
+.toc {
+  display: none;
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -233,92 +238,47 @@
   display: flex;
 }
 
-.aside {
-  width: 100%;
-}
-
-
-.toc {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 24px;
-
-  background: #fff;
-  border: 1px solid #fde3c2;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(246, 152, 39, 0.08);
-}
-
-.tocTitle {
-  font-family: "Manrope";
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 22px;
-
-  color: #0b0b0b;
-}
-
-.tocList {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  list-style: none;
-}
-
-.tocLink {
-  display: flex;
-  gap: 10px;
-
-  font-family: "Manrope";
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  text-decoration: none;
-
-  color: #3d4250;
-
-  transition: color 0.2s ease;
-}
-
-.tocLink:hover {
-  color: #f69827;
-}
-
-.tocNumber {
-  flex: none;
-
-  font-weight: 700;
-  color: #f69827;
-}
-
 @media (min-width: 768px) {
   .title {
     font-size: 34px;
     line-height: 41px;
   }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    align-items: start;
+    gap: 24px;
+  }
+
+  .widget {
+    position: sticky;
+    top: 110px;
+
+    display: block;
+  }
 }
 
 @media (min-width: 1440px) {
   .layout {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 50px;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 40px;
   }
 
-  .main {
-    order: 1;
+  .withToc {
+    grid-template-columns: 280px minmax(0, 1fr) 280px;
   }
 
-  .aside {
-    order: 2;
-    flex: none;
-    width: 320px;
+  .inlineToc {
+    display: none;
+  }
+
+  .toc {
     position: sticky;
-    top: 120px;
-  }
+    top: 110px;
 
+    display: block;
+  }
 
   .content {
     font-size: 17px;
