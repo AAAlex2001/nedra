@@ -242,12 +242,14 @@
     font-size: 34px;
     line-height: 41px;
   }
+}
 
+@media (min-width: 1440px) {
   .layout {
     display: grid;
-    grid-template-columns: 250px minmax(0, 1fr);
+    grid-template-columns: 360px minmax(0, 1fr);
     align-items: start;
-    gap: 24px;
+    gap: 40px;
   }
 
   .widget {
@@ -255,13 +257,6 @@
     top: 110px;
 
     display: block;
-  }
-}
-
-@media (min-width: 1440px) {
-  .layout {
-    grid-template-columns: 360px minmax(0, 1fr);
-    gap: 40px;
   }
 
   .inlineToc {
