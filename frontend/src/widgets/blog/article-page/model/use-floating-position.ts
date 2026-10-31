@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const BUTTON_SIZE = 36;
+const TEXT_GAP = 16;
 const EDGE_GAP = 4;
 const DESKTOP_WIDTH = 1440;
 
@@ -30,9 +31,8 @@ export const useFloatingPosition = () => {
       const center = window.innerHeight / 2;
       const readingArticle = mainRect.top < center && mainRect.bottom > center;
 
-      const gutter = window.innerWidth - mainRect.right;
-      const centeredLeft = mainRect.right + (gutter - BUTTON_SIZE) / 2;
-      const left = Math.min(centeredLeft, window.innerWidth - BUTTON_SIZE - EDGE_GAP);
+      const besideText = mainRect.right + TEXT_GAP;
+      const left = Math.min(besideText, window.innerWidth - BUTTON_SIZE - EDGE_GAP);
 
       setPosition({ left, visible: readingArticle });
     };
