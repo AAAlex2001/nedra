@@ -15,6 +15,7 @@ import { formatDate } from "@/shared/lib/date";
 import ShareButton from "@/shared/ui/share-button";
 import ArticleToc from "./ui/article-toc";
 import RequestWidget from "./ui/request-widget";
+import StickyAside from "./ui/sticky-aside";
 import styles from "./style.module.scss";
 
 type ArticlePageProps = {
@@ -70,9 +71,9 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
       </header>
 
       <div className={styles.layout}>
-        <aside className={styles.widget}>
+        <StickyAside className={styles.widget}>
           <RequestWidget />
-        </aside>
+        </StickyAside>
 
         <div className={styles.main} data-article-main>
           {hasToc && (
