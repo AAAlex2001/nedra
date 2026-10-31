@@ -75,8 +75,7 @@
   width: 100%;
 }
 
-.widget,
-.toc {
+.widget {
   display: none;
 }
 
@@ -261,23 +260,12 @@
 
 @media (min-width: 1440px) {
   .layout {
-    grid-template-columns: 280px minmax(0, 1fr);
+    grid-template-columns: 300px minmax(0, 1fr);
     gap: 40px;
-  }
-
-  .withToc {
-    grid-template-columns: 280px minmax(0, 1fr) 280px;
   }
 
   .inlineToc {
     display: none;
-  }
-
-  .toc {
-    position: sticky;
-    top: 110px;
-
-    display: block;
   }
 
   .content {

@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -70,17 +69,19 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
         </div>
       </header>
 
-      <div className={classNames(styles.layout, hasToc && styles.withToc)}>
+      <div className={styles.layout}>
         <aside className={styles.widget}>
           <RequestWidget />
         </aside>
 
-        <div className={styles.main}>
+        <div className={styles.main} data-article-main>
           {hasToc && (
             <div className={styles.inlineToc}>
               <ArticleToc items={article.toc} variant="collapsible" />
             </div>
           )}
+
+          {hasToc && <ArticleToc items={article.toc} variant="floating" />}
 
           <div
             className={styles.content}
@@ -124,12 +125,6 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
 
           <ReactionBar slug={article.slug} initial={initialStats} />
         </div>
-
-        {hasToc && (
-          <aside className={styles.toc}>
-            <ArticleToc items={article.toc} variant="card" />
-          </aside>
-        )}
       </div>
     </article>
   );
