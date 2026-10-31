@@ -21,6 +21,7 @@ type SelectFieldProps = {
   onChange: (value: string) => void;
   required?: boolean;
   invalid?: boolean;
+  compact?: boolean;
 };
 
 const SelectField = ({
@@ -31,6 +32,7 @@ const SelectField = ({
   onChange,
   required,
   invalid,
+  compact,
 }: SelectFieldProps) => {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -50,15 +52,21 @@ const SelectField = ({
   }, [open]);
 
   return (
-    <div className={classNames(styles.field, invalid && styles.invalid)} ref={rootRef}>
-      <span className={styles.label}>
-        {label}
-        {required && <span className={styles.required}> *</span>}
-      </span>
+    <div
+      className={classNames(styles.field, invalid && styles.invalid, compact && styles.compact)}
+      ref={rootRef}
+    >
+      {!compact && (
+        <span className={styles.label}>
+          {label}
+          {required && <span className={styles.required}> *</span>}
+        </span>
+      )}
 
       <button
         type="button"
         className={classNames(styles.control, open && styles.controlOpen)}
+        aria-label={compact ? label : undefined}
         onClick={() => setOpen(!open)}
       >
         {selected?.image && (

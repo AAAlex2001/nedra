@@ -47,8 +47,9 @@ const CompactRequestForm = ({ directions }: CompactRequestFormProps) => {
     >
       <SelectField
         label="Направление работ"
-        placeholder="Выберите направление"
+        placeholder="Направление работ"
         required
+        compact
         value={state.directionId}
         onChange={selectDirection}
         options={directions.map((item) => ({ value: item.id, label: item.title }))}
@@ -57,8 +58,9 @@ const CompactRequestForm = ({ directions }: CompactRequestFormProps) => {
       {needsService && (
         <SelectField
           label="Услуга"
-          placeholder="Выберите услугу"
+          placeholder="Услуга"
           required
+          compact
           value={state.serviceId}
           onChange={selectService}
           options={services.map((item) => ({ value: item.id, label: item.label }))}
@@ -66,31 +68,28 @@ const CompactRequestForm = ({ directions }: CompactRequestFormProps) => {
       )}
 
       <TextField
-        label="Ваше имя"
         required
-        placeholder="Иван Иванович"
+        placeholder="Ваше имя"
         maxLength={255}
         value={state.fields.name}
         onChange={(value) => changeField("name", value)}
       />
 
       <TextField
-        label="Телефон"
         required
         type="tel"
         inputMode="tel"
-        placeholder="+7 999 000-00-00"
+        placeholder="Телефон"
         maxLength={32}
         value={state.fields.telephone}
         onChange={(value) => changeField("telephone", value)}
       />
 
       <TextField
-        label="Email"
         required
         type="email"
         inputMode="email"
-        placeholder="mail@example.com"
+        placeholder="Email"
         value={state.fields.email}
         onChange={(value) => changeField("email", value)}
       />

@@ -153,3 +153,17 @@
 .optionActive {
   background: #fdf3e6;
 }
+
+.compact .control {
+  min-height: 48px;
+  padding: 8px 14px;
+}
+
+.compact .control .title,
+.compact .control .placeholder {
+  overflow: hidden;
+
+  font-size: 15px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
