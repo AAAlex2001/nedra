@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Link from "next/link";
 import { LEGAL_PAGES } from "@/shared/config/legal";
 import Checkbox from "@/shared/ui/checkbox";
@@ -9,10 +10,14 @@ const CONSENTS = [
   { lead: "Я даю", text: "Согласие на обработку персональных данных", href: LEGAL_PAGES.consent.href },
 ];
 
-const LegalConsents = () => (
-  <div className={styles.consents}>
+type LegalConsentsProps = {
+  compact?: boolean;
+};
+
+const LegalConsents = ({ compact }: LegalConsentsProps) => (
+  <div className={classNames(styles.consents, compact && styles.compact)}>
     {CONSENTS.map((consent) => (
-      <Checkbox key={consent.href} required>
+      <Checkbox key={consent.href} required compact={compact}>
         {consent.lead}{" "}
         <Link href={consent.href} className={styles.link} target="_blank">
           {consent.text}

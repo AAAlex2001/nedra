@@ -69,6 +69,7 @@ const CompactRequestForm = ({ directions }: CompactRequestFormProps) => {
 
       <TextField
         required
+        compact
         placeholder="Ваше имя"
         maxLength={255}
         value={state.fields.name}
@@ -77,6 +78,7 @@ const CompactRequestForm = ({ directions }: CompactRequestFormProps) => {
 
       <TextField
         required
+        compact
         type="tel"
         inputMode="tel"
         placeholder="Телефон"
@@ -87,6 +89,7 @@ const CompactRequestForm = ({ directions }: CompactRequestFormProps) => {
 
       <TextField
         required
+        compact
         type="email"
         inputMode="email"
         placeholder="Email"
@@ -94,7 +97,7 @@ const CompactRequestForm = ({ directions }: CompactRequestFormProps) => {
         onChange={(value) => changeField("email", value)}
       />
 
-      <LegalConsents />
+      <LegalConsents compact />
 
       {state.error && <p className={styles.error}>{state.error}</p>}
 

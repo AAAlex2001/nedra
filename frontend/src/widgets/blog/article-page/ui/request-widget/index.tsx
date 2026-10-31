@@ -9,9 +9,7 @@ const RequestWidget = () => (
       Экспертиза, проектирование, изыскания — подберём исполнителя под вашу задачу
     </p>
 
-    <div className={styles.card}>
-      <CompactRequestForm directions={DIRECTION_OPTIONS} />
-    </div>
+    <CompactRequestForm directions={DIRECTION_OPTIONS} />
   </section>
 );
 

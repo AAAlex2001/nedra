@@ -1,15 +1,17 @@
+import classNames from "classnames";
 import type { ReactNode } from "react";
 import styles from "./style.module.scss";
 
 type CheckboxProps = {
   checked?: boolean;
   required?: boolean;
+  compact?: boolean;
   onChange?: (checked: boolean) => void;
   children: ReactNode;
 };
 
-const Checkbox = ({ checked, required, onChange, children }: CheckboxProps) => (
-  <label className={styles.checkbox}>
+const Checkbox = ({ checked, required, compact, onChange, children }: CheckboxProps) => (
+  <label className={classNames(styles.checkbox, compact && styles.compact)}>
     <input
       type="checkbox"
       className={styles.input}

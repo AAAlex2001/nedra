@@ -16,6 +16,7 @@ type TextFieldProps = {
   multiline?: boolean;
   rows?: number;
   invalid?: boolean;
+  compact?: boolean;
 };
 
 const TextField = ({
@@ -33,8 +34,9 @@ const TextField = ({
   multiline,
   rows = 4,
   invalid,
+  compact,
 }: TextFieldProps) => (
-  <label className={classNames(styles.field, invalid && styles.invalid)}>
+  <label className={classNames(styles.field, invalid && styles.invalid, compact && styles.compact)}>
     {label && (
       <span className={styles.label}>
         {label}

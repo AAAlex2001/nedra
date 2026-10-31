@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.compact {
+  gap: 6px;
+}
+
 .link {
   color: var(--accent, #f69827);
   text-decoration: underline;
