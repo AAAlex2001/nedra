@@ -79,35 +79,35 @@ const CollapsibleToc = ({ items }: { items: TocItem[] }) => {
 const FloatingToc = ({ items }: { items: TocItem[] }) => {
   const { activeId, selectHeading } = useActiveHeading(items);
   const { rootRef, position } = useFloatingPosition();
-  const popover = useTocPopover();
+  const { open, popoverRef, show, leave, toggle, close } = useTocPopover();
 
   const selectAndClose = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
     selectHeading(event, id);
-    popover.close();
+    close();
   };
 
   return (
     <div ref={rootRef} className={styles.floatingAnchor}>
       <div
-        ref={popover.popoverRef}
+        ref={popoverRef}
         className={classNames(styles.floating, position.visible && styles.visible)}
         style={{ left: position.left }}
         aria-hidden={!position.visible}
         inert={!position.visible}
-        onPointerEnter={popover.show}
-        onPointerLeave={popover.leave}
+        onPointerEnter={show}
+        onPointerLeave={leave}
       >
         <button
           type="button"
-          className={classNames(styles.trigger, popover.open && styles.triggerOpen)}
+          className={classNames(styles.trigger, open && styles.triggerOpen)}
           aria-label={TITLE}
-          aria-expanded={popover.open}
-          onClick={popover.toggle}
+          aria-expanded={open}
+          onClick={toggle}
         >
           <ContentsIcon />
         </button>
 
-        {popover.open && (
+        {open && (
           <nav className={styles.popover} aria-label={TITLE}>
             <p className={styles.popoverTitle}>{TITLE}</p>
             <TocList items={items} activeId={activeId} onSelect={selectAndClose} />
