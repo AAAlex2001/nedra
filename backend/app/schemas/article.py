@@ -104,6 +104,13 @@ class ArticleAdminCardSchema(ArticleCardSchema):
     tags: list[TagAdminSchema] = Field(default_factory=list, description="Теги статьи")
 
 
+class ArticleAdminListSchema(BaseModel):
+    """Страница статей в админке и общее количество с учётом фильтров."""
+
+    articles: list[ArticleAdminCardSchema] = Field(..., description="Статьи на текущей странице")
+    total: int = Field(..., description="Сколько всего статей подходит под фильтры")
+
+
 class ArticleAdminSchema(ArticleAdminCardSchema, ArticleSeoSchema):
     """Статья целиком для редактирования."""
 

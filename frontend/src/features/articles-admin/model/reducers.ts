@@ -61,11 +61,26 @@ export const listReducer = (state: ListState, action: ListAction): ListState => 
       return {
         ...state,
         pendingId: null,
+        total: state.total - 1,
         items: state.items.filter((item) => item.id !== action.id),
       };
 
     case "delete/error":
       return { ...state, pendingId: null, error: action.message };
+
+    case "more/start":
+      return { ...state, loadingMore: true, error: null };
+
+    case "more/done":
+      return {
+        ...state,
+        loadingMore: false,
+        total: action.total,
+        items: [...state.items, ...action.items],
+      };
+
+    case "more/error":
+      return { ...state, loadingMore: false, error: action.message };
 
     default:
       return state;

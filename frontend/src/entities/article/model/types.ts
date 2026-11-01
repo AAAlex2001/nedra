@@ -61,6 +61,11 @@ export type ArticleAdminCard = Omit<ArticleCard, "tags"> & {
   tags: TagAdmin[];
 };
 
+export type ArticleAdminList = {
+  articles: ArticleAdminCard[];
+  total: number;
+};
+
 export type ArticleAdmin = ArticleAdminCard &
   ArticleSeo & {
     content: string;

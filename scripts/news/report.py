@@ -16,18 +16,32 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[2]
 PLAN_FILE = ROOT / "content" / "news" / "plan.json"
+PAGE_SIZE = 100
 
 
-def load_articles(api: str, token: str) -> list[dict]:
-    """Забрать список статей из админского эндпоинта."""
+def load_page(api: str, token: str, offset: int) -> dict:
+    """Одна страница статей из админского эндпоинта: статьи и общее количество."""
 
     request = Request(
-        f"{api.rstrip('/')}/api/v1/admin/articles",
+        f"{api.rstrip('/')}/api/v1/admin/articles?limit={PAGE_SIZE}&offset={offset}",
         headers={"X-Admin-Token": token},
     )
 
     with urlopen(request, timeout=120) as response:
         return json.loads(response.read())
+
+
+def load_articles(api: str, token: str) -> list[dict]:
+    """Забрать все статьи постранично."""
+
+    articles: list[dict] = []
+
+    while True:
+        page = load_page(api, token, len(articles))
+        articles.extend(page["articles"])
+
+        if not page["articles"] or len(articles) >= page["total"]:
+            return articles
 
 
 def main() -> None:

@@ -12,6 +12,7 @@ from app.dependencies.articles import (
 from app.models.article import Article
 from app.schemas.article import (
     ArticleAdminCardSchema,
+    ArticleAdminListSchema,
     ArticleAdminSchema,
     ArticleCreateSchema,
     ArticleSort,
@@ -42,13 +43,20 @@ router = APIRouter(
 async def list_articles(
     section: Section | None = Query(None, description="Раздел: blog или news"),
     sort: ArticleSort = Query("new", description="Сортировка: new, views, likes или dislikes"),
+    q: str | None = Query(None, max_length=100, description="Поиск по заголовку"),
+    limit: int = Query(20, ge=1, le=100),
+    offset: int = Query(0, ge=0),
     articles: ArticleRepository = Depends(get_article_repository),
-) -> list[ArticleAdminCardSchema]:
-    """Все статьи, включая черновики."""
+) -> ArticleAdminListSchema:
+    """Страница статей, включая черновики."""
 
-    items = await articles.list_all(section, sort)
+    search = q.strip() if q else None
+    items, total = await articles.list_admin(section, sort, search, limit, offset)
 
-    return [ArticleAdminCardSchema.model_validate(item) for item in items]
+    return ArticleAdminListSchema(
+        articles=[ArticleAdminCardSchema.model_validate(item) for item in items],
+        total=total,
+    )
 
 
 @router.post("/articles", status_code=status.HTTP_201_CREATED)

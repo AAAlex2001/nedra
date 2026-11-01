@@ -36,14 +36,19 @@ export type EditorAction =
 
 export type ListState = {
   items: ArticleAdminCard[];
+  total: number;
   pendingId: number | null;
+  loadingMore: boolean;
   error: string | null;
 };
 
 export type ListAction =
   | { type: "delete/start"; id: number }
   | { type: "delete/done"; id: number }
-  | { type: "delete/error"; message: string };
+  | { type: "delete/error"; message: string }
+  | { type: "more/start" }
+  | { type: "more/done"; items: ArticleAdminCard[]; total: number }
+  | { type: "more/error"; message: string };
 
 export type TagsState = {
   items: TagAdmin[];

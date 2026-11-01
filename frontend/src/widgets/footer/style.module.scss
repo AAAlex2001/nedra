@@ -135,6 +135,48 @@
   color: #f69827;
 }
 
+.materials {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  width: 100%;
+}
+
+.articleList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 2px 0 10px 12px;
+
+  width: 100%;
+  list-style: none;
+
+  border-left: 2px solid #fde3c2;
+}
+
+.articleLink {
+  display: -webkit-box;
+  overflow: hidden;
+
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  text-decoration: none;
+
+  color: #5b6070;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  transition: color 0.2s ease;
+}
+
+.articleLink:hover {
+  color: #f69827;
+}
+
 /* --- Карта сайта --- */
 .sitemap {
   display: flex;

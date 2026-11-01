@@ -6,7 +6,7 @@ const RequestWidget = () => (
   <section className={styles.widget} aria-label="Заявка на работы">
     <p className={styles.title}>Оставьте заявку</p>
     <p className={styles.text}>
-      Экспертиза, проектирование, изыскания — подберём исполнителя под вашу задачу
+      Подберём исполнителя по любому направлению института — выберите его ниже
     </p>
 
     <CompactRequestForm directions={DIRECTION_OPTIONS} />

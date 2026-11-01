@@ -384,6 +384,15 @@ def load_articles(plan: list[dict]) -> list[dict]:
     return articles
 
 
+def keywords_text(keywords: str | list[str] | None) -> str | None:
+    """Ключевые слова строкой через запятую: часть статей хранит их списком."""
+
+    if isinstance(keywords, list):
+        return ", ".join(keywords)
+
+    return keywords
+
+
 def build_payload(article: dict, tag_ids: dict[str, int], credits: dict, published_at: datetime) -> dict:
     """Собрать тело запроса на создание или обновление статьи."""
 
@@ -409,7 +418,7 @@ def build_payload(article: dict, tag_ids: dict[str, int], credits: dict, publish
         "published_at": published_at.isoformat() if article.get("published", True) else None,
         "seo_title": article.get("seo_title"),
         "seo_description": article.get("seo_description"),
-        "seo_keywords": article.get("seo_keywords"),
+        "seo_keywords": keywords_text(article.get("seo_keywords")),
     }
 
 

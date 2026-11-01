@@ -20,37 +20,33 @@ export const FOOTER_DATA = {
   copyright: "© 2026 ООО НПИ «Недра». Все права защищены.",
 };
 
-export const FOOTER_SITEMAP: FooterLinkGroup[] = [
-  {
-    title: "Сайт",
-    links: [
-      { label: "Главная", href: "/" },
-      { label: "О нас", href: "/#about" },
-      { label: "Направления деятельности", href: "/#directions" },
-      { label: "Услуги", href: "/#services" },
-      { label: "Лаборатория", href: "/#laboratory" },
-      { label: "Разрешительные документы", href: "/#documents" },
-      { label: "Партнёры", href: "/#partners" },
-      { label: "Общественные обсуждения", href: "/obshchestvennye-obsuzhdeniya" },
-      { label: "Контакты", href: "/#contacts" },
-    ],
-  },
-  {
-    title: "Материалы",
-    links: [
-      { label: "Блог", href: "/blog" },
-      { label: "Новости", href: "/novosti" },
-    ],
-  },
-  {
-    title: "Сведения об образовательной организации",
-    wide: true,
-    links: [
-      { label: "Сведения об образовательной организации", href: SVEDENIYA_BASE },
-      ...SVEDENIYA_SECTIONS.map((section) => ({
-        label: section.label,
-        href: `${SVEDENIYA_BASE}/${section.slug}`,
-      })),
-    ],
-  },
-];
+export const SITE_GROUP: FooterLinkGroup = {
+  title: "Сайт",
+  links: [
+    { label: "Главная", href: "/" },
+    { label: "О нас", href: "/#about" },
+    { label: "Направления деятельности", href: "/#directions" },
+    { label: "Услуги", href: "/#services" },
+    { label: "Лаборатория", href: "/#laboratory" },
+    { label: "Разрешительные документы", href: "/#documents" },
+    { label: "Партнёры", href: "/#partners" },
+    { label: "Общественные обсуждения", href: "/obshchestvennye-obsuzhdeniya" },
+    { label: "Контакты", href: "/#contacts" },
+  ],
+};
+
+export const SVEDENIYA_GROUP: FooterLinkGroup = {
+  title: "Сведения об образовательной организации",
+  wide: true,
+  links: [
+    { label: "Сведения об образовательной организации", href: SVEDENIYA_BASE },
+    ...SVEDENIYA_SECTIONS.map((section) => ({
+      label: section.label,
+      href: `${SVEDENIYA_BASE}/${section.slug}`,
+    })),
+  ],
+};
+
+export const MATERIALS_TITLE = "Материалы";
+
+export const LATEST_ARTICLES_COUNT = 3;

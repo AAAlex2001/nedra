@@ -2,9 +2,9 @@
 
 import { formatCategory, objectLabel, type ExpertCatalog } from "@/entities/expert";
 import Button from "@/shared/ui/button";
-import Chip from "@/shared/ui/chip";
 import TextField from "@/shared/ui/text-field";
 import { useCommissionApplication } from "../../model/use-commission-application";
+import CertificateBuilder from "./certificate-builder";
 import styles from "./style.module.scss";
 
 type ApplicationFormProps = {
@@ -13,20 +13,8 @@ type ApplicationFormProps = {
 };
 
 const ApplicationForm = ({ catalog, onClose }: ApplicationFormProps) => {
-  const {
-    state,
-    area,
-    availableObjects,
-    draftComplete,
-    canSubmit,
-    changeContact,
-    selectArea,
-    selectObject,
-    selectCategory,
-    addItem,
-    removeItem,
-    submit,
-  } = useCommissionApplication(catalog);
+  const application = useCommissionApplication(catalog);
+  const { state, canSubmit, changeContact, removeItem, submit } = application;
 
   if (state.status === "success") {
     return (
@@ -85,68 +73,7 @@ const ApplicationForm = ({ catalog, onClose }: ApplicationFormProps) => {
         />
       </div>
 
-      <div className={styles.builder}>
-        <div className={styles.group}>
-          <span className={styles.label}>Область аттестации</span>
-          <div className={styles.chips} role="group" aria-label="Область аттестации">
-            {catalog.areas.map((item) => (
-              <Chip
-                key={item.code}
-                className={styles.chip}
-                active={state.draft.areaCode === item.code}
-                title={item.title}
-                onClick={() => selectArea(item.code)}
-              >
-                {item.code}
-              </Chip>
-            ))}
-          </div>
-          {area && <p className={styles.note}>{area.title}</p>}
-        </div>
-
-        <div className={styles.group}>
-          <span className={styles.label}>Объект экспертизы</span>
-          <div className={styles.chips} role="group" aria-label="Объект экспертизы">
-            {catalog.objects.map((item) => {
-              const allowed = availableObjects.some((object) => object.code === item.code);
-
-              return (
-                <Chip
-                  key={item.code}
-                  className={styles.chip}
-                  active={state.draft.objectCode === item.code}
-                  disabled={!allowed}
-                  title={item.title}
-                  onClick={() => selectObject(item.code)}
-                >
-                  {item.label}
-                </Chip>
-              );
-            })}
-          </div>
-          {!area && <p className={styles.note}>Сначала выберите область аттестации.</p>}
-        </div>
-
-        <div className={styles.group}>
-          <span className={styles.label}>Категория</span>
-          <div className={styles.chips} role="group" aria-label="Категория">
-            {catalog.categories.map((category) => (
-              <Chip
-                key={category}
-                className={styles.chip}
-                active={state.draft.category === category}
-                onClick={() => selectCategory(category)}
-              >
-                {category} категория
-              </Chip>
-            ))}
-          </div>
-        </div>
-
-        <button type="button" className={styles.add} disabled={!draftComplete} onClick={addItem}>
-          Добавить аттестацию
-        </button>
-      </div>
+      <CertificateBuilder catalog={catalog} application={application} />
 
       {state.items.length === 0 ? (
         <p className={styles.note}>Добавьте хотя бы одну аттестацию.</p>

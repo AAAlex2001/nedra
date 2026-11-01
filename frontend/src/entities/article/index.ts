@@ -2,6 +2,7 @@ export type {
   Article,
   ArticleAdmin,
   ArticleAdminCard,
+  ArticleAdminList,
   ArticleCard as ArticleCardData,
   ArticleList,
   ArticlePayload,

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import type { ArticleAdminCard, ArticleSection, ArticleSort, TagAdmin } from "@/entities/article";
+import type { ArticleAdminList, ArticleSection, ArticleSort, TagAdmin } from "@/entities/article";
+import { buildAdminListHref, type AdminListFilters } from "@/features/articles-admin";
 import { adminBasePath, loadAdmin } from "@/shared/api/server";
 import AdminArticles from "@/widgets/admin/articles";
 
@@ -9,14 +10,16 @@ export const metadata: Metadata = {
   title: "Статьи",
 };
 
-type SearchParams = Promise<{ section?: string; sort?: string }>;
+type SearchParams = Promise<{ section?: string; sort?: string; q?: string }>;
+
+const EMPTY_LIST: ArticleAdminList = { articles: [], total: 0 };
 
 export default async function AdminArticlesPage({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
-  const { section, sort } = await searchParams;
+  const { section, sort, q } = await searchParams;
 
   let activeSection: ArticleSection | null = null;
   if (section === "blog" || section === "news") activeSection = section;
@@ -24,28 +27,26 @@ export default async function AdminArticlesPage({
   let activeSort: ArticleSort = "new";
   if (sort === "views" || sort === "likes" || sort === "dislikes") activeSort = sort;
 
-  const params = new URLSearchParams();
-  if (activeSection) params.set("section", activeSection);
-  if (activeSort !== "new") params.set("sort", activeSort);
+  const filters: AdminListFilters = {
+    section: activeSection,
+    sort: activeSort,
+    search: q?.trim() ?? "",
+  };
 
-  const query = params.toString();
+  const listPath = buildAdminListHref("/v1/admin/articles", filters);
 
-  let listPath = "/v1/admin/articles";
-  if (query) listPath = `${listPath}?${query}`;
-
-  const [articles, tags] = await Promise.all([
-    loadAdmin<ArticleAdminCard[]>(listPath, []),
+  const [list, tags] = await Promise.all([
+    loadAdmin<ArticleAdminList>(listPath, EMPTY_LIST),
     loadAdmin<TagAdmin[]>("/v1/admin/tags", []),
   ]);
 
   return (
     <AdminArticles
       basePath={adminBasePath()}
-      articles={articles.data}
+      list={list.data}
       tags={tags.data}
-      section={activeSection}
-      sort={activeSort}
-      error={articles.error ?? tags.error}
+      filters={filters}
+      error={list.error ?? tags.error}
     />
   );
 }

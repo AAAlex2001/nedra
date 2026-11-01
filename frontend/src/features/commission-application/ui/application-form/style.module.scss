@@ -27,13 +27,67 @@
   gap: 8px;
 }
 
-.label {
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stepTitle {
   font-family: "Manrope";
   font-weight: 700;
   font-size: 14px;
-  line-height: 17px;
+  line-height: 18px;
 
   color: #0b0b0b;
+}
+
+.stepBar {
+  display: flex;
+  gap: 4px;
+}
+
+.stepSegment {
+  flex: 1;
+  height: 5px;
+
+  background: #e6e9ef;
+  border-radius: 100px;
+}
+
+.stepDone {
+  background: #6676b5;
+}
+
+.stepNav {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stepNav .add {
+  margin-left: auto;
+}
+
+.back {
+  padding: 12px 20px;
+
+  font-family: "Manrope";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #5b6070;
+  background: #f5f6f8;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.back:hover {
+  background: #e6e9ef;
 }
 
 .chips {
@@ -43,9 +97,9 @@
 }
 
 .chips .chip[aria-checked="true"] {
-  color: #3f7a3a;
-  background: #eaf4e8;
-  border-color: #7cb073;
+  color: #525f9c;
+  background: #eef0fb;
+  border-color: #7784ba;
 }
 
 .note {
@@ -68,7 +122,7 @@
 
   color: #0b0b0b;
   background: transparent;
-  border: 1px solid #9cc79a;
+  border: 1px solid #6676b5;
   border-radius: 100px;
   cursor: pointer;
 
@@ -80,7 +134,7 @@
 
 .add:hover:not(:disabled) {
   color: #fff;
-  background: #9cc79a;
+  background: #6676b5;
 }
 
 .add:disabled {
@@ -123,8 +177,8 @@
   font-size: 12px;
   line-height: 15px;
 
-  color: #3f7a3a;
-  background: #eaf4e8;
+  color: #525f9c;
+  background: #eef0fb;
   border-radius: 100px;
 }
 
@@ -180,14 +234,14 @@
 .done .submit {
   width: 100%;
 
-  background: #9cc79a;
-  border-color: #9cc79a;
+  background: #6676b5;
+  border-color: #6676b5;
 }
 
 .form .submit:hover:not(:disabled),
 .done .submit:hover:not(:disabled) {
-  background: #8bbc89;
-  border-color: #8bbc89;
+  background: #52629f;
+  border-color: #52629f;
 }
 
 .done {

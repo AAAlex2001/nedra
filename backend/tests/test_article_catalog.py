@@ -89,6 +89,38 @@ def test_search_matches_title_case_insensitively():
     engine.dispose()
 
 
+def test_admin_list_includes_drafts_and_pages_search_results():
+    engine = create_catalog_engine()
+    titles = ["Expert one", "Expert two", "Audit", "Expert draft"]
+
+    with Session(engine) as session:
+        published = datetime(2020, 1, 1, tzinfo=timezone.utc)
+        for number, title in enumerate(titles, start=1):
+            session.add(Article(
+                id=number,
+                slug=f"article-{number}",
+                section="blog",
+                title=title,
+                content="<p>Article</p>",
+                published_at=None if number == 4 else published,
+            ))
+        session.commit()
+        repo = ArticleRepository(SessionAdapter(session))
+
+        async def read_pages():
+            first = await repo.list_admin("blog", "new", "expert", 2, 0)
+            second = await repo.list_admin("blog", "new", "expert", 2, 2)
+            return first, second
+
+        (first_page, first_total), (second_page, second_total) = asyncio.run(read_pages())
+
+        assert first_total == second_total == 3
+        assert len(first_page) == 2
+        assert len(second_page) == 1
+        assert sorted(article.id for article in first_page + second_page) == [1, 2, 4]
+    engine.dispose()
+
+
 def test_search_pattern_escapes_wildcards():
     assert contains_pattern("100%") == "%100\\%%"
     assert contains_pattern("snake_case") == "%snake\\_case%"

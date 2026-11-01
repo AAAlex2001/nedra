@@ -22,13 +22,16 @@
 
   border-radius: 32px;
   box-shadow: 0 20px 60px rgba(11, 11, 11, 0.25);
+
+  --accent: #6676b5;
+  --accent-hover: #52629f;
 }
 
 .frame {
   box-sizing: border-box;
   padding: 8px;
 
-  background: #eaf4e8;
+  background: #eef0fb;
   border-radius: 32px;
 }
 

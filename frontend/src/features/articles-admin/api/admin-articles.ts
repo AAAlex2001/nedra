@@ -1,10 +1,11 @@
 import type {
   ArticleAdmin,
-  ArticleAdminCard,
+  ArticleAdminList,
   ArticlePayload,
   TagAdmin,
 } from "@/entities/article";
 import { readErrorMessage } from "@/shared/api";
+import { ADMIN_PAGE_SIZE, type AdminListFilters } from "../lib/list-href";
 
 const requestJson = async <T>(url: string, init?: RequestInit): Promise<T> => {
   const response = await fetch(url, init);
@@ -34,8 +35,20 @@ const jsonBody = (method: string, payload: unknown): RequestInit => ({
   body: JSON.stringify(payload),
 });
 
-export const fetchArticles = (basePath: string) =>
-  requestJson<ArticleAdminCard[]>(`${basePath}/api/articles`, { cache: "no-store" });
+export const fetchArticles = (basePath: string, filters: AdminListFilters, offset: number) => {
+  const params = new URLSearchParams({
+    sort: filters.sort,
+    limit: String(ADMIN_PAGE_SIZE),
+    offset: String(offset),
+  });
+
+  if (filters.section) params.set("section", filters.section);
+  if (filters.search) params.set("q", filters.search);
+
+  return requestJson<ArticleAdminList>(`${basePath}/api/articles?${params}`, {
+    cache: "no-store",
+  });
+};
 
 export const createArticle = (basePath: string, payload: ArticlePayload) =>
   requestJson<ArticleAdmin>(`${basePath}/api/articles`, jsonBody("POST", payload));

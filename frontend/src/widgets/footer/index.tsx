@@ -1,13 +1,87 @@
 import classNames from "classnames";
 import Link from "next/link";
+import {
+  SECTION_PATH,
+  SECTION_TITLE,
+  articlePath,
+  getLatestArticles,
+  type ArticleCardData,
+  type ArticleSection,
+} from "@/entities/article";
 import { COMPANY_CONTACTS } from "@/shared/config/company";
 import { LEGAL_LINKS } from "@/shared/config/legal";
 import ContactRow from "@/shared/ui/contact-row";
 import { LocationIcon, MailIcon, NedraLogo, PhoneIcon } from "@/shared/ui/icons";
-import { FOOTER_DATA, FOOTER_SITEMAP } from "./data";
+import {
+  FOOTER_DATA,
+  LATEST_ARTICLES_COUNT,
+  MATERIALS_TITLE,
+  SITE_GROUP,
+  SVEDENIYA_GROUP,
+  type FooterLinkGroup,
+} from "./data";
 import styles from "./style.module.scss";
 
-const Footer = () => {
+type MaterialsSection = {
+  section: ArticleSection;
+  articles: ArticleCardData[];
+};
+
+const SitemapGroup = ({ group }: { group: FooterLinkGroup }) => (
+  <nav
+    className={classNames(styles.sitemapGroup, group.wide && styles.sitemapGroupWide)}
+    aria-label={group.title}
+  >
+    <span className={styles.groupTitle}>{group.title}</span>
+    <ul className={styles.navList}>
+      {group.links.map((item) => (
+        <li key={item.href}>
+          <Link className={styles.navLink} href={item.href}>
+            {item.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </nav>
+);
+
+const MaterialsGroup = ({ sections }: { sections: MaterialsSection[] }) => (
+  <nav className={styles.sitemapGroup} aria-label={MATERIALS_TITLE}>
+    <span className={styles.groupTitle}>{MATERIALS_TITLE}</span>
+
+    {sections.map(({ section, articles }) => (
+      <div key={section} className={styles.materials}>
+        <Link className={styles.navLink} href={SECTION_PATH[section]}>
+          {SECTION_TITLE[section]}
+        </Link>
+
+        {articles.length > 0 && (
+          <ul className={styles.articleList}>
+            {articles.map((article) => (
+              <li key={article.slug}>
+                <Link className={styles.articleLink} href={articlePath(article)}>
+                  {article.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    ))}
+  </nav>
+);
+
+const Footer = async () => {
+  const [blogArticles, newsArticles] = await Promise.all([
+    getLatestArticles("blog", LATEST_ARTICLES_COUNT),
+    getLatestArticles("news", LATEST_ARTICLES_COUNT),
+  ]);
+
+  const materials: MaterialsSection[] = [
+    { section: "blog", articles: blogArticles },
+    { section: "news", articles: newsArticles },
+  ];
+
   return (
     <footer className={styles.footer}>
       <div className={styles.top}>
@@ -42,24 +116,9 @@ const Footer = () => {
         <span className={styles.sitemapTitle}>{FOOTER_DATA.sitemapTitle}</span>
 
         <div className={styles.sitemapGrid}>
-          {FOOTER_SITEMAP.map((group) => (
-            <nav
-              key={group.title}
-              className={classNames(styles.sitemapGroup, group.wide && styles.sitemapGroupWide)}
-              aria-label={group.title}
-            >
-              <span className={styles.groupTitle}>{group.title}</span>
-              <ul className={styles.navList}>
-                {group.links.map((item) => (
-                  <li key={item.href}>
-                    <Link className={styles.navLink} href={item.href}>
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
+          <SitemapGroup group={SITE_GROUP} />
+          <MaterialsGroup sections={materials} />
+          <SitemapGroup group={SVEDENIYA_GROUP} />
         </div>
       </div>
 

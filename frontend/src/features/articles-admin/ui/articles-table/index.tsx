@@ -3,23 +3,30 @@
 import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
-import { SECTION_TITLE, articlePath, type ArticleAdminCard } from "@/entities/article";
+import { SECTION_TITLE, articlePath, type ArticleAdminList } from "@/entities/article";
 import { formatDate, isFutureDate } from "@/shared/lib/date";
+import Button from "@/shared/ui/button";
 import { EyeIcon, ThumbDownIcon, ThumbUpIcon } from "@/shared/ui/icons";
 import Spinner from "@/shared/ui/spinner";
+import type { AdminListFilters } from "../../lib/list-href";
 import { useArticlesList } from "../../model/use-articles-list";
 import styles from "./style.module.scss";
 
 type ArticlesTableProps = {
   basePath: string;
-  initialItems: ArticleAdminCard[];
+  initialList: ArticleAdminList;
+  filters: AdminListFilters;
 };
 
-const ArticlesTable = ({ basePath, initialItems }: ArticlesTableProps) => {
-  const { state, remove } = useArticlesList(basePath, initialItems);
+const ArticlesTable = ({ basePath, initialList, filters }: ArticlesTableProps) => {
+  const { state, hasMore, remove, loadMore } = useArticlesList(basePath, initialList, filters);
 
   if (state.items.length === 0) {
-    return <p className={styles.empty}>Статей пока нет — создайте первую.</p>;
+    const emptyText = filters.search
+      ? `По запросу «${filters.search}» ничего не найдено.`
+      : "Статей пока нет — создайте первую.";
+
+    return <p className={styles.empty}>{emptyText}</p>;
   }
 
   return (
@@ -119,6 +126,12 @@ const ArticlesTable = ({ basePath, initialItems }: ArticlesTableProps) => {
           );
         })}
       </ul>
+
+      {hasMore && (
+        <Button className={styles.more} loading={state.loadingMore} onClick={() => void loadMore()}>
+          Загрузить ещё
+        </Button>
+      )}
     </div>
   );
 };

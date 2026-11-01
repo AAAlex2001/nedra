@@ -1,6 +1,6 @@
 """Репозиторий статей: только запросы к таблице articles."""
 
-from sqlalchemy import ColumnElement, and_, func, select
+from sqlalchemy import ColumnElement, and_, func, select, true
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.article import Article, Tag
@@ -34,17 +34,17 @@ def contains_pattern(text: str) -> str:
     return f"%{escaped}%"
 
 
-def published_filter(
+def article_filter(
     section: str | None, tag_slug: str | None, search: str | None
 ) -> ColumnElement[bool]:
-    """Условие выборки опубликованных статей.
+    """Условие выборки статей, черновики тоже.
 
     Если передан section — только статьи этого раздела (blog или news).
     Если передан tag_slug — только статьи с этим тегом.
     Если передан search — только статьи, в заголовке которых есть эта строка без учёта регистра.
     """
 
-    condition = PUBLISHED
+    condition = true()
 
     if section:
         condition = and_(condition, Article.section == section)
@@ -57,6 +57,14 @@ def published_filter(
         condition = and_(condition, title_matches)
 
     return condition
+
+
+def published_filter(
+    section: str | None, tag_slug: str | None, search: str | None
+) -> ColumnElement[bool]:
+    """Условие выборки опубликованных статей с фильтрами из article_filter."""
+
+    return and_(PUBLISHED, article_filter(section, tag_slug, search))
 
 
 class ArticleRepository:
@@ -119,24 +127,41 @@ class ArticleRepository:
 
         return list(result.scalars().all())
 
-    async def list_all(self, section: str | None, sort: str = "new") -> list[Article]:
-        """Все статьи для админки, включая черновики.
+    async def list_admin(
+        self,
+        section: str | None,
+        sort: str,
+        search: str | None,
+        limit: int,
+        offset: int,
+    ) -> tuple[list[Article], int]:
+        """Страница статей для админки, включая черновики, и их общее количество.
 
         По умолчанию новые первыми. Сортировка по просмотрам, лайкам или
         дизлайкам ставит первыми статьи с наибольшим счётчиком, при равных
-        значениях свежие идут выше.
+        значениях свежие идут выше. Фильтры по разделу и поиску — как в article_filter.
         """
 
         column = ADMIN_SORTS.get(sort, Article.created_at)
+        condition = article_filter(section, None, search)
 
-        stmt = select(Article).order_by(column.desc(), Article.created_at.desc())
+        articles_stmt = (
+            select(Article)
+            .where(condition)
+            .order_by(column.desc(), Article.created_at.desc(), Article.id.desc())
+            .limit(limit)
+            .offset(offset)
+        )
+        count_stmt = select(func.count()).select_from(Article).where(condition)
 
-        if section:
-            stmt = stmt.where(Article.section == section)
+        result = await self.db.execute(articles_stmt)
+        articles = list(result.scalars().all())
 
-        result = await self.db.execute(stmt)
+        total = await self.db.scalar(count_stmt)
+        if total is None:
+            total = 0
 
-        return list(result.scalars().all())
+        return articles, total
 
     async def get_by_id(self, article_id: int) -> Article | None:
         """Статья по идентификатору для админки, черновики тоже."""
