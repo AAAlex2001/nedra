@@ -32,15 +32,7 @@ export default function GuestBar() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    let previousY = window.scrollY;
-
-    const onScroll = () => {
-      const currentY = window.scrollY;
-      const scrolledDown = currentY > previousY;
-
-      setVisible(currentY >= 150 && !scrolledDown);
-      previousY = currentY;
-    };
+    const onScroll = () => setVisible(window.scrollY >= 150);
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
