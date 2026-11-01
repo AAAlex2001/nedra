@@ -45,17 +45,13 @@
 
   transition:
     background 0.18s ease,
-    color 0.18s ease,
-    box-shadow 0.18s ease,
-    transform 0.18s ease;
+    color 0.18s ease;
 }
 
 .trigger:hover,
 .triggerOpen {
   color: #fff;
   background: #f69827;
-  box-shadow: 0 6px 22px rgba(246, 152, 39, 0.4);
-  transform: scale(1.06);
 }
 
 .icon {
