@@ -43,20 +43,37 @@ const TocList = ({ items, activeId, onSelect }: TocListProps) => (
   </ol>
 );
 
+const RING_RADIUS = 18;
+const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
+
 const ContentsIcon = () => (
   <svg
-    width="20"
-    height="20"
+    className={styles.icon}
+    width="18"
+    height="18"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.8"
+    strokeWidth="2"
     strokeLinecap="round"
-    strokeLinejoin="round"
     aria-hidden="true"
   >
-    <rect x="4" y="3" width="16" height="18" rx="3" />
-    <path d="M9 3v18M12.5 8h4M12.5 12h4M12.5 16h2.5" />
+    <path d="M9 6h11M9 12h11M9 18h11" />
+    <path d="M4 6h.01M4 12h.01M4 18h.01" strokeWidth="3" />
+  </svg>
+);
+
+const ProgressRing = ({ progress }: { progress: number }) => (
+  <svg className={styles.ring} viewBox="0 0 40 40" aria-hidden="true">
+    <circle className={styles.ringTrack} cx="20" cy="20" r={RING_RADIUS} />
+    <circle
+      className={styles.ringValue}
+      cx="20"
+      cy="20"
+      r={RING_RADIUS}
+      strokeDasharray={RING_LENGTH}
+      strokeDashoffset={RING_LENGTH * (1 - progress)}
+    />
   </svg>
 );
 
@@ -81,6 +98,9 @@ const FloatingToc = ({ items }: { items: TocItem[] }) => {
   const { rootRef, position } = useFloatingPosition();
   const { open, popoverRef, show, leave, toggle, close } = useTocPopover();
 
+  const activeIndex = items.findIndex((item) => item.id === activeId);
+  const progress = (activeIndex + 1) / items.length;
+
   const selectAndClose = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
     selectHeading(event, id);
     close();
@@ -104,6 +124,7 @@ const FloatingToc = ({ items }: { items: TocItem[] }) => {
           aria-expanded={open}
           onClick={toggle}
         >
+          <ProgressRing progress={progress} />
           <ContentsIcon />
         </button>
 
