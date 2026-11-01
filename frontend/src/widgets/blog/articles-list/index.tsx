@@ -10,9 +10,9 @@ import {
   type Tag,
 } from "@/entities/article";
 import Button from "@/shared/ui/button";
+import SearchForm from "@/shared/ui/search-form";
 import Spinner from "@/shared/ui/spinner";
 import { buildListHref } from "./lib/list-href";
-import SearchForm from "./ui/search-form";
 import TagFilter from "./ui/tag-filter";
 import styles from "./style.module.scss";
 

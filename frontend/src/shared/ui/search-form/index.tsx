@@ -8,6 +8,7 @@ type SearchFormProps = {
   initialValue: string;
   pending: boolean;
   onSearch: (value: string) => void;
+  placeholder?: string;
 };
 
 const MIN_LENGTH = 2;
@@ -15,7 +16,12 @@ const DEBOUNCE_MS = 400;
 
 const isSearchable = (search: string): boolean => search === "" || search.length >= MIN_LENGTH;
 
-const SearchForm = ({ initialValue, pending, onSearch }: SearchFormProps) => {
+const SearchForm = ({
+  initialValue,
+  pending,
+  onSearch,
+  placeholder = "Поиск по заголовку",
+}: SearchFormProps) => {
   const [value, setValue] = useState(initialValue);
 
   const search = value.trim();
@@ -41,8 +47,8 @@ const SearchForm = ({ initialValue, pending, onSearch }: SearchFormProps) => {
         className={styles.input}
         type="search"
         name="q"
-        placeholder="Поиск по заголовку"
-        aria-label="Поиск по заголовку"
+        placeholder={placeholder}
+        aria-label={placeholder}
         autoComplete="off"
         maxLength={100}
         value={value}
