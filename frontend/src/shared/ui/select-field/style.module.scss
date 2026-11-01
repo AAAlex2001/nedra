@@ -161,6 +161,15 @@
   border-radius: 10px;
 }
 
+.compact .control .avatar {
+  width: 28px;
+  height: 28px;
+}
+
+.compact .control .hint {
+  display: none;
+}
+
 .compact .control .title,
 .compact .control .placeholder {
   overflow: hidden;

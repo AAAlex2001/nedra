@@ -31,8 +31,8 @@ export const useFloatingPosition = () => {
       const center = window.innerHeight / 2;
       const readingArticle = mainRect.top < center && mainRect.bottom > center;
 
-      const besideText = mainRect.right + TEXT_GAP;
-      const left = Math.min(besideText, window.innerWidth - BUTTON_SIZE - EDGE_GAP);
+      const besideText = mainRect.left - TEXT_GAP - BUTTON_SIZE;
+      const left = Math.max(besideText, EDGE_GAP);
 
       setPosition({ left, visible: readingArticle });
     };

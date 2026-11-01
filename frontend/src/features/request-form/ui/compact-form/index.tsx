@@ -1,6 +1,6 @@
 "use client";
 
-import type { DirectionOption } from "@/entities/service";
+import { formatServiceCount, type DirectionOption } from "@/entities/service";
 import Button from "@/shared/ui/button";
 import LegalConsents from "@/shared/ui/legal-consents";
 import SelectField from "@/shared/ui/select-field";
@@ -52,7 +52,12 @@ const CompactRequestForm = ({ directions }: CompactRequestFormProps) => {
         compact
         value={state.directionId}
         onChange={selectDirection}
-        options={directions.map((item) => ({ value: item.id, label: item.title }))}
+        options={directions.map((item) => ({
+          value: item.id,
+          label: item.title,
+          hint: formatServiceCount(item.serviceCount),
+          image: item.image,
+        }))}
       />
 
       {needsService && (
