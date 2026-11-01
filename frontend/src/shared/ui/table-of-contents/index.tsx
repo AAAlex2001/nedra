@@ -2,27 +2,29 @@
 
 import classNames from "classnames";
 import type { MouseEvent } from "react";
-import type { TocItem } from "@/entities/article";
 import { ChevronIcon } from "@/shared/ui/icons";
-import { useActiveHeading } from "../../model/use-active-heading";
-import { useFloatingPosition } from "../../model/use-floating-position";
-import { useTocPopover } from "../../model/use-toc-popover";
+import { useActiveHeading } from "./model/use-active-heading";
+import { useFloatingPosition } from "./model/use-floating-position";
+import { useTocPopover } from "./model/use-toc-popover";
+import type { TocItem } from "./types";
 import styles from "./style.module.scss";
 
-type ArticleTocProps = {
-  items: TocItem[];
-  variant: "collapsible" | "floating";
-};
+export type { TocItem } from "./types";
 
-type TocListProps = {
+type SelectHeading = (event: MouseEvent<HTMLAnchorElement>, id: string) => void;
+
+type TocViewProps = {
   items: TocItem[];
   activeId: string;
-  onSelect: (event: MouseEvent<HTMLAnchorElement>, id: string) => void;
+  onSelect: SelectHeading;
 };
 
 const TITLE = "Содержание";
 
-const TocList = ({ items, activeId, onSelect }: TocListProps) => (
+const RING_RADIUS = 18;
+const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
+
+const TocList = ({ items, activeId, onSelect }: TocViewProps) => (
   <ol className={styles.list}>
     {items.map((item) => {
       const active = item.id === activeId;
@@ -42,9 +44,6 @@ const TocList = ({ items, activeId, onSelect }: TocListProps) => (
     })}
   </ol>
 );
-
-const RING_RADIUS = 18;
-const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
 
 const ContentsIcon = () => (
   <svg
@@ -77,24 +76,19 @@ const ProgressRing = ({ progress }: { progress: number }) => (
   </svg>
 );
 
-const CollapsibleToc = ({ items }: { items: TocItem[] }) => {
-  const { activeId, selectHeading } = useActiveHeading(items);
+const CollapsibleToc = ({ items, activeId, onSelect }: TocViewProps) => (
+  <details className={styles.collapsible}>
+    <summary className={styles.summary}>
+      <span>{TITLE}</span>
+      <ChevronIcon className={styles.chevron} />
+    </summary>
+    <nav className={styles.panel} aria-label={TITLE}>
+      <TocList items={items} activeId={activeId} onSelect={onSelect} />
+    </nav>
+  </details>
+);
 
-  return (
-    <details className={styles.collapsible}>
-      <summary className={styles.summary}>
-        <span>{TITLE}</span>
-        <ChevronIcon className={styles.chevron} />
-      </summary>
-      <nav className={styles.panel} aria-label={TITLE}>
-        <TocList items={items} activeId={activeId} onSelect={selectHeading} />
-      </nav>
-    </details>
-  );
-};
-
-const FloatingToc = ({ items }: { items: TocItem[] }) => {
-  const { activeId, selectHeading } = useActiveHeading(items);
+const FloatingToc = ({ items, activeId, onSelect }: TocViewProps) => {
   const { rootRef, position } = useFloatingPosition();
   const { open, popoverRef, show, leave, toggle, close } = useTocPopover();
 
@@ -102,7 +96,7 @@ const FloatingToc = ({ items }: { items: TocItem[] }) => {
   const progress = (activeIndex + 1) / items.length;
 
   const selectAndClose = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
-    selectHeading(event, id);
+    onSelect(event, id);
     close();
   };
 
@@ -139,7 +133,21 @@ const FloatingToc = ({ items }: { items: TocItem[] }) => {
   );
 };
 
-const ArticleToc = ({ items, variant }: ArticleTocProps) =>
-  variant === "collapsible" ? <CollapsibleToc items={items} /> : <FloatingToc items={items} />;
+type TableOfContentsProps = {
+  items: TocItem[];
+};
 
-export default ArticleToc;
+const TableOfContents = ({ items }: TableOfContentsProps) => {
+  const { activeId, selectHeading } = useActiveHeading(items);
+
+  if (items.length === 0) return null;
+
+  return (
+    <>
+      <CollapsibleToc items={items} activeId={activeId} onSelect={selectHeading} />
+      <FloatingToc items={items} activeId={activeId} onSelect={selectHeading} />
+    </>
+  );
+};
+
+export default TableOfContents;

@@ -234,6 +234,10 @@
 }
 
 @media (min-width: 1440px) {
+  .collapsible {
+    display: none;
+  }
+
   .floatingAnchor {
     display: contents;
   }

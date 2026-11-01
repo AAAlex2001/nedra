@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type MouseEvent } from "react";
-import type { TocItem } from "@/entities/article";
+import type { TocItem } from "../types";
 
 const READING_LINE = 140;
 

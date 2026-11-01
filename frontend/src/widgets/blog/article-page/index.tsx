@@ -13,7 +13,7 @@ import {
 import { ReactionBar } from "@/features/article-reactions";
 import { formatDate } from "@/shared/lib/date";
 import ShareButton from "@/shared/ui/share-button";
-import ArticleToc from "./ui/article-toc";
+import TableOfContents from "@/shared/ui/table-of-contents";
 import RequestWidget from "./ui/request-widget";
 import StickyAside from "./ui/sticky-aside";
 import styles from "./style.module.scss";
@@ -28,7 +28,6 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
   const sectionPath = SECTION_PATH[article.section];
   const [beforePromo, betweenBlocks, afterServices] = splitAtHeadings(article.content, [1, 3]);
 
-  const hasToc = article.toc.length > 0;
   const jsonLd = buildArticleJsonLd(article);
   const faqJsonLd = buildFaqJsonLd(article);
 
@@ -71,14 +70,8 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
       </header>
 
       <div className={styles.layout}>
-        <div className={styles.main} data-article-main>
-          {hasToc && (
-            <div className={styles.inlineToc}>
-              <ArticleToc items={article.toc} variant="collapsible" />
-            </div>
-          )}
-
-          {hasToc && <ArticleToc items={article.toc} variant="floating" />}
+        <div className={styles.main} data-toc-content>
+          <TableOfContents items={article.toc} />
 
           <div
             className={styles.content}

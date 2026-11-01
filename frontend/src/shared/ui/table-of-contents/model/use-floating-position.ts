@@ -20,7 +20,7 @@ export const useFloatingPosition = () => {
 
   useEffect(() => {
     const measure = () => {
-      const main = rootRef.current?.closest("[data-article-main]");
+      const main = rootRef.current?.closest("[data-toc-content]");
 
       if (!main || window.innerWidth < DESKTOP_WIDTH) {
         setPosition(HIDDEN);

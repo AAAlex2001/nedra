@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
 import SectionHeading from "@/shared/ui/section-heading";
+import TableOfContents, { type TocItem } from "@/shared/ui/table-of-contents";
 import type { LegalBlock, LegalDocument, LegalSection } from "./types";
 import styles from "./style.module.scss";
 
@@ -10,6 +11,22 @@ export { USER_AGREEMENT } from "./data/agreement";
 export { PERSONAL_DATA_CONSENT } from "./data/consent";
 
 const LINK_PATTERN = /\[([^\]]+)]\(([^)]+)\)/g;
+
+const sectionId = (section: LegalSection): string => {
+  const number = section.number.endsWith(".") ? section.number.slice(0, -1) : section.number;
+
+  return `razdel-${number}`;
+};
+
+const buildToc = (document: LegalDocument): TocItem[] => {
+  const items: TocItem[] = [];
+
+  for (const section of document.sections) {
+    if (section.title) items.push({ id: sectionId(section), title: section.title });
+  }
+
+  return items;
+};
 
 const renderText = (text: string): ReactNode[] => {
   const parts: ReactNode[] = [];
@@ -92,7 +109,7 @@ const LegalSectionContent = ({ section }: { section: LegalSection }) => {
   }
 
   return (
-    <section className={styles.section}>
+    <section id={sectionId(section)} className={styles.section}>
       <div className={styles.sectionHeading}>
         <span className={styles.sectionNumber}>{section.number}</span>
         <h2 className={styles.sectionTitle}>{section.title}</h2>
@@ -103,11 +120,13 @@ const LegalSectionContent = ({ section }: { section: LegalSection }) => {
   );
 };
 
-const LegalDocumentView =({ document }: { document: LegalDocument }) => (
+const LegalDocumentView = ({ document }: { document: LegalDocument }) => (
   <div className={styles.policy}>
     <SectionHeading title={document.title} />
 
-    <div className={styles.content}>
+    <div className={styles.content} data-toc-content>
+      <TableOfContents items={buildToc(document)} />
+
       {document.intro && (
         <div className={styles.section}>
           {document.intro.map((text) => (
