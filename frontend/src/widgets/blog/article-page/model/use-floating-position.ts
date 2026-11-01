@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const BUTTON_SIZE = 36;
-const TEXT_GAP = 16;
+const BUTTON_SIZE = 40;
+const TEXT_GAP = 12;
 const EDGE_GAP = 4;
 const DESKTOP_WIDTH = 1440;
 

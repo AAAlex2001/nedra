@@ -71,10 +71,6 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
       </header>
 
       <div className={styles.layout}>
-        <StickyAside className={styles.widget}>
-          <RequestWidget />
-        </StickyAside>
-
         <div className={styles.main} data-article-main>
           {hasToc && (
             <div className={styles.inlineToc}>
@@ -126,6 +122,10 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
 
           <ReactionBar slug={article.slug} initial={initialStats} />
         </div>
+
+        <StickyAside className={styles.widget}>
+          <RequestWidget />
+        </StickyAside>
       </div>
     </article>
   );
