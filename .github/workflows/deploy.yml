@@ -152,6 +152,27 @@ jobs:
             exit 1
           fi
 
+          echo "Перезагрузка nginx: контейнеры пересозданы и могли получить новые адреса"
+          docker compose exec -T nginx nginx -s reload
+
+          site_ok=0
+          for _ in $(seq 1 30); do
+            if curl --fail --silent --show-error --output /dev/null \
+              --resolve nedra-npi.ru:443:127.0.0.1 https://nedra-npi.ru/; then
+              site_ok=1
+              break
+            fi
+            sleep 2
+          done
+
+          if [ "$site_ok" -ne 1 ]; then
+            echo "Сайт не открывается через nginx. Логи frontend:"
+            docker compose logs --tail 80 frontend
+            echo "Логи nginx:"
+            docker compose logs --tail 30 nginx
+            exit 1
+          fi
+
           docker compose ps
           docker image prune -f
 
