@@ -42,10 +42,10 @@
   min-width: 0;
   padding: 8px 12px 8px 8px;
   background-size: 200% 100%;
-  background-position: 100% 0;
+  background-position: 0 0;
   transition: background-position 0.5s ease;
   &:hover {
-    background-position: 0 0;
+    background-position: 100% 0;
   }
 }
 
@@ -53,11 +53,13 @@
   padding-right: 24px;
   background-image: linear-gradient(
     90deg,
-    #f6982747,
-    #f698272e 50%,
-    #f698270f 80%,
-    #f6982705
+    #f698272e,
+    #f698270f 30%,
+    #f6982705 50%,
+    #f698270f 70%,
+    #f698272e
   );
+  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
 }
 
 .audit {
@@ -66,10 +68,11 @@
   padding-left: 40px;
   background-image: linear-gradient(
     90deg,
-    #739c634d,
-    #739c6338 50%,
-    #739c631a 77%,
-    #739c630a
+    #739c6338,
+    #739c631a 27.5%,
+    #739c630a 50%,
+    #739c631a 72.5%,
+    #739c6338
   );
   clip-path: polygon(28px 0, 100% 0, 100% 100%, 0 100%);
 }
