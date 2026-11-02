@@ -14,6 +14,7 @@ import { ReactionBar } from "@/features/article-reactions";
 import { formatDate } from "@/shared/lib/date";
 import ShareButton from "@/shared/ui/share-button";
 import TableOfContents from "@/shared/ui/table-of-contents";
+import DocumentLinks from "./ui/document-links";
 import RequestWidget from "./ui/request-widget";
 import StickyAside from "./ui/sticky-aside";
 import styles from "./style.module.scss";
@@ -72,6 +73,7 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
       <div className={styles.layout}>
         <div className={styles.main} data-toc-content>
           <TableOfContents items={article.toc} />
+          <DocumentLinks />
 
           <div
             className={styles.content}

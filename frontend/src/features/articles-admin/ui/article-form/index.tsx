@@ -4,6 +4,7 @@ import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
 import {
   SECTION_TITLE,
   articlePath,
@@ -15,6 +16,12 @@ import Button from "@/shared/ui/button";
 import Spinner from "@/shared/ui/spinner";
 import TextField from "@/shared/ui/text-field";
 import { useArticleEditor } from "../../model/use-article-editor";
+import {
+  DOCUMENT_ACCEPT,
+  documentSnippet,
+  useDocumentUploads,
+  type UploadedDocument,
+} from "../../model/use-document-uploads";
 import styles from "./style.module.scss";
 
 type ArticleFormProps = {
@@ -34,6 +41,18 @@ const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => 
     section,
   );
   const { fields, status, uploading, error } = state;
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+
+  const insertDocument = (item: UploadedDocument) => {
+    const textarea = contentRef.current;
+    const position = textarea ? textarea.selectionStart : fields.content.length;
+    const before = fields.content.slice(0, position);
+    const after = fields.content.slice(position);
+
+    changeField("content", `${before}${documentSnippet(item)}${after}`);
+  };
+
+  const documents = useDocumentUploads(basePath, insertDocument);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -80,6 +99,7 @@ const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => 
               Текст статьи (HTML)<span className={styles.required}> *</span>
             </span>
             <textarea
+              ref={contentRef}
               className={styles.code}
               rows={24}
               required
@@ -148,6 +168,48 @@ const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => 
               value={fields.cover_image}
               onChange={(value) => changeField("cover_image", value)}
             />
+          </div>
+
+          <div className={styles.panel}>
+            <span className={styles.label}>Документы</span>
+
+            <label className={styles.upload}>
+              {documents.uploading ? <Spinner size={14} /> : "Загрузить документ"}
+              <input
+                type="file"
+                accept={DOCUMENT_ACCEPT}
+                disabled={documents.uploading}
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  if (file) void documents.upload(file);
+                  event.target.value = "";
+                }}
+              />
+            </label>
+
+            <span className={styles.hint}>
+              PDF, Word или Excel до 25 МБ. Ссылка вставится в текст туда, где стоит курсор, а
+              на сайте покажется карточкой с просмотром.
+            </span>
+
+            {documents.error && <span className={styles.uploadError}>{documents.error}</span>}
+
+            {documents.items.length > 0 && (
+              <ul className={styles.documents}>
+                {documents.items.map((item) => (
+                  <li key={item.url} className={styles.document}>
+                    <span className={styles.documentTitle}>{item.title}</span>
+                    <button
+                      type="button"
+                      className={styles.documentInsert}
+                      onClick={() => insertDocument(item)}
+                    >
+                      Вставить ещё раз
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className={styles.panel}>

@@ -69,6 +69,16 @@ export const uploadImage = (basePath: string, file: File) => {
   });
 };
 
+export const uploadDocument = (basePath: string, file: File) => {
+  const form = new FormData();
+  form.append("file", file);
+
+  return requestJson<{ url: string }>(`${basePath}/api/uploads/documents`, {
+    method: "POST",
+    body: form,
+  });
+};
+
 export const fetchTags = (basePath: string) =>
   requestJson<TagAdmin[]>(`${basePath}/api/tags`, { cache: "no-store" });
 

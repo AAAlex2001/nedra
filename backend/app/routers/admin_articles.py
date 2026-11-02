@@ -22,6 +22,7 @@ from app.schemas.article import (
     TagCreateSchema,
     UploadResultSchema,
 )
+from app.services.articles.documents import save_article_document
 from app.services.articles.exceptions import TagNotFoundError
 from app.services.articles.images import save_article_image
 from app.services.files.storage import UploadError
@@ -115,6 +116,18 @@ async def upload_image(file: UploadFile) -> UploadResultSchema:
 
     try:
         url = await save_article_image(file)
+    except UploadError as error:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
+
+    return UploadResultSchema(url=url)
+
+
+@router.post("/uploads/documents", status_code=status.HTTP_201_CREATED)
+async def upload_document(file: UploadFile) -> UploadResultSchema:
+    """Загрузка документа для текста статьи: PDF, Word или Excel."""
+
+    try:
+        url = await save_article_document(file)
     except UploadError as error:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(error)) from error
 

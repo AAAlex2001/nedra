@@ -7,6 +7,9 @@ const backendOrigin = (process.env.API_INTERNAL_URL ?? "http://localhost:8000/ap
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  experimental: {
+    proxyClientMaxBodySize: "30mb",
+  },
   images: {
     localPatterns: [
       { pathname: "/news/**" },

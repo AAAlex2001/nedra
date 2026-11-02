@@ -4,6 +4,10 @@ import nh3
 from bs4 import BeautifulSoup
 from slugify import slugify
 
+from app.services.articles.documents import document_kind
+
+DOCUMENT_LINK_CLASS = "document-link"
+
 ALLOWED_TAGS = {
     "p", "br", "hr",
     "h2", "h3", "h4",
@@ -45,8 +49,23 @@ def sanitize_html(raw: str) -> str:
     )
 
 
+def mark_document_links(soup: BeautifulSoup) -> None:
+    """Пометить ссылки на PDF, Word и Excel, чтобы сайт показал их карточками документов.
+
+    Класс и data-kind ставятся после очистки HTML, поэтому санитайзер их не вырезает.
+    """
+
+    for link in soup.find_all("a"):
+        kind = document_kind(link.get("href", ""))
+        if kind is None:
+            continue
+
+        link["class"] = DOCUMENT_LINK_CLASS
+        link["data-kind"] = kind
+
+
 def prepare_content(raw: str) -> tuple[str, list[dict[str, str]]]:
-    """Очистить HTML и собрать оглавление из заголовков H2.
+    """Очистить HTML, пометить ссылки на документы и собрать оглавление из заголовков H2.
 
     Каждому H2 проставляется id-якорь, чтобы ссылки из оглавления вели на него.
     Якоря уникальны: при совпадении текста заголовков добавляется суффикс -2, -3.
@@ -55,6 +74,7 @@ def prepare_content(raw: str) -> tuple[str, list[dict[str, str]]]:
 
     clean_html = sanitize_html(raw)
     soup = BeautifulSoup(clean_html, "html.parser")
+    mark_document_links(soup)
     toc: list[dict[str, str]] = []
     used_anchors: set[str] = set()
 
