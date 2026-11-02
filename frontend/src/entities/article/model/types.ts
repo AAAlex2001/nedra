@@ -35,10 +35,24 @@ export type ArticleSeo = {
   seo_keywords: string | null;
 };
 
+export type ArticleDocumentKind = "pdf" | "word" | "excel";
+
+export type ArticleDocument = {
+  title: string;
+  url: string;
+  kind: ArticleDocumentKind;
+};
+
+export type ArticleDocumentInput = {
+  title: string;
+  url: string;
+};
+
 export type Article = ArticleCard &
   ArticleSeo & {
     content: string;
     toc: TocItem[];
+    documents: ArticleDocument[];
     updated_at: string;
   };
 
@@ -70,6 +84,7 @@ export type ArticleAdmin = ArticleAdminCard &
   ArticleSeo & {
     content: string;
     toc: TocItem[];
+    documents: ArticleDocument[];
   };
 
 export type ArticlePayload = ArticleSeo & {
@@ -80,6 +95,7 @@ export type ArticlePayload = ArticleSeo & {
   cover_image: string | null;
   content: string;
   tag_ids: number[];
+  documents: ArticleDocumentInput[];
   published: boolean;
   published_at: string | null;
 };

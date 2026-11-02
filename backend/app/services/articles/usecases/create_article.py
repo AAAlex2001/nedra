@@ -3,6 +3,7 @@
 from app.models.article import Article
 from app.schemas.article import ArticleCreateSchema
 from app.services.articles.content import make_slug, prepare_content
+from app.services.articles.documents import build_documents
 from app.services.articles.publishing import apply_published
 from app.services.articles.repo import ArticleRepository
 from app.services.articles.tags import TagRepository
@@ -36,6 +37,7 @@ class CreateArticleUseCase:
             cover_image=data.cover_image,
             content=content,
             toc=toc,
+            documents=build_documents(data.documents),
             seo_title=data.seo_title,
             seo_description=data.seo_description,
             seo_keywords=data.seo_keywords,

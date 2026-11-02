@@ -12,6 +12,7 @@ from sqlalchemy import (
     Table,
     Text,
     func,
+    text,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -42,6 +43,9 @@ class Article(Base):
     content: Mapped[str] = mapped_column(Text)
     toc: Mapped[list[dict[str, str]]] = mapped_column(
         JSON().with_variant(JSONB, "postgresql"), default=list
+    )
+    documents: Mapped[list[dict[str, str]]] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"), default=list, server_default=text("'[]'")
     )
 
     seo_title: Mapped[str | None] = mapped_column(String(255))

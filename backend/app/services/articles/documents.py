@@ -1,4 +1,4 @@
-"""Документы к статьям: загрузка в media и распознавание ссылок на них в тексте."""
+"""Документы к статьям: загрузка в media и сборка списка приложенных файлов."""
 
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlparse
@@ -7,6 +7,7 @@ from uuid import uuid4
 from fastapi import UploadFile
 
 from app.config import get_settings
+from app.schemas.article import ArticleDocumentInSchema
 from app.services.files.storage import MEGABYTE, UploadError, write_limited
 
 DOCUMENT_KINDS = {
@@ -26,6 +27,21 @@ def document_kind(href: str) -> str | None:
     extension = PurePosixPath(path).suffix.lower()
 
     return DOCUMENT_KINDS.get(extension)
+
+
+def build_documents(items: list[ArticleDocumentInSchema]) -> list[dict[str, str]]:
+    """Список документов для хранения в статье: подпись, путь и тип файла."""
+
+    documents: list[dict[str, str]] = []
+
+    for item in items:
+        kind = document_kind(item.url)
+        if kind is None:
+            continue
+
+        documents.append({"title": item.title, "url": item.url, "kind": kind})
+
+    return documents
 
 
 async def save_article_document(file: UploadFile) -> str:

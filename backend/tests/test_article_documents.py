@@ -1,7 +1,12 @@
-"""Ссылки на документы в тексте статьи помечаются для карточек на сайте."""
+"""Документы, приложенные к статье: тип по расширению и проверка пути."""
 
-from app.services.articles.content import prepare_content
-from app.services.articles.documents import document_kind
+import pytest
+from pydantic import ValidationError
+
+from app.schemas.article import ArticleDocumentInSchema
+from app.services.articles.documents import build_documents, document_kind
+
+FILE_ID = "0123456789abcdef0123456789abcdef"
 
 
 def test_document_kind_by_extension():
@@ -11,15 +16,18 @@ def test_document_kind_by_extension():
     assert document_kind("/novosti/statya") is None
 
 
-def test_prepare_content_marks_only_document_links():
-    raw = (
-        '<p><a href="/media/articles/documents/plan.pdf" class="evil" onclick="x()">План</a></p>'
-        '<p><a href="/novosti/statya">Статья</a></p>'
-    )
+def test_build_documents_adds_kind():
+    items = [
+        ArticleDocumentInSchema(title="Файл запроса", url=f"/media/articles/documents/{FILE_ID}.pdf"),
+        ArticleDocumentInSchema(title="Смета", url=f"/media/articles/documents/{FILE_ID}.xlsx"),
+    ]
 
-    html, _ = prepare_content(raw)
+    assert build_documents(items) == [
+        {"title": "Файл запроса", "url": f"/media/articles/documents/{FILE_ID}.pdf", "kind": "pdf"},
+        {"title": "Смета", "url": f"/media/articles/documents/{FILE_ID}.xlsx", "kind": "excel"},
+    ]
 
-    assert 'class="document-link"' in html
-    assert 'data-kind="pdf"' in html
-    assert "onclick" not in html
-    assert html.count("document-link") == 1
+
+def test_document_url_must_come_from_upload():
+    with pytest.raises(ValidationError):
+        ArticleDocumentInSchema(title="Чужой файл", url="https://example.com/file.pdf")

@@ -25,6 +25,27 @@ export const editorReducer = (state: EditorState, action: EditorAction): EditorS
       return { ...state, status: "idle", fields: { ...state.fields, tag_ids } };
     }
 
+    case "document/add":
+      return {
+        ...state,
+        status: "idle",
+        fields: { ...state.fields, documents: [...state.fields.documents, action.document] },
+      };
+
+    case "document/rename": {
+      const documents = state.fields.documents.map((item, index) =>
+        index === action.index ? { ...item, title: action.title } : item,
+      );
+
+      return { ...state, status: "idle", fields: { ...state.fields, documents } };
+    }
+
+    case "document/remove": {
+      const documents = state.fields.documents.filter((item, index) => index !== action.index);
+
+      return { ...state, status: "idle", fields: { ...state.fields, documents } };
+    }
+
     case "upload/start":
       return { ...state, uploading: true, error: null };
 

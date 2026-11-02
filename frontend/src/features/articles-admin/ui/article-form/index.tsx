@@ -4,7 +4,6 @@ import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
 import {
   SECTION_TITLE,
   articlePath,
@@ -16,12 +15,7 @@ import Button from "@/shared/ui/button";
 import Spinner from "@/shared/ui/spinner";
 import TextField from "@/shared/ui/text-field";
 import { useArticleEditor } from "../../model/use-article-editor";
-import {
-  DOCUMENT_ACCEPT,
-  documentSnippet,
-  useDocumentUploads,
-  type UploadedDocument,
-} from "../../model/use-document-uploads";
+import { DOCUMENT_ACCEPT, useDocumentUploads } from "../../model/use-document-uploads";
 import styles from "./style.module.scss";
 
 type ArticleFormProps = {
@@ -35,24 +29,11 @@ const SECTIONS: ArticleSection[] = ["blog", "news"];
 
 const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => {
   const router = useRouter();
-  const { state, changeField, toggleTag, uploadCover, save } = useArticleEditor(
-    basePath,
-    article,
-    section,
-  );
+  const editor = useArticleEditor(basePath, article, section);
+  const { state, changeField, toggleTag, uploadCover, save } = editor;
   const { fields, status, uploading, error } = state;
-  const contentRef = useRef<HTMLTextAreaElement>(null);
 
-  const insertDocument = (item: UploadedDocument) => {
-    const textarea = contentRef.current;
-    const position = textarea ? textarea.selectionStart : fields.content.length;
-    const before = fields.content.slice(0, position);
-    const after = fields.content.slice(position);
-
-    changeField("content", `${before}${documentSnippet(item)}${after}`);
-  };
-
-  const documents = useDocumentUploads(basePath, insertDocument);
+  const documents = useDocumentUploads(basePath, editor.addDocument);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -99,7 +80,6 @@ const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => 
               Текст статьи (HTML)<span className={styles.required}> *</span>
             </span>
             <textarea
-              ref={contentRef}
               className={styles.code}
               rows={24}
               required
@@ -188,23 +168,28 @@ const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => 
             </label>
 
             <span className={styles.hint}>
-              PDF, Word или Excel до 25 МБ. Ссылка вставится в текст туда, где стоит курсор, а
-              на сайте покажется карточкой с просмотром.
+              PDF, Word или Excel до 25 МБ. На сайте покажутся в конце статьи перед фото в блоке
+              «Прикреплённые документы».
             </span>
 
             {documents.error && <span className={styles.uploadError}>{documents.error}</span>}
 
-            {documents.items.length > 0 && (
+            {fields.documents.length > 0 && (
               <ul className={styles.documents}>
-                {documents.items.map((item) => (
+                {fields.documents.map((item, index) => (
                   <li key={item.url} className={styles.document}>
-                    <span className={styles.documentTitle}>{item.title}</span>
+                    <TextField
+                      label="Подпись"
+                      maxLength={255}
+                      value={item.title}
+                      onChange={(value) => editor.renameDocument(index, value)}
+                    />
                     <button
                       type="button"
-                      className={styles.documentInsert}
-                      onClick={() => insertDocument(item)}
+                      className={styles.documentRemove}
+                      onClick={() => editor.removeDocument(index)}
                     >
-                      Вставить ещё раз
+                      Удалить
                     </button>
                   </li>
                 ))}

@@ -1,4 +1,9 @@
-import type { ArticleAdminCard, ArticleSection, TagAdmin } from "@/entities/article";
+import type {
+  ArticleAdminCard,
+  ArticleDocumentInput,
+  ArticleSection,
+  TagAdmin,
+} from "@/entities/article";
 
 export type EditorFields = {
   title: string;
@@ -8,6 +13,7 @@ export type EditorFields = {
   cover_image: string;
   content: string;
   tag_ids: number[];
+  documents: ArticleDocumentInput[];
   published: boolean;
   published_at: string;
   seo_title: string;
@@ -27,6 +33,9 @@ export type EditorState = {
 export type EditorAction =
   | { type: "field/change"; field: keyof EditorFields; value: string | boolean }
   | { type: "tag/toggle"; id: number }
+  | { type: "document/add"; document: ArticleDocumentInput }
+  | { type: "document/rename"; index: number; title: string }
+  | { type: "document/remove"; index: number }
   | { type: "upload/start" }
   | { type: "upload/done"; url: string }
   | { type: "upload/error"; message: string }

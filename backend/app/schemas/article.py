@@ -49,6 +49,26 @@ class ArticleCardSchema(BaseModel):
     tags: list[TagSchema] = Field(default_factory=list, description="Теги статьи")
 
 
+DOCUMENT_URL_PATTERN = r"^/media/articles/documents/[0-9a-f]{32}\.(pdf|doc|docx|xls|xlsx)$"
+
+
+class ArticleDocumentInSchema(BaseModel):
+    """Документ, приложенный к статье: подпись и путь к загруженному файлу."""
+
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    title: str = Field(..., min_length=1, max_length=255, description="Подпись документа")
+    url: str = Field(..., pattern=DOCUMENT_URL_PATTERN, description="Путь из загрузки документа")
+
+
+class ArticleDocumentSchema(BaseModel):
+    """Документ статьи для показа на сайте."""
+
+    title: str = Field(..., description="Подпись документа")
+    url: str = Field(..., description="Путь к файлу")
+    kind: Literal["pdf", "word", "excel"] = Field(..., description="Тип файла")
+
+
 class ArticleSeoSchema(BaseModel):
     """SEO-поля статьи. Пустые значения подменяются заголовком и описанием на фронте."""
 
@@ -63,6 +83,9 @@ class ArticleSchema(ArticleCardSchema, ArticleSeoSchema):
     content: str = Field(..., description="HTML-контент статьи")
     toc: list[dict[str, str]] = Field(
         default_factory=list, description="Оглавление из заголовков H2"
+    )
+    documents: list[ArticleDocumentSchema] = Field(
+        default_factory=list, description="Приложенные документы"
     )
     updated_at: datetime = Field(..., description="Дата последнего изменения для dateModified")
 
@@ -116,6 +139,9 @@ class ArticleAdminSchema(ArticleAdminCardSchema, ArticleSeoSchema):
 
     content: str = Field(..., description="HTML-контент статьи")
     toc: list[dict[str, str]] = Field(default_factory=list, description="Оглавление")
+    documents: list[ArticleDocumentSchema] = Field(
+        default_factory=list, description="Приложенные документы"
+    )
 
 
 class ArticleCreateSchema(BaseModel):
@@ -133,6 +159,9 @@ class ArticleCreateSchema(BaseModel):
     cover_image: str | None = Field(None, max_length=500, description="Путь к обложке")
     content: str = Field(..., min_length=1, description="HTML-контент")
     tag_ids: list[int] = Field(default_factory=list, description="ID тегов")
+    documents: list[ArticleDocumentInSchema] = Field(
+        default_factory=list, max_length=20, description="Приложенные документы"
+    )
     published: bool = Field(False, description="Опубликовать сразу")
     published_at: datetime | None = Field(
         None,
@@ -155,6 +184,7 @@ class ArticleUpdateSchema(BaseModel):
     cover_image: str | None = Field(None, max_length=500)
     content: str | None = Field(None, min_length=1)
     tag_ids: list[int] | None = None
+    documents: list[ArticleDocumentInSchema] | None = Field(None, max_length=20)
     published: bool | None = None
     published_at: datetime | None = None
     seo_title: str | None = Field(None, max_length=255)

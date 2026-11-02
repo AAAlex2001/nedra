@@ -155,76 +155,6 @@
   text-decoration: underline;
 }
 
-.content :global(a.document-link) {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 16px;
-
-  font-weight: 600;
-  text-align: left;
-  text-decoration: none;
-
-  color: #0b0b0b;
-  background: #f8f9fb;
-  border: 1px solid #eceef3;
-  border-radius: 14px;
-
-  transition: border-color 0.2s ease;
-}
-
-.content :global(a.document-link):hover {
-  border-color: #f69827;
-}
-
-.content :global(a.document-link)::before {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-
-  width: 44px;
-  height: 44px;
-
-  font-weight: 800;
-  font-size: 12px;
-  line-height: 1;
-
-  border-radius: 10px;
-}
-
-.content :global(a.document-link[data-kind="pdf"])::before {
-  content: "PDF";
-
-  color: #d93a3a;
-  background: #fdeceb;
-}
-
-.content :global(a.document-link[data-kind="word"])::before {
-  content: "DOC";
-
-  color: #2b5fd9;
-  background: #e8effd;
-}
-
-.content :global(a.document-link[data-kind="excel"])::before {
-  content: "XLS";
-
-  color: #1e7b3c;
-  background: #e6f4ea;
-}
-
-.content :global(a.document-link)::after {
-  content: "Открыть";
-  flex: none;
-  margin-left: auto;
-
-  font-weight: 500;
-  font-size: 14px;
-
-  color: #f69827;
-}
-
 .content strong {
   font-weight: 700;
 }
@@ -286,6 +216,16 @@
   margin: 28px 0;
   border: 0;
   border-top: 1px solid #e3e6ec;
+}
+
+.documents {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.documents .content h2 {
+  margin-top: 0;
 }
 
 .cover {

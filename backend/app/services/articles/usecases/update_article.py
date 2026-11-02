@@ -3,6 +3,7 @@
 from app.models.article import Article
 from app.schemas.article import ArticleUpdateSchema
 from app.services.articles.content import make_slug, prepare_content
+from app.services.articles.documents import build_documents
 from app.services.articles.publishing import apply_published
 from app.services.articles.repo import ArticleRepository
 from app.services.articles.tags import TagRepository
@@ -50,6 +51,9 @@ class UpdateArticleUseCase:
 
         if "tag_ids" in changes:
             article.tags = await self.tags.get_by_ids(changes["tag_ids"] or [])
+
+        if data.documents is not None:
+            article.documents = build_documents(data.documents)
 
         if "published" in changes:
             apply_published(article, changes["published"])

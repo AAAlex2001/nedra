@@ -1,11 +1,24 @@
 "use client";
 
 import { useReducer } from "react";
-import type { ArticleAdmin, ArticlePayload, ArticleSection } from "@/entities/article";
+import type {
+  ArticleAdmin,
+  ArticleDocumentInput,
+  ArticlePayload,
+  ArticleSection,
+} from "@/entities/article";
 import { toDateTimeInput } from "@/shared/lib/date";
 import { createArticle, updateArticle, uploadImage } from "../api/admin-articles";
 import { editorReducer } from "./reducers";
 import type { EditorFields } from "./types";
+
+const DEFAULT_DOCUMENT_TITLE = "Документ";
+
+const toDocumentInputs = (article: ArticleAdmin | null): ArticleDocumentInput[] => {
+  const documents = article?.documents ?? [];
+
+  return documents.map((item) => ({ title: item.title, url: item.url }));
+};
 
 const toFields = (article: ArticleAdmin | null, section: ArticleSection): EditorFields => ({
   title: article?.title ?? "",
@@ -15,6 +28,7 @@ const toFields = (article: ArticleAdmin | null, section: ArticleSection): Editor
   cover_image: article?.cover_image ?? "",
   content: article?.content ?? "",
   tag_ids: article?.tags.map((tag) => tag.id) ?? [],
+  documents: toDocumentInputs(article),
   published: Boolean(article?.published_at),
   published_at: toDateTimeInput(article?.published_at),
   seo_title: article?.seo_title ?? "",
@@ -36,6 +50,10 @@ const toPayload = (fields: EditorFields): ArticlePayload => {
     cover_image: fields.cover_image.trim() || null,
     content: fields.content,
     tag_ids: fields.tag_ids,
+    documents: fields.documents.map((item) => ({
+      title: item.title.trim() || DEFAULT_DOCUMENT_TITLE,
+      url: item.url,
+    })),
     published: fields.published,
     published_at: publishedAt,
     seo_title: fields.seo_title.trim() || null,
@@ -63,6 +81,14 @@ export const useArticleEditor = (
     dispatch({ type: "field/change", field, value });
 
   const toggleTag = (id: number) => dispatch({ type: "tag/toggle", id });
+
+  const addDocument = (item: ArticleDocumentInput) =>
+    dispatch({ type: "document/add", document: item });
+
+  const renameDocument = (index: number, title: string) =>
+    dispatch({ type: "document/rename", index, title });
+
+  const removeDocument = (index: number) => dispatch({ type: "document/remove", index });
 
   const uploadCover = async (file: File) => {
     dispatch({ type: "upload/start" });
@@ -96,5 +122,14 @@ export const useArticleEditor = (
     }
   };
 
-  return { state, changeField, toggleTag, uploadCover, save };
+  return {
+    state,
+    changeField,
+    toggleTag,
+    addDocument,
+    renameDocument,
+    removeDocument,
+    uploadCover,
+    save,
+  };
 };

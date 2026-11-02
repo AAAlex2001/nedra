@@ -14,7 +14,7 @@ import { ReactionBar } from "@/features/article-reactions";
 import { formatDate } from "@/shared/lib/date";
 import ShareButton from "@/shared/ui/share-button";
 import TableOfContents from "@/shared/ui/table-of-contents";
-import DocumentLinks from "./ui/document-links";
+import ArticleDocuments from "./ui/article-documents";
 import RequestWidget from "./ui/request-widget";
 import StickyAside from "./ui/sticky-aside";
 import styles from "./style.module.scss";
@@ -25,9 +25,14 @@ type ArticlePageProps = {
   middle?: ReactNode;
 };
 
+const DOCUMENTS_HEADING = { id: "prikreplennye-dokumenty", title: "Прикреплённые документы" };
+
 const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
   const sectionPath = SECTION_PATH[article.section];
   const [beforePromo, betweenBlocks, afterServices] = splitAtHeadings(article.content, [1, 3]);
+
+  const hasDocuments = article.documents.length > 0;
+  const tocItems = hasDocuments ? article.toc.concat(DOCUMENTS_HEADING) : article.toc;
 
   const jsonLd = buildArticleJsonLd(article);
   const faqJsonLd = buildFaqJsonLd(article);
@@ -72,8 +77,7 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
 
       <div className={styles.layout}>
         <div className={styles.main} data-toc-content>
-          <TableOfContents items={article.toc} />
-          <DocumentLinks />
+          <TableOfContents items={tocItems} />
 
           <div
             className={styles.content}
@@ -96,6 +100,15 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
               className={styles.content}
               dangerouslySetInnerHTML={{ __html: afterServices }}
             />
+          )}
+
+          {hasDocuments && (
+            <section className={styles.documents}>
+              <div className={styles.content}>
+                <h2 id={DOCUMENTS_HEADING.id}>{DOCUMENTS_HEADING.title}</h2>
+              </div>
+              <ArticleDocuments documents={article.documents} />
+            </section>
           )}
 
           {article.cover_image && (
