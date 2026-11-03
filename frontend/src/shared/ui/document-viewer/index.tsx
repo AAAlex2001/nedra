@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@/shared/ui/icons";
 import styles from "./style.module.scss";
@@ -29,23 +29,35 @@ const viewerSource = (file: ViewedDocument): string => {
 };
 
 const DocumentViewer = ({ file, onClose }: DocumentViewerProps) => {
-  useEffect(() => {
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-    document.addEventListener("keydown", closeOnEscape);
+  useEffect(() => {
+    const previousFocus = document.activeElement;
+    const dialog = dialogRef.current;
+    dialog?.showModal();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     return () => {
-      document.removeEventListener("keydown", closeOnEscape);
+      dialog?.close();
       document.body.style.overflow = previousOverflow;
+      if (previousFocus instanceof HTMLElement) previousFocus.focus();
     };
-  }, [onClose]);
+  }, []);
 
   return createPortal(
-    <div className={styles.overlay} role="dialog" aria-modal="true" aria-label={file.title}>
+    <dialog
+      ref={dialogRef}
+      className={styles.overlay}
+      aria-label={file.title}
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
       <div className={styles.window}>
         <div className={styles.head}>
           <span className={styles.title}>{file.title}</span>
@@ -54,10 +66,7 @@ const DocumentViewer = ({ file, onClose }: DocumentViewerProps) => {
             <a className={styles.action} href={file.href} download>
               Скачать
             </a>
-            <a className={styles.action} href={file.href} target="_blank" rel="noopener noreferrer">
-              В новой вкладке
-            </a>
-            <button type="button" className={styles.close} aria-label="Закрыть" onClick={onClose}>
+            <button type="button" className={styles.close} aria-label="Закрыть" autoFocus onClick={onClose}>
               <CloseIcon className={styles.closeIcon} />
             </button>
           </div>
@@ -65,7 +74,7 @@ const DocumentViewer = ({ file, onClose }: DocumentViewerProps) => {
 
         <iframe className={styles.frame} src={viewerSource(file)} title={file.title} />
       </div>
-    </div>,
+    </dialog>,
     document.body,
   );
 };

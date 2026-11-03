@@ -10,9 +10,10 @@ type ArticleDocumentsProps = {
 };
 
 const extensionOf = (url: string): string => {
-  const dotIndex = url.lastIndexOf(".");
+  const pathname = url.split(/[?#]/, 1)[0];
+  const dotIndex = pathname.lastIndexOf(".");
 
-  return url.slice(dotIndex + 1).toUpperCase();
+  return pathname.slice(dotIndex + 1).toUpperCase();
 };
 
 const FileIcon = () => (
@@ -40,11 +41,12 @@ const ArticleDocuments = ({ documents }: ArticleDocumentsProps) => {
       <ul className={styles.list}>
         {documents.map((item) => (
           <li key={item.url} className={styles.item}>
-            <span className={styles.title}>{item.title}</span>
             <button
               type="button"
               className={styles.tile}
               aria-label={`Открыть документ «${item.title}»`}
+              aria-haspopup="dialog"
+              title={item.title}
               onClick={() => setFile({ title: item.title, href: item.url, kind: item.kind })}
             >
               <FileIcon />

@@ -1,25 +1,15 @@
 .list {
   display: flex;
-  flex-direction: column;
-  gap: 18px;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
 
   list-style: none;
 }
 
 .item {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.title {
-  font-family: "Manrope";
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #0b0b0b;
 }
 
 .tile {
@@ -33,10 +23,10 @@
   width: 64px;
   height: 64px;
 
-  color: #9aa0ad;
-  background: #f8f9fb;
-  border: 1px solid #fde3c2;
-  border-radius: 12px;
+  color: #cbd0d6;
+  background: #f6f6f6;
+  border: 1px solid #ffd099;
+  border-radius: 8px;
   cursor: pointer;
 
   transition:

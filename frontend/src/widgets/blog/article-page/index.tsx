@@ -25,7 +25,10 @@ type ArticlePageProps = {
   middle?: ReactNode;
 };
 
-const DOCUMENTS_HEADING = { id: "prikreplennye-dokumenty", title: "Прикреплённые документы" };
+const DOCUMENTS_HEADING = {
+  id: "prikreplennye-dokumenty",
+  title: "Прикрепленные документы",
+};
 
 const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
   const sectionPath = SECTION_PATH[article.section];
@@ -103,7 +106,7 @@ const ArticlePage = ({ article, promo, middle }: ArticlePageProps) => {
           )}
 
           {hasDocuments && (
-            <section className={styles.documents}>
+            <section className={styles.documents} aria-labelledby={DOCUMENTS_HEADING.id}>
               <div className={styles.content}>
                 <h2 id={DOCUMENTS_HEADING.id}>{DOCUMENTS_HEADING.title}</h2>
               </div>
