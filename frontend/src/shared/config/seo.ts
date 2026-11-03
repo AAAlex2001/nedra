@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { COMPANY_CONTACTS } from "./company";
 
 /**
- * ВАЖНО: замените на реальный домен после деплоя.
- * От него зависят canonical-ссылки, sitemap, robots и Open Graph.
+ * Основной домен: www и HTTP перенаправляются сюда в deploy/nginx/nedra.conf.
+ * Его используют canonical-ссылки, sitemap, robots и Open Graph.
  */
 export const SITE_URL = "https://nedra-npi.ru";
 
