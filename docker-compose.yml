@@ -51,7 +51,7 @@ services:
         condition: service_healthy
     command: >
       sh -c "alembic upgrade head &&
-             uvicorn app.main:app --host 0.0.0.0 --port 8000"
+             uvicorn src.main:create_app --factory --host 0.0.0.0 --port 8000"
     volumes:
       - media:/app/media
       - private:/app/private
