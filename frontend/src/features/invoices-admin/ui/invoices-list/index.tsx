@@ -42,7 +42,7 @@ const InvoiceRow = ({ invoice, pending, onConfirm }: InvoiceRowProps) => {
       )}
 
       <p className={styles.meta}>
-        Заявка №{invoice.expertise_id} · {INVOICE_STAGE_LABELS[invoice.stage]} ·{" "}
+        Заявка №{(invoice.audit_id ?? invoice.expertise_id)} · {INVOICE_STAGE_LABELS[invoice.stage]} ·{" "}
         {formatRequestDate(invoice.created_at)}
       </p>
 

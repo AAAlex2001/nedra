@@ -11,7 +11,7 @@ type TextFieldProps = {
   minLength?: number;
   maxLength?: number;
   min?: string;
-  inputMode?: "text" | "numeric" | "tel" | "email";
+  inputMode?: "text" | "numeric" | "decimal" | "tel" | "email";
   autoComplete?: string;
   multiline?: boolean;
   rows?: number;

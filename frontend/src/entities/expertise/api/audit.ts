@@ -1,3 +1,4 @@
+import { fetchAudit } from "./read-audit";
 import { API_URL, readErrorMessage } from "@/shared/api";
 import type {
   AuditChecklistItem,
@@ -12,7 +13,7 @@ const AUDIT_URL = `${API_URL}/v1/audit`;
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
-export const createAudit = async (formData: FormData): Promise<Expertise> => {
+export const createAudit = async (formData: FormData): Promise<{ id: number }> => {
   const response = await fetch(AUDIT_URL, {
     method: "POST",
     credentials: "include",
@@ -24,7 +25,7 @@ export const createAudit = async (formData: FormData): Promise<Expertise> => {
     throw new Error(message);
   }
 
-  const audit: Expertise = await response.json();
+  const audit: { id: number } = await response.json();
 
   return audit;
 };
@@ -71,9 +72,7 @@ export const proposeAuditPrice = async (id: number, price: number): Promise<Expe
     throw new Error(message);
   }
 
-  const audit: Expertise = await response.json();
-
-  return audit;
+  return fetchAudit(id);
 };
 
 export const answerAuditOffer = async (
@@ -93,9 +92,7 @@ export const answerAuditOffer = async (
     throw new Error(message);
   }
 
-  const audit: Expertise = await response.json();
-
-  return audit;
+  return fetchAudit(id);
 };
 
 export const answerAuditCounter = async (id: number, accept: boolean): Promise<Expertise> => {
@@ -111,9 +108,7 @@ export const answerAuditCounter = async (id: number, accept: boolean): Promise<E
     throw new Error(message);
   }
 
-  const audit: Expertise = await response.json();
-
-  return audit;
+  return fetchAudit(id);
 };
 
 export const setAuditTeam = async (id: number, userIds: number[]): Promise<Expertise> => {
@@ -129,9 +124,7 @@ export const setAuditTeam = async (id: number, userIds: number[]): Promise<Exper
     throw new Error(message);
   }
 
-  const audit: Expertise = await response.json();
-
-  return audit;
+  return fetchAudit(id);
 };
 
 export const sendAuditPlan = async (id: number, plan: AuditPlanInput): Promise<Expertise> => {
@@ -147,9 +140,7 @@ export const sendAuditPlan = async (id: number, plan: AuditPlanInput): Promise<E
     throw new Error(message);
   }
 
-  const audit: Expertise = await response.json();
-
-  return audit;
+  return fetchAudit(id);
 };
 
 export const approveAuditPlan = async (id: number): Promise<Expertise> => {
@@ -163,9 +154,7 @@ export const approveAuditPlan = async (id: number): Promise<Expertise> => {
     throw new Error(message);
   }
 
-  const audit: Expertise = await response.json();
-
-  return audit;
+  return fetchAudit(id);
 };
 
 export const requestAuditPlanChanges = async (id: number, comment: string): Promise<Expertise> => {
@@ -181,9 +170,7 @@ export const requestAuditPlanChanges = async (id: number, comment: string): Prom
     throw new Error(message);
   }
 
-  const audit: Expertise = await response.json();
-
-  return audit;
+  return fetchAudit(id);
 };
 
 export const uploadAuditDocuments = async (id: number, files: AuditFile[]): Promise<Expertise> => {
@@ -205,9 +192,7 @@ export const uploadAuditDocuments = async (id: number, files: AuditFile[]): Prom
     throw new Error(message);
   }
 
-  const audit: Expertise = await response.json();
-
-  return audit;
+  return fetchAudit(id);
 };
 
 export const auditDocumentsReportUrl = (expertiseId: number): string =>

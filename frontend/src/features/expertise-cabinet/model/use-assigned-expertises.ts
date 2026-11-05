@@ -45,7 +45,7 @@ export const useAssignedExpertises = () => {
   const replace = (updated: Expertise) => {
     if (state.status !== "ready") return;
 
-    const items = state.items.map((item) => (item.id === updated.id ? updated : item));
+    const items = state.items.map((item) => (item.service === updated.service && item.id === updated.id ? updated : item));
     setState({ ...state, items });
   };
 

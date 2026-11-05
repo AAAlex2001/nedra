@@ -19,8 +19,9 @@ export const useStickyTop = () => {
     if (!element) return;
 
     const measure = () => {
+      const centeredTop = (window.innerHeight - element.offsetHeight) / 2;
       const bottomAlignedTop = window.innerHeight - bottomOffset - element.offsetHeight;
-      setTop(Math.min(HEADER_OFFSET, bottomAlignedTop));
+      setTop(Math.min(Math.max(HEADER_OFFSET, centeredTop), bottomAlignedTop));
     };
 
     const observer = new ResizeObserver(measure);
@@ -34,5 +35,7 @@ export const useStickyTop = () => {
     };
   }, [bottomOffset]);
 
-  return { ref, top };
+  const maxHeight = `calc(100dvh - ${HEADER_OFFSET + bottomOffset}px)`;
+
+  return { ref, top, maxHeight };
 };

@@ -1,3 +1,4 @@
+import type { ServiceKind } from "@/entities/expertise";
 import { API_URL, readErrorMessage } from "@/shared/api";
 import type { Act, Invoice, PaymentDocumentKind } from "../model/types";
 
@@ -17,8 +18,8 @@ export const fetchInvoices = async (): Promise<Invoice[]> => {
   return items;
 };
 
-export const issueInvoice = async (expertiseId: number): Promise<Invoice> => {
-  const response = await fetch(`${API_URL}/v1/expertise/${expertiseId}/invoice`, {
+export const issueInvoice = async (expertiseId: number, service: ServiceKind): Promise<Invoice> => {
+  const response = await fetch(`${API_URL}/v1/${service === "audit" ? "audit" : "expertises"}/${expertiseId}/invoice`, {
     method: "POST",
     credentials: "include",
   });
@@ -80,5 +81,7 @@ export const fetchActs = async (): Promise<Act[]> => {
 export const invoicePdfUrl = (invoiceId: number): string =>
   `${API_URL}/v1/invoices/${invoiceId}/pdf`;
 
-export const actPdfUrl = (expertiseId: number): string =>
-  `${API_URL}/v1/acts/${expertiseId}/pdf`;
+export const actPdfUrl = (act: Act): string =>
+  act.audit_id !== null
+    ? `${API_URL}/v1/audit/${act.audit_id}/act`
+    : `${API_URL}/v1/expertises/${act.expertise_id}/act`;

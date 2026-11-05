@@ -267,6 +267,13 @@
     top: 110px;
 
     display: block;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    border-radius: 20px;
+    box-shadow:
+      0 16px 40px rgba(39, 78, 111, 0.12),
+      0 4px 12px rgba(39, 78, 111, 0.06);
   }
 
   .content {

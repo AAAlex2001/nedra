@@ -1,0 +1,5 @@
+"""Настройки уведомлений."""
+
+NOTIFICATION_TEXT_MAX_LENGTH = 500
+DEFAULT_LIST_LIMIT = 50
+MAX_LIST_LIMIT = 200

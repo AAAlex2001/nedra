@@ -18,10 +18,10 @@ type AdminExpertisesProps = {
 const AdminExpertises = ({ items, catalog, experts, error, basePath }: AdminExpertisesProps) => (
   <section className={styles.section}>
     <div className={styles.heading}>
-      <h1 className={styles.title}>Заявки на экспертизу</h1>
+      <h1 className={styles.title}>Экспертизы и аудиты</h1>
       <AccentLine width={30} />
       <p className={styles.subtitle}>
-        Заявки с «Блиц-эксперта». Можно поправить статус и стоимость, назначить эксперта
+        Заявки с «Блиц-эксперта» и «Блиц-аудита». Можно изменить статус и стоимость, назначить исполнителя
         или удалить заявку вместе с файлами.
       </p>
     </div>

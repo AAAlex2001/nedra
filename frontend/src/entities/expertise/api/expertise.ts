@@ -1,244 +1,72 @@
-import { API_URL, readErrorMessage } from "@/shared/api";
-import type {
-  ContractKind,
-  Expertise,
-  ExpertisePayment,
-} from "../model/types";
+import { API_URL } from "@/shared/api";
+import type { WorkPaymentsResponse } from "../model/api-responses";
+import type { ContractKind, Expertise, ExpertisePayment, ServiceKind } from "../model/types";
+import { fetchAudit } from "./read-audit";
+import { fetchExpertise } from "./read-expertise";
+import { jsonBody, requestJson } from "./request";
 
-export const createExpertise = async (formData: FormData): Promise<Expertise> => {
-  const response = await fetch(`${API_URL}/v1/expertise`, {
-    method: "POST",
-    credentials: "include",
-    body: formData,
-  });
+export { fetchMyExpertises, fetchAssignedExpertises, fetchIncomingExpertises } from "./work-lists";
 
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
+export const workPath = (id: number, service: ServiceKind): string =>
+  `/${service === "audit" ? "audit" : "expertises"}/${id}`;
 
-  const expertise: Expertise = await response.json();
+export const fetchWork = (id: number, service: ServiceKind): Promise<Expertise> =>
+  service === "audit" ? fetchAudit(id) : fetchExpertise(id);
 
-  return expertise;
-};
-
-export const fetchMyExpertises = async (): Promise<Expertise[]> => {
-  const response = await fetch(`${API_URL}/v1/expertise/my`, {
-    credentials: "include",
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const items: Expertise[] = await response.json();
-
-  return items;
-};
-
-export const fetchIncomingExpertises = async (
-  objectCode: string,
-  areaCode: string,
-): Promise<Expertise[]> => {
-  const params = new URLSearchParams();
-  if (objectCode) params.set("object_code", objectCode);
-  if (areaCode) params.set("area_code", areaCode);
-
-  const query = params.toString();
-  const url = query
-    ? `${API_URL}/v1/expertise/incoming?${query}`
-    : `${API_URL}/v1/expertise/incoming`;
-
-  const response = await fetch(url, {
-    credentials: "include",
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const items: Expertise[] = await response.json();
-
-  return items;
-};
-
-export const fetchAssignedExpertises = async (): Promise<Expertise[]> => {
-  const response = await fetch(`${API_URL}/v1/expertise/assigned`, {
-    credentials: "include",
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const items: Expertise[] = await response.json();
-
-  return items;
-};
-
-export const acceptExpertise = async (
-  id: number,
-  contractKind: ContractKind | null,
+const changeWork = async (
+  id: number, service: ServiceKind, action: string, init?: RequestInit,
 ): Promise<Expertise> => {
-  const response = await fetch(`${API_URL}/v1/expertise/${id}/accept`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ contract_kind: contractKind }),
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const expertise: Expertise = await response.json();
-
-  return expertise;
+  await requestJson(`${workPath(id, service)}/${action}`, { method: "POST", ...init });
+  return fetchWork(id, service);
 };
 
-export const confirmExpertise = async (id: number): Promise<Expertise> => {
-  const response = await fetch(`${API_URL}/v1/expertise/${id}/confirm`, {
-    method: "POST",
-    credentials: "include",
-  });
+export const createExpertise = (formData: FormData): Promise<{ id: number }> =>
+  requestJson("/expertises", { method: "POST", body: formData });
 
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
+export const acceptExpertise = (
+  id: number, contractKind: ContractKind | null, service: ServiceKind,
+): Promise<Expertise> =>
+  changeWork(id, service, "accept", jsonBody({ contract_kind: contractKind }));
+
+export const confirmExpertise = (id: number, service: ServiceKind): Promise<Expertise> =>
+  changeWork(id, service, "confirm");
+
+export const createExpertisePayment = (id: number): Promise<ExpertisePayment> =>
+  requestJson(`/expertises/${id}/payment`, { method: "POST" });
+
+export const refreshExpertisePayment = async (id: number, service: ServiceKind): Promise<Expertise> => {
+  const payments = await requestJson<WorkPaymentsResponse>(`${workPath(id, service)}/payments`);
+
+  for (const stage of [payments.advance, payments.final]) {
+    const payment = stage?.payment;
+
+    if (payment && (payment.status === "pending" || payment.status === "waiting_for_capture")) {
+      await requestJson(`/payments/${payment.id}/refresh`, { method: "POST" });
+    }
   }
 
-  const expertise: Expertise = await response.json();
-
-  return expertise;
+  return fetchWork(id, service);
 };
 
-export const createExpertisePayment = async (id: number): Promise<ExpertisePayment> => {
-  const response = await fetch(`${API_URL}/v1/expertise/${id}/payment`, {
-    method: "POST",
-    credentials: "include",
-  });
+export const markConclusionReady = (id: number, service: ServiceKind): Promise<Expertise> =>
+  changeWork(id, service, "conclusion-ready");
 
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
+export const sendRemarks = (id: number, formData: FormData, service: ServiceKind): Promise<Expertise> =>
+  changeWork(id, service, "remarks", { body: formData });
 
-  const payment: ExpertisePayment = await response.json();
+export const resubmitDocumentation = (
+  id: number, formData: FormData, service: ServiceKind,
+): Promise<Expertise> => changeWork(id, service, "revision", { body: formData });
 
-  return payment;
-};
+export const sendConclusion = (
+  id: number, formData: FormData, service: ServiceKind,
+): Promise<Expertise> => changeWork(id, service, "conclusion", { body: formData });
 
-export const refreshExpertisePayment = async (id: number): Promise<Expertise> => {
-  const response = await fetch(`${API_URL}/v1/expertise/${id}/payment/refresh`, {
-    method: "POST",
-    credentials: "include",
-  });
+export const acceptWork = (id: number, service: ServiceKind): Promise<Expertise> =>
+  changeWork(id, service, "accept-work");
 
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
+export const expertiseDocumentUrl = (id: number, documentId: number, service: ServiceKind): string =>
+  `${API_URL}/v1${workPath(id, service)}/documents/${documentId}`;
 
-  const expertise: Expertise = await response.json();
-
-  return expertise;
-};
-
-export const markConclusionReady = async (id: number): Promise<Expertise> => {
-  const response = await fetch(`${API_URL}/v1/expertise/${id}/conclusion-ready`, {
-    method: "POST",
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const expertise: Expertise = await response.json();
-
-  return expertise;
-};
-
-export const sendRemarks = async (id: number, formData: FormData): Promise<Expertise> => {
-  const response = await fetch(`${API_URL}/v1/expertise/${id}/remarks`, {
-    method: "POST",
-    credentials: "include",
-    body: formData,
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const expertise: Expertise = await response.json();
-
-  return expertise;
-};
-
-export const resubmitDocumentation = async (
-  id: number,
-  formData: FormData,
-): Promise<Expertise> => {
-  const response = await fetch(`${API_URL}/v1/expertise/${id}/revision`, {
-    method: "POST",
-    credentials: "include",
-    body: formData,
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const expertise: Expertise = await response.json();
-
-  return expertise;
-};
-
-export const sendConclusion = async (id: number, formData: FormData): Promise<Expertise> => {
-  const response = await fetch(`${API_URL}/v1/expertise/${id}/conclusion`, {
-    method: "POST",
-    credentials: "include",
-    body: formData,
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const expertise: Expertise = await response.json();
-
-  return expertise;
-};
-
-export const acceptWork = async (id: number): Promise<Expertise> => {
-  const response = await fetch(`${API_URL}/v1/expertise/${id}/accept-work`, {
-    method: "POST",
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    const message = await readErrorMessage(response);
-    throw new Error(message);
-  }
-
-  const expertise: Expertise = await response.json();
-
-  return expertise;
-};
-
-export const expertiseDocumentUrl = (expertiseId: number, documentId: number): string =>
-  `${API_URL}/v1/expertise/${expertiseId}/documents/${documentId}`;
-
-export const expertiseSigningUrl = (expertiseId: number, kind: "contract" | "nda"): string =>
-  `${API_URL}/v1/expertise/${expertiseId}/signing/${kind}`;
+export const expertiseSigningUrl = (id: number, kind: "contract" | "nda", service: ServiceKind): string =>
+  `${API_URL}/v1${workPath(id, service)}/signing/${kind}`;

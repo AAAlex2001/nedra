@@ -1,3 +1,4 @@
+import { readAdminWorks } from "@/features/expertises-admin/api/read-works";
 import type { Metadata } from "next";
 import type { ExpertCatalog } from "@/entities/expert";
 import type { ExpertiseAdminRecord, ExpertOption } from "@/features/expertises-admin";
@@ -7,7 +8,7 @@ import AdminExpertises from "@/widgets/admin/expertises";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Заявки на экспертизу",
+  title: "Экспертизы и аудиты",
 };
 
 const loadCatalog = async (): Promise<ExpertCatalog | null> => {
@@ -25,7 +26,14 @@ const loadCatalog = async (): Promise<ExpertCatalog | null> => {
 };
 
 export default async function AdminExpertisesPage() {
-  const { data, error } = await loadAdmin<ExpertiseAdminRecord[]>("/v1/admin/expertises", []);
+  let data: ExpertiseAdminRecord[] = [];
+  let error: string | null = null;
+
+  try {
+    data = await readAdminWorks();
+  } catch (caught) {
+    error = caught instanceof Error ? caught.message : "Не удалось загрузить заявки";
+  }
   const catalog = await loadCatalog();
   const experts = await loadAdmin<ExpertOption[]>("/v1/admin/experts", []);
 

@@ -8,7 +8,6 @@ import {
   type ContractKind,
   type ExpertiseStatus,
 } from "@/entities/expertise";
-import { keepDigits } from "@/shared/lib/text";
 import Button from "@/shared/ui/button";
 import SelectField from "@/shared/ui/select-field";
 import TextField from "@/shared/ui/text-field";
@@ -84,10 +83,10 @@ const ExpertiseForm = ({
         />
         <TextField
           label="Стоимость, ₽"
-          inputMode="numeric"
+          inputMode="decimal"
           placeholder="не задана"
           value={price}
-          onChange={(value) => setPrice(keepDigits(value))}
+          onChange={(value) => setPrice(value.replace(/[^\d.,]/g, "").replace(",", "."))}
         />
         <SelectField
           label="Эксперт"

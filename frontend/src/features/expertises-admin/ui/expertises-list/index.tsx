@@ -64,14 +64,14 @@ const ExpertisesList = ({ initialItems, catalog, experts, basePath }: Expertises
       ) : (
         <ul className={styles.list}>
           {visibleItems.map((item) => (
-            <li key={item.id}>
+            <li key={`${item.service}-${item.id}`}>
               <ExpertiseCard
                 expertise={item}
                 catalog={catalog}
                 experts={experts}
-                pending={pendingId === item.id}
-                onSave={(id, draft) => void save(id, draft)}
-                onRemove={(id) => void remove(id)}
+                pending={pendingId === `${item.service}-${item.id}`}
+                onSave={(id, draft) => void save(id, draft, item.service)}
+                onRemove={(id) => void remove(id, item.service)}
               />
             </li>
           ))}

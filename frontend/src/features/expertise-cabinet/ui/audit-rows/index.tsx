@@ -29,13 +29,13 @@ const AuditRows = ({ expertise }: AuditRowsProps) => {
 
       {plans.length > 0 && (
         <DetailsRow label="План аудита">
-          <FilesList expertiseId={expertise.id} documents={plans} />
+          <FilesList service={expertise.service} expertiseId={expertise.id} documents={plans} />
         </DetailsRow>
       )}
 
       {attachments.length > 0 && (
         <DetailsRow label="Приложения к заявке">
-          <FilesList expertiseId={expertise.id} documents={attachments} />
+          <FilesList service={expertise.service} expertiseId={expertise.id} documents={attachments} />
         </DetailsRow>
       )}
     </>

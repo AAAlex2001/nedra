@@ -1,4 +1,4 @@
-import { getArticles, getTags } from "@/entities/article";
+import { getArticles, getTags, parseArticleSort } from "@/entities/article";
 import type { Metadata } from "next";
 import { buildListMetadata } from "@/shared/config/seo";
 import Breadcrumbs from "@/shared/ui/breadcrumbs";
@@ -8,7 +8,7 @@ import styles from "../../articles-page.module.scss";
 
 export const dynamic = "force-dynamic";
 
-type SearchParams = Promise<{ tag?: string; page?: string; q?: string }>;
+type SearchParams = Promise<{ tag?: string; page?: string; q?: string; sort?: string }>;
 
 export async function generateMetadata({
   searchParams,
@@ -25,12 +25,13 @@ export default async function BlogPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const { tag, page, q } = await searchParams;
+  const { tag, page, q, sort: sortParam } = await searchParams;
+  const sort = parseArticleSort(sortParam);
   const pageNumber = Math.max(1, Number(page) || 1);
   const search = q?.trim() ?? "";
 
   const [list, tags] = await Promise.all([
-    getArticles({ section: "blog", tag, search, page: pageNumber }),
+    getArticles({ section: "blog", tag, search, sort, page: pageNumber }),
     getTags("blog"),
   ]);
 
@@ -52,6 +53,7 @@ export default async function BlogPage({
           activeTag={tag ?? null}
           search={search}
           page={pageNumber}
+          sort={sort}
           emptyText="Статей пока нет."
         />
       </div>

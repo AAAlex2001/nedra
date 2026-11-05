@@ -32,11 +32,11 @@ const ActsTab = () => {
   }
 
   const items = state.items.map((act) => ({
-    key: String(act.expertise_id),
+    key: act.number,
     title: `Акт № ${act.number}`,
-    meta: `Заявка №${act.expertise_id} · ${act.subject} · ${formatRequestDate(act.signed_at)}`,
+    meta: `Заявка №${act.audit_id ?? act.expertise_id} · ${act.subject} · ${formatRequestDate(act.signed_at)}`,
     amount: formatRub(act.amount),
-    href: actPdfUrl(act.expertise_id),
+    href: actPdfUrl(act),
   }));
 
   return <DocumentList items={items} />;

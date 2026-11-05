@@ -26,7 +26,7 @@ const PlanReview = ({ expertiseId, plan, pending, onApprove, onRequestChanges }:
       {plan && (
         <a
           className={styles.document}
-          href={expertiseDocumentUrl(expertiseId, plan.id)}
+          href={expertiseDocumentUrl(expertiseId, plan.id, "audit")}
           target="_blank"
           rel="noreferrer"
         >

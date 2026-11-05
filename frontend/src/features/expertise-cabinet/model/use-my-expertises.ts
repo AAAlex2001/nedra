@@ -24,7 +24,7 @@ const refreshPendingPayments = async (items: Expertise[]): Promise<Expertise[]> 
     }
 
     try {
-      refreshed.push(await refreshExpertisePayment(item.id));
+      refreshed.push(await refreshExpertisePayment(item.id, item.service));
     } catch {
       refreshed.push(item);
     }
@@ -66,7 +66,7 @@ export const useMyExpertises = () => {
   const replace = (updated: Expertise) => {
     if (state.status !== "ready") return;
 
-    const items = state.items.map((item) => (item.id === updated.id ? updated : item));
+    const items = state.items.map((item) => (item.service === updated.service && item.id === updated.id ? updated : item));
     setState({ ...state, items });
   };
 

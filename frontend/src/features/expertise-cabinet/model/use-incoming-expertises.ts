@@ -64,7 +64,7 @@ export const useIncomingExpertises = (certificates: Certificate[]) => {
     if (state.status !== "ready") return;
 
     const next = state.items
-      .map((item) => (item.id === updated.id ? updated : item))
+      .map((item) => (item.service === updated.service && item.id === updated.id ? updated : item))
       .filter((item) => item.status === "new");
     setState({ ...state, items: next });
   };

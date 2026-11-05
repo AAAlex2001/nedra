@@ -56,16 +56,16 @@ export const useExpertiseActions = (expertise: Expertise, onChange: (item: Exper
   };
 
   const accept = (contractKind: ContractKind | null) =>
-    run(() => acceptExpertise(expertise.id, contractKind));
-  const confirm = () => run(() => confirmExpertise(expertise.id));
-  const conclusionReady = () => run(() => markConclusionReady(expertise.id));
-  const finish = () => run(() => acceptWork(expertise.id));
-  const refresh = () => run(() => refreshExpertisePayment(expertise.id));
+    run(() => acceptExpertise(expertise.id, contractKind, expertise.service));
+  const confirm = () => run(() => confirmExpertise(expertise.id, expertise.service));
+  const conclusionReady = () => run(() => markConclusionReady(expertise.id, expertise.service));
+  const finish = () => run(() => acceptWork(expertise.id, expertise.service));
+  const refresh = () => run(() => refreshExpertisePayment(expertise.id, expertise.service));
   const submitConclusion = (formData: FormData) =>
-    run(() => sendConclusion(expertise.id, formData));
-  const submitRemarks = (formData: FormData) => run(() => sendRemarks(expertise.id, formData));
+    run(() => sendConclusion(expertise.id, formData, expertise.service));
+  const submitRemarks = (formData: FormData) => run(() => sendRemarks(expertise.id, formData, expertise.service));
   const submitRevision = (formData: FormData) =>
-    run(() => resubmitDocumentation(expertise.id, formData));
+    run(() => resubmitDocumentation(expertise.id, formData, expertise.service));
   const proposePrice = (price: number) => run(() => proposeAuditPrice(expertise.id, price));
   const answerOffer = (answer: OfferAnswer, price?: number) =>
     run(() => answerAuditOffer(expertise.id, answer, price ?? null));
@@ -83,7 +83,8 @@ export const useExpertiseActions = (expertise: Expertise, onChange: (item: Exper
     setError(null);
 
     try {
-      const invoice = await issueInvoice(expertise.id);
+      const invoice = await issueInvoice(expertise.id, expertise.service);
+      onChange({ ...expertise, invoice });
       window.open(invoicePdfUrl(invoice.id), "_blank", "noreferrer");
     } catch (caught) {
       const message = caught instanceof Error && caught.message ? caught.message : ACTION_FAILED;
@@ -127,7 +128,7 @@ export const useExpertiseActions = (expertise: Expertise, onChange: (item: Exper
         return;
       }
 
-      const updated = await refreshExpertisePayment(expertise.id);
+      const updated = await refreshExpertisePayment(expertise.id, expertise.service);
       onChange(updated);
     } catch (caught) {
       const message = caught instanceof Error && caught.message ? caught.message : ACTION_FAILED;

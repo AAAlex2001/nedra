@@ -7,8 +7,8 @@
 }
 
 .toolbar {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
 
   width: 100%;
@@ -73,7 +73,7 @@
 
 @media (min-width: 768px) {
   .toolbar {
-    flex-direction: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: center;
     gap: 16px;
   }
@@ -87,5 +87,25 @@
   .grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 30px;
+  }
+}
+
+.search {
+  min-width: 0;
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .search {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1200px) {
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+  }
+
+  .toolbarWithoutTags {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   }
 }

@@ -67,7 +67,7 @@ const ExpertiseCard = ({
 
   const draft: ExpertiseDraft = {
     status: expertise.status,
-    price: expertise.price === null ? "" : String(Math.round(Number(expertise.price))),
+    price: expertise.price === null ? "" : String(expertise.price),
     expertId: expertise.expert_id === null ? "" : String(expertise.expert_id),
     contractKind: expertise.contract_kind ?? "",
   };

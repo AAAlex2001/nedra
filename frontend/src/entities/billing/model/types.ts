@@ -5,7 +5,8 @@ export type PaymentDocumentKind = "payment_order" | "guarantee_letter";
 export type Invoice = {
   id: number;
   number: string;
-  expertise_id: number;
+  expertise_id: number | null;
+  audit_id: number | null;
   stage: InvoiceStage;
   amount: string;
   payer_name: string;
@@ -16,7 +17,8 @@ export type Invoice = {
 };
 
 export type Act = {
-  expertise_id: number;
+  expertise_id: number | null;
+  audit_id: number | null;
   number: string;
   amount: string | null;
   subject: string;

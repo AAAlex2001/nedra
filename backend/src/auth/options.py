@@ -1,0 +1,8 @@
+"""Настройки авторизации."""
+
+PASSWORD_MIN_LENGTH = 8
+PASSWORD_MAX_BYTES = 72
+JWT_ALGORITHM = "HS256"
+MAX_USER_ID = 2_147_483_647
+AUTH_COOKIE = "access_token"
+SECONDS_IN_DAY = 24 * 60 * 60

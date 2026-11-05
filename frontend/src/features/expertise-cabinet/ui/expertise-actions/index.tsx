@@ -153,6 +153,7 @@ const ExpertiseActions = ({ expertise, role, onChange }: ExpertiseActionsProps) 
           text: `${executorName} готов провести ${words.work} за ${price}, оплата двумя частями по 50 %. Прочитайте договор и соглашение о конфиденциальности и подпишите их`,
           form: (
             <ContractConsent
+              service={expertise.service}
               expertiseId={expertise.id}
               pending={actions.pending}
               onSign={() => void actions.confirm()}

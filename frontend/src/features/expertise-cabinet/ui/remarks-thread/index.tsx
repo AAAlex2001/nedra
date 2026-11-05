@@ -11,6 +11,7 @@ type RemarksThreadProps = {
 };
 
 type MessageProps = {
+  audit: boolean;
   expertiseId: number;
   author: string;
   fromExecutor: boolean;
@@ -19,7 +20,7 @@ type MessageProps = {
   documents: ExpertiseDocument[];
 };
 
-const Message = ({ expertiseId, author, fromExecutor, date, text, documents }: MessageProps) => {
+const Message = ({ expertiseId, audit, author, fromExecutor, date, text, documents }: MessageProps) => {
   const tone = fromExecutor ? styles.fromExpert : styles.fromCustomer;
   const fallback = documents.length === 0 ? "Исправления отправлены повторно" : null;
 
@@ -34,7 +35,7 @@ const Message = ({ expertiseId, author, fromExecutor, date, text, documents }: M
           <span className={styles.author}>{author}</span> · {formatRequestDate(date)}
         </p>
         {(text ?? fallback) && <p className={styles.text}>{text ?? fallback}</p>}
-        {documents.length > 0 && <FilesList expertiseId={expertiseId} documents={documents} />}
+        {documents.length > 0 && <FilesList service={audit ? "audit" : "expertise"} expertiseId={expertiseId} documents={documents} />}
       </div>
     </div>
   );
@@ -61,6 +62,7 @@ const RemarksThread = ({ expertiseId, remarks, audit }: RemarksThreadProps) => {
         {remarks.map((remark) => (
           <li key={remark.id} className={styles.round}>
             <Message
+              audit={audit}
               expertiseId={expertiseId}
               author={audit ? "Аудитор" : "Эксперт"}
               fromExecutor
@@ -70,6 +72,7 @@ const RemarksThread = ({ expertiseId, remarks, audit }: RemarksThreadProps) => {
             />
             {remark.resolved_at && (
               <Message
+              audit={audit}
                 expertiseId={expertiseId}
                 author="Заказчик"
                 fromExecutor={false}

@@ -9,10 +9,10 @@ type StickyAsideProps = {
 };
 
 const StickyAside = ({ className, children }: StickyAsideProps) => {
-  const { ref, top } = useStickyTop();
+  const { ref, top, maxHeight } = useStickyTop();
 
   return (
-    <aside ref={ref} className={className} style={{ top }}>
+    <aside ref={ref} className={className} style={{ top, maxHeight }}>
       {children}
     </aside>
   );

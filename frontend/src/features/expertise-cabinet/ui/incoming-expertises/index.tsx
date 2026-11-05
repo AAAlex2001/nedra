@@ -61,7 +61,7 @@ const IncomingExpertises = ({ certificates }: IncomingExpertisesProps) => {
         <div className={styles.list}>
           {incoming.visibleItems.map((item) => (
             <ExpertiseCard
-              key={item.id}
+              key={`${item.service}-${item.id}`}
               expertise={item}
               catalog={state.catalog}
               role="expert"

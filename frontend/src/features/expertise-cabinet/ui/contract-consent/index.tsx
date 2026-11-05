@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { expertiseSigningUrl } from "@/entities/expertise";
+import { expertiseSigningUrl, type ServiceKind } from "@/entities/expertise";
 import Button from "@/shared/ui/button";
 import { DocumentIcon } from "@/shared/ui/icons";
 import styles from "./style.module.scss";
 
 type ContractConsentProps = {
+  service: ServiceKind;
   expertiseId: number;
   pending: boolean;
   onSign: () => void;
@@ -17,7 +18,7 @@ const DOCUMENTS = [
   { kind: "nda", title: "Соглашение о конфиденциальности" },
 ] as const;
 
-const ContractConsent = ({ expertiseId, pending, onSign }: ContractConsentProps) => {
+const ContractConsent = ({ expertiseId, service, pending, onSign }: ContractConsentProps) => {
   const [agreed, setAgreed] = useState(false);
 
   return (
@@ -27,7 +28,7 @@ const ContractConsent = ({ expertiseId, pending, onSign }: ContractConsentProps)
           <a
             key={document.kind}
             className={styles.document}
-            href={expertiseSigningUrl(expertiseId, document.kind)}
+            href={expertiseSigningUrl(expertiseId, document.kind, service)}
             target="_blank"
             rel="noreferrer"
           >
@@ -35,7 +36,7 @@ const ContractConsent = ({ expertiseId, pending, onSign }: ContractConsentProps)
               <DocumentIcon className={styles.icon} />
             </span>
             <span className={styles.caption}>
-              <span className={styles.title}>{document.title}</span>
+              <span className={styles.title}>{document.kind === "contract" && service === "audit" ? "Договор на аудит" : document.title}</span>
               <span className={styles.hint}>Word · заполнен по вашей заявке</span>
             </span>
           </a>

@@ -1,3 +1,4 @@
+import type { PublishedArticleSort } from "../lib/sorting";
 import { internalFetch } from "@/shared/api/server";
 import type { Article, ArticleCard, ArticleList, ArticleSection, Tag } from "../model/types";
 
@@ -9,6 +10,7 @@ type ListParams = {
   tag?: string;
   search?: string;
   page?: number;
+  sort?: PublishedArticleSort;
 };
 
 const EMPTY_LIST: ArticleList = { articles: [], total: 0 };
@@ -18,6 +20,7 @@ export const getArticles = async ({
   tag,
   search,
   page = 1,
+  sort = "newest",
 }: ListParams): Promise<ArticleList> => {
   const wanted = page * ARTICLES_PER_PAGE;
   const articles: ArticleCard[] = [];
@@ -27,6 +30,7 @@ export const getArticles = async ({
     while (articles.length < wanted) {
       const params = new URLSearchParams({
         section,
+        sort,
         limit: String(Math.min(MAX_PAGE_SIZE, wanted - articles.length)),
         offset: String(articles.length),
       });

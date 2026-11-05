@@ -53,7 +53,7 @@ const MyExpertises = ({ kind }: MyExpertisesProps) => {
     <div className={styles.list}>
       {items.map((item) => (
         <ExpertiseCard
-          key={item.id}
+          key={`${item.service}-${item.id}`}
           expertise={item}
           catalog={state.catalog}
           role="customer"

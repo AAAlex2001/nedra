@@ -144,7 +144,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
         )}
         {contract.length > 0 && (
           <DetailsRow label="Договор">
-            <FilesList expertiseId={expertise.id} documents={contract} />
+            <FilesList service={expertise.service} expertiseId={expertise.id} documents={contract} />
           </DetailsRow>
         )}
         <DetailsRow label={audit ? "Документы по перечню" : "Файлы документации"}>
@@ -153,7 +153,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
               Загружены документы по {coveredItems} из {AUDIT_CHECKLIST_SIZE} пунктов перечня
             </p>
           )}
-          <FilesList expertiseId={expertise.id} documents={documentation} />
+          <FilesList service={expertise.service} expertiseId={expertise.id} documents={documentation} />
           {audit && role === "expert" && (
             <a
               className={styles.report}
@@ -167,7 +167,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
         </DetailsRow>
         {revisions.length > 0 && (
           <DetailsRow label="Исправленная документация">
-            <FilesList expertiseId={expertise.id} documents={revisions} />
+            <FilesList service={expertise.service} expertiseId={expertise.id} documents={revisions} />
           </DetailsRow>
         )}
         {expertise.result && (
@@ -175,7 +175,7 @@ const ExpertiseCard = ({ expertise, catalog, role, onChange }: ExpertiseCardProp
         )}
         {conclusion.length > 0 && (
           <DetailsRow label={words.result}>
-            <FilesList expertiseId={expertise.id} documents={conclusion} />
+            <FilesList service={expertise.service} expertiseId={expertise.id} documents={conclusion} />
           </DetailsRow>
         )}
       </DetailsTable>

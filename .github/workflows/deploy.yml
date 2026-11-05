@@ -75,7 +75,7 @@ jobs:
           JWT_SECRET: ci-only-secret-not-used-in-production-0000
         run: |
           pip install -q -r requirements.txt pytest
-          python -c "from app.main import app; print('backend imports ok')"
+          python -c "from src.main import create_app; create_app(); print('backend imports ok')"
           python -m pytest tests -q
 
       - name: Configure SSH

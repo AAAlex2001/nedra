@@ -56,7 +56,7 @@ const InvoicesTab = () => {
   const items = state.items.map((invoice) => ({
     key: String(invoice.id),
     title: `Счёт № ${invoice.number}`,
-    meta: `Заявка №${invoice.expertise_id} · ${INVOICE_STAGE_LABELS[invoice.stage]} · ${formatRequestDate(invoice.created_at)}`,
+    meta: `Заявка №${(invoice.audit_id ?? invoice.expertise_id)} · ${INVOICE_STAGE_LABELS[invoice.stage]} · ${formatRequestDate(invoice.created_at)}`,
     amount: formatRub(invoice.amount),
     href: invoicePdfUrl(invoice.id),
     status: statusOf(invoice),
