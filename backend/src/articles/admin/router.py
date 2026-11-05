@@ -1,7 +1,6 @@
 """Редактор новостей и блога."""
 
 from fastapi import APIRouter, Depends, Query, UploadFile
-
 from src.articles.admin.dependencies import (
     get_article_usecase,
     get_create_article_usecase,
@@ -14,15 +13,12 @@ from src.articles.admin.dependencies import (
     get_upload_document_usecase,
     get_upload_image_usecase,
 )
-from src.articles.admin.schemas.article import (
-    AdminArticleListResponse,
-    AdminArticleResponse,
-    AdminTagResponse,
-    CreateArticleRequest,
-    CreateTagRequest,
-    UpdateArticleRequest,
-    UploadedFileResponse,
-)
+from src.articles.admin.schemas.create_article import CreateArticleRequest, CreateArticleResponse
+from src.articles.admin.schemas.get_article import GetArticleRequest, GetArticleResponse
+from src.articles.admin.schemas.list_articles import ListArticlesRequest, ListArticlesResponse
+from src.articles.admin.schemas.tag import AdminTagResponse, CreateTagRequest
+from src.articles.admin.schemas.update_article import UpdateArticleRequest, UpdateArticleResponse
+from src.articles.admin.schemas.upload import UploadedFileResponse, UploadFileRequest
 from src.articles.admin.usecases.create_article import CreateArticleUseCase
 from src.articles.admin.usecases.create_tag import CreateTagUseCase
 from src.articles.admin.usecases.delete_article import DeleteArticleUseCase
@@ -56,16 +52,18 @@ async def list_articles(
     ),
     offset: int = Query(0, ge=0),
     usecase: ListAdminArticlesUseCase = Depends(get_list_articles_usecase),
-) -> AdminArticleListResponse:
+) -> ListArticlesResponse:
     """Получить страницу публикаций."""
 
-    return await usecase.execute(
+    payload = ListArticlesRequest(
         section=section,
-        search=q,
+        q=q,
         sort=sort,
         limit=limit,
         offset=offset,
     )
+
+    return await usecase.execute(payload=payload)
 
 
 @router.get("/articles/{article_id}")
@@ -73,10 +71,12 @@ async def get_article(
     *,
     article_id: int,
     usecase: GetAdminArticleUseCase = Depends(get_article_usecase),
-) -> AdminArticleResponse:
+) -> GetArticleResponse:
     """Открыть статью редактора."""
 
-    return await usecase.execute(article_id=article_id)
+    payload = GetArticleRequest(article_id=article_id)
+
+    return await usecase.execute(payload=payload)
 
 
 @router.post("/articles", status_code=201)
@@ -84,7 +84,7 @@ async def create_article(
     *,
     payload: CreateArticleRequest,
     usecase: CreateArticleUseCase = Depends(get_create_article_usecase),
-) -> AdminArticleResponse:
+) -> CreateArticleResponse:
     """Создать публикацию."""
 
     return await usecase.execute(payload=payload)
@@ -96,7 +96,7 @@ async def update_article(
     article_id: int,
     payload: UpdateArticleRequest,
     usecase: UpdateArticleUseCase = Depends(get_update_article_usecase),
-) -> AdminArticleResponse:
+) -> UpdateArticleResponse:
     """Сохранить изменения публикации."""
 
     return await usecase.execute(
@@ -156,7 +156,9 @@ async def upload_image(
 ) -> UploadedFileResponse:
     """Загрузить изображение."""
 
-    return await usecase.execute(file=file)
+    payload = UploadFileRequest(file=file)
+
+    return await usecase.execute(payload=payload)
 
 
 @router.post("/uploads/documents", status_code=201)
@@ -167,4 +169,6 @@ async def upload_document(
 ) -> UploadedFileResponse:
     """Загрузить документ."""
 
-    return await usecase.execute(file=file)
+    payload = UploadFileRequest(file=file)
+
+    return await usecase.execute(payload=payload)

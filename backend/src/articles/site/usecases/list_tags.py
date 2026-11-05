@@ -1,8 +1,7 @@
 """Направления публикаций."""
 
-from src.articles.enums import ArticleSection
 from src.articles.repositories.tags import TagRepository
-from src.articles.schemas.article import TagResponse
+from src.articles.site.schemas.list_tags import ListedTagResponse, ListTagsRequest
 
 
 class ListTagsUseCase:
@@ -13,8 +12,8 @@ class ListTagsUseCase:
 
         self.tags = tags
 
-    async def execute(self, *, section: ArticleSection | None) -> list[TagResponse]:
+    async def execute(self, *, payload: ListTagsRequest) -> list[ListedTagResponse]:
         """Получить направления."""
 
-        tags = await self.tags.list_all(section=section)
-        return [TagResponse.from_model(tag=tag) for tag in tags]
+        tags = await self.tags.list_all(section=payload.section)
+        return [ListedTagResponse.from_model(tag=tag) for tag in tags]

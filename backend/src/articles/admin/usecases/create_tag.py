@@ -3,8 +3,7 @@
 from slugify import slugify
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from src.articles.admin.schemas.article import AdminTagResponse, CreateTagRequest
+from src.articles.admin.schemas.tag import AdminTagResponse, CreateTagRequest
 from src.articles.exceptions import ArticleConflictError
 from src.articles.models.tag import Tag
 from src.articles.options import TAG_SLUG_MAX_LENGTH

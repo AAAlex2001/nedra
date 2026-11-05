@@ -1,13 +1,11 @@
-"""Публикации на сайте."""
+"""Вложенные данные публикации."""
 
 from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel
-
 from src.articles.enums import ArticleSection
 from src.articles.models.article import Article
-from src.articles.models.article_content import ArticleContent
 from src.articles.models.tag import Tag
 
 
@@ -70,48 +68,3 @@ class ArticleDocumentResponse(BaseModel):
     title: str
     url: str
     kind: Literal["pdf", "word", "excel"]
-
-
-class ArticleResponse(ArticleCardResponse):
-    """Страница публикации."""
-
-    content: str
-    toc: list[dict[str, str]]
-    documents: list[ArticleDocumentResponse]
-    seo_title: str | None
-    seo_description: str | None
-    seo_keywords: str | None
-    updated_at: datetime
-
-    @classmethod
-    def from_article(
-        cls,
-        *,
-        article: Article,
-        content: ArticleContent,
-        tags: list[Tag],
-    ) -> "ArticleResponse":
-        """Подготовить страницу."""
-
-        card = ArticleCardResponse.from_model(
-            article=article,
-            tags=tags,
-        )
-
-        return cls(
-            **card.model_dump(),
-            content=content.content,
-            toc=content.toc,
-            documents=content.documents,
-            seo_title=content.seo_title,
-            seo_description=content.seo_description,
-            seo_keywords=content.seo_keywords,
-            updated_at=article.updated_at,
-        )
-
-
-class ArticleListResponse(BaseModel):
-    """Страница списка публикаций."""
-
-    articles: list[ArticleCardResponse]
-    total: int

@@ -4,8 +4,7 @@ from decimal import Decimal
 
 import pytest
 from pydantic import ValidationError
-
-from src.articles.admin.schemas.article import ArticleDocumentRequest
+from src.articles.admin.schemas.article_document import ArticleDocumentRequest
 from src.contracts.customer_template_values import working_days
 from src.contracts.enums import ContractKind
 from src.contracts.executors import get_executor_requisites

@@ -3,9 +3,8 @@
 from slugify import slugify
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from src.articles.admin.article_changes import update_article_card, update_article_content
-from src.articles.admin.schemas.article import AdminArticleResponse, UpdateArticleRequest
+from src.articles.admin.schemas.update_article import UpdateArticleRequest, UpdateArticleResponse
 from src.articles.exceptions import ArticleConflictError, ArticleNotFoundError, TagNotFoundError
 from src.articles.options import ARTICLE_SLUG_MAX_LENGTH
 from src.articles.repositories.article_contents import ArticleContentRepository
@@ -36,7 +35,7 @@ class UpdateArticleUseCase:
         *,
         article_id: int,
         payload: UpdateArticleRequest,
-    ) -> AdminArticleResponse:
+    ) -> UpdateArticleResponse:
         """Сохранить изменения публикации."""
 
         article = await self.articles.get_for_update(article_id=article_id)
@@ -84,7 +83,7 @@ class UpdateArticleUseCase:
                     tag_ids=set(payload.tag_ids),
                 )
 
-            response = AdminArticleResponse.from_article(
+            response = UpdateArticleResponse.from_model(
                 article=article,
                 content=content,
                 tags=tags,

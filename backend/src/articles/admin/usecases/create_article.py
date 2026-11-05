@@ -5,8 +5,7 @@ from datetime import UTC, datetime
 from slugify import slugify
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from src.articles.admin.schemas.article import AdminArticleResponse, CreateArticleRequest
+from src.articles.admin.schemas.create_article import CreateArticleRequest, CreateArticleResponse
 from src.articles.content import prepare_content
 from src.articles.exceptions import ArticleConflictError, TagNotFoundError
 from src.articles.models.article import Article
@@ -35,7 +34,7 @@ class CreateArticleUseCase:
         self.contents = contents
         self.tags = tags
 
-    async def execute(self, *, payload: CreateArticleRequest) -> AdminArticleResponse:
+    async def execute(self, *, payload: CreateArticleRequest) -> CreateArticleResponse:
         """Сохранить новую публикацию."""
 
         tag_ids = set(payload.tag_ids)
@@ -79,7 +78,7 @@ class CreateArticleUseCase:
                 article_id=article.id,
                 tag_ids=tag_ids,
             )
-            response = AdminArticleResponse.from_article(
+            response = CreateArticleResponse.from_model(
                 article=article,
                 content=content,
                 tags=tags,

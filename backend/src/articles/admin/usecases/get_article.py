@@ -1,6 +1,6 @@
 """Публикация для редактирования."""
 
-from src.articles.admin.schemas.article import AdminArticleResponse
+from src.articles.admin.schemas.get_article import GetArticleRequest, GetArticleResponse
 from src.articles.exceptions import ArticleNotFoundError
 from src.articles.repositories.article_contents import ArticleContentRepository
 from src.articles.repositories.articles import ArticleRepository
@@ -23,19 +23,19 @@ class GetAdminArticleUseCase:
         self.contents = contents
         self.tags = tags
 
-    async def execute(self, *, article_id: int) -> AdminArticleResponse:
+    async def execute(self, *, payload: GetArticleRequest) -> GetArticleResponse:
         """Получить статью для редактирования."""
 
-        article = await self.articles.get_by_id(article_id=article_id)
-        content = await self.contents.get(article_id=article_id)
+        article = await self.articles.get_by_id(article_id=payload.article_id)
+        content = await self.contents.get(article_id=payload.article_id)
 
         if article is None or content is None:
             raise ArticleNotFoundError()
 
-        tags_by_article = await self.tags.list_for_articles(article_ids={article_id})
+        tags_by_article = await self.tags.list_for_articles(article_ids={payload.article_id})
 
-        return AdminArticleResponse.from_article(
+        return GetArticleResponse.from_model(
             article=article,
             content=content,
-            tags=tags_by_article.get(article_id, []),
+            tags=tags_by_article.get(payload.article_id, []),
         )

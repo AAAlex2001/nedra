@@ -2,7 +2,7 @@
 
 from datetime import UTC, datetime
 
-from src.articles.admin.schemas.article import UpdateArticleRequest
+from src.articles.admin.schemas.update_article import UpdateArticleRequest
 from src.articles.content import prepare_content
 from src.articles.models.article import Article
 from src.articles.models.article_content import ArticleContent

@@ -1,6 +1,6 @@
 """Теги редактора."""
 
-from src.articles.admin.schemas.article import AdminTagResponse
+from src.articles.admin.schemas.tag import AdminTagResponse
 from src.articles.repositories.tags import TagRepository
 
 

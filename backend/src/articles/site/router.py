@@ -1,14 +1,7 @@
 """Новости и блог."""
 
 from fastapi import APIRouter, Depends, Query
-
 from src.articles.enums import ArticleSection, ArticleSort
-from src.articles.schemas.article import (
-    ArticleCardResponse,
-    ArticleListResponse,
-    ArticleResponse,
-    TagResponse,
-)
 from src.articles.site.dependencies import (
     get_article_usecase,
     get_list_articles_usecase,
@@ -18,7 +11,14 @@ from src.articles.site.dependencies import (
     get_remove_reaction_usecase,
     get_set_reaction_usecase,
 )
+from src.articles.site.schemas.get_article import GetArticleRequest, GetArticleResponse
+from src.articles.site.schemas.list_articles import ListArticlesRequest, ListArticlesResponse
+from src.articles.site.schemas.list_tags import ListedTagResponse, ListTagsRequest
 from src.articles.site.schemas.reaction import ArticleCountersResponse, SetReactionRequest
+from src.articles.site.schemas.related_articles import (
+    RelatedArticleResponse,
+    RelatedArticlesRequest,
+)
 from src.articles.site.usecases.get_article import GetArticleUseCase
 from src.articles.site.usecases.list_articles import ListArticlesUseCase
 from src.articles.site.usecases.list_related_articles import ListRelatedArticlesUseCase
@@ -45,17 +45,19 @@ async def list_articles(
     ),
     offset: int = Query(0, ge=0),
     usecase: ListArticlesUseCase = Depends(get_list_articles_usecase),
-) -> ArticleListResponse:
+) -> ListArticlesResponse:
     """Получить страницу публикаций."""
 
-    return await usecase.execute(
+    payload = ListArticlesRequest(
         section=section,
-        tag_slug=tag,
-        search=q,
+        tag=tag,
+        q=q,
         sort=sort,
         limit=limit,
         offset=offset,
     )
+
+    return await usecase.execute(payload=payload)
 
 
 @router.get("/tags")
@@ -63,10 +65,12 @@ async def list_tags(
     *,
     section: ArticleSection | None = None,
     usecase: ListTagsUseCase = Depends(get_list_tags_usecase),
-) -> list[TagResponse]:
+) -> list[ListedTagResponse]:
     """Получить направления."""
 
-    return await usecase.execute(section=section)
+    payload = ListTagsRequest(section=section)
+
+    return await usecase.execute(payload=payload)
 
 
 @router.get("/articles/{slug}")
@@ -74,10 +78,12 @@ async def get_article(
     *,
     slug: str,
     usecase: GetArticleUseCase = Depends(get_article_usecase),
-) -> ArticleResponse:
+) -> GetArticleResponse:
     """Открыть публикацию."""
 
-    return await usecase.execute(slug=slug)
+    payload = GetArticleRequest(slug=slug)
+
+    return await usecase.execute(payload=payload)
 
 
 @router.get("/articles/{slug}/related")
@@ -90,13 +96,15 @@ async def list_related(
         le=20,
     ),
     usecase: ListRelatedArticlesUseCase = Depends(get_related_articles_usecase),
-) -> list[ArticleCardResponse]:
+) -> list[RelatedArticleResponse]:
     """Подобрать другие публикации."""
 
-    return await usecase.execute(
+    payload = RelatedArticlesRequest(
         slug=slug,
         limit=limit,
     )
+
+    return await usecase.execute(payload=payload)
 
 
 @router.post("/articles/{slug}/view")

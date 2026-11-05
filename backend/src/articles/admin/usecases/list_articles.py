@@ -1,7 +1,10 @@
 """Редакторский список публикаций."""
 
-from src.articles.admin.schemas.article import AdminArticleCardResponse, AdminArticleListResponse
-from src.articles.enums import AdminArticleSort, ArticleSection
+from src.articles.admin.schemas.list_articles import (
+    ArticleListItem,
+    ListArticlesRequest,
+    ListArticlesResponse,
+)
 from src.articles.repositories.articles import ArticleRepository
 from src.articles.repositories.tags import TagRepository
 
@@ -23,28 +26,24 @@ class ListAdminArticlesUseCase:
     async def execute(
         self,
         *,
-        section: ArticleSection | None,
-        search: str | None,
-        sort: AdminArticleSort,
-        limit: int,
-        offset: int,
-    ) -> AdminArticleListResponse:
+        payload: ListArticlesRequest,
+    ) -> ListArticlesResponse:
         """Получить страницу редакторского списка."""
 
         articles, total = await self.articles.list_admin(
-            section=section,
-            search=search.strip() if search else None,
-            sort=sort,
-            limit=limit,
-            offset=offset,
+            section=payload.section,
+            search=payload.q.strip() if payload.q else None,
+            sort=payload.sort,
+            limit=payload.limit,
+            offset=payload.offset,
         )
         tags_by_article = await self.tags.list_for_articles(
             article_ids={article.id for article in articles},
         )
 
-        return AdminArticleListResponse(
+        return ListArticlesResponse(
             articles=[
-                AdminArticleCardResponse.from_model(
+                ArticleListItem.from_model(
                     article=article,
                     tags=tags_by_article.get(article.id, []),
                 )

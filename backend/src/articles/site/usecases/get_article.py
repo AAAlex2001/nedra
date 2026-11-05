@@ -4,7 +4,7 @@ from src.articles.exceptions import ArticleNotFoundError
 from src.articles.repositories.article_contents import ArticleContentRepository
 from src.articles.repositories.articles import ArticleRepository
 from src.articles.repositories.tags import TagRepository
-from src.articles.schemas.article import ArticleResponse
+from src.articles.site.schemas.get_article import GetArticleRequest, GetArticleResponse
 
 
 class GetArticleUseCase:
@@ -23,10 +23,10 @@ class GetArticleUseCase:
         self.contents = contents
         self.tags = tags
 
-    async def execute(self, *, slug: str) -> ArticleResponse:
+    async def execute(self, *, payload: GetArticleRequest) -> GetArticleResponse:
         """Открыть публикацию."""
 
-        article = await self.articles.get_published(slug=slug)
+        article = await self.articles.get_published(slug=payload.slug)
 
         if article is None:
             raise ArticleNotFoundError()
@@ -38,7 +38,7 @@ class GetArticleUseCase:
 
         tags_by_article = await self.tags.list_for_articles(article_ids={article.id})
 
-        return ArticleResponse.from_article(
+        return GetArticleResponse.from_article(
             article=article,
             content=content,
             tags=tags_by_article.get(article.id, []),
