@@ -74,9 +74,9 @@ jobs:
           CORS_ORIGINS: "[]"
           JWT_SECRET: ci-only-secret-not-used-in-production-0000
         run: |
-          pip install -q -r requirements.txt pytest
+          pip install -q -r requirements.txt pytest pytest-asyncio pypdf
           python -c "from src.main import create_app; create_app(); print('backend imports ok')"
-          python -m pytest tests -q
+          python -m pytest tests -q -o asyncio_mode=auto
 
       - name: Configure SSH
         run: |
