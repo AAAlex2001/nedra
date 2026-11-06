@@ -73,7 +73,7 @@ const DeleteButton = ({
         )}
         <div className={styles.actions}>
           <OutlineButton disabled={pending} onClick={close}>Отмена</OutlineButton>
-          <Button disabled={disabled} loading={pending} onClick={() => void confirm()}>
+          <Button className={styles.confirm} disabled={disabled} loading={pending} onClick={() => void confirm()}>
             Удалить
           </Button>
         </div>

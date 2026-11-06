@@ -1,14 +1,22 @@
 .trigger {
-  padding: 8px 12px;
-  border: 1px solid #efcccc;
-  border-radius: 10px;
-  background: #fff;
-  color: #b42318;
-  font: inherit;
+  padding: 8px 16px;
+  border: 1px solid #f6d5d1;
+  border-radius: 100px;
+  background: #fdeceb;
+  color: #b23b2c;
+  font-family: "Manrope", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
   cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: #f9d9d6;
+  }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: default;
   }
 }
@@ -25,9 +33,19 @@
 }
 
 .actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-top: 24px;
+
+  > button {
+    width: 100%;
+    min-width: 0;
+    padding: 14px 12px;
+  }
+}
+
+.confirm {
+  --accent: #b23b2c;
+  --accent-hover: #942f23;
 }
