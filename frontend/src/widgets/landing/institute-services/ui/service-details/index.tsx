@@ -5,14 +5,15 @@ import styles from "./style.module.scss";
 
 type ServiceDetailsProps = {
   service: SubService;
+  sections?: SubService["sections"];
 };
 
-const ServiceDetails = ({ service }: ServiceDetailsProps) => {
+const ServiceDetails = ({ service, sections = service.sections }: ServiceDetailsProps) => {
   const { contact } = service;
 
   return (
     <div className={styles.card}>
-      {service.sections.map((section) => (
+      {sections.map((section) => (
         <div key={section.title} className={styles.section}>
           <h4 className={styles.title}>{section.title}</h4>
 

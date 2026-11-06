@@ -26,7 +26,7 @@ export const SITE_GROUP: FooterLinkGroup = {
     { label: "Главная", href: "/" },
     { label: "О нас", href: "/#about" },
     { label: "Направления деятельности", href: "/#directions" },
-    { label: "Услуги", href: "/#services" },
+    { label: "Услуги", href: "/uslugi" },
     { label: "Лаборатория", href: "/#laboratory" },
     { label: "Разрешительные документы", href: "/#documents" },
     { label: "Партнёры", href: "/#partners" },

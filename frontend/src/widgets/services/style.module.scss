@@ -1,0 +1,403 @@
+.page,
+.page + section {
+  --service-heading-size: 26px;
+  --service-subheading-size: 18px;
+
+  h2 {
+    font-size: var(--service-heading-size);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+}
+
+.page {
+  width: 100%;
+  min-width: 0;
+  max-width: 768px;
+  margin: 0 auto;
+  color: #0b0b0b;
+}
+
+.inner {
+  padding: 0 20px 40px;
+}
+
+.hero {
+  position: relative;
+  padding: 40px 0 48px;
+  text-align: center;
+
+  h1 {
+    margin: 0 0 24px;
+    font-size: 36px;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  > p {
+    max-width: 650px;
+    margin: 0 auto 28px;
+    font-size: 16px;
+    line-height: 1.5;
+    text-wrap: balance;
+  }
+}
+
+.heroActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  max-width: 650px;
+  margin-inline: auto;
+
+  > a {
+    min-width: 0;
+    padding: 14px 8px;
+  }
+
+  > a > span {
+    font-size: 14px;
+    line-height: 20px;
+    white-space: nowrap;
+  }
+}
+
+.navigation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 32px auto 0;
+
+  a {
+    display: inline-flex;
+    min-width: 0;
+    min-height: 64px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 12px 10px;
+    border-radius: 18px;
+    color: #0b0b0b;
+    background: #f2f5fd;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: left;
+    text-decoration: none;
+    transition: background-color 0.25s ease;
+
+    > span:first-child {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    &:hover {
+      background: #fff1df;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #f69827;
+      outline-offset: 4px;
+    }
+  }
+}
+
+.navigationIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  color: #0b0b0b;
+  background: #ffe1b5;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.directions {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  min-width: 0;
+}
+
+.direction {
+  min-width: 0;
+  padding: 20px;
+  border-radius: 24px;
+  background: #f2f5fd;
+}
+
+.overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.introduction {
+  h2 {
+    margin: 0 0 16px;
+    scroll-margin-top: 120px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+.picture {
+  position: relative;
+  aspect-ratio: 1.55;
+  overflow: hidden;
+  border-radius: 18px;
+
+  img {
+    object-fit: cover;
+  }
+}
+
+.service {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 20px;
+  background: #fff;
+  scroll-margin-top: 120px;
+
+  h3 {
+    margin: 0;
+    font-size: var(--service-subheading-size);
+    line-height: 1.4;
+  }
+}
+
+.licenses {
+  margin-top: 0;
+}
+
+.orderGuide,
+.page .faq {
+  width: 100%;
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.orderGuide {
+  h2 {
+    margin-bottom: 32px;
+    text-align: center;
+    scroll-margin-top: 120px;
+  }
+
+  ol {
+    display: grid;
+    gap: 28px;
+    padding-left: 0;
+    margin-bottom: 32px;
+    list-style: none;
+    counter-reset: order-step;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    column-gap: 8px;
+    counter-increment: order-step;
+
+    &::before {
+      content: counter(order-step) ".";
+      color: #737b8b;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.8;
+    }
+  }
+
+  li p {
+    grid-column: 2;
+  }
+
+  h3 {
+    margin: 0 0 10px;
+    font-size: var(--service-subheading-size);
+    line-height: 1.4;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  > p {
+    margin-left: 32px;
+  }
+
+  a {
+    color: var(--accent, #f69827);
+    text-underline-offset: 3px;
+  }
+}
+
+.page .faq {
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .heroActions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    max-width: none;
+
+    > a {
+      padding: 14px 24px;
+    }
+
+    > a > span {
+      font-size: 16px;
+    }
+  }
+  .page,
+  .page + section {
+    --service-heading-size: 30px;
+    --service-subheading-size: 21px;
+  }
+
+  .page .faq {
+    gap: 40px;
+  }
+
+  .directions {
+    gap: 64px;
+  }
+
+  .inner {
+    padding: 0 11.5px 64px;
+  }
+
+  .hero {
+    padding: 56px 0 64px;
+
+    h1 {
+      font-size: 48px;
+    }
+
+    > p {
+      margin-bottom: 32px;
+      font-size: 18px;
+    }
+  }
+
+  .navigation {
+    gap: 16px;
+    margin-top: 40px;
+
+    a {
+      gap: 12px;
+      padding: 18px 24px;
+      font-size: 15px;
+    }
+  }
+
+  .navigationIcon {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .direction {
+    padding: 32px;
+    border-radius: 28px;
+  }
+
+  .overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .service {
+    padding: 24px;
+
+    h3 {
+      font-size: var(--service-subheading-size);
+    }
+  }
+
+}
+
+@media (min-width: 1440px) {
+  .page,
+  .page + section {
+    --service-heading-size: 36px;
+  }
+  .directions {
+    gap: 80px;
+  }
+
+  .page {
+    max-width: 1440px;
+  }
+
+  .inner {
+    padding: 0 50px 72px;
+  }
+
+  .hero {
+    padding: 72px 0 80px;
+
+    h1 {
+      margin-bottom: 28px;
+      font-size: 58px;
+    }
+  }
+
+  .navigation {
+    grid-template-columns: repeat(20, minmax(0, 1fr));
+    margin-top: 48px;
+
+    a {
+      grid-column: span 4;
+      justify-content: center;
+
+      &:nth-child(-n + 4) {
+        grid-column: span 5;
+      }
+    }
+  }
+
+  .navigationIcon {
+    width: 40px;
+    height: 40px;
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navigation a {
+    transition: none;
+  }
+}

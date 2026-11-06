@@ -1,0 +1,43 @@
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  color: #f69827;
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px solid #f69827;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    color: #fff;
+    background: #f69827;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.previous,
+.next {
+  width: 24px;
+  height: 24px;
+}
+
+.previous {
+  transform: rotate(90deg);
+}
+
+.next {
+  transform: rotate(-90deg);
+}

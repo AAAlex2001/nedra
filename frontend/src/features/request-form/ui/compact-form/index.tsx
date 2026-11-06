@@ -102,6 +102,15 @@ const CompactRequestForm = ({ directions }: CompactRequestFormProps) => {
         onChange={(value) => changeField("email", value)}
       />
 
+      <TextField
+        required
+        compact
+        placeholder="Кратко опишите задачу"
+        maxLength={2000}
+        value={state.fields.comment}
+        onChange={(value) => changeField("comment", value)}
+      />
+
       <LegalConsents compact />
 
       {state.error && <p className={styles.error}>{state.error}</p>}

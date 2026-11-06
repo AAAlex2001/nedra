@@ -8,6 +8,7 @@ export type FaqItem = {
 type FaqProps = {
   items: FaqItem[];
   title?: string;
+  className?: string;
 };
 
 const Chevron = () => (
@@ -29,8 +30,8 @@ const Chevron = () => (
   </svg>
 );
 
-const Faq = ({ items, title }: FaqProps) => (
-  <section className={styles.faq}>
+const Faq = ({ items, title, className }: FaqProps) => (
+  <section className={[styles.faq, className].filter(Boolean).join(" ")}>
     {title && <h2 className={styles.title}>{title}</h2>}
 
     <div className={styles.card}>

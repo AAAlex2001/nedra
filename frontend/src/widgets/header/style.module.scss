@@ -21,11 +21,11 @@
   max-width: 768px;
   margin: 0 auto;
 
-  background: #ffffffed;
+  background: rgba(255, 255, 255, 0.78);
   border: 1px solid #e5e5e3;
   border-radius: 999px;
   box-shadow: 0 8px 32px #2920181a;
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(10px);
 }
 
 .logo {

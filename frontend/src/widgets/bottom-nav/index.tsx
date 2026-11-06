@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { useSession } from "@/entities/user";
 import { useAuthModal } from "@/features/auth";
 import { useCommissionPopup } from "@/features/commission-application";
@@ -12,6 +13,35 @@ export default function BottomNav() {
   const session = useSession();
   const { openModal } = useAuthModal();
   const { openForm } = useCommissionPopup();
+  const barRef = useRef<HTMLDivElement>(null);
+  const [hiddenOnPath, setHiddenOnPath] = useState<string | null>(null);
+  const isHidden = hiddenOnPath === pathname;
+
+  useEffect(() => {
+    let previousScrollPosition = window.scrollY;
+
+    const handleScroll = () => {
+      const maximumScrollPosition = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPosition = Math.max(0, Math.min(window.scrollY, maximumScrollPosition));
+      const scrollDistance = scrollPosition - previousScrollPosition;
+
+      if (scrollPosition <= 80 || barRef.current?.contains(document.activeElement)) {
+        setHiddenOnPath(null);
+        previousScrollPosition = scrollPosition;
+        return;
+      }
+
+      if (Math.abs(scrollDistance) < 12) return;
+
+      setHiddenOnPath(scrollDistance > 0 ? pathname : null);
+      previousScrollPosition = scrollPosition;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
+
   const profile = (
     <>
       <NavIcon type="profile" />
@@ -21,7 +51,12 @@ export default function BottomNav() {
   return (
     <>
       <div className={styles.spacer} aria-hidden="true" />
-      <div className={styles.bar}>
+      <div
+        ref={barRef}
+        className={`${styles.bar} ${isHidden ? styles.hidden : ""}`}
+        inert={isHidden}
+        aria-hidden={isHidden}
+      >
         <nav className={styles.tabs} aria-label="Быстрые разделы">
           {session.user ? (
             <Link

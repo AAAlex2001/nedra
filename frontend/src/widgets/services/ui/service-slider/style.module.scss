@@ -1,0 +1,28 @@
+.slider {
+  min-width: 0;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: #737b8b;
+  font-size: 14px;
+}
+
+.slider .track {
+  align-items: stretch;
+}
+
+.slide {
+  display: flex;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+
+  > * {
+    flex: 1;
+    min-width: 0;
+  }
+}

@@ -18,7 +18,7 @@ export const DESKTOP_NAV: DesktopNavItem[] = [
       { label: "Партнёры", href: "/#partners", description: "Компании, с которыми мы работаем" },
     ],
   },
-  { label: "Услуги", href: "/#services" },
+  { label: "Услуги", href: "/uslugi" },
   { label: "Блиц-эксперт", href: "/blits-ekspert" },
   { label: "Блиц-аудит", href: "/blits-audit" },
   {
@@ -43,7 +43,7 @@ export const DESKTOP_NAV: DesktopNavItem[] = [
 
 export const HEADER_NAV: HeaderNavItem[] = [
   { label: "О нас", href: "/#about" },
-  { label: "Услуги", href: "/#services" },
+  { label: "Услуги", href: "/uslugi" },
   { label: "Партнёры", href: "/#partners" },
   { label: "Разрешительные документы", href: "/#documents" },
   {

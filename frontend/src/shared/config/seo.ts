@@ -71,8 +71,13 @@ type PageSeo = {
 
 /** Единый источник заголовков и описаний для всех страниц. */
 export const PAGE_SEO: Record<string, PageSeo> = {
+  "/uslugi": {
+    title: "Услуги — проектирование, экспертиза промышленной безопасности и аудит",
+    description: "Проектирование, инженерные изыскания, экспертиза промышленной безопасности и аудит СУПБ в НПИ «Недра». Состав работ, результаты, исходные документы и консультация по вашей задаче.",
+    image: "/uslugi/1.webp",
+  },
   "/": {
-    title: "Проектирование, инженерные изыскания и экспертиза промышленных объектов",
+    title: "НПИ «Недра» — проектирование, инженерные изыскания и экспертиза",
     description: SITE_DESCRIPTION,
   },
   "/obshchestvennye-obsuzhdeniya": {
@@ -209,11 +214,11 @@ export function buildMetadata(path: string): Metadata {
   }
 
   const url = `${SITE_URL}${path}`;
-  const ogTitle = `${page.title} | ${SITE_NAME}`;
+  const ogTitle = path === "/" ? page.title : `${page.title} | ${SITE_NAME}`;
   const image = page.image ?? OG_IMAGE;
 
   return {
-    title: page.title,
+    title: path === "/" ? { absolute: page.title } : page.title,
     description: page.description,
     alternates: { canonical: url },
     openGraph: {

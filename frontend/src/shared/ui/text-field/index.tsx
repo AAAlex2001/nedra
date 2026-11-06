@@ -47,6 +47,7 @@ const TextField = ({
     {multiline ? (
       <textarea
         className={styles.textarea}
+        aria-label={label ? undefined : placeholder}
         rows={rows}
         placeholder={placeholder}
         value={value}
