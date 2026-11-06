@@ -3,6 +3,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel, Field
+
 from src.articles.admin.schemas.tag import AdminTagResponse
 from src.articles.enums import AdminArticleSort, ArticleSection
 from src.articles.models.article import Article
@@ -52,7 +53,7 @@ class ListArticlesRequest(BaseModel):
 
     section: ArticleSection | None = None
     sort: AdminArticleSort = AdminArticleSort.NEW
-    q: str | None = Field(default=None, max_length=100)
+    search: str | None = Field(default=None, max_length=100)
     limit: int = Field(default=20, ge=1, le=100)
     offset: int = Field(default=0, ge=0)
 

@@ -13,8 +13,13 @@ from src.audit.options import (
 )
 from src.audit.schemas.audit_details import AuditDetailsSchema
 from src.audit.site.audit_plan_data import AuditPlanData
-from src.audit.site.schemas.audit_plan import AuditPlanResponse, AuditTeamMemberResponse
-from src.documents.text_formatting import format_initials, format_moscow_time, format_period
+from src.audit.site.schemas.audit_plan import AuditPlanResponse
+from src.audit.site.schemas.audit_team import AuditTeamMemberResponse
+from src.documents.text_formatting import (
+    format_initials,
+    format_moscow_time,
+    format_period,
+)
 from src.documents.word_template import fill_word_template
 
 

@@ -8,7 +8,6 @@ from src.audit.exceptions import AuditDocumentNotFoundError, AuditNotFoundError
 from src.audit.repositories.audit_contract_details import AuditContractDetailsRepository
 from src.audit.repositories.audit_documents import AuditDocumentRepository
 from src.audit.site.audit_access import AuditAccess
-from src.audit.site.audit_contract import prepare_audit_contract
 from src.contracts.contract_documents import create_contract_document
 from src.core.file_exceptions import InvalidUploadError
 from src.core.file_storage import FileStorage
@@ -82,8 +81,7 @@ class GetAuditContractDocumentUseCase:
         if details is None:
             raise AuditNotFoundError()
 
-        terms = prepare_audit_contract(
-            details=details,
+        terms = details.to_contract_terms(
             customer=customer,
             signed_at=datetime.now(UTC),
             settings=self.settings,

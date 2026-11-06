@@ -1,6 +1,7 @@
 """Список направлений."""
 
 from pydantic import BaseModel
+
 from src.articles.enums import ArticleSection
 from src.articles.models.tag import Tag
 

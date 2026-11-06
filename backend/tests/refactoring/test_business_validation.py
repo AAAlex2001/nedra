@@ -13,7 +13,11 @@ from src.expertise.application_validation import (
 from src.expertise.exceptions import InvalidExpertiseError
 from src.users.attestation_validation import validate_certificate, validate_directions
 from src.users.contact_validation import normalize_phone
-from src.users.exceptions import InvalidCertificateError, InvalidDirectionError, InvalidPhoneError
+from src.users.exceptions import (
+    InvalidCertificateError,
+    InvalidDirectionError,
+    InvalidPhoneError,
+)
 
 
 def test_password_requires_letter_digit_and_sufficient_length() -> None:

@@ -3,7 +3,11 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from src.articles.exceptions import ArticleConflictError, ArticleNotFoundError, TagNotFoundError
+from src.articles.exceptions import (
+    ArticleConflictError,
+    ArticleNotFoundError,
+    TagNotFoundError,
+)
 
 
 async def article_not_found(

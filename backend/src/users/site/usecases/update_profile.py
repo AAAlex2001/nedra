@@ -6,8 +6,10 @@ from src.auth.repositories.expert_applications import ExpertApplicationRepositor
 from src.users.contact_validation import normalize_phone
 from src.users.exceptions import UserNotFoundError
 from src.users.repositories.users import UserRepository
-from src.users.site.schemas.update_profile import UpdateProfileRequest
-from src.users.site.schemas.user import UserResponse
+from src.users.site.schemas.update_profile import (
+    UpdateProfileRequest,
+    UpdateProfileResponse,
+)
 
 
 class UpdateProfileUseCase:
@@ -31,7 +33,7 @@ class UpdateProfileUseCase:
         *,
         user_id: int,
         payload: UpdateProfileRequest,
-    ) -> UserResponse:
+    ) -> UpdateProfileResponse:
         """Изменить имя и телефон."""
 
         phone = normalize_phone(phone=payload.phone)
@@ -48,7 +50,7 @@ class UpdateProfileUseCase:
             application.full_name = user.full_name
             application.phone = user.phone
 
-        response = UserResponse.from_model(user=user)
+        response = UpdateProfileResponse.from_model(user=user)
         await self.session.commit()
 
         return response

@@ -3,7 +3,10 @@
 from src.articles.repositories.articles import ArticleRepository
 from src.articles.repositories.tags import TagRepository
 from src.articles.schemas.article import ArticleCardResponse
-from src.articles.site.schemas.list_articles import ListArticlesRequest, ListArticlesResponse
+from src.articles.site.schemas.list_articles import (
+    ListArticlesRequest,
+    ListArticlesResponse,
+)
 
 
 class ListArticlesUseCase:
@@ -30,7 +33,7 @@ class ListArticlesUseCase:
         articles, total = await self.articles.list_published(
             section=payload.section,
             tag_slug=payload.tag,
-            search=payload.q.strip() if payload.q else None,
+            search=payload.search.strip() if payload.search else None,
             sort=payload.sort,
             limit=payload.limit,
             offset=payload.offset,

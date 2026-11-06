@@ -8,9 +8,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.audit.audit_letters import AuditLetters
 from src.audit.audit_price import format_audit_price, validate_audit_price
 from src.audit.enums import AuditOfferAnswer, AuditStatus
-from src.audit.exceptions import AuditNotFoundError, AuditStateError, InvalidAuditPriceError
+from src.audit.exceptions import (
+    AuditNotFoundError,
+    AuditStateError,
+    InvalidAuditPriceError,
+)
 from src.audit.repositories.audits import AuditRepository
-from src.audit.schemas.audit import AuditResponse
+from src.audit.site.schemas.answer_audit_offer import AnswerAuditOfferResponse
 from src.notifications.models.notification import Notification
 from src.notifications.repositories.notifications import NotificationRepository
 from src.users.enums import UserRole
@@ -46,7 +50,7 @@ class AnswerAuditOfferUseCase:
         audit_id: int,
         answer: AuditOfferAnswer,
         price: Decimal | None = None,
-    ) -> AuditResponse:
+    ) -> AnswerAuditOfferResponse:
         """Ответить на стоимость аудита."""
 
         audit = await self.audits.get_for_update(audit_id=audit_id)
@@ -105,7 +109,7 @@ class AnswerAuditOfferUseCase:
                 text=notification_text,
             )
         )
-        response = AuditResponse.from_model(audit=audit)
+        response = AnswerAuditOfferResponse.from_model(audit=audit)
         await self.session.commit()
         await self.letters.send_price_update(
             audit_id=audit_id,

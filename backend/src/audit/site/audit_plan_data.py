@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from src.audit.models.audit_company import AuditCompany
 from src.audit.schemas.audit_details import AuditDetailsSchema
-from src.audit.site.schemas.audit_plan import AuditTeamMemberResponse
+from src.audit.site.schemas.audit_team import AuditTeamMemberResponse
 
 
 @dataclass(kw_only=True)

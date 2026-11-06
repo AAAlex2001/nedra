@@ -3,6 +3,7 @@
 from pathlib import PurePosixPath
 
 from pydantic import BaseModel, ConfigDict, Field
+
 from src.articles.options import DOCUMENT_KINDS, DOCUMENT_URL_PATTERN
 
 

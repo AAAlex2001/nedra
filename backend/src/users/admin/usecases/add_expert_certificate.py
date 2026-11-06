@@ -2,7 +2,10 @@
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.users.attestation_validation import validate_certificate, validate_certificate_unique
+from src.users.attestation_validation import (
+    validate_certificate,
+    validate_certificate_unique,
+)
 from src.users.exceptions import ExpertNotFoundError
 from src.users.models.expert_certificate import ExpertCertificate
 from src.users.repositories.expert_certificates import ExpertCertificateRepository

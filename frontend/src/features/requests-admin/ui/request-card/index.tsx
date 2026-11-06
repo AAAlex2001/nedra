@@ -4,22 +4,17 @@ import classNames from "classnames";
 import { formatRequestDate, type RequestRecord } from "@/entities/request";
 import { findByActivity } from "@/entities/service";
 import Spinner from "@/shared/ui/spinner";
+import DeleteButton from "@/shared/ui/delete-button";
 import styles from "./style.module.scss";
 
 type RequestCardProps = {
   request: RequestRecord;
   pending: boolean;
-  onDelete: (id: number) => void;
+  onDelete: (id: number) => Promise<void>;
 };
 
 const RequestCard = ({ request, pending, onDelete }: RequestCardProps) => {
   const match = findByActivity(request.activity);
-
-  const handleDelete = () => {
-    if (window.confirm(`Удалить заявку №${request.request_id}?`)) {
-      onDelete(request.request_id);
-    }
-  };
 
   return (
     <article className={classNames(styles.card, pending && styles.cardPending)}>
@@ -31,14 +26,15 @@ const RequestCard = ({ request, pending, onDelete }: RequestCardProps) => {
           </time>
         </div>
 
-        <button
-          type="button"
+        <DeleteButton
           className={styles.delete}
           disabled={pending}
-          onClick={handleDelete}
+          title="Удалить заявку?"
+          description={`Заявка №${request.request_id} будет удалена без возможности восстановления.`}
+          onConfirm={() => onDelete(request.request_id)}
         >
           {pending ? <Spinner size={14} /> : "Удалить"}
-        </button>
+        </DeleteButton>
       </header>
 
       <div className={styles.tags}>

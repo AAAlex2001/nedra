@@ -102,9 +102,9 @@ class ExpertiseRepository:
         """Получить работы от новых к старым."""
 
         statement = select(Expertise).order_by(Expertise.created_at.desc(), Expertise.id.desc())
-        records = await self.session.scalars(statement)
+        expertises = await self.session.scalars(statement)
 
-        return list(records)
+        return list(expertises)
 
     async def delete(self, *, expertise: Expertise) -> None:
         """Удалить работу и зависимые записи."""

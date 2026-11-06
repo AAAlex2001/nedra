@@ -47,11 +47,35 @@ class CreateCommissionApplicationRequest(BaseModel):
         return contact.strip() if isinstance(contact, str) else contact
 
 
-class CommissionApplicationResponse(CreateCommissionApplicationRequest):
+class CommissionApplicationResponse(BaseModel):
     """Сохранённая заявка кандидата."""
 
+    full_name: str = Field(
+        min_length=3,
+        max_length=255,
+    )
+    phone: str = Field(
+        min_length=5,
+        max_length=32,
+    )
+    email: EmailStr
+    attestations: list[CandidateAttestation] = Field(
+        min_length=1,
+        max_length=30,
+    )
     id: int
     created_at: datetime
+
+    @field_validator(
+        "full_name",
+        "phone",
+        mode="before",
+    )
+    @classmethod
+    def strip_contact_spaces(cls, contact: object) -> object:
+        """Убрать пробелы вокруг контакта."""
+
+        return contact.strip() if isinstance(contact, str) else contact
 
     @classmethod
     def from_model(cls, *, application: CommissionApplication) -> "CommissionApplicationResponse":

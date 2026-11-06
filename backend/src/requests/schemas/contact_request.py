@@ -28,9 +28,25 @@ class CreateContactRequest(BaseModel):
     )
 
 
-class ContactRequestResponse(CreateContactRequest):
+class ContactRequestResponse(BaseModel):
     """Сохранённое обращение."""
 
+    name: str = Field(max_length=255)
+    telephone: str = Field(max_length=32)
+    email: EmailStr
+    activity: int
+    company_name: str | None = Field(
+        default=None,
+        max_length=255,
+    )
+    inn: str | None = Field(
+        default=None,
+        max_length=12,
+    )
+    comment: str | None = Field(
+        default=None,
+        max_length=2000,
+    )
     request_id: int
     direction: int
     created_at: datetime

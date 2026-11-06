@@ -1,17 +1,42 @@
 """Регистрация эксперта."""
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 from src.auth.enums import ApplicationStatus
-from src.auth.site.schemas.register import RegisterRequest
+from src.auth.options import PASSWORD_MAX_BYTES, PASSWORD_MIN_LENGTH
 from src.users.schemas.expert_certificate import ExpertCertificateRequest
 
 
-class CreateExpertApplicationRequest(RegisterRequest):
+class CreateExpertApplicationRequest(BaseModel):
     """Контакты и аттестация нового эксперта."""
 
+    model_config = ConfigDict(hide_input_in_errors=True)
+    email: EmailStr
+    password: str = Field(
+        min_length=PASSWORD_MIN_LENGTH,
+        max_length=PASSWORD_MAX_BYTES,
+        repr=False,
+    )
+    full_name: str = Field(
+        min_length=2,
+        max_length=255,
+    )
+    phone: str = Field(
+        min_length=10,
+        max_length=32,
+    )
     directions: list[str] = Field(min_length=1)
     certificates: list[ExpertCertificateRequest] = Field(min_length=1)
+
+    @field_validator(
+        "full_name",
+        mode="before",
+    )
+    @classmethod
+    def strip_full_name(cls, full_name: object) -> object:
+        """Убрать пробелы вокруг имени."""
+
+        return full_name.strip() if isinstance(full_name, str) else full_name
 
 
 class ExpertApplicationCreatedResponse(BaseModel):

@@ -151,15 +151,15 @@ async def test_failed_expertise_creation_cleans_files(
 ) -> None:
     """Удалить приложения и откатить запись при ошибке репозитория."""
 
-    original_create = ExpertiseRequestRepository.create
+    original_add = ExpertiseRequestRepository.add
 
-    async def fail_after_create(self, **arguments):
+    async def fail_after_add(self, **arguments):
         """Имитировать ошибку после flush."""
 
-        await original_create(self, **arguments)
+        await original_add(self, **arguments)
         raise RuntimeError("request save failed")
 
-    monkeypatch.setattr(ExpertiseRequestRepository, "create", fail_after_create)
+    monkeypatch.setattr(ExpertiseRequestRepository, "add", fail_after_add)
     _, customer_id, _ = audit_ids
     settings.private_dir = tmp_path
     app = create_app(settings=settings)

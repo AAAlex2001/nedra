@@ -26,16 +26,16 @@ class ListAdminAuditsUseCase:
     async def execute(self) -> list[AuditAdminResponse]:
         """Получить все работы."""
 
-        records = await self.audits.list_all()
-        user_ids = {record.customer_id for record in records}
-        user_ids.update(record.lead_id for record in records if record.lead_id is not None)
+        audits = await self.audits.list_all()
+        user_ids = {record.customer_id for record in audits}
+        user_ids.update(record.lead_id for record in audits if record.lead_id is not None)
         users = await self.users.list_by_ids(user_ids=user_ids)
         applications = await self.applications.list_by_audit_ids(
-            audit_ids={audit.id for audit in records}
+            audit_ids={audit.id for audit in audits}
         )
         response = []
 
-        for audit in records:
+        for audit in audits:
             customer = users.get(audit.customer_id)
             if customer is None:
                 raise UserNotFoundError()

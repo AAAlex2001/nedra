@@ -3,11 +3,15 @@
 from datetime import UTC, datetime
 
 from fastapi import UploadFile
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.audit.enums import AuditStatus
-from src.audit.exceptions import AuditNotFoundError, AuditStateError, InvalidAuditApplicationError
-from src.audit.models.audit_document import AuditDocument
+from src.audit.exceptions import (
+    AuditNotFoundError,
+    AuditStateError,
+    InvalidAuditApplicationError,
+)
 from src.audit.repositories.audit_documents import AuditDocumentRepository
 from src.audit.repositories.audits import AuditRepository
 from src.audit.schemas.audit import AuditResponse
@@ -79,16 +83,7 @@ class SendAuditConclusionUseCase:
 
         try:
             documents = [
-                AuditDocument(
-                    audit_id=audit_id,
-                    remark_id=None,
-                    uploaded_by=user.id,
-                    kind=document.kind,
-                    file_path=document.file.path,
-                    original_name=document.file.original_name,
-                    size=document.file.size,
-                    content_type=document.file.content_type,
-                )
+                document.to_model(audit_id=audit_id, uploaded_by=user.id, remark_id=None)
                 for document in saved_documents
             ]
             await self.documents.add_many(documents=documents)
@@ -106,7 +101,16 @@ class SendAuditConclusionUseCase:
 
             raise
 
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except IntegrityError:
+            try:
+                await self.session.rollback()
+            finally:
+                await self.file_storage.remove_all(documents=saved_documents)
+
+            raise
+
         await self.email_delivery.send(notification=notification)
 
         return response

@@ -67,9 +67,9 @@ class AuditRepository:
         """Получить работы от новых к старым."""
 
         statement = select(Audit).order_by(Audit.created_at.desc(), Audit.id.desc())
-        records = await self.session.scalars(statement)
+        audits = await self.session.scalars(statement)
 
-        return list(records)
+        return list(audits)
 
     async def delete(self, *, audit: Audit) -> None:
         """Удалить работу и зависимые записи."""

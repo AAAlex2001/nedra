@@ -20,3 +20,9 @@ class PaymentWebhookRequest(BaseModel):
     type: Literal["notification"]
     event: str
     object: WebhookPayment
+
+
+class PaymentWebhookResponse(BaseModel):
+    """Подтверждение обработки уведомления."""
+
+    status: str = "ok"

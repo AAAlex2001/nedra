@@ -18,10 +18,14 @@ from src.auth.passwords import hash_password
 from src.auth.tokens import create_access_token, read_user_id
 from src.core.settings import Settings
 from src.main import create_app
-from src.users.exceptions import EmailChangeError, EmailCodeCooldownError, EmailCodeDeliveryError
+from src.users.exceptions import (
+    EmailChangeError,
+    EmailCodeCooldownError,
+    EmailCodeDeliveryError,
+)
 from src.users.models.email_change import EmailChange
 from src.users.models.user import User
-from src.users.site.dependencies import (
+from src.users.site.dependencies.email_change import (
     get_confirm_email_change_usecase,
     get_request_email_change_usecase,
 )

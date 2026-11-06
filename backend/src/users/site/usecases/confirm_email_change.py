@@ -8,11 +8,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.repositories.expert_applications import ExpertApplicationRepository
 from src.users.email_codes import hash_email_code
-from src.users.exceptions import EmailAlreadyTakenError, EmailChangeError, UserNotFoundError
+from src.users.exceptions import (
+    EmailAlreadyTakenError,
+    EmailChangeError,
+    UserNotFoundError,
+)
 from src.users.options import EMAIL_CODE_MAX_ATTEMPTS
 from src.users.repositories.email_changes import EmailChangeRepository
 from src.users.repositories.users import UserRepository
-from src.users.site.schemas.user import UserResponse
+from src.users.site.schemas.confirm_email_change import EmailConfirmationResponse
 
 
 class ConfirmEmailChangeUseCase:
@@ -38,7 +42,7 @@ class ConfirmEmailChangeUseCase:
         *,
         user_id: int,
         code: str,
-    ) -> UserResponse:
+    ) -> EmailConfirmationResponse:
         """Подтвердить новый email."""
 
         user = await self.users.get_for_update(user_id=user_id)
@@ -81,7 +85,7 @@ class ConfirmEmailChangeUseCase:
 
         try:
             await self.changes.remove(email_change=email_change)
-            response = UserResponse.from_model(user=user)
+            response = EmailConfirmationResponse.from_model(user=user)
             await self.session.commit()
         except IntegrityError:
             await self.session.rollback()

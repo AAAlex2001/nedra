@@ -17,8 +17,8 @@ from src.expertise.exceptions import (
 )
 from src.expertise.expert_qualification import expert_qualifies
 from src.expertise.repositories.expertises import ExpertiseRepository
-from src.expertise.schemas.expertise import ExpertiseResponse
 from src.expertise.site.expertise_letters import ExpertiseLetters
+from src.expertise.site.schemas.accept_expertise import AcceptExpertiseResponse
 from src.notifications.models.notification import Notification
 from src.notifications.repositories.notifications import NotificationRepository
 from src.users.enums import UserRole
@@ -58,7 +58,7 @@ class AcceptExpertiseUseCase:
         expertise_id: int,
         user: User,
         contract_kind: ContractKind | None = None,
-    ) -> ExpertiseResponse:
+    ) -> AcceptExpertiseResponse:
         """Принять работу на условиях заказчика."""
 
         if user.role != UserRole.EXPERT:
@@ -115,7 +115,7 @@ class AcceptExpertiseUseCase:
                 text=f"Исполнитель готов выполнить экспертизу №{expertise_id}",
             )
         )
-        response = ExpertiseResponse.from_model(expertise=expertise)
+        response = AcceptExpertiseResponse.from_model(expertise=expertise)
         await self.session.commit()
         await self.letters.send_expert_ready(
             expertise_id=expertise_id,

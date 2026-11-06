@@ -5,10 +5,9 @@ import asyncio
 from src.auth.exceptions import ExpertApplicationPendingError, InvalidCredentialsError
 from src.auth.passwords import verify_password
 from src.auth.repositories.expert_applications import ExpertApplicationRepository
-from src.auth.site.schemas.login import LoginRequest
+from src.auth.site.schemas.login import LoginRequest, LoginResponse
 from src.users.contact_validation import normalize_email
 from src.users.repositories.users import UserRepository
-from src.users.site.schemas.user import UserResponse
 
 
 class LoginUserUseCase:
@@ -25,7 +24,7 @@ class LoginUserUseCase:
         self.users = users
         self.applications = applications
 
-    async def execute(self, *, payload: LoginRequest) -> UserResponse:
+    async def execute(self, *, payload: LoginRequest) -> LoginResponse:
         """Проверить данные для входа."""
 
         email = normalize_email(email=payload.email)
@@ -55,4 +54,4 @@ class LoginUserUseCase:
         if not password_is_correct:
             raise InvalidCredentialsError()
 
-        return UserResponse.from_model(user=user)
+        return LoginResponse.from_model(user=user)

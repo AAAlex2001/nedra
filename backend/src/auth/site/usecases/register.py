@@ -6,13 +6,12 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.passwords import hash_password
-from src.auth.site.schemas.register import RegisterRequest
+from src.auth.site.schemas.register import RegisterRequest, RegisterResponse
 from src.users.contact_validation import normalize_email, normalize_phone
 from src.users.enums import UserRole
 from src.users.exceptions import EmailAlreadyTakenError
 from src.users.models.user import User
 from src.users.repositories.users import UserRepository
-from src.users.site.schemas.user import UserResponse
 
 
 class RegisterUserUseCase:
@@ -29,7 +28,7 @@ class RegisterUserUseCase:
         self.session = session
         self.users = users
 
-    async def execute(self, *, payload: RegisterRequest) -> UserResponse:
+    async def execute(self, *, payload: RegisterRequest) -> RegisterResponse:
         """Создать аккаунт заказчика."""
 
         email = normalize_email(email=payload.email)
@@ -52,7 +51,7 @@ class RegisterUserUseCase:
 
         try:
             await self.users.add(user=user)
-            response = UserResponse.from_model(user=user)
+            response = RegisterResponse.from_model(user=user)
             await self.session.commit()
         except IntegrityError:
             await self.session.rollback()

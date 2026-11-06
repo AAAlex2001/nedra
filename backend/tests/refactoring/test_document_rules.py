@@ -4,6 +4,7 @@ from decimal import Decimal
 
 import pytest
 from pydantic import ValidationError
+
 from src.articles.admin.schemas.article_document import ArticleDocumentRequest
 from src.contracts.customer_template_values import working_days
 from src.contracts.enums import ContractKind
@@ -12,7 +13,12 @@ from src.contracts.options import SIBNTC_REQUISITES
 from src.core.settings import Settings
 from src.documents.generated_document import GeneratedDocument
 from src.documents.http_response import document_response
-from src.documents.money_formatting import amount_in_words, format_amount, vat_included, vat_text
+from src.documents.money_formatting import (
+    amount_in_words,
+    format_amount,
+    vat_included,
+    vat_text,
+)
 from src.documents.text_formatting import format_initials
 from src.payments.amounts import stage_amount
 from src.payments.enums import PaymentStage

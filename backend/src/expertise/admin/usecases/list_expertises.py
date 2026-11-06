@@ -23,13 +23,13 @@ class ListAdminExpertisesUseCase:
     async def execute(self) -> list[ExpertiseAdminResponse]:
         """Получить все работы."""
 
-        records = await self.expertises.list_all()
-        user_ids = {record.customer_id for record in records}
-        user_ids.update(record.expert_id for record in records if record.expert_id is not None)
+        expertises = await self.expertises.list_all()
+        user_ids = {record.customer_id for record in expertises}
+        user_ids.update(record.expert_id for record in expertises if record.expert_id is not None)
         users = await self.users.list_by_ids(user_ids=user_ids)
         response = []
 
-        for expertise in records:
+        for expertise in expertises:
             customer = users.get(expertise.customer_id)
             if customer is None:
                 raise UserNotFoundError()

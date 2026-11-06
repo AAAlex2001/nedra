@@ -32,7 +32,7 @@ class ListAdminArticlesUseCase:
 
         articles, total = await self.articles.list_admin(
             section=payload.section,
-            search=payload.q.strip() if payload.q else None,
+            search=payload.search.strip() if payload.search else None,
             sort=payload.sort,
             limit=payload.limit,
             offset=payload.offset,

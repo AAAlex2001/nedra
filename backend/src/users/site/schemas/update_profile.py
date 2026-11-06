@@ -1,6 +1,11 @@
 """Изменение профиля."""
 
-from pydantic import BaseModel, Field, field_validator
+from datetime import datetime
+
+from pydantic import BaseModel, EmailStr, Field, field_validator
+
+from src.users.enums import UserRole
+from src.users.models.user import User
 
 
 class UpdateProfileRequest(BaseModel):
@@ -24,3 +29,27 @@ class UpdateProfileRequest(BaseModel):
         """Убрать пробелы вокруг имени."""
 
         return full_name.strip() if isinstance(full_name, str) else full_name
+
+
+class UpdateProfileResponse(BaseModel):
+    """Профиль текущего пользователя."""
+
+    id: int
+    email: EmailStr
+    full_name: str
+    phone: str
+    role: UserRole
+    created_at: datetime
+
+    @classmethod
+    def from_model(cls, *, user: User) -> "UpdateProfileResponse":
+        """Подготовить данные профиля."""
+
+        return cls(
+            id=user.id,
+            email=user.email,
+            full_name=user.full_name,
+            phone=user.phone,
+            role=UserRole(user.role),
+            created_at=user.created_at,
+        )

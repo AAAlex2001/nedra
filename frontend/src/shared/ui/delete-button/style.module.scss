@@ -1,0 +1,33 @@
+.trigger {
+  padding: 8px 12px;
+  border: 1px solid #efcccc;
+  border-radius: 10px;
+  background: #fff;
+  color: #b42318;
+  font: inherit;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.description {
+  margin: 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.error {
+  color: #b42318;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}

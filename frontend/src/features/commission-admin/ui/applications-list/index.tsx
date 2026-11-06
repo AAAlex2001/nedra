@@ -38,7 +38,7 @@ const ApplicationsList = ({ initialItems, catalog, basePath }: ApplicationsListP
                 application={item}
                 catalog={catalog}
                 pending={state.pendingId === item.id}
-                onDelete={(id) => void remove(id)}
+                onDelete={remove}
               />
             </li>
           ))}

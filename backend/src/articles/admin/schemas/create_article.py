@@ -3,6 +3,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
+
 from src.articles.admin.schemas.article_document import ArticleDocumentRequest
 from src.articles.admin.schemas.tag import AdminTagResponse
 from src.articles.enums import ArticleSection

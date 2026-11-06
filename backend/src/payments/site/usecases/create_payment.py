@@ -3,8 +3,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.payments.payment_creator import PaymentCreator
-from src.payments.schemas.payment import PaymentResponse
-from src.payments.site.schemas.create_payment import CreatePaymentRequest
+from src.payments.site.schemas.create_payment import (
+    CreatePaymentRequest,
+    CreatePaymentResponse,
+)
 from src.users.models.user import User
 
 
@@ -27,7 +29,7 @@ class CreatePaymentUseCase:
         *,
         user: User,
         payload: CreatePaymentRequest,
-    ) -> PaymentResponse:
+    ) -> CreatePaymentResponse:
         """Создать платёж и вернуть ссылку."""
 
         payment = await self.creator.create(
@@ -36,7 +38,7 @@ class CreatePaymentUseCase:
             amount=payload.amount,
             description=payload.description,
         )
-        response = PaymentResponse.from_model(payment=payment)
+        response = CreatePaymentResponse.from_model(payment=payment)
         await self.session.commit()
 
         return response

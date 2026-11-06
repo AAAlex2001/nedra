@@ -1,0 +1,44 @@
+"""Замечания к плану аудита."""
+
+from pydantic import BaseModel, ConfigDict, Field
+
+from src.audit.enums import AuditStatus
+from src.audit.models.audit import Audit
+from src.audit.schemas.audit_conditions import AuditConditionsResponse
+from src.audit.schemas.audit_dates import AuditDatesResponse
+
+
+class RequestAuditPlanChangesRequest(BaseModel):
+    """Замечания заказчика к плану."""
+
+    model_config = ConfigDict(str_strip_whitespace=True)
+    comment: str = Field(
+        min_length=3,
+        max_length=4000,
+    )
+
+
+class RequestAuditPlanChangesResponse(BaseModel):
+    """Условия и состояние аудита."""
+
+    id: int  # Номер аудита.
+    customer_id: int  # Номер заказчика.
+    lead_id: int | None  # Номер руководителя группы.
+    status: AuditStatus  # Текущий этап.
+    result: str | None  # Результат заключения.
+    conditions: AuditConditionsResponse  # Цена и пожелания заказчика.
+    dates: AuditDatesResponse  # Даты прохождения этапов.
+
+    @classmethod
+    def from_model(cls, *, audit: Audit) -> "RequestAuditPlanChangesResponse":
+        """Подготовить сведения об аудите."""
+
+        return cls(
+            id=audit.id,
+            customer_id=audit.customer_id,
+            lead_id=audit.lead_id,
+            status=audit.status,
+            result=audit.result,
+            conditions=AuditConditionsResponse.from_model(audit=audit),
+            dates=AuditDatesResponse.from_model(audit=audit),
+        )

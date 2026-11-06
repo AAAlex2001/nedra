@@ -5,12 +5,16 @@ from datetime import UTC, datetime
 from slugify import slugify
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.articles.admin.schemas.create_article import CreateArticleRequest, CreateArticleResponse
-from src.articles.content import prepare_content
+
+from src.articles.admin.schemas.create_article import (
+    CreateArticleRequest,
+    CreateArticleResponse,
+)
 from src.articles.exceptions import ArticleConflictError, TagNotFoundError
 from src.articles.models.article import Article
 from src.articles.models.article_content import ArticleContent
 from src.articles.options import ARTICLE_SLUG_MAX_LENGTH
+from src.articles.prepared_content import PreparedContent
 from src.articles.repositories.article_contents import ArticleContentRepository
 from src.articles.repositories.articles import ArticleRepository
 from src.articles.repositories.tags import TagRepository
@@ -60,7 +64,7 @@ class CreateArticleUseCase:
             cover_image=payload.cover_image,
             published_at=published_at,
         )
-        prepared = prepare_content(raw_html=payload.content)
+        prepared = PreparedContent.from_html(raw_html=payload.content)
 
         try:
             await self.articles.save(article=article)

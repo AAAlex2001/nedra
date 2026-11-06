@@ -7,7 +7,15 @@ from reportlab.lib.units import mm
 from reportlab.platypus import Paragraph, Table, TableStyle
 
 from src.documents.money_formatting import format_amount, vat_included
-from src.documents.pdf.options import BODY, BODY_RIGHT, BOLD, LINE, REGULAR, SMALL, STRONG
+from src.documents.pdf.options import (
+    BODY,
+    BODY_RIGHT,
+    BOLD,
+    LINE,
+    REGULAR,
+    SMALL,
+    STRONG,
+)
 
 
 def requisites_table(rows: list[tuple[str, str]]) -> Table:

@@ -15,6 +15,7 @@ import {
 import { formatRequestDate } from "@/entities/request";
 import { formatRub } from "@/shared/lib/money";
 import { DetailsTable } from "@/shared/ui/details-table";
+import DeleteButton from "@/shared/ui/delete-button";
 import { statusGroup } from "../../model/groups";
 import type { ExpertiseAdminRecord, ExpertiseDraft, ExpertOption } from "../../model/types";
 import ExpertiseForm from "../expertise-form";
@@ -26,7 +27,7 @@ type ExpertiseCardProps = {
   experts: ExpertOption[];
   pending: boolean;
   onSave: (id: number, draft: ExpertiseDraft) => void;
-  onRemove: (id: number) => void;
+  onRemove: (id: number) => Promise<void>;
 };
 
 type FactProps = {
@@ -80,12 +81,6 @@ const ExpertiseCard = ({
   const save = (changed: ExpertiseDraft) => {
     onSave(expertise.id, changed);
     setEditing(false);
-  };
-
-  const remove = () => {
-    if (window.confirm(`Удалить заявку №${expertise.id} вместе с файлами?`)) {
-      onRemove(expertise.id);
-    }
   };
 
   return (
@@ -172,9 +167,15 @@ const ExpertiseCard = ({
         />
       ) : (
         <div className={styles.buttons}>
-          <button type="button" className={styles.remove} disabled={pending} onClick={remove}>
+          <DeleteButton
+            className={styles.remove}
+            disabled={pending}
+            title={audit ? "Удалить аудит?" : "Удалить экспертизу?"}
+            description={`Заявка №${expertise.id} и её файлы будут удалены без возможности восстановления.`}
+            onConfirm={() => onRemove(expertise.id)}
+          >
             Удалить
-          </button>
+          </DeleteButton>
           <button
             type="button"
             className={styles.edit}

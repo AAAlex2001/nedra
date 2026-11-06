@@ -1,7 +1,7 @@
 """Подбор участников аудиторской группы."""
 
 from src.audit.exceptions import AuditAccessError
-from src.audit.site.schemas.audit_plan import AuditTeamMemberResponse
+from src.audit.site.schemas.audit_team import AuditTeamMemberResponse
 from src.users.models.user import User
 from src.users.repositories.expert_certificates import ExpertCertificateRepository
 from src.users.repositories.expert_profiles import ExpertProfileRepository
@@ -40,11 +40,10 @@ class ListAuditorsUseCase:
                 continue
 
             certificates = certificates_by_user_id.get(auditor.id, [])
-            member = AuditTeamMemberResponse(
-                user_id=auditor.id,
-                full_name=auditor.full_name,
-                areas=sorted({certificate.area_code for certificate in certificates}),
-                lead=False,
+            member = AuditTeamMemberResponse.from_model(
+                user=auditor,
+                certificates=certificates,
+                is_lead=False,
             )
             members.append(member)
 

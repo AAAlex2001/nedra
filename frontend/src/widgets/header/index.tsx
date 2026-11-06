@@ -4,11 +4,12 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "@/entities/user";
-import { BurgerIcon, CloseIcon, NedraLogo } from "@/shared/ui/icons";
+import { NedraLogo } from "@/shared/ui/icons";
 import AuthModal from "@/widgets/auth-modal";
 import { DESKTOP_NAV, HEADER_NAV } from "./data";
 import AuthControls from "./ui/auth-controls";
 import BurgerMenu from "./ui/burger-menu";
+import MenuToggleIcon from "./ui/menu-toggle-icon";
 import styles from "./style.module.scss";
 
 const Header = () => {
@@ -111,13 +112,10 @@ const Header = () => {
               className={styles.burger}
               aria-label={open ? "Закрыть меню" : "Открыть меню"}
               aria-expanded={open}
+              aria-controls="mobile-navigation"
               onClick={() => setOpen((value) => !value)}
             >
-              {open ? (
-                <CloseIcon className={styles.burgerIcon} />
-              ) : (
-                <BurgerIcon className={styles.burgerIcon} />
-              )}
+              <MenuToggleIcon open={open} />
             </button>
           </div>
         </div>

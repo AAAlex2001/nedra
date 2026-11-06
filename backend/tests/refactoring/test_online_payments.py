@@ -16,7 +16,7 @@ from src.expertise.models.expertise import Expertise
 from src.main import create_app
 from src.notifications.models.notification import Notification
 from src.notifications.repositories.notifications import NotificationRepository
-from src.payments.dependencies import get_payment_gateway
+from src.payments.dependencies.gateway import get_payment_gateway
 from src.payments.gateway import YooKassaGateway
 from src.payments.models.payment import Payment
 from src.payments.options import YOOKASSA_API_URL

@@ -9,11 +9,15 @@ from src.core.file_exceptions import InvalidUploadError
 from src.core.file_storage import FileStorage
 from src.core.settings import Settings
 from src.documents.generated_document import GeneratedDocument
-from src.expertise.exceptions import ExpertiseDocumentNotFoundError, ExpertiseNotFoundError
-from src.expertise.repositories.expertise_contract_details import ExpertiseContractDetailsRepository
+from src.expertise.exceptions import (
+    ExpertiseDocumentNotFoundError,
+    ExpertiseNotFoundError,
+)
+from src.expertise.repositories.expertise_contract_details import (
+    ExpertiseContractDetailsRepository,
+)
 from src.expertise.repositories.expertise_documents import ExpertiseDocumentRepository
 from src.expertise.site.expertise_access import ExpertiseAccess
-from src.expertise.site.expertise_contract import prepare_expertise_contract
 from src.users.exceptions import UserNotFoundError
 from src.users.models.user import User
 from src.users.repositories.users import UserRepository
@@ -82,8 +86,7 @@ class GetExpertiseContractDocumentUseCase:
         if details is None:
             raise ExpertiseNotFoundError()
 
-        terms = prepare_expertise_contract(
-            details=details,
+        terms = details.to_contract_terms(
             customer=customer,
             signed_at=datetime.now(UTC),
             settings=self.settings,

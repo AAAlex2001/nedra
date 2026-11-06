@@ -5,22 +5,17 @@ import type { CommissionApplicationRecord } from "@/entities/commission";
 import { areaTitle, formatCategory, objectLabel, type ExpertCatalog } from "@/entities/expert";
 import { formatRequestDate } from "@/entities/request";
 import Spinner from "@/shared/ui/spinner";
+import DeleteButton from "@/shared/ui/delete-button";
 import styles from "./style.module.scss";
 
 type ApplicationCardProps = {
   application: CommissionApplicationRecord;
   catalog: ExpertCatalog | null;
   pending: boolean;
-  onDelete: (id: number) => void;
+  onDelete: (id: number) => Promise<void>;
 };
 
 const ApplicationCard = ({ application, catalog, pending, onDelete }: ApplicationCardProps) => {
-  const handleDelete = () => {
-    if (window.confirm(`Удалить заявку №${application.id}?`)) {
-      onDelete(application.id);
-    }
-  };
-
   return (
     <article className={classNames(styles.card, pending && styles.cardPending)}>
       <header className={styles.head}>
@@ -31,9 +26,15 @@ const ApplicationCard = ({ application, catalog, pending, onDelete }: Applicatio
           </time>
         </div>
 
-        <button type="button" className={styles.delete} disabled={pending} onClick={handleDelete}>
+        <DeleteButton
+          className={styles.delete}
+          disabled={pending}
+          title="Удалить заявку?"
+          description={`Заявка №${application.id} от «${application.full_name}» будет удалена без возможности восстановления.`}
+          onConfirm={() => onDelete(application.id)}
+        >
           {pending ? <Spinner size={14} /> : "Удалить"}
-        </button>
+        </DeleteButton>
       </header>
 
       <p className={styles.name}>{application.full_name}</p>

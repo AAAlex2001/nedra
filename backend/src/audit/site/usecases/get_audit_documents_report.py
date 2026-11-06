@@ -7,7 +7,9 @@ from src.audit.repositories.audit_applications import AuditApplicationRepository
 from src.audit.repositories.audit_customers import AuditCustomerRepository
 from src.audit.repositories.audit_documents import AuditDocumentRepository
 from src.audit.site.audit_access import AuditAccess
-from src.audit.site.documents.audit_documents_report import create_audit_documents_report
+from src.audit.site.documents.audit_documents_report import (
+    create_audit_documents_report,
+)
 from src.documents.generated_document import GeneratedDocument
 from src.documents.options import DOCX_CONTENT_TYPE
 from src.users.exceptions import UserNotFoundError

@@ -1,6 +1,8 @@
 """Просмотр заявок кандидатов."""
 
-from src.commission.repositories.commission_applications import CommissionApplicationRepository
+from src.commission.repositories.commission_applications import (
+    CommissionApplicationRepository,
+)
 from src.commission.schemas.commission_application import CommissionApplicationResponse
 
 

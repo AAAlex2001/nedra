@@ -3,7 +3,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import {
-  CloseIcon,
   NedraLogo,
   InfoIcon,
   DocumentIcon,
@@ -16,6 +15,7 @@ import {
   ProcedureDocumentIcon,
 } from "@/shared/ui/icons";
 import ServiceNavigation from "@/widgets/service-navigation";
+import MenuToggleIcon from "../menu-toggle-icon";
 import type { HeaderNavItem } from "../../data";
 import styles from "./style.module.scss";
 const ICONS = [
@@ -49,6 +49,7 @@ const BurgerMenu = ({ open, nav, onClose }: BurgerMenuProps) => {
   }, [open]);
   return (
     <dialog
+      id="mobile-navigation"
       ref={dialogRef}
       className={styles.drawer}
       aria-label="Меню НПИ «Недра»"
@@ -69,7 +70,7 @@ const BurgerMenu = ({ open, nav, onClose }: BurgerMenuProps) => {
             onClick={onClose}
             aria-label="Закрыть меню"
           >
-            <CloseIcon />
+            <MenuToggleIcon open={open} />
           </button>
         </header>
         <nav className={styles.nav} aria-label="Основные разделы">

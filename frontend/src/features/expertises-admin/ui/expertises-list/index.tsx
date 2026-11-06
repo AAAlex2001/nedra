@@ -71,7 +71,7 @@ const ExpertisesList = ({ initialItems, catalog, experts, basePath }: Expertises
                 experts={experts}
                 pending={pendingId === `${item.service}-${item.id}`}
                 onSave={(id, draft) => void save(id, draft, item.service)}
-                onRemove={(id) => void remove(id, item.service)}
+                onRemove={(id) => remove(id, item.service)}
               />
             </li>
           ))}

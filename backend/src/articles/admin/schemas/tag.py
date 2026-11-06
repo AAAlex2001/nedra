@@ -1,6 +1,7 @@
 """Создание и просмотр тегов."""
 
 from pydantic import BaseModel, ConfigDict, Field
+
 from src.articles.models.tag import Tag
 
 

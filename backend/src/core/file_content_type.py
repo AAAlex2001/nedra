@@ -5,10 +5,16 @@ from zipfile import BadZipFile, ZipFile
 
 import magic
 from cryptography.exceptions import UnsupportedAlgorithm
-from cryptography.hazmat.primitives.serialization.pkcs7 import load_der_pkcs7_certificates
+from cryptography.hazmat.primitives.serialization.pkcs7 import (
+    load_der_pkcs7_certificates,
+)
 
 from src.core.file_exceptions import InvalidUploadError
-from src.core.options import OFFICE_ARCHIVE_TYPES, SIGNATURE_CONTENT_TYPES, SIGNATURE_MAX_SIZE_BYTES
+from src.core.options import (
+    OFFICE_ARCHIVE_TYPES,
+    SIGNATURE_CONTENT_TYPES,
+    SIGNATURE_MAX_SIZE_BYTES,
+)
 
 
 def validate_file_content_type(

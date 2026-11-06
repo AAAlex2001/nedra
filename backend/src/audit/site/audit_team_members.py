@@ -2,7 +2,7 @@
 
 from src.audit.models.audit import Audit
 from src.audit.repositories.audit_teams import AuditTeamRepository
-from src.audit.site.schemas.audit_plan import AuditTeamMemberResponse
+from src.audit.site.schemas.audit_team import AuditTeamMemberResponse
 from src.users.exceptions import UserNotFoundError
 from src.users.repositories.expert_certificates import ExpertCertificateRepository
 from src.users.repositories.users import UserRepository
@@ -34,22 +34,21 @@ class AuditTeamMembers:
                 *[user_id for user_id in user_ids if user_id != audit.lead_id],
             ]
 
-        users = await self.users.list_by_ids(user_ids=set(user_ids))
-        certificates = await self.certificates.list_for_users(user_ids=set(user_ids))
+        users_by_id = await self.users.list_by_ids(user_ids=set(user_ids))
+        certificates_by_user_id = await self.certificates.list_for_users(user_ids=set(user_ids))
         members = []
 
         for user_id in user_ids:
-            user = users.get(user_id)
+            user = users_by_id.get(user_id)
             if user is None:
                 raise UserNotFoundError()
 
-            user_certificates = certificates.get(user_id, [])
+            user_certificates = certificates_by_user_id.get(user_id, [])
             members.append(
-                AuditTeamMemberResponse(
-                    user_id=user.id,
-                    full_name=user.full_name,
-                    areas=sorted({certificate.area_code for certificate in user_certificates}),
-                    lead=user.id == audit.lead_id,
+                AuditTeamMemberResponse.from_model(
+                    user=user,
+                    certificates=user_certificates,
+                    is_lead=user.id == audit.lead_id,
                 ),
             )
 

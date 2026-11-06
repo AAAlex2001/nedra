@@ -9,7 +9,7 @@ from src.audit.audit_price import format_audit_price, validate_audit_price
 from src.audit.enums import AuditStatus
 from src.audit.exceptions import AuditAccessError, AuditNotFoundError, AuditStateError
 from src.audit.repositories.audits import AuditRepository
-from src.audit.schemas.audit import AuditResponse
+from src.audit.site.schemas.propose_audit_price import ProposeAuditPriceResponse
 from src.notifications.models.notification import Notification
 from src.notifications.repositories.notifications import NotificationRepository
 from src.users.enums import UserRole
@@ -47,7 +47,7 @@ class ProposeAuditPriceUseCase:
         user: User,
         audit_id: int,
         price: Decimal,
-    ) -> AuditResponse:
+    ) -> ProposeAuditPriceResponse:
         """Предложить стоимость аудита."""
 
         validate_audit_price(price=price)
@@ -92,7 +92,7 @@ class ProposeAuditPriceUseCase:
                 text=notification_text,
             )
         )
-        response = AuditResponse.from_model(audit=audit)
+        response = ProposeAuditPriceResponse.from_model(audit=audit)
         await self.session.commit()
         await self.letters.send_price_update(
             audit_id=audit_id,

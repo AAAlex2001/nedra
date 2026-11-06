@@ -3,6 +3,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel
+
 from src.articles.enums import ArticleSection
 from src.articles.models.article import Article
 from src.articles.models.article_content import ArticleContent
@@ -38,7 +39,7 @@ class GetArticleResponse(BaseModel):
     updated_at: datetime
 
     @classmethod
-    def from_article(
+    def from_model(
         cls,
         *,
         article: Article,

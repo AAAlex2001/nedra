@@ -20,8 +20,8 @@ from src.audit.exceptions import (
     InvalidAuditPriceError,
 )
 from src.audit.models.audit import Audit
-from src.audit.schemas.audit import AuditResponse
-from src.audit.site.price_dependencies import get_propose_audit_price_usecase
+from src.audit.site.dependencies.price import get_propose_audit_price_usecase
+from src.audit.site.schemas.propose_audit_price import ProposeAuditPriceResponse
 from src.core.database import get_session
 from src.core.settings import Settings
 from src.notifications.models.notification import Notification
@@ -238,7 +238,7 @@ async def test_concurrent_leads_cannot_both_take_audit(
         await session.commit()
         second_lead_id = second_lead.id
 
-    async def propose(*, user_id: int) -> AuditResponse:
+    async def propose(*, user_id: int) -> ProposeAuditPriceResponse:
         """Предложить цену в отдельной транзакции."""
 
         async with session_factory() as session:
@@ -252,7 +252,7 @@ async def test_concurrent_leads_cannot_both_take_audit(
         propose(user_id=second_lead_id),
         return_exceptions=True,
     )
-    assert sum(isinstance(result, AuditResponse) for result in results) == 1
+    assert sum(isinstance(result, ProposeAuditPriceResponse) for result in results) == 1
     assert sum(isinstance(result, AuditNotFoundError) for result in results) == 1
 
     async with session_factory() as session:

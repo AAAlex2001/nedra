@@ -751,19 +751,19 @@
   },
   {
     "slug": "obnovlenie-fnp-i-obuchenie-personala-kakie-dokumenty-sverit-vmeste",
-    "title": "Обновление ФНП и обучение персонала: какие документы сверить вместе",
+    "title": "ФНП обновили: нужно ли заново аттестовывать персонал и что менять в обучении",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Обновление ФНП и обучение персонала: какие документы сверить вместе",
+    "angle": "Смена ФНП не равна автоматической внеочередной аттестации. Как проверить основания, обновить подготовку по изменившимся действиям и убрать старые ответы из рабочих материалов.",
     "keywords": [
-      "обновление фнп и обучение персонала",
-      "сроки действия фнп и обновление требований",
-      "реестр нормативных документов предприятия",
-      "тексты приказов об утверждении и изменении ФНП"
+      "обновление ФНП и обучение персонала",
+      "новые ФНП внеочередная аттестация",
+      "нужно ли переобучать после изменения ФНП",
+      "актуализация производственных инструкций"
     ],
     "sources": [
-      "https://publication.pravo.gov.ru/",
-      "https://www.consultant.ru/document/cons_doc_LAW_533140/"
+      "https://www.consultant.ru/document/cons_doc_LAW_15234/c9b7b2282835644a87381a24ba3faf1e730077b8/",
+      "https://legalacts.ru/doc/postanovlenie-pravitelstva-rf-ot-13012023-n-13-ob-attestatsii/"
     ],
     "cover_query": "industrial safety plant inspection",
     "batch": "2026-10-27",
@@ -1114,19 +1114,19 @@
   },
   {
     "slug": "truboprovod-otopleniya-ili-tehnologicheskaya-set-kakie-priznaki-sravnit",
-    "title": "Трубопровод отопления или технологическая сеть: какие признаки сравнить",
+    "title": "Трубопровод отопления или технологическая сеть: почему теплообменник не делает контуры одинаковыми",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Трубопровод отопления или технологическая сеть: какие признаки сравнить",
+    "angle": "За одним теплообменником могут находиться разные по назначению и параметрам участки. Как не перенести давление, назначение и исключения одной стороны на другую.",
     "keywords": [
       "трубопровод отопления или технологическая сеть",
-      "тепловая сеть и признаки опо",
-      "схема сети с границами эксплуатационной ответственности",
-      "паспорта участков и сведения о материале труб"
+      "назначение контуров теплообменника",
+      "параметры первичного вторичного контура",
+      "горячая вода технологический трубопровод"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/928be6671acc6ba6e6da54aec949a23259a65002/",
-      "https://www.consultant.ru/document/cons_doc_LAW_491894/"
+      "https://www.alfalaval.co.uk/products/heat-transfer/plate-heat-exchangers/gasketed-plate-and-frame-heat-exchangers/how-plate-heat-exchangers-work/",
+      "https://www.consultant.ru/document/cons_doc_LAW_373204/596dbdd4fbf5abaf431585610a8cdaf21facd7ef/"
     ],
     "cover_query": "district heating pipeline industrial",
     "batch": "2026-10-27",
@@ -1174,19 +1174,18 @@
   },
   {
     "slug": "teploset-peredayut-arendatoru-kak-oformit-tehnicheskuyu-granitsu",
-    "title": "Теплосеть передают арендатору: как оформить техническую границу",
+    "title": "Теплосеть передают арендатору: почему граничная задвижка ещё не обеспечивает отключение",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Теплосеть передают арендатору: как оформить техническую границу",
+    "angle": "Граница передачи теплосети проходит по задвижке, но обводная линия сохраняет связь с действующей сетью. Какие сведения разделить в документах арендатора.",
     "keywords": [
       "теплосеть передают арендатору",
-      "тепловая сеть и признаки опо",
-      "схема сети с границами эксплуатационной ответственности",
-      "паспорта участков и сведения о материале труб"
+      "граница ответственности задвижка",
+      "обводная линия теплосети",
+      "схема отключения участка аренды"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/928be6671acc6ba6e6da54aec949a23259a65002/",
-      "https://www.consultant.ru/document/cons_doc_LAW_491894/"
+      "https://www.hse.gov.uk/pubns/priced/hsg253.pdf"
     ],
     "cover_query": "district heating pipeline industrial",
     "batch": "2026-10-27",
@@ -1232,19 +1231,18 @@
   },
   {
     "slug": "v-reestre-opo-ostalis-starye-svedeniya-o-seti-chto-sopostavit-s-faktom",
-    "title": "В реестре ОПО остались старые сведения о сети: что сопоставить с фактом",
+    "title": "В реестре ОПО обновилось название компании, но осталась старая теплосеть",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "В реестре ОПО остались старые сведения о сети: что сопоставить с фактом",
+    "angle": "Изменение названия организации в реестре ОПО не подтверждает актуализацию состава теплосети. Как разделить два основания и проверить результат по новой ветви.",
     "keywords": [
-      "в реестре опо остались старые сведения о сети",
-      "тепловая сеть и признаки опо",
-      "схема сети с границами эксплуатационной ответственности",
-      "паспорта участков и сведения о материале труб"
+      "старые сведения о теплосети реестр ОПО",
+      "изменение характеристик ОПО",
+      "обновление реквизитов эксплуатирующей организации",
+      "новая ветвь тепловой сети"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/928be6671acc6ba6e6da54aec949a23259a65002/",
-      "https://www.consultant.ru/document/cons_doc_LAW_491894/"
+      "https://www.mos.ru/upload/documents/files/8368/PostanovleniePravitelstvaRFot03092025N1363Oregis.pdf"
     ],
     "cover_query": "district heating pipeline industrial",
     "batch": "2026-10-27",
@@ -1272,19 +1270,19 @@
   },
   {
     "slug": "kupili-oborudovanie-s-chu-im-zaklyucheniem-epb-kak-proverit-primenimost",
-    "title": "Купили оборудование с чужим заключением ЭПБ: как проверить применимость",
+    "title": "Купили сосуд с чужим заключением ЭПБ: что проверить перед применением с водородом",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Купили оборудование с чужим заключением ЭПБ: как проверить применимость",
+    "angle": "Сосуд ранее работал с другой средой, а покупатель планирует газообразный водород. Почему положительные данные обычной прочности не закрывают вопрос совместимости материала.",
     "keywords": [
-      "купили оборудование с чужим заключением эпб",
-      "проверка заключения эпб в реестре",
-      "полный текст заключения с приложениями",
-      "паспорт объекта экспертизы и заводские номера"
+      "купили сосуд с заключением ЭПБ",
+      "водород совместимость материала",
+      "смена рабочей среды сосуда",
+      "применимость прежней экспертизы"
     ],
     "sources": [
-      "https://www.gosnadzor.ru/service/list/reestr-zaklyucheniy-EPB/document%203.pdf",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/5487637b6f9c4196e7985a8cf6b1d8cb05065d6b/"
+      "https://energy.sandia.gov/programs/sustainable-transportation/hydrogen/materials-compatibility/",
+      "https://www.sandia.gov/app/uploads/sites/158/2021/12/SAND2012_7321.pdf"
     ],
     "cover_query": "industrial engineering documents inspection",
     "batch": "2026-10-27",
@@ -1331,20 +1329,19 @@
   },
   {
     "slug": "nomer-epb-nayden-pasport-drugoy-kak-razobrat-protivorechie",
-    "title": "Номер ЭПБ найден, паспорт другой: как разобрать противоречие",
+    "title": "Номер ЭПБ найден, но паспорт не сходится: проверьте, что именно прошло экспертизу",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Номер ЭПБ найден, паспорт другой: как разобрать противоречие",
+    "angle": "В найденном заключении рассмотрена документация, а покупателю нужен результат по устройству. Как отличить ошибку принадлежности паспорта от неверного вида ЭПБ.",
     "keywords": [
-      "номер эпб найден",
-      "паспорт другой",
-      "проверка заключения эпб в реестре",
-      "полный текст заключения с приложениями",
-      "паспорт объекта экспертизы и заводские номера"
+      "номер ЭПБ паспорт не совпадает",
+      "объект заключения ЭПБ",
+      "ЭПБ документации или устройства",
+      "проверка принадлежности заключения"
     ],
     "sources": [
-      "https://www.gosnadzor.ru/service/list/reestr-zaklyucheniy-EPB/document%203.pdf",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/5487637b6f9c4196e7985a8cf6b1d8cb05065d6b/"
+      "https://www.consultant.ru/document/cons_doc_LAW_15234/5487637b6f9c4196e7985a8cf6b1d8cb05065d6b/",
+      "https://www.consultant.ru/document/cons_doc_LAW_15234/a308affed744ba86d3e07a7113ab01801910fe25/"
     ],
     "cover_query": "industrial engineering documents inspection",
     "batch": "2026-10-27",
@@ -1390,19 +1387,18 @@
   },
   {
     "slug": "pered-pokupkoy-rezervuara-proveryayut-epb-kakie-rekvizity-sravnit",
-    "title": "Перед покупкой резервуара проверяют ЭПБ: какие реквизиты сравнить",
+    "title": "Покупка подземного резервуара для надземной установки: что не переносится из прежней ЭПБ",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Перед покупкой резервуара проверяют ЭПБ: какие реквизиты сравнить",
+    "angle": "Прежнее обоснование устойчивости могло учитывать поддержку засыпки. Почему тот же номер и толщина стенки не подтверждают другую схему размещения.",
     "keywords": [
-      "перед покупкой резервуара проверяют эпб",
-      "проверка заключения эпб в реестре",
-      "полный текст заключения с приложениями",
-      "паспорт объекта экспертизы и заводские номера"
+      "покупка подземного резервуара надземная установка",
+      "ЭПБ резервуар условия размещения",
+      "устойчивость оболочки поддержка грунта",
+      "перенос заключения резервуара"
     ],
     "sources": [
-      "https://www.gosnadzor.ru/service/list/reestr-zaklyucheniy-EPB/document%203.pdf",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/5487637b6f9c4196e7985a8cf6b1d8cb05065d6b/"
+      "https://stispfa.org/resource/performance-testing-of-underground-storage-tank-against-buckling/"
     ],
     "cover_query": "industrial engineering documents inspection",
     "batch": "2026-10-27",
@@ -1410,18 +1406,19 @@
   },
   {
     "slug": "obychnaya-armatura-dlya-aes-kak-proverit-trebovaniya-k-postavke",
-    "title": "Обычная арматура для АЭС: как проверить требования к поставке",
+    "title": "Арматура для АЭС с отметкой Fire Safe: подтверждено ли закрытие приводом при пожаре",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "Обычная арматура для АЭС: как проверить требования к поставке",
+    "angle": "Если проект требует закрытия сборки при огневом воздействии, одного API 607 на клапан недостаточно. Как проверить границу предъявленного подтверждения.",
     "keywords": [
-      "арматура для АЭС требования к поставке",
-      "общепромышленная арматура атомная станция",
-      "техническое задание на арматуру",
-      "документы на трубопроводную арматуру АЭС"
+      "арматура АЭС Fire Safe",
+      "API 607 привод область испытаний",
+      "клапан закрытие при пожаре",
+      "требования к сборке клапан привод"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/"
+      "https://www.api.org/-/media/files/publications/2024-catalog/2024-publication-catalog.pdf",
+      "https://www.bray.com/docs/default-source/whitepapers/en_wp_firesafe_min.pdf?sfvrsn=57972f9_5"
     ],
     "cover_query": "nuclear industrial valves quality inspection",
     "batch": "2026-10-27",
@@ -1450,19 +1447,18 @@
   },
   {
     "slug": "komplektuyuschee-vnutri-gotovogo-izdeliya-kak-proverit-prosle-ivaemost",
-    "title": "Комплектующее внутри готового изделия: как проверить прослеживаемость",
+    "title": "Комплектующие готового клапана перепутали: зачем проверять номера диска и рычага",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "Комплектующее внутри готового изделия: как проверить прослеживаемость",
+    "angle": "Как проверить сохранение индивидуальной сборки готового клапана, если одинаковые внешне части взяты из разных комплектов. Пример Alfa Laval SB Anti Vacuum Valve.",
     "keywords": [
-      "комплектующее внутри готового изделия",
-      "нп-071-26 и область оценки соответствия",
-      "техническое задание заказчика",
-      "спецификация изделия и классы безопасности"
+      "прослеживаемость комплектующих готового изделия",
+      "номера диска рычага клапана",
+      "перепутали комплекты клапанов",
+      "заводская настройка противовакуумного клапана"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://assets.alfalaval.com/documents/pc5f3c93c/alfa-laval-sb-anti-vacuum-valve-manual-en-gb.pdf"
     ],
     "cover_query": "nuclear industrial valves quality inspection",
     "batch": "2026-10-27",
@@ -1470,20 +1466,20 @@
   },
   {
     "slug": "sertifikat-est-komplekt-priyomki-nepolnyy-chto-proverit-postavschiku-aes",
-    "title": "Сертификат есть, комплект приёмки неполный: что проверить поставщику АЭС",
+    "title": "Для поставки на АЭС согласован сертификат 3.2, а пришёл 3.1: почему совпадения испытаний недостаточно",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "Сертификат есть, комплект приёмки неполный: что проверить поставщику АЭС",
+    "angle": "Приёмка остановлена из-за типа документа на материал. Разбираем, что отличает 3.1 от согласованного 3.2 и почему дополнительная печать не заменяет пропущенное участие.",
     "keywords": [
-      "сертификат есть",
-      "комплект приёмки неполный",
-      "нп-071-26 и область оценки соответствия",
-      "техническое задание заказчика",
-      "спецификация изделия и классы безопасности"
+      "сертификат 3.1 вместо 3.2",
+      "EN 10204 поставка АЭС",
+      "комплект приёмки материала",
+      "сертификат материала 3.2"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://www.tuv.nl/nl/diensten-en-certificeringen/techniek-en-productcertificering/ce-markering/en-10204-herwaarmerken/",
+      "https://www.tuv-nord.com/uk/en/services/inspection/manufactured-products/material-inspection/",
+      "https://ww2.eagle.org/content/dam/eagle/publications/cutsheets/EN-10204-Material-Verification-17287.pdf"
     ],
     "cover_query": "nuclear industrial valves quality inspection",
     "batch": "2026-10-27",
@@ -1511,19 +1507,19 @@
   },
   {
     "slug": "zapchast-vmesto-novogo-izdeliya-kak-ustanovit-primenimye-trebovaniya",
-    "title": "Запчасть вместо нового изделия: как установить применимые требования",
+    "title": "Запасной предохранитель aM вместо gG: почему одинаковых ампер недостаточно для замены",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "Запчасть вместо нового изделия: как установить применимые требования",
+    "angle": "У вставки совпали размер и номинальный ток, но изменилась категория применения. Как проверить защиту от перегрузки до согласования запасной части.",
     "keywords": [
-      "запчасть вместо нового изделия",
-      "нп-071-26 и область оценки соответствия",
-      "техническое задание заказчика",
-      "спецификация изделия и классы безопасности"
+      "запасной предохранитель aM вместо gG",
+      "замена плавкой вставки аналог",
+      "aM защита от перегрузки",
+      "категория применения предохранителя"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://cache.industry.siemens.com/dl/files/275/25358275/att_118372/v1/comparison_gg-am_fuses-enu.pdf",
+      "https://www.se.com/fi/fi/faqs/FA144273/"
     ],
     "cover_query": "nuclear industrial valves quality inspection",
     "batch": "2026-10-27",
@@ -1531,19 +1527,22 @@
   },
   {
     "slug": "np-071-26-v-tehnicheskom-zadanii-kak-proverit-oblast-primeneniya",
-    "title": "НП-071-26 в техническом задании: как проверить область применения",
+    "title": "НП-071-26 в ТЗ на систему НК: почему открытый образец не подтверждает слепые испытания",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "НП-071-26 в техническом задании: как проверить область применения",
+    "angle": "Для аттестации системы неразрушающего контроля важно различать открытые и слепые испытания. Когда известный паспорт дефектов не позволяет подтвердить предусмотренную достоверность.",
     "keywords": [
-      "нп-071-26 в техническом задании",
-      "нп-071-26 и область оценки соответствия",
-      "техническое задание заказчика",
-      "спецификация изделия и классы безопасности"
+      "НП-071-26 техническое задание",
+      "аттестация системы НК",
+      "слепые испытания",
+      "ГОСТ Р 50.04.07-2022",
+      "открытые испытания"
     ],
     "sources": [
       "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://bazanpa.ru/rostekhnadzor-prikaz-n254-ot21072026-h7254858/",
+      "https://normadocs.ru/gost_r_50.04.07-2022",
+      "https://protect.gost.ru/gost/details/e1998d87-c13f-4f71-9461-ea2b174b596b"
     ],
     "cover_query": "nuclear industrial valves quality inspection",
     "batch": "2026-10-27",
@@ -1551,19 +1550,18 @@
   },
   {
     "slug": "postavschik-i-izgotovitel-raznye-kak-sobrat-dokumenty-na-produktsiyu-aes",
-    "title": "Поставщик и изготовитель разные: как собрать документы на продукцию АЭС",
+    "title": "Поставщик и изготовитель разные: как связать артикул продавца с заводскими документами для АЭС",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "Поставщик и изготовитель разные: как собрать документы на продукцию АЭС",
+    "angle": "В накладной код продавца, в паспорте обозначение завода: как проверить связь, отличить переименование от замены изделия и собрать относящиеся документы через посредника.",
     "keywords": [
-      "поставщик и изготовитель разные",
-      "нп-071-26 и область оценки соответствия",
-      "техническое задание заказчика",
-      "спецификация изделия и классы безопасности"
+      "поставщик и изготовитель разные документы АЭС",
+      "артикул поставщика обозначение изготовителя",
+      "документы посредника на продукцию АЭС",
+      "несовпадение артикула в паспорте и накладной"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://www.digikey.com/en/products/detail/texas-instruments/LM358P/277042"
     ],
     "cover_query": "nuclear industrial valves quality inspection",
     "batch": "2026-10-27",
@@ -1590,19 +1588,18 @@
   },
   {
     "slug": "material-bez-svyazi-s-plavkoy-kak-proverit-prosle-ivaemost-postavki",
-    "title": "Материал без связи с плавкой: как проверить прослеживаемость поставки",
+    "title": "Анализатор подтвердил марку стали: почему номер потерянной плавки ещё не восстановлен",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "Материал без связи с плавкой: как проверить прослеживаемость поставки",
+    "angle": "После смешения материала прибор показывает подходящую марку. Почему этого недостаточно для привязки детали к одному из сертификатов и какой вопрос поставить лаборатории.",
     "keywords": [
-      "материал без связи с плавкой",
-      "подготовка поставщика аэс к изменению требований",
-      "программа обеспечения качества и рабочие процедуры",
-      "матрица ответственности участников поставки"
+      "марка стали номер плавки",
+      "PMI прослеживаемость материала",
+      "анализатор восстановить плавку",
+      "сертификат плавки потеря идентификации"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://www.rs-randack.de/en/knowledge-base/material-verification-and-batch-traceability/"
     ],
     "cover_query": "industrial equipment manufacturing quality control",
     "batch": "2026-10-27",
@@ -1610,19 +1607,19 @@
   },
   {
     "slug": "zakazchik-vernul-dose-kachestva-kak-razobrat-zamechaniya-po-razdelam",
-    "title": "Заказчик вернул досье качества: как разобрать замечания по разделам",
+    "title": "Заказчик вернул досье из-за твёрдости: почему пересчёт HV в HRC не равен новому испытанию",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "Заказчик вернул досье качества: как разобрать замечания по разделам",
+    "angle": "В документации поставки требуется одна шкала твёрдости, лаборатория выдала другую. Как отделить ошибку передачи от пересчитанного значения и фактически невыполненного испытания.",
     "keywords": [
-      "заказчик вернул досье качества",
-      "подготовка поставщика аэс к изменению требований",
-      "программа обеспечения качества и рабочие процедуры",
-      "матрица ответственности участников поставки"
+      "досье качества замечания твердость",
+      "HV HRC пересчет",
+      "протокол твердости другая шкала",
+      "приемка материала твердость"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://www.iso.org/standard/53810.html",
+      "https://www.twi-global.com/technical-knowledge/faqs/faq-how-can-i-convert-between-hardness-scales"
     ],
     "cover_query": "industrial equipment manufacturing quality control",
     "batch": "2026-10-27",
@@ -1630,19 +1627,19 @@
   },
   {
     "slug": "plan-kachestva-podpisan-ne-vsemi-kak-proverit-polnomochiya-uchastnikov",
-    "title": "План качества подписан не всеми: как проверить полномочия участников",
+    "title": "В доверенности два представителя, а план качества подписал один: когда нужна вторая подпись",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "План качества подписан не всеми: как проверить полномочия участников",
+    "angle": "В плане качества нет части подписей: как проверить роли участников, полномочия и порядок согласования. Почему отсутствие подписи, отсутствие участия и неподписанный экземпляр требуют разных решений.",
     "keywords": [
-      "план качества подписан не всеми",
-      "подготовка поставщика аэс к изменению требований",
-      "программа обеспечения качества и рабочие процедуры",
-      "матрица ответственности участников поставки"
+      "план качества подписал один представитель",
+      "доверенность нескольким представителям",
+      "совместное осуществление полномочий",
+      "подписи в плане качества"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://www.consultant.ru/document/cons_doc_LAW_5142/deb1e7bbc3371002688161fcfd76eafcd9c94c99/",
+      "https://www.vsrf.ru/documents/all/8435"
     ],
     "cover_query": "industrial equipment manufacturing quality control",
     "batch": "2026-10-27",
@@ -1669,19 +1666,19 @@
   },
   {
     "slug": "seriynaya-postavka-dlya-aes-kak-ne-pereputat-dokumenty-partiy",
-    "title": "Серийная поставка для АЭС: как не перепутать документы партий",
+    "title": "В выборке поставки АЭС нашли брак и заменили образец: стала ли партия принятой",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "Серийная поставка для АЭС: как не перепутать документы партий",
+    "angle": "Почему замена одного не прошедшего проверку изделия не отменяет результат выборочной приёмки партии. Как сохранить состав предъявления и различить доработку с повторным контролем.",
     "keywords": [
-      "серийная поставка для аэс",
-      "подготовка поставщика аэс к изменению требований",
-      "программа обеспечения качества и рабочие процедуры",
-      "матрица ответственности участников поставки"
+      "выборочная приемка партия АЭС замена образца",
+      "брак в выборке партия",
+      "повторное предъявление партии",
+      "документы серийной поставки АЭС"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://www.itl.nist.gov/div898/handbook/pmc/section2/pmc22.htm",
+      "https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/singsamp.htm"
     ],
     "cover_query": "industrial equipment manufacturing quality control",
     "batch": "2026-10-27",
@@ -1689,19 +1686,18 @@
   },
   {
     "slug": "zapisi-subpodryadchika-poteryany-kak-sostavit-perechen-probelov-kachestva",
-    "title": "Записи субподрядчика потеряны: как составить перечень пробелов качества",
+    "title": "Записи субподрядчика потеряны: почему программа печи не заменяет журнал партии",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "Записи субподрядчика потеряны: как составить перечень пробелов качества",
+    "angle": "Как разобрать потерю записей термообработки: отличить заданный режим от фактических показаний, связать цикл с партией и составить предметный запрос исполнителю.",
     "keywords": [
       "записи субподрядчика потеряны",
-      "подготовка поставщика аэс к изменению требований",
-      "программа обеспечения качества и рабочие процедуры",
-      "матрица ответственности участников поставки"
+      "журнал термообработки партии",
+      "программа печи и фактическая температура",
+      "восстановление производственного досье"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://www.eurotherm.com/en/heat-treatment-articles-en/atmosphere-furnace-control-using-the-2704/"
     ],
     "cover_query": "industrial equipment manufacturing quality control",
     "batch": "2026-10-27",
@@ -1709,19 +1705,20 @@
   },
   {
     "slug": "proverka-postavschika-pered-pervym-atomnym-kontraktom-chto-sobrat-zaranee",
-    "title": "Проверка поставщика перед первым атомным контрактом: что собрать заранее",
+    "title": "Первый атомный контракт: сертификат СМК есть, а площадка изготовления другая",
     "direction": "Атомная лицензия",
     "kind": "guide",
-    "angle": "Проверка поставщика перед первым атомным контрактом: что собрать заранее",
+    "angle": "Как проверить поставщика перед первым атомным контрактом: сертификат системы менеджмента, область деятельности, фактическая площадка и подтверждения готовности заказа.",
     "keywords": [
-      "проверка поставщика перед первым атомным контрактом",
-      "подготовка поставщика аэс к изменению требований",
-      "программа обеспечения качества и рабочие процедуры",
-      "матрица ответственности участников поставки"
+      "проверка поставщика перед атомным контрактом",
+      "сертификат СМК площадки",
+      "область сертификата ISO 9001 поставщик АЭС",
+      "готовность изготовителя к поставке"
     ],
     "sources": [
-      "https://docs.secnrs.ru/catalog/FNP/NP-071-26/",
-      "https://www.secnrs.ru/science/development/approved_documents/"
+      "https://iaf.nu/iaf_system/uploads/documents/IAF_MD1_Issue_3_181020231.pdf",
+      "https://support.iafcertsearch.org/iaf-certsearch-faq/iaf-certsearch-faq/general",
+      "https://support.iafcertsearch.org/verifiers/certificate-verification/how-to-verify-a-company-certificate"
     ],
     "cover_query": "industrial equipment manufacturing quality control",
     "batch": "2026-10-27",
@@ -1729,19 +1726,18 @@
   },
   {
     "slug": "kupili-avtokran-s-probegom-kakie-dokumenty-proverit-do-pervogo-podyoma",
-    "title": "Купили автокран с пробегом: какие документы проверить до первого подъёма",
+    "title": "Купили автокран с пробегом: малые часы на экране могут оказаться сбрасываемым счётчиком",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Купили автокран с пробегом: какие документы проверить до первого подъёма",
+    "angle": "Как проверить показания наработки подержанного автокрана: отличить общие часы от сбрасываемого таймера, связать экран с конкретной машиной и запросить историю обслуживания.",
     "keywords": [
       "купили автокран с пробегом",
-      "учёт автокрана в ростехнадзоре",
-      "паспорт автокрана с характеристиками",
-      "документы о приобретении или аренде"
+      "наработка автокрана счетчик часов",
+      "сбрасываемый счетчик и общая наработка крана",
+      "документы подержанного автокрана"
     ],
     "sources": [
-      "https://volok.gosnadzor.ru/activity/publichnye-meropriyatiya/2024-go/iii-kvartal-2024-goda/doklady/%D0%98%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F_%D0%9D%D0%9F%D0%90_01.09.24.pdf",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/"
+      "https://www.manitowoc.com/es/media/16064/download"
     ],
     "cover_query": "mobile crane construction lifting",
     "batch": "2026-10-27",
@@ -1749,19 +1745,18 @@
   },
   {
     "slug": "avtokran-v-arende-s-ekipa-em-kto-podtver-daet-ego-uchyot-i-sostoyanie",
-    "title": "Автокран в аренде с экипажем: кто подтверждает его учёт и состояние",
+    "title": "Автокран с экипажем: почему заказчик смены не становится техническим руководителем машиниста",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Автокран в аренде с экипажем: кто подтверждает его учёт и состояние",
+    "angle": "Кто подтверждает состояние арендованного автокрана, какие распоряжения получает экипаж и почему дополнительный час в заявке не разрешает неподготовленный подъём.",
     "keywords": [
       "автокран в аренде с экипажем",
-      "учёт автокрана в ростехнадзоре",
-      "паспорт автокрана с характеристиками",
-      "документы о приобретении или аренде"
+      "кто отвечает за состояние автокрана",
+      "распоряжения машинисту арендованного крана",
+      "документы автокрана перед сменой"
     ],
     "sources": [
-      "https://volok.gosnadzor.ru/activity/publichnye-meropriyatiya/2024-go/iii-kvartal-2024-goda/doklady/%D0%98%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F_%D0%9D%D0%9F%D0%90_01.09.24.pdf",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/"
+      "https://www.consultant.ru/document/cons_doc_LAW_9027/6423a1ffa8466b327fed0ae3dcb20552e66308fe/"
     ],
     "cover_query": "mobile crane construction lifting",
     "batch": "2026-10-27",
@@ -1769,19 +1764,19 @@
   },
   {
     "slug": "poteryan-pasport-avtokrana-pochemu-odnogo-dogovora-pokupki-nedostatochno",
-    "title": "Потерян паспорт автокрана: почему одного договора покупки недостаточно",
+    "title": "Паспорт автокрана потерян: почему тоннаж из договора не восстанавливает данные запасовки",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Потерян паспорт автокрана: почему одного договора покупки недостаточно",
+    "angle": "Модель и грузоподъёмность в договоре не показывают ограничения фактической канатной системы. Какие данные запасовки нужны при восстановлении документов автокрана.",
     "keywords": [
       "потерян паспорт автокрана",
-      "учёт автокрана в ростехнадзоре",
-      "паспорт автокрана с характеристиками",
-      "документы о приобретении или аренде"
+      "запасовка каната документы",
+      "число ветвей полиспаста",
+      "восстановление грузовых характеристик крана"
     ],
     "sources": [
-      "https://volok.gosnadzor.ru/activity/publichnye-meropriyatiya/2024-go/iii-kvartal-2024-goda/doklady/%D0%98%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F_%D0%9D%D0%9F%D0%90_01.09.24.pdf",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/"
+      "https://www.manitowoc.com/media/280/download",
+      "https://www.manitowoc.com/sites/default/files/media/divers/file/2020-01/500-Product-Guide.pdf"
     ],
     "cover_query": "mobile crane construction lifting",
     "batch": "2026-10-27",
@@ -1789,19 +1784,18 @@
   },
   {
     "slug": "kran-manipulyator-nazyvayut-avtokranom-kak-proverit-tip-ustroystva",
-    "title": "Кран-манипулятор называют автокраном: как проверить тип устройства",
+    "title": "Вместо автокрана предлагают манипулятор: почему 20 т·м не означают грузоподъёмность 20 тонн",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Кран-манипулятор называют автокраном: как проверить тип устройства",
+    "angle": "В заявке указали автокран в тоннах, поставщик предложил КМУ с похожим числом в тонно-метрах. Как обнаружить подмену характеристики и запросить относящиеся данные.",
     "keywords": [
-      "кран-манипулятор называют автокраном",
-      "учёт автокрана в ростехнадзоре",
-      "паспорт автокрана с характеристиками",
-      "документы о приобретении или аренде"
+      "кран манипулятор вместо автокрана",
+      "тонно метры и тонны",
+      "20 тм грузоподъемность",
+      "грузовой момент манипулятора"
     ],
     "sources": [
-      "https://volok.gosnadzor.ru/activity/publichnye-meropriyatiya/2024-go/iii-kvartal-2024-goda/doklady/%D0%98%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F_%D0%9D%D0%9F%D0%90_01.09.24.pdf",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/"
+      "https://cms.hiab.com/contentassets/bf3eccb61632454ebe644c660fc60311/hiab---t-hiduo-013-038---operators-manual.pdf"
     ],
     "cover_query": "mobile crane construction lifting",
     "batch": "2026-10-27",
@@ -1809,19 +1803,18 @@
   },
   {
     "slug": "avtokran-rabotaet-tolko-na-svoyom-sklade-chto-proverit-po-uchyotu",
-    "title": "Автокран работает только на своём складе: что проверить по учёту",
+    "title": "Автокран только на своём складе: дают ли редкие подъёмы пять лет между освидетельствованиями",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Автокран работает только на своём складе: что проверить по учёту",
+    "angle": "Мало подъёмов и работа только для себя не подтверждают пятилетний интервал. Как проверить руководство и функциональную группу по пунктам 164–165 ФНП №461.",
     "keywords": [
-      "автокран работает только на своём складе",
-      "учёт автокрана в ростехнадзоре",
-      "паспорт автокрана с характеристиками",
-      "документы о приобретении или аренде"
+      "автокран только на своём складе",
+      "редко используемый кран пять лет",
+      "пункт 165 ФНП 461",
+      "сроки освидетельствования автокрана"
     ],
     "sources": [
-      "https://volok.gosnadzor.ru/activity/publichnye-meropriyatiya/2024-go/iii-kvartal-2024-goda/doklady/%D0%98%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F_%D0%9D%D0%9F%D0%90_01.09.24.pdf",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/"
+      "https://www.consultant.ru/document/cons_doc_LAW_373321/ef926a625353500c8302246bb1067608fb2faf12/"
     ],
     "cover_query": "mobile crane construction lifting",
     "batch": "2026-10-27",
@@ -1829,19 +1822,19 @@
   },
   {
     "slug": "posle-remonta-zamenili-strelu-kakie-zapisi-dol-ny-byt-v-dokumentah",
-    "title": "После ремонта заменили стрелу: какие записи должны быть в документах",
+    "title": "После замены стрелы проверили грузовой момент: закрыта ли защита от сближения крюковой подвески с оголовком",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "После ремонта заменили стрелу: какие записи должны быть в документах",
+    "angle": "Почему протокол ограничителя грузового момента не подтверждает защиту от опасного сближения крюковой подвески с оголовком после замены стрелы.",
     "keywords": [
-      "после ремонта заменили стрелу",
-      "учёт автокрана в ростехнадзоре",
-      "паспорт автокрана с характеристиками",
-      "документы о приобретении или аренде"
+      "замена стрелы крана документы проверки",
+      "ограничитель грузового момента",
+      "сближение крюковой подвески оголовок",
+      "защита крана после ремонта"
     ],
     "sources": [
-      "https://volok.gosnadzor.ru/activity/publichnye-meropriyatiya/2024-go/iii-kvartal-2024-goda/doklady/%D0%98%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F_%D0%9D%D0%9F%D0%90_01.09.24.pdf",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/"
+      "https://www.manitowoc.com/media/280/download",
+      "https://www.manitowoc.com/manuals"
     ],
     "cover_query": "mobile crane construction lifting",
     "batch": "2026-10-27",
@@ -1849,19 +1842,19 @@
   },
   {
     "slug": "smena-vladeltsa-avtokrana-kak-prinyat-istoriyu-ekspluatatsii",
-    "title": "Смена владельца автокрана: как принять историю эксплуатации",
+    "title": "Автокран продан, а сообщения завода идут прежнему владельцу: что передать покупателю",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Смена владельца автокрана: как принять историю эксплуатации",
+    "angle": "Договор покупки и технический архив не обеспечивают получение новых сообщений изготовителя. Как связать купленный кран с сервисным каналом и проверить незакрытые обращения.",
     "keywords": [
-      "смена владельца автокрана",
-      "учёт автокрана в ростехнадзоре",
-      "паспорт автокрана с характеристиками",
-      "документы о приобретении или аренде"
+      "смена владельца автокрана изготовитель",
+      "покупка крана сервисные сообщения",
+      "история крана уведомления завода",
+      "передача технического архива крана"
     ],
     "sources": [
-      "https://volok.gosnadzor.ru/activity/publichnye-meropriyatiya/2024-go/iii-kvartal-2024-goda/doklady/%D0%98%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F_%D0%9D%D0%9F%D0%90_01.09.24.pdf",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/"
+      "https://www.manitowoc.com/support/change-ownership",
+      "https://www.tadano.com/india/en/sales-services/owner-change-request/"
     ],
     "cover_query": "mobile crane construction lifting",
     "batch": "2026-10-27",
@@ -1869,19 +1862,18 @@
   },
   {
     "slug": "remont-teploseti-ne-zakonchen-k-holodam-kak-rasstavit-prioritety",
-    "title": "Ремонт теплосети не закончен к холодам: как расставить приоритеты",
+    "title": "Ремонт теплосети не закончили к холодам: можно ли оставить второй слой покрытия до весны",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Ремонт теплосети не закончен к холодам: как расставить приоритеты",
+    "angle": "Ремонт теплосети не завершён к холодам: как выделить критические работы, проверить зависимости и подтвердить готовность участков. Почему процент выполнения плана не заменяет оценку риска остановки теплоснабжения.",
     "keywords": [
       "ремонт теплосети не закончен к холодам",
-      "подготовка к отопительному сезону",
-      "план подготовки с исполнителями и сроками",
-      "акты испытаний и завершённых ремонтов"
+      "максимальный межслойный интервал",
+      "покрытие трубопровода второй слой",
+      "перенос защитных работ до весны"
     ],
     "sources": [
-      "https://publication.pravo.gov.ru/document/0001202411300002",
-      "https://minjust.consultant.ru/special/documents/document/53790"
+      "https://www.jotun.com/api/v1/datasheets/download/merged?selectedFiles=9794%2C9761"
     ],
     "cover_query": "district heating maintenance workers",
     "batch": "2026-10-27",
@@ -1889,19 +1881,19 @@
   },
   {
     "slug": "opressovka-vyyavila-utechki-kak-svyazat-defekty-s-planom-podgotovki",
-    "title": "Опрессовка выявила утечки: как связать дефекты с планом подготовки",
+    "title": "Утечки после опрессовки устранили: почему отсечённый манометр не подтверждает ремонт",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Опрессовка выявила утечки: как связать дефекты с планом подготовки",
+    "angle": "В повторном акте давление не падает, но манометр был изолирован от испытываемой сети. Как проверить основание закрытия ремонта в плане подготовки.",
     "keywords": [
-      "опрессовка выявила утечки",
-      "подготовка к отопительному сезону",
-      "план подготовки с исполнителями и сроками",
-      "акты испытаний и завершённых ремонтов"
+      "опрессовка утечки повторная проверка",
+      "отсеченный манометр испытание сети",
+      "закрытие дефектов подготовки к зиме",
+      "изолированный прибор давление"
     ],
     "sources": [
-      "https://publication.pravo.gov.ru/document/0001202411300002",
-      "https://minjust.consultant.ru/special/documents/document/53790"
+      "https://www.ashcroft.com/products/pressure/accessories/gauge-valve-02/",
+      "https://blog.ashcroft.com/manifold-valves-for-pressure-gauge"
     ],
     "cover_query": "district heating maintenance workers",
     "batch": "2026-10-27",
@@ -1909,19 +1901,18 @@
   },
   {
     "slug": "rezervnyy-nasos-ne-zapuskali-god-kak-proverit-realnuyu-gotovnost",
-    "title": "Резервный насос не запускали год: как проверить реальную готовность",
+    "title": "Резервный насос после простоя запустился: почему общая подача ещё не проверена",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Резервный насос не запускали год: как проверить реальную готовность",
+    "angle": "Резервный насос включили рядом с работающим, но его подача не подтверждена. Как различить режим замещения и совместную работу, не подменяя проверку сигналом двигателя.",
     "keywords": [
-      "резервный насос не запускали год",
-      "подготовка к отопительному сезону",
-      "план подготовки с исполнителями и сроками",
-      "акты испытаний и завершённых ремонтов"
+      "резервный насос после простоя проверка",
+      "насос работает подачи нет",
+      "параллельная работа насосов обратный клапан",
+      "готовность резервного насоса"
     ],
     "sources": [
-      "https://publication.pravo.gov.ru/document/0001202411300002",
-      "https://minjust.consultant.ru/special/documents/document/53790"
+      "https://www.ksb.com/en-global/centrifugal-pump-lexicon/p"
     ],
     "cover_query": "district heating maintenance workers",
     "batch": "2026-10-27",
@@ -1929,20 +1920,19 @@
   },
   {
     "slug": "toplivo-zakupleno-dokumentov-kachestva-net-chto-zaprosit-postavschiku",
-    "title": "Топливо закуплено, документов качества нет: что запросить поставщику",
+    "title": "Топливо для котельной закуплено без паспорта: что запросить на партию мазута",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Топливо закуплено, документов качества нет: что запросить поставщику",
+    "angle": "Поставщик прислал декларацию вместо паспорта мазута. Как запросить документ партии, связать его с отгрузкой и не принять типовые нормативы за фактические результаты.",
     "keywords": [
-      "топливо закуплено",
-      "документов качества нет",
-      "подготовка к отопительному сезону",
-      "план подготовки с исполнителями и сроками",
-      "акты испытаний и завершённых ремонтов"
+      "топливо закуплено документов качества нет",
+      "паспорт качества мазута",
+      "декларация вместо паспорта топлива",
+      "документы партии мазута для котельной"
     ],
     "sources": [
-      "https://publication.pravo.gov.ru/document/0001202411300002",
-      "https://minjust.consultant.ru/special/documents/document/53790"
+      "https://eec.eaeunion.org/upload/medialibrary/4ae/P_826_1.pdf",
+      "https://protect.gost.ru/tr/details/dfbf7ee2-f248-48c0-ad2b-202191e351bb"
     ],
     "cover_query": "district heating maintenance workers",
     "batch": "2026-10-27",
@@ -1950,19 +1940,18 @@
   },
   {
     "slug": "ka-duyu-zimu-odin-avariynyy-uchastok-kak-obosnovat-zamenu-seti",
-    "title": "Каждую зиму один аварийный участок: как обосновать замену сети",
+    "title": "Теплосеть рвётся каждую зиму, а архив давления ровный: что проверить перед заменой",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Каждую зиму один аварийный участок: как обосновать замену сети",
+    "angle": "Ровный архив давления не всегда исключает колебания. Как проверить частоту регистрации до вывода о причине ежегодных повреждений теплосети.",
     "keywords": [
-      "каждую зиму один аварийный участок",
-      "подготовка к отопительному сезону",
-      "план подготовки с исполнителями и сроками",
-      "акты испытаний и завершённых ремонтов"
+      "теплосеть авария каждую зиму",
+      "ровный архив давления",
+      "частота регистрации давления",
+      "обоснование замены теплосети"
     ],
     "sources": [
-      "https://publication.pravo.gov.ru/document/0001202411300002",
-      "https://minjust.consultant.ru/special/documents/document/53790"
+      "https://www.ni.com/en/shop/data-acquisition/measurement-fundamentals/analog-fundamentals/acquiring-an-analog-signal--bandwidth--nyquist-sampling-theorem-.html"
     ],
     "cover_query": "district heating maintenance workers",
     "batch": "2026-10-27",
@@ -1970,19 +1959,19 @@
   },
   {
     "slug": "podryadchik-sorval-sezonnyy-remont-kakie-dokazatelstva-sobrat",
-    "title": "Подрядчик сорвал сезонный ремонт: какие доказательства собрать",
+    "title": "Подрядчик сорвал сезонный ремонт: какую дату и какой результат нужно доказать",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Подрядчик сорвал сезонный ремонт: какие доказательства собрать",
+    "angle": "Как разобрать просрочку ремонта теплосети: отличить дату плана подготовки от договорного срока, проверить условие начала работ и собрать доказательства по конкретному этапу.",
     "keywords": [
       "подрядчик сорвал сезонный ремонт",
-      "подготовка к отопительному сезону",
-      "план подготовки с исполнителями и сроками",
-      "акты испытаний и завершённых ремонтов"
+      "доказательства просрочки ремонта теплосети",
+      "срок договора и план подготовки к зиме",
+      "ремонт не закончен к отопительному сезону"
     ],
     "sources": [
-      "https://publication.pravo.gov.ru/document/0001202411300002",
-      "https://minjust.consultant.ru/special/documents/document/53790"
+      "https://www.consultant.ru/document/cons_doc_LAW_9027/94492e64fdea026f033e334a2f18b7f1de1f04a0/",
+      "https://www.consultant.ru/document/cons_doc_LAW_9027/74f99bda3a8a3eccfdede4269aa617db5a588fad/"
     ],
     "cover_query": "district heating maintenance workers",
     "batch": "2026-10-27",
@@ -1990,20 +1979,18 @@
   },
   {
     "slug": "dokumenty-k-zime-gotovy-personal-ne-obuchen-kak-proverit-razryv",
-    "title": "Документы к зиме готовы, персонал не обучен: как проверить разрыв",
+    "title": "Документы к зиме готовы, а персонал не умеет учитывать задержку пробы газоанализатора",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Документы к зиме готовы, персонал не обучен: как проверить разрыв",
+    "angle": "Сезонные акты оформлены, а подготовка персонала не подтверждена: как проверить роли, замещение и знания по фактическим установкам. Почему папка готовности не заменяет способность работников действовать на объекте.",
     "keywords": [
-      "документы к зиме готовы",
-      "персонал не обучен",
-      "подготовка к отопительному сезону",
-      "план подготовки с исполнителями и сроками",
-      "акты испытаний и завершённых ремонтов"
+      "подготовка персонала к зиме",
+      "время отбора пробы газоанализатором",
+      "задержка пробы по шлангу",
+      "обучение работе с насосным газоанализатором"
     ],
     "sources": [
-      "https://publication.pravo.gov.ru/document/0001202411300002",
-      "https://minjust.consultant.ru/special/documents/document/53790"
+      "https://www.draeger.com/Content/Documents/Products/x-am-5600-technical-manual-ifu-9033072-en.pdf"
     ],
     "cover_query": "district heating maintenance workers",
     "batch": "2026-10-27",
@@ -2011,20 +1998,19 @@
   },
   {
     "slug": "k-benzinovoy-azs-dobavili-modul-sug-kakie-dokumenty-peresmotret",
-    "title": "К бензиновой АЗС добавили модуль СУГ: какие документы пересмотреть",
+    "title": "К бензиновой АЗС добавили СУГ: что проверить в документах газоаналитического контроля",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "К бензиновой АЗС добавили модуль СУГ: какие документы пересмотреть",
+    "angle": "Почему одинаковая шкала процентов НКПР не означает одинакового отклика на метан и пропан. Какие сведения сохранить в обновлённом контроле после добавления модуля.",
     "keywords": [
-      "к бензиновой азс добавили модуль суг",
-      "азс",
-      "агзс и идентификация опо",
-      "генеральный план и технологическая схема заправки",
-      "паспорта резервуаров и газового модуля"
+      "к бензиновой АЗС добавили СУГ газоанализатор",
+      "метан пропан шкала НКПР",
+      "документы газоаналитического контроля",
+      "калибровка целевой газ"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://www.gosnadzor.ru/service/opt_st/OPO.pdf"
+      "https://www.honeywellanalytics.com/~/media/honeywell-analytics/products/multipro/documents/english/equivalent-gas-mixtures.pdf",
+      "https://www.crowcon.com/wp-content/uploads/2024/08/Gas-Pro-Issue-15-British-English-with-UKCA-accessory-additions.pdf"
     ],
     "cover_query": "LPG gas filling station fuel storage",
     "batch": "2026-10-27",
@@ -2032,20 +2018,18 @@
   },
   {
     "slug": "zapravka-predpriyatiya-ili-sklad-topliva-kak-proverit-naznachenie-ploschadki",
-    "title": "Заправка предприятия или склад топлива: как проверить назначение площадки",
+    "title": "Заправка предприятия или склад топлива: почему наличие запаса ещё не решает спор",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Заправка предприятия или склад топлива: как проверить назначение площадки",
+    "angle": "АЗС тоже принимает и хранит моторное топливо. Как разобрать назначение корпоративной площадки, не выбирая пожарные требования и статус ОПО по одному резервуару.",
     "keywords": [
       "заправка предприятия или склад топлива",
-      "азс",
-      "агзс и идентификация опо",
-      "генеральный план и технологическая схема заправки",
-      "паспорта резервуаров и газового модуля"
+      "хранение топлива на АЗС",
+      "назначение топливной площадки",
+      "корпоративный топливозаправочный пункт"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://www.gosnadzor.ru/service/opt_st/OPO.pdf"
+      "https://protect.gost.ru/sp/details/a97eafdf-3db7-41f2-b198-6cfe36e6b3dc"
     ],
     "cover_query": "LPG gas filling station fuel storage",
     "batch": "2026-10-27",
@@ -2053,20 +2037,19 @@
   },
   {
     "slug": "rezervuary-azs-zamenili-na-bolee-vmestitelnye-chto-sverit-v-proekte",
-    "title": "Резервуары АЗС заменили на более вместительные: что сверить в проекте",
+    "title": "Резервуар АЗС увеличили и изменили слив: подходит ли прежний клапан от переполнения",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Резервуары АЗС заменили на более вместительные: что сверить в проекте",
+    "angle": "При замене резервуара сохранили защитный клапан, но вместо самотёка предусмотрели насосный слив. Почему исправность старого устройства ещё не подтверждает новую функцию.",
     "keywords": [
-      "резервуары азс заменили на более вместительные",
-      "азс",
-      "агзс и идентификация опо",
-      "генеральный план и технологическая схема заправки",
-      "паспорта резервуаров и газового модуля"
+      "замена резервуара АЗС клапан переполнения",
+      "самотечный напорный слив топлива",
+      "защита резервуара после замены",
+      "клапан налива АЗС"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://www.gosnadzor.ru/service/opt_st/OPO.pdf"
+      "https://www.opwglobal.com/products/us/retail-fueling-products/underground-storage-tank-equipment/overfill-prevention-valves/61so-overfill-prevention-valves",
+      "https://www.opwglobal.com/products/us/retail-fueling-products/above-ground-products/ast-equipment/ast-overfill-prevention-valves/opw-61fstop-the-stopper-overfill-prevention-valves"
     ],
     "cover_query": "LPG gas filling station fuel storage",
     "batch": "2026-10-27",
@@ -2074,20 +2057,19 @@
   },
   {
     "slug": "pokupka-agzs-kakie-dokumenty-opo-zaprosit-do-sdelki",
-    "title": "Покупка АГЗС: какие документы ОПО запросить до сделки",
+    "title": "Покупка АГЗС с подземной ёмкостью: что на самом деле показывает акт катодной защиты",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Покупка АГЗС: какие документы ОПО запросить до сделки",
+    "angle": "Почему число в акте ЭХЗ может включать омическое падение напряжения. Какие сведения проверить до покупки АГЗС с подземным стальным оборудованием.",
     "keywords": [
-      "покупка агзс",
-      "азс",
-      "агзс и идентификация опо",
-      "генеральный план и технологическая схема заправки",
-      "паспорта резервуаров и газового модуля"
+      "покупка АГЗС документы катодной защиты",
+      "потенциал ON IR drop",
+      "суммарный поляризационный потенциал",
+      "проверка ЭХЗ подземного резервуара"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://www.gosnadzor.ru/service/opt_st/OPO.pdf"
+      "https://www.wbdg.org/FFC/ARMYCOE/PWTB/pwtb_420_49_29.pdf",
+      "https://www.phmsa.dot.gov/regulations/title49/interp/pi-91-025"
     ],
     "cover_query": "LPG gas filling station fuel storage",
     "batch": "2026-10-27",
@@ -2095,20 +2077,18 @@
   },
   {
     "slug": "na-odnoy-ploschadke-benzin-i-gaz-kak-sobrat-svedeniya-dlya-identifikatsii",
-    "title": "На одной площадке бензин и газ: как собрать сведения для идентификации",
+    "title": "На площадке бензин и СУГ: почему количество газа нельзя получить по одному манометру",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "На одной площадке бензин и газ: как собрать сведения для идентификации",
+    "angle": "Как не потерять жидкую фазу при подготовке сведений о СУГ. Почему давление насыщенного пара не показывает весь запас в резервуаре.",
     "keywords": [
-      "на одной площадке бензин и газ",
-      "азс",
-      "агзс и идентификация опо",
-      "генеральный план и технологическая схема заправки",
-      "паспорта резервуаров и газового модуля"
+      "бензин СУГ площадка сведения количество",
+      "масса СУГ по давлению",
+      "давление не показывает запас пропана",
+      "жидкая газовая фаза резервуар"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://www.gosnadzor.ru/service/opt_st/OPO.pdf"
+      "https://ehrs.upenn.edu/health-safety/lab-safety/chemical-hygiene-plan/standard-operating-procedures/sop-compressed-gases"
     ],
     "cover_query": "LPG gas filling station fuel storage",
     "batch": "2026-10-27",
@@ -2116,20 +2096,19 @@
   },
   {
     "slug": "operator-azs-i-sobstvennik-raznye-kak-opredelit-ekspluatatsionnye-obyazannosti",
-    "title": "Оператор АЗС и собственник разные: как определить эксплуатационные обязанности",
+    "title": "На АЗС другая компания в чеке: как определить эксплуатационные обязанности",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Оператор АЗС и собственник разные: как определить эксплуатационные обязанности",
+    "angle": "Собственник АЗС и эксплуатирующий оператор не совпадают: как разделить управление, обслуживание, ремонты и передачу технической истории. Почему аренда не позволяет автоматически переложить все обязанности одной строкой договора.",
     "keywords": [
-      "оператор азс и собственник разные",
-      "азс",
-      "агзс и идентификация опо",
-      "генеральный план и технологическая схема заправки",
-      "паспорта резервуаров и газового модуля"
+      "оператор АЗС и собственник",
+      "другая компания в чеке АЗС",
+      "эксплуатационные обязанности АЗС",
+      "передача эксплуатации станции"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://www.gosnadzor.ru/service/opt_st/OPO.pdf"
+      "https://www.consultant.ru/document/cons_doc_LAW_42359/a1b0f1c99aa2a3ab98dfb729163d3194973bdaee/",
+      "https://www.consultant.ru/document/cons_doc_LAW_42359/7a607e9ee7058b0c3bcb22e564e88190964aee72/"
     ],
     "cover_query": "LPG gas filling station fuel storage",
     "batch": "2026-10-27",
@@ -2137,20 +2116,19 @@
   },
   {
     "slug": "postavschik-nazyvaet-gazovyy-modul-mobilnym-kak-proverit-fakticheskuyu-ekspluatatsiyu",
-    "title": "Поставщик называет газовый модуль мобильным: как проверить фактическую эксплуатацию",
+    "title": "Газовый модуль назвали мобильным: допускает ли гибкий рукав движение при подключении",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Поставщик называет газовый модуль мобильным: как проверить фактическую эксплуатацию",
+    "angle": "Газовый модуль называют мобильным и обещают работу без обычных документов: как проверить фактическое назначение, размещение и технологические связи. Почему перевозимость изделия не является универсальным основанием освобождения от требований.",
     "keywords": [
-      "поставщик называет газовый модуль мобильным",
-      "азс",
-      "агзс и идентификация опо",
-      "генеральный план и технологическая схема заправки",
-      "паспорта резервуаров и газового модуля"
+      "газовый модуль мобильный",
+      "гибкий рукав движение модуля",
+      "статический динамический изгиб рукава",
+      "транспортное и рабочее состояние газового модуля"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://www.gosnadzor.ru/service/opt_st/OPO.pdf"
+      "https://edmontonsolutions.swagelok.com/blog/routing-hose-at-manufacturing-and-processing-plants-4-rules-with-damaged-hose-photos-video",
+      "https://www.swagelok.com/downloads/WebCatalogs/EN/MS-CRD-0116.PDF"
     ],
     "cover_query": "LPG gas filling station fuel storage",
     "batch": "2026-10-27",
@@ -2158,19 +2136,18 @@
   },
   {
     "slug": "izyskaniya-predlagayut-vdvoe-deshevle-chto-sravnit-krome-chisla-skva-in",
-    "title": "Изыскания предлагают вдвое дешевле: что сравнить кроме числа скважин",
+    "title": "Изыскания вдвое дешевле: одинаковые скважины могут дать разные образцы для лаборатории",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Изыскания предлагают вдвое дешевле: что сравнить кроме числа скважин",
+    "angle": "В обеих сметах одинаковое бурение, но один состав не даёт предусмотренных данных о свойствах основания. Как сравнить отбор, сохранение структуры образцов и лабораторные определения.",
     "keywords": [
       "изыскания предлагают вдвое дешевле",
-      "инженерно-геологические изыскания",
-      "техническое задание на изыскания",
-      "схема посадки здания и данные о нагрузках"
+      "сравнение смет геологических изысканий",
+      "монолиты грунта лабораторные испытания",
+      "отбор проб и характеристики основания"
     ],
     "sources": [
-      "https://gge.ru/services/ekspertnyy-konsalting/",
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/"
+      "https://www.fhwa.dot.gov/engineering/geotech/pubs/05037/04c.cfm"
     ],
     "cover_query": "geotechnical drilling construction soil investigation",
     "batch": "2026-10-27",
@@ -2178,19 +2155,18 @@
   },
   {
     "slug": "zdanie-peredvinuli-na-uchastke-podhodyat-li-pre-nie-geologicheskie-dannye",
-    "title": "Здание передвинули на участке: подходят ли прежние геологические данные",
+    "title": "Здание перенесли на другое пятно: почему история нагрузки грунта меняет расчёт осадки",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Здание передвинули на участке: подходят ли прежние геологические данные",
+    "angle": "После переноса здания старые изыскания нельзя автоматически считать ни достаточными, ни бесполезными. Как сопоставить новое пятно застройки, выработки, разрезы и нагрузки, чтобы определить необходимость дополнительных исследований.",
     "keywords": [
-      "здание передвинули на участке",
-      "инженерно-геологические изыскания",
-      "техническое задание на изыскания",
-      "схема посадки здания и данные о нагрузках"
+      "перенос здания геологические данные",
+      "история нагрузки грунта",
+      "давление предварительного уплотнения",
+      "расчёт осадки после переноса здания"
     ],
     "sources": [
-      "https://gge.ru/services/ekspertnyy-konsalting/",
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/"
+      "https://damtoolbox.org/images/0/0b/EM_1110-1-1904.pdf"
     ],
     "cover_query": "geotechnical drilling construction soil investigation",
     "batch": "2026-10-27",
@@ -2198,10 +2174,10 @@
   },
   {
     "slug": "podval-poyavilsya-posle-izyskaniy-chto-peresmotret-v-programme",
-    "title": "Подвал появился после изысканий: что пересмотреть в программе",
+    "title": "После изысканий добавили подвал: почему выемку грунта нельзя считать просто уменьшением нагрузки",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Подвал появился после изысканий: что пересмотреть в программе",
+    "angle": "Новый подвал меняет не только глубину фундамента: выемка снимает существующее давление, затем конструкции нагружают основание снова. Что запросить у проектировщика и изыскателя.",
     "keywords": [
       "подвал появился после изысканий",
       "инженерно-геологические изыскания",
@@ -2209,8 +2185,7 @@
       "схема посадки здания и данные о нагрузках"
     ],
     "sources": [
-      "https://gge.ru/services/ekspertnyy-konsalting/",
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/"
+      "https://www.pleanala.ie/publicaccess/EIAR-NIS/322160/Application%20Docs/DBFL%20Consulting%20Engineers/Reports/190226-DBFL-Z1-ZZ-RP-S-0102%20Basement%20Impact%20Assessment.pdf"
     ],
     "cover_query": "geotechnical drilling construction soil investigation",
     "batch": "2026-10-27",
@@ -2218,10 +2193,10 @@
   },
   {
     "slug": "podryadchik-proburil-ne-tam-gde-stoyalo-v-sheme-kak-proverit-otchyot",
-    "title": "Подрядчик пробурил не там, где стояло в схеме: как проверить отчёт",
+    "title": "Скважина оказалась вне схемы: может ли GNSS ошибиться рядом со зданием",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Подрядчик пробурил не там, где стояло в схеме: как проверить отчёт",
+    "angle": "Скважина не совпала со схемой: как отличить перенос бурения от ошибки GNSS из-за отражённых сигналов возле здания и какие исходные данные запросить.",
     "keywords": [
       "подрядчик пробурил не там",
       "где стояло в схеме",
@@ -2230,8 +2205,8 @@
       "схема посадки здания и данные о нагрузках"
     ],
     "sources": [
-      "https://gge.ru/services/ekspertnyy-konsalting/",
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/"
+      "https://novatel.com/an-introduction-to-gnss/gnss-error-sources",
+      "https://novatel.com/tech-talk/an-introduction-to-gnss/resources/understanding-and-mitigating-gnss-multipath-interference-and-error"
     ],
     "cover_query": "geotechnical drilling construction soil investigation",
     "batch": "2026-10-27",
@@ -2239,19 +2214,18 @@
   },
   {
     "slug": "arhivnaya-geologiya-sosednego-uchastka-pochemu-eyo-nedostatochno-dlya-fundamenta",
-    "title": "Архивная геология соседнего участка: почему её недостаточно для фундамента",
+    "title": "Архивная геология соседа: почему свойства природной глины нельзя переносить на переработанный грунт",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Архивная геология соседнего участка: почему её недостаточно для фундамента",
+    "angle": "На соседней площадке исследовали природную глину, а под будущим фундаментом материал ранее вынимали и укладывали снова. Что проверить вместо переноса архивной прочности.",
     "keywords": [
       "архивная геология соседнего участка",
-      "инженерно-геологические изыскания",
-      "техническое задание на изыскания",
-      "схема посадки здания и данные о нагрузках"
+      "свойства переработанной глины",
+      "природная структура грунта",
+      "данные для фундамента"
     ],
     "sources": [
-      "https://gge.ru/services/ekspertnyy-konsalting/",
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/"
+      "https://www.wbdg.org/FFC/ARMYCOE/COETM/ARCHIVES/tm_5_818_1.pdf"
     ],
     "cover_query": "geotechnical drilling construction soil investigation",
     "batch": "2026-10-27",
@@ -2259,19 +2233,18 @@
   },
   {
     "slug": "slabyy-grunt-nayden-v-odnoy-skva-ine-kakie-voprosy-zadat-proektirovschiku",
-    "title": "Слабый грунт найден в одной скважине: какие вопросы задать проектировщику",
+    "title": "Слабый грунт в одной скважине: почему на разрезе он оказался под фундаментом",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Слабый грунт найден в одной скважине: какие вопросы задать проектировщику",
+    "angle": "Слабый интервал показан под опорой, но скважина расположена сбоку от линии разреза. Как проверить проекцию и не перепутать изображение с фактическим местом исследования.",
     "keywords": [
-      "слабый грунт найден в одной скважине",
-      "инженерно-геологические изыскания",
-      "техническое задание на изыскания",
-      "схема посадки здания и данные о нагрузках"
+      "слабый грунт в одной скважине",
+      "проекция скважины на геологический разрез",
+      "скважина вне линии разреза",
+      "положение слабого слоя под фундаментом"
     ],
     "sources": [
-      "https://gge.ru/services/ekspertnyy-konsalting/",
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/"
+      "https://www.fhwa.dot.gov/engineering/geotech/pubs/05037/04c.cfm"
     ],
     "cover_query": "geotechnical drilling construction soil investigation",
     "batch": "2026-10-27",
@@ -2279,19 +2252,18 @@
   },
   {
     "slug": "nagruzki-zdaniya-vyrosli-kak-proverit-dostatochnost-staryh-izyskaniy",
-    "title": "Нагрузки здания выросли: как проверить достаточность старых изысканий",
+    "title": "Нагрузки здания выросли, фундамент расширили: почему прежнего давления недостаточно для старой геологии",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Нагрузки здания выросли: как проверить достаточность старых изысканий",
+    "angle": "Увеличили площадь подошвы и сохранили среднее давление — можно ли оставить прежние изыскания? Почему нужно проверить глубину влияния и данные о нижележащих слоях.",
     "keywords": [
-      "нагрузки здания выросли",
-      "инженерно-геологические изыскания",
-      "техническое задание на изыскания",
-      "схема посадки здания и данные о нагрузках"
+      "нагрузки здания выросли старые изыскания",
+      "расширили фундамент прежнее давление",
+      "глубина влияния фундамента геология",
+      "достаточность изысканий новые нагрузки"
     ],
     "sources": [
-      "https://gge.ru/services/ekspertnyy-konsalting/",
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/"
+      "https://highways.dot.gov/sites/fhwa.dot.gov/files/FHWA-SA-02-054.pdf"
     ],
     "cover_query": "geotechnical drilling construction soil investigation",
     "batch": "2026-10-27",
@@ -2318,10 +2290,10 @@
   },
   {
     "slug": "odin-spetsialist-otvechaet-za-neskolko-kotelnyh-chto-proverit-v-obyazannostyah",
-    "title": "Один специалист отвечает за несколько котельных: что проверить в обязанностях",
+    "title": "Один ответственный за котельные разных компаний: почему общего приказа холдинга может не хватить",
     "direction": "Образовательная деятельность",
     "kind": "guide",
-    "angle": "Один специалист отвечает за несколько котельных: что проверить в обязанностях",
+    "angle": "Котельные объединены одним брендом, но эксплуатируются разными обществами. Как проверить, от имени кого назначен общий специалист и где действуют его полномочия.",
     "keywords": [
       "один специалист отвечает за несколько котельных",
       "ответственный за тепловые энергоустановки",
@@ -2329,8 +2301,8 @@
       "перечень установок и границ обслуживания"
     ],
     "sources": [
-      "https://minjust.consultant.ru/documents/56426",
-      "https://www.sural.gosnadzor.ru/news/67/18779/"
+      "https://legalacts.ru/doc/prikaz-minenergo-rossii-ot-14052025-n-511-ob-utverzhdenii/",
+      "https://www.consultant.ru/document/cons_doc_LAW_5142/2137d34030da23ed0f386d72ed9836b8e071a6e4/"
     ],
     "cover_query": "industrial boiler operator technician",
     "batch": "2026-10-27",
@@ -2338,19 +2310,18 @@
   },
   {
     "slug": "teplovoy-punkt-obslu-ivaet-podryadchik-nu-en-li-otvetstvennyy-u-zakazchika",
-    "title": "Тепловой пункт обслуживает подрядчик: нужен ли ответственный у заказчика",
+    "title": "Подрядчик закончил ремонт теплового пункта: кто принимает результат со стороны эксплуатации",
     "direction": "Образовательная деятельность",
     "kind": "guide",
-    "angle": "Тепловой пункт обслуживает подрядчик: нужен ли ответственный у заказчика",
+    "angle": "Акт подрядчика не определяет полномочия принимающего ремонт. Как связать ответственного эксплуатирующей организации с видом ремонта и границами оборудования.",
     "keywords": [
-      "тепловой пункт обслуживает подрядчик",
-      "ответственный за тепловые энергоустановки",
-      "приказы о назначении ответственного и заместителя",
-      "перечень установок и границ обслуживания"
+      "подрядчик обслуживает тепловой пункт ответственный",
+      "приемка ИТП из ремонта",
+      "приказ 511 пункт 14",
+      "акт ремонта теплового пункта"
     ],
     "sources": [
-      "https://minjust.consultant.ru/documents/56426",
-      "https://www.sural.gosnadzor.ru/news/67/18779/"
+      "https://legalacts.ru/doc/prikaz-minenergo-rossii-ot-14052025-n-511-ob-utverzhdenii/"
     ],
     "cover_query": "industrial boiler operator technician",
     "batch": "2026-10-27",
@@ -2358,19 +2329,18 @@
   },
   {
     "slug": "direktor-naznachil-sebya-otvetstvennym-kakie-dokumenty-podgotovki-proverit",
-    "title": "Директор назначил себя ответственным: какие документы подготовки проверить",
+    "title": "Директор стал ответственным за тепловые установки: почему пятилетний график проверки не подходит",
     "direction": "Образовательная деятельность",
     "kind": "guide",
-    "angle": "Директор назначил себя ответственным: какие документы подготовки проверить",
+    "angle": "Директор совмещает управление организацией и обязанности ответственного за тепловые установки. Как определить периодичность и место проверки знаний по действующим правилам.",
     "keywords": [
-      "директор назначил себя ответственным",
-      "ответственный за тепловые энергоустановки",
-      "приказы о назначении ответственного и заместителя",
-      "перечень установок и границ обслуживания"
+      "директор ответственный за тепловые установки",
+      "периодичность проверки знаний ответственного 511",
+      "ежегодная проверка знаний тепловые установки",
+      "директор назначил себя ответственным"
     ],
     "sources": [
-      "https://minjust.consultant.ru/documents/56426",
-      "https://www.sural.gosnadzor.ru/news/67/18779/"
+      "https://legalacts.ru/doc/prikaz-minenergo-rossii-ot-14052025-n-511-ob-utverzhdenii/"
     ],
     "cover_query": "industrial boiler operator technician",
     "batch": "2026-10-27",
@@ -2541,10 +2511,10 @@
   },
   {
     "slug": "u-predpriyatiya-net-edinogo-urnala-otkazov-kak-nachat-analiz-riska",
-    "title": "У предприятия нет единого журнала отказов: как начать анализ риска",
+    "title": "Журнал отказов создают с нуля: почему резервный насос без записей ещё не самый надёжный",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "У предприятия нет единого журнала отказов: как начать анализ риска",
+    "angle": "Резервный насос почти не работал и не имеет заявок на ремонт. Какие сведения о попытках пуска нужны при создании журнала и почему отсутствие событий не доказывает готовность.",
     "keywords": [
       "у предприятия нет единого журнала отказов",
       "аварийность опо и производственный контроль",
@@ -2552,9 +2522,7 @@
       "акты расследований и внутренние разборы"
     ],
     "sources": [
-      "https://crimea.ria.ru/20260813/rostekhnadzor-sozdal-4-upravleniya-v-novykh-regionakh-chem-oni-zanyaty-1158445693.html",
-      "http://government.ru/news/59577/",
-      "https://ria.ru/20260812/avarii-2110414965.html"
+      "https://inldigitallibrary.inl.gov/content/uploads/50/2026/04/Sort_67111.pdf"
     ],
     "cover_query": "industrial maintenance safety inspection factory",
     "batch": "2026-10-27",
@@ -2580,19 +2548,18 @@
   },
   {
     "slug": "lift-chasto-zastrevaet-akty-bez-zamechaniy-chto-sravnit-sobstvennikam",
-    "title": "Лифт часто застревает, акты без замечаний: что сравнить собственникам",
+    "title": "Лифт сам выпустил людей после отключения: почему это ещё не устранение причины остановок",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Лифт часто застревает, акты без замечаний: что сравнить собственникам",
+    "angle": "Автоматическое освобождение пассажиров после потери питания может быть штатным защитным результатом. Почему оно не доказывает устранение причины повторных остановок.",
     "keywords": [
-      "лифт часто застревает",
-      "акты без замечаний",
-      "лифт в жилом доме и обязанности владельца",
-      "паспорт лифта и сведения о вводе в эксплуатацию",
-      "договор технического обслуживания"
+      "лифт часто останавливается акт без замечаний",
+      "автоматическая эвакуация лифта",
+      "лифт после отключения питания",
+      "устранение причины остановки"
     ],
     "sources": [
-      "https://mchs.gov.ru/deyatelnost/bezopasnost-grazhdan/bezopasnost-v-lifte_6",
+      "https://au.schindler.com/en/elevators/packages/precaution.html",
       "https://eec.eaeunion.org/upload/medialibrary/203/P_824_1.pdf"
     ],
     "cover_query": "elevator maintenance apartment building",
@@ -2601,18 +2568,19 @@
   },
   {
     "slug": "srok-slu-by-lifta-podhodit-k-kontsu-kakie-rezultaty-obsledovaniya-zaprosit",
-    "title": "Срок службы лифта подходит к концу: какие результаты обследования запросить",
+    "title": "Лифт подходит к концу срока службы: что результат проверки говорит о натяжении канатов",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Срок службы лифта подходит к концу: какие результаты обследования запросить",
+    "angle": "В отчёте перечислены канаты без заметных повреждений. Почему внешний осмотр ещё не показывает распределение нагрузки в комплекте подвески и что уточнить у исполнителя.",
     "keywords": [
-      "срок службы лифта подходит к концу",
-      "лифт в жилом доме и обязанности владельца",
-      "паспорт лифта и сведения о вводе в эксплуатацию",
-      "договор технического обслуживания"
+      "срок службы лифта обследование канаты",
+      "неравномерное натяжение канатов лифта",
+      "результаты проверки канатной подвески",
+      "износ канатов ручьев шкива"
     ],
     "sources": [
-      "https://eec.eaeunion.org/upload/medialibrary/203/P_824_1.pdf"
+      "https://www.gustav-wolf.com/medium/m335/5th_Ed_GW_NA_Catalog_Final-Website.pdf",
+      "https://brugglifting.com/wp-content/uploads/2022/07/BruggLifting_Elevator_Ropes_General_Catalogue_EN_110422.pdf"
     ],
     "cover_query": "elevator maintenance apartment building",
     "batch": "2026-10-27",
@@ -2620,10 +2588,10 @@
   },
   {
     "slug": "podryadchik-obslu-ivaet-lift-no-ne-otvechaet-na-vyzovy-chto-proverit-v-dogovore",
-    "title": "Подрядчик обслуживает лифт, но не отвечает на вызовы: что проверить в договоре",
+    "title": "Лифт остановился с людьми: почему выезд бригады за 30 минут ещё не ответ по эвакуации",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Подрядчик обслуживает лифт, но не отвечает на вызовы: что проверить в договоре",
+    "angle": "В договоре обещан выезд, но пассажиры остаются в кабине. Как читать требование об эвакуации по Правилам №1744 и какие записи запросить по конкретному вызову.",
     "keywords": [
       "подрядчик обслуживает лифт",
       "но не отвечает на вызовы",
@@ -2632,7 +2600,7 @@
       "договор технического обслуживания"
     ],
     "sources": [
-      "https://eec.eaeunion.org/upload/medialibrary/203/P_824_1.pdf"
+      "https://www.consultant.ru/document/cons_doc_LAW_460399/91c867f29dfa19e576d8a55a4f732a4f38108517/"
     ],
     "cover_query": "elevator maintenance apartment building",
     "batch": "2026-10-27",
@@ -2640,17 +2608,18 @@
   },
   {
     "slug": "posle-remonta-dveri-snova-neispravny-kak-oformit-povtornyy-defekt",
-    "title": "После ремонта двери снова неисправны: как оформить повторный дефект",
+    "title": "Двери лифта снова дают сбой после замены световой завесы: какие функции нельзя смешивать",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "После ремонта двери снова неисправны: как оформить повторный дефект",
+    "angle": "Почему положительная проверка световой завесы не подтверждает запирание двери шахты. Как предметно оформить повторный дефект дверей лифта без самостоятельного диагноза.",
     "keywords": [
-      "после ремонта двери снова неисправны",
-      "лифт в жилом доме и обязанности владельца",
-      "паспорт лифта и сведения о вводе в эксплуатацию",
-      "договор технического обслуживания"
+      "повторный дефект дверей лифта",
+      "световая завеса лифта после ремонта",
+      "замок двери шахты",
+      "двери закрылись лифт не едет"
     ],
     "sources": [
+      "https://media.cedes.com/filer_public/fa/88/fa88932c-f1be-47c5-b64f-a19d4b62001d/118748en_de_manual_cegardsmart_lc_v11.pdf",
       "https://eec.eaeunion.org/upload/medialibrary/203/P_824_1.pdf"
     ],
     "cover_query": "elevator maintenance apartment building",
@@ -2713,10 +2682,10 @@
   },
   {
     "slug": "kupili-kotyol-bez-istorii-osvidetelstvovaniy-kakie-riski-proverit",
-    "title": "Купили котёл без истории освидетельствований: какие риски проверить",
+    "title": "Подержанный котёл продают с заводским гидроиспытанием: где история освидетельствований",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Купили котёл без истории освидетельствований: какие риски проверить",
+    "angle": "Продавец предъявляет заводской результат как последнее освидетельствование бывшего в работе котла. Как установить назначение записи и отделить её от последующей эксплуатационной истории.",
     "keywords": [
       "котел без истории освидетельствований",
       "покупка котла бу документы",
@@ -2724,9 +2693,7 @@
       "проверка котла перед покупкой"
     ],
     "sources": [
-      "http://publication.pravo.gov.ru/Document/View/0001202012310079",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://base.garant.ru/11900785/f7ee959fd36b5699076b35abf4f52c5c/"
+      "https://www.consultant.ru/document/cons_doc_LAW_373204/3c047f58e2ca54e9fee147836beb23196f773a0d/"
     ],
     "cover_query": "industrial steam boiler pressure equipment",
     "batch": "2026-10-27",
@@ -2752,10 +2719,10 @@
   },
   {
     "slug": "vodogreynyy-kotyol-rabotaet-ni-e-proektnoy-temperatury-kakie-dannye-nu-ny",
-    "title": "Водогрейный котёл работает ниже проектной температуры: какие данные нужны",
+    "title": "Водогрейный котёл перевели на низкую температуру: почему нужно проверить холодную обратку",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Водогрейный котёл работает ниже проектной температуры: какие данные нужны",
+    "angle": "Пониженный режим обычного водогрейного котла способен изменить условия конденсации дымовых газов. Какие данные об обратной воде, конструкции и длительности режима нужны для разбора.",
     "keywords": [
       "водогрейный котел ниже проектной температуры",
       "снижение температуры котла документы",
@@ -2763,9 +2730,7 @@
       "режим котла паспорт"
     ],
     "sources": [
-      "http://publication.pravo.gov.ru/Document/View/0001202012310079",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://base.garant.ru/11900785/f7ee959fd36b5699076b35abf4f52c5c/"
+      "https://www.caleffi.com/en-us/blog/6-hydronic-heat-sources"
     ],
     "cover_query": "industrial steam boiler pressure equipment",
     "batch": "2026-10-27",
@@ -2773,20 +2738,18 @@
   },
   {
     "slug": "posle-remonta-zamenili-elementy-kotla-kak-proverit-komplekt-aktov",
-    "title": "После ремонта заменили элементы котла: как проверить комплект актов",
+    "title": "После ремонта котла сняли усиление шва: почему ранний протокол ВИК не закрывает приёмку",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "После ремонта заменили элементы котла: как проверить комплект актов",
+    "angle": "Контроль сварного соединения котла проведён до механической обработки. Какие результаты проверить после удаления усиления шва и почему ранний протокол сохраняют.",
     "keywords": [
-      "ремонт котла документы",
-      "замена элементов котла акты",
-      "приемка ремонта котла",
-      "исполнительная документация ремонта котла"
+      "ВИК после механической обработки шва",
+      "удаление усиления шва котла",
+      "акты ремонта котла",
+      "контроль сварных соединений после обработки"
     ],
     "sources": [
-      "http://publication.pravo.gov.ru/Document/View/0001202012310079",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://base.garant.ru/11900785/f7ee959fd36b5699076b35abf4f52c5c/"
+      "https://www.consultant.ru/document/cons_doc_LAW_373204/69bdebfd397c02608ab326746fe75207a32085de/"
     ],
     "cover_query": "industrial steam boiler pressure equipment",
     "batch": "2026-10-27",
@@ -2794,20 +2757,18 @@
   },
   {
     "slug": "kotyol-dolgo-stoyal-v-rezerve-chto-proverit-pered-vozvrascheniem-v-rabotu",
-    "title": "Котёл долго стоял в резерве: что проверить перед возвращением в работу",
+    "title": "Котёл возвращают из резерва: почему внеочередное освидетельствование не обнуляет старые сроки",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Котёл долго стоял в резерве: что проверить перед возвращением в работу",
+    "angle": "Как проверить календарь освидетельствований котла после длительного простоя: основание внеочередной проверки, сохранение назначенных сроков и записи в паспорте.",
     "keywords": [
-      "котел после длительного простоя",
-      "котел в резерве запуск",
-      "ввод котла после резерва",
-      "подготовка котла после хранения"
+      "котёл после длительного простоя",
+      "внеочередное освидетельствование после резерва",
+      "срок следующего освидетельствования котла",
+      "ФНП 536 пункт 400"
     ],
     "sources": [
-      "http://publication.pravo.gov.ru/Document/View/0001202012310079",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://base.garant.ru/11900785/f7ee959fd36b5699076b35abf4f52c5c/"
+      "https://www.consultant.ru/document/cons_doc_LAW_373204/16ebd86e217fcc1854d07bf494fa2d66eb7fe62f/"
     ],
     "cover_query": "industrial steam boiler pressure equipment",
     "batch": "2026-10-27",
@@ -2815,20 +2776,19 @@
   },
   {
     "slug": "v-reestre-ukazan-drugoy-nomer-kotla-kak-podgotovit-ispravlenie",
-    "title": "В реестре указан другой номер котла: как подготовить исправление",
+    "title": "В реестре другой номер котла: как Excel мог потерять последние цифры",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "В реестре указан другой номер котла: как подготовить исправление",
+    "angle": "Длинный идентификатор внесли в Excel как число, последние цифры стали нулями. Почему текстовый формат не восстановит номер и какие источники нужны для исправления сведений.",
     "keywords": [
-      "ошибка в номере котла",
-      "номер котла не совпадает с паспортом",
-      "исправление сведений котла",
-      "заводской номер котла учет"
+      "в реестре другой номер котла",
+      "Excel 15 значащих цифр",
+      "заводской номер как текст",
+      "исправление идентификатора"
     ],
     "sources": [
-      "http://publication.pravo.gov.ru/Document/View/0001202012310079",
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://base.garant.ru/11900785/f7ee959fd36b5699076b35abf4f52c5c/"
+      "https://support.microsoft.com/en-us/excel/format-numbers-as-text",
+      "https://support.microsoft.com/en-us/excel/keeping-leading-zeros-and-large-numbers"
     ],
     "cover_query": "industrial steam boiler pressure equipment",
     "batch": "2026-10-27",
@@ -2990,19 +2950,19 @@
   },
   {
     "slug": "proekt-sklada-i-proizvodstvennogo-zdaniya-pochemu-sostav-nelzya-kopirovat",
-    "title": "Проект склада и производственного здания: почему состав нельзя копировать",
+    "title": "Склад и цех одной категории В: почему пожарную часть проекта нельзя просто скопировать",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Проект склада и производственного здания: почему состав нельзя копировать",
+    "angle": "Одинаковая категория по пожарной опасности ещё не означает одинаковое назначение. Как отличить её от класса Ф5.1/Ф5.2 при сравнении проекта склада и производства.",
     "keywords": [
-      "проект склада и производственного здания",
-      "состав проектной документации склад",
-      "проект производственного корпуса",
-      "технология здания проектирование"
+      "склад цех категория В Ф5.1 Ф5.2",
+      "категория пожарной опасности класс функциональный",
+      "проект склада производственного здания",
+      "категория помещения здания отличие"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_75048/",
-      "https://www.mos.ru/upload/documents/files/5766/2Postanovlenieot16_02_2008N87Osostaverazdelovproektnoidokymentaciiitrebovaniyahkih_Tekst.pdf"
+      "https://www.consultant.ru/document/cons_doc_LAW_78699/21fcb5ff5b429a80b88f9293abfe6b298ba05833/",
+      "https://www.consultant.ru/document/cons_doc_LAW_78699/a8c77699ce581f96b2636dee84de4e750b33ed20/"
     ],
     "cover_query": "construction engineering design plans",
     "batch": "2026-10-27",
@@ -3010,19 +2970,18 @@
   },
   {
     "slug": "rekonstruktsiya-odnogo-tseha-kak-opredelit-granitsy-proektnoy-dokumentatsii",
-    "title": "Реконструкция одного цеха: как определить границы проектной документации",
+    "title": "Реконструкция одного цеха: можно ли закончить проект по антисейсмическому шву",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Реконструкция одного цеха: как определить границы проектной документации",
+    "angle": "Разрыв надземных конструкций не подтверждает разделение фундаментов. Как установить границы анализа при реконструкции одного отсека существующего здания.",
     "keywords": [
-      "границы проекта реконструкции цеха",
-      "проектная документация реконструкция производства",
-      "общие сети цеха",
-      "исходные данные реконструкции"
+      "реконструкция одного цеха",
+      "антисейсмический шов фундамент",
+      "границы проектирования реконструкции",
+      "общий фундамент отсеков"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_75048/",
-      "https://www.mos.ru/upload/documents/files/5766/2Postanovlenieot16_02_2008N87Osostaverazdelovproektnoidokymentaciiitrebovaniyahkih_Tekst.pdf"
+      "https://mchs.gov.ru/uploads/document/2025-04-18/8a229c7bdce508c1bf811d92c825348a.pdf"
     ],
     "cover_query": "construction engineering design plans",
     "batch": "2026-10-27",
@@ -3144,20 +3103,19 @@
   },
   {
     "slug": "podezd-k-skladu-prohodit-cherez-chu-uyu-zemlyu-chto-proverit-do-proekta",
-    "title": "Подъезд к складу проходит через чужую землю: что проверить до проекта",
+    "title": "Подъезд к складу по частной дороге: почему собственник не определяет режим проезда",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Подъезд к складу проходит через чужую землю: что проверить до проекта",
+    "angle": "Чужая собственность не означает автоматически закрытую дорогу. Как разделить принадлежность дороги, общее пользование и новый подъезд к складу.",
     "keywords": [
-      "подъезд к складу чужой участок",
-      "проезд через чужую землю склад",
-      "доступ к земельному участку строительство",
-      "грузовой подъезд проект"
+      "подъезд к складу чужая земля",
+      "частная дорога общего пользования",
+      "режим проезда частная дорога",
+      "проект подъезда к складу"
     ],
     "sources": [
-      "https://www.consultant.ru/law/hotdocs/94872.html",
-      "https://base.garant.ru/414570340/",
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/"
+      "https://www.consultant.ru/document/cons_doc_LAW_72386/80895977dd531939f3c1d5b4e9f3abc41f78dd99/",
+      "https://sudact.ru/law/federalnyi-zakon-ot-08112007-n-257-fz-ob/glava-1/statia-3/"
     ],
     "cover_query": "urban construction development aerial",
     "batch": "2026-10-27",
@@ -3184,20 +3142,19 @@
   },
   {
     "slug": "novuyu-redaktsiyu-sp-vklyuchili-v-dogovor-kak-proverit-primenimost",
-    "title": "Новую редакцию СП включили в договор: как проверить применимость",
+    "title": "Заказчик включил новый СП в договор: когда проектировщик должен предупредить о последствиях",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Новую редакцию СП включили в договор: как проверить применимость",
+    "angle": "Подпись заказчика под требованием не освобождает подрядчика от реакции на обнаруженные неблагоприятные последствия. Что проверить по статье 716 ГК РФ.",
     "keywords": [
-      "новая редакция СП договор",
-      "применимость СП к проекту",
-      "изменение свода правил проектирование",
-      "СП 42.13330.2026 договор"
+      "новый СП в договоре проектирования",
+      "указание заказчика проектировщику",
+      "статья 716 ГК РФ проектирование",
+      "предупреждение заказчика подрядчиком"
     ],
     "sources": [
-      "https://www.consultant.ru/law/hotdocs/94872.html",
-      "https://base.garant.ru/414570340/",
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/"
+      "https://www.consultant.ru/document/cons_doc_LAW_9027/0a0cc8dfd273d410f517bdd9e782b401d8b1db57/",
+      "https://www.consultant.ru/document/cons_doc_LAW_9027/416441e14a600610e2ba0765f72cb72c290cdc3c/"
     ],
     "cover_query": "urban construction development aerial",
     "batch": "2026-10-27",
@@ -3224,20 +3181,19 @@
   },
   {
     "slug": "parkovku-urezali-radi-ploschadi-zdaniya-kak-proverit-raschyoty-genplana",
-    "title": "Парковку урезали ради площади здания: как проверить расчёты генплана",
+    "title": "Парковку сократили ради здания: как не посчитать места для инвалидов дважды",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Парковку урезали ради площади здания: как проверить расчёты генплана",
+    "angle": "При сокращении парковки общего пользования проверьте вложенные группы мест по СП59: специализированные входят в выделяемое число, но имеют собственные требования.",
     "keywords": [
-      "расчет парковки генплан",
-      "уменьшили парковку проект",
-      "стоянки работников посетителей",
-      "проверка транспортной схемы участка"
+      "расчёт парковки места для инвалидов",
+      "специализированные машино-места СП59",
+      "сокращение парковки генплан",
+      "двойной подсчёт парковочных мест"
     ],
     "sources": [
-      "https://www.consultant.ru/law/hotdocs/94872.html",
-      "https://base.garant.ru/414570340/",
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/"
+      "https://internet-law.ru/documents/prod/klassifikaciya/0/sp_59.html",
+      "https://protect.gost.ru/sp/details/9a314146-2e12-458d-a3dc-914eaa364d51"
     ],
     "cover_query": "urban construction development aerial",
     "batch": "2026-10-27",
@@ -3264,20 +3220,18 @@
   },
   {
     "slug": "proekt-okn-nachat-do-reformy-kakie-daty-i-resheniya-sobrat",
-    "title": "Проект ОКН начат до реформы: какие даты и решения собрать",
+    "title": "Проект памятника начат до реформы: отменятся ли старые сроки охранного обязательства",
     "direction": "Объекты культурного наследия",
     "kind": "guide",
-    "angle": "Проект ОКН начат до реформы: какие даты и решения собрать",
+    "angle": "Статья 3 закона №180-ФЗ сохраняет прежние виды и сроки работ до установления новых заданием. Что сопоставить при переходе проекта ОКН на порядок 2027 года.",
     "keywords": [
-      "проект ОКН переходный период 2027",
-      "180-ФЗ проект сохранения",
-      "проект памятника до реформы",
-      "документы ОКН изменение законодательства"
+      "проект ОКН начат до реформы",
+      "180-ФЗ статья 3",
+      "охранное обязательство сроки 2027",
+      "новое задание сохранение памятника"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_536491/",
-      "https://www.consultant.ru/document/cons_doc_LAW_37318/",
-      "https://publication.pravo.gov.ru/document/0001202606100012"
+      "https://www.consultant.ru/document/cons_doc_LAW_536491/30b3f8c55f65557c253227a65b908cc075ce114a/"
     ],
     "cover_query": "historic building restoration scaffolding",
     "batch": "2026-10-27",
@@ -3304,19 +3258,18 @@
   },
   {
     "slug": "podryadchik-obeschaet-raboty-bez-soglasovaniya-kakie-osnovaniya-zaprosit",
-    "title": "Подрядчик обещает работы без согласования: какие основания запросить",
+    "title": "Подрядчик обещает очистить памятник без согласований: что абразив снимает вместе с грязью",
     "direction": "Объекты культурного наследия",
     "kind": "guide",
-    "angle": "Подрядчик обещает работы без согласования: какие основания запросить",
+    "angle": "Абразивная очистка исторического кирпича может удалить сам материал, а не только загрязнение. Какие основания запросить у подрядчика до обработки фасада памятника.",
     "keywords": [
-      "работы ОКН без согласования",
-      "подрядчик ремонт памятника документы",
-      "разрешения работы культурное наследие",
-      "проверка подрядчика ОКН"
+      "подрядчик работы без согласования ОКН",
+      "абразивная очистка кирпича",
+      "пескоструй памятника",
+      "сохранение исторической поверхности"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_37318/",
-      "https://www.consultant.ru/document/cons_doc_LAW_536491/"
+      "https://www.nps.gov/orgs/1739/upload/preservation-brief-06-abrasive-cleaning.pdf"
     ],
     "cover_query": "historic building restoration scaffolding",
     "batch": "2026-10-27",
@@ -3381,20 +3334,19 @@
   },
   {
     "slug": "svarochnyy-dogovor-perehodit-na-2027-god-kakie-dokumenty-sverit-zaranee",
-    "title": "Сварочный договор переходит на 2027 год: какие документы сверить заранее",
+    "title": "Сварочный договор заканчивается 31 декабря: что остаётся по незавершённым работам в 2027 году",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Сварочный договор переходит на 2027 год: какие документы сверить заранее",
+    "angle": "В договоре закончился календарный срок действия, но сварочные работы не завершены. Почему нужно отдельно проверить прекращение обязательств, срок выполнения работ и ответственность, прежде чем оформлять продолжение.",
     "keywords": [
-      "сварочный договор 2027",
-      "94-ФЗ сварочные работы переход",
-      "документы сварки до марта 2027",
-      "проверка готовности сварочного производства"
+      "сварочный договор переходит на 2027 год",
+      "срок действия договора и срок работ",
+      "незавершенные сварочные работы договор",
+      "статья 425 окончание договора подряд"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://www.consultant.ru/document/cons_doc_LAW_531296/",
-      "https://publication.pravo.gov.ru/document/0001202604090035"
+      "https://www.consultant.ru/document/cons_doc_LAW_5142/37fc094a92a4dfb5449055dff0815a76ecad5de3/",
+      "https://www.consultant.ru/document/cons_doc_LAW_9027/94492e64fdea026f033e334a2f18b7f1de1f04a0/"
     ],
     "cover_query": "industrial welding steel pipeline worker",
     "batch": "2026-10-27",
@@ -3421,20 +3373,19 @@
   },
   {
     "slug": "podryadchika-menyayut-pered-remontom-opo-chto-proverit-do-dopuska",
-    "title": "Подрядчика меняют перед ремонтом ОПО: что проверить до допуска",
+    "title": "Подрядчик на ремонте ОПО сменился: почему протокол квалификации сварки ещё не рабочая инструкция",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Подрядчика меняют перед ремонтом ОПО: что проверить до допуска",
+    "angle": "В переданном сварочном комплекте остались протоколы испытаний, но отсутствует относящаяся рабочая инструкция. Чем отличается подтверждение технологии от задания сварщику.",
     "keywords": [
-      "смена сварочного подрядчика",
-      "ремонт ОПО новый подрядчик",
-      "передача сварочных работ",
-      "проверка подрядчика перед допуском"
+      "смена сварочного подрядчика ОПО",
+      "WPS PQR различие",
+      "WPQR рабочая инструкция",
+      "передача технологической документации сварки"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_15234/",
-      "https://www.consultant.ru/document/cons_doc_LAW_531296/",
-      "https://publication.pravo.gov.ru/document/0001202604090035"
+      "https://www.twi-global.com/technical-knowledge/job-knowledge/welding-procedure-039",
+      "https://www.twi-global.com/technical-knowledge/faqs/faq-can-one-company-use-welding-procedures-qualified-by-another-company"
     ],
     "cover_query": "industrial welding steel pipeline worker",
     "batch": "2026-10-27",
@@ -3603,19 +3554,19 @@
   },
   {
     "slug": "obekt-tek-prodan-kakie-dokumenty-peredat-novomu-sobstvenniku",
-    "title": "Объект ТЭК продан: какие документы передать новому собственнику",
+    "title": "Объект ТЭК продан: почему переданный DWG меняет размеры у нового собственника",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Объект ТЭК продан: какие документы передать новому собственнику",
+    "angle": "Одинаковый DWG вставляется с разным масштабом на двух рабочих местах. Что передать покупателю вместе с архивом и почему «без единиц» не гарантирует одинаковую геометрию.",
     "keywords": [
-      "продажа объекта ТЭК документы",
-      "новый собственник объекта ТЭК",
-      "передача документов безопасности ТЭК",
-      "технический архив энергообъекта"
+      "передача документов объекта ТЭК",
+      "масштаб DWG при вставке",
+      "единицы архивного чертежа",
+      "документы новому собственнику"
     ],
     "sources": [
-      "https://rosguard.gov.ru/document/article/federalnyj-zakon-ot-21-iyulya-2011-g--256fz",
-      "https://base.garant.ru/12188188/"
+      "https://help.autodesk.com/cloudhelp/2025/ENU/AutoCAD-Core/files/GUID-A58A87BB-482B-4042-A00A-EEF55A2B4FD8.htm",
+      "https://help.autodesk.com/cloudhelp/2025/ENU/AutoCAD-Core/files/GUID-6C46049D-8636-442D-8BAC-CF4FD515FDC0.htm"
     ],
     "cover_query": "energy facility security industrial fence",
     "batch": "2026-10-27",
@@ -3713,19 +3664,19 @@
   },
   {
     "slug": "rabochie-cherte-i-vypuskayut-posle-zakupki-kak-snizit-risk-peredelok",
-    "title": "Рабочие чертежи выпускают после закупки: как снизить риск переделок",
+    "title": "Привод закупили до рабочих чертежей: что меняет удлинение кабеля до двигателя",
     "direction": "Проектирование и инженерные изыскания",
     "kind": "guide",
-    "angle": "Рабочие чертежи выпускают после закупки: как снизить риск переделок",
+    "angle": "При выпуске рабочих чертежей шкаф частотного привода перенесли дальше от двигателя. Почему совпавших мощности и номинального напряжения недостаточно для прежнего подтверждения комплекта.",
     "keywords": [
-      "закупка до рабочей документации",
-      "оборудование заказано чертежей нет",
-      "риск переделки стадии Р",
-      "исходные данные от поставщика"
+      "закупка привода до рабочих чертежей",
+      "длинный кабель частотный преобразователь двигатель",
+      "отражённая волна перенапряжение",
+      "изоляция двигателя частотный привод"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_51040/b884020ea7453099ba8bc9ca021b84982cadea7d/",
-      "https://www.consultant.ru/document/cons_doc_LAW_75048/"
+      "https://www.se.com/us/en/faqs/FAQ000134179/",
+      "https://www.fluke.com/en-ca/learn/blog/power-quality/cable-length-vfd-motors"
     ],
     "cover_query": "construction site engineering blueprints",
     "batch": "2026-10-27",
@@ -3847,20 +3798,18 @@
   },
   {
     "slug": "direktor-poluchil-materialy-proverki-kak-vosstanovit-hronologiyu-deystviy",
-    "title": "Директор получил материалы проверки: как восстановить хронологию действий",
+    "title": "Директор получил материалы проверки: что на самом деле подтверждает уведомление о прочтении",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Директор получил материалы проверки: как восстановить хронологию действий",
+    "angle": "Как восстановить хронологию электронных сообщений без подмены: displayed, processed, пересылка, ознакомление руководителя и доступ к приложениям.",
     "keywords": [
       "директор получил материалы проверки",
-      "проверка теплоснабжения документы",
-      "хронология нарушения теплоснабжения",
-      "объяснения директора КоАП"
+      "уведомление о прочтении письма",
+      "хронология действий руководителя",
+      "электронное письмо материалы проверки"
     ],
     "sources": [
-      "https://www.consultant.ru/document/cons_doc_LAW_34661/0147088a5497571bd1de83d7a7f6ce9ea7504a22/",
-      "https://www.consultant.ru/document/cons_doc_LAW_34661/747b7ded7acccf4fbd94a98fe212713ae1845601/",
-      "https://publication.pravo.gov.ru/document/0001202411300002"
+      "https://www.rfc-editor.org/rfc/rfc8098.html"
     ],
     "cover_query": "heating plant maintenance winter",
     "batch": "2026-10-27",
@@ -3887,19 +3836,19 @@
   },
   {
     "slug": "povtornye-zamechaniya-komissii-kak-dokazat-vypolnennye-meropriyatiya",
-    "title": "Повторные замечания комиссии: как доказать выполненные мероприятия",
+    "title": "Комиссия снова замечает слабую аспирацию: почему замер с чистым фильтром не закрыл причину",
     "direction": "Промышленная безопасность",
     "kind": "guide",
-    "angle": "Повторные замечания комиссии: как доказать выполненные мероприятия",
+    "angle": "После замены фильтров аспирация прошла проверку, но замечание вернулось. Как связать расход, загрязнение фильтра и положение регулирования без бессмысленной повторной чистки.",
     "keywords": [
-      "повторные замечания комиссии отопительный период",
-      "подтвердить устранение замечаний готовность",
-      "документы выполнения мероприятий отопление",
-      "комиссия не приняла устранение замечания"
+      "повторные замечания комиссии аспирация",
+      "фильтр расход воздуха",
+      "перепад давления пылеуловитель",
+      "устранение замечаний вентиляция"
     ],
     "sources": [
-      "https://minjust.consultant.ru/special/documents/document/53790",
-      "https://base.garant.ru/411024354/"
+      "https://www.donaldson.com/en/resources/technical-articles/the-importance-of-adjusting-dust-collector-fan-dampers/",
+      "https://www.donaldson.com/en/resources/technical-articles/what-is-differential-pressure/"
     ],
     "cover_query": "heating plant maintenance winter",
     "batch": "2026-10-27",

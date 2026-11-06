@@ -6,7 +6,10 @@ from src.articles.exceptions import ArticleNotFoundError
 from src.articles.models.article_reaction import ArticleReaction
 from src.articles.repositories.article_interactions import ArticleInteractionRepository
 from src.articles.repositories.articles import ArticleRepository
-from src.articles.site.schemas.reaction import ArticleCountersResponse, SetReactionRequest
+from src.articles.site.schemas.reaction import (
+    ArticleCountersResponse,
+    SetReactionRequest,
+)
 
 
 class SetArticleReactionUseCase:

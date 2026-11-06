@@ -12,7 +12,9 @@ from src.core.error_handlers import register_core_error_handlers
 from src.expertise.site.error_handlers import register_expertise_error_handlers
 from src.notifications.site.error_handlers import register_notification_error_handlers
 from src.payments.site.error_handlers import register_payment_error_handlers
-from src.requests.admin.error_handlers import register_admin_contact_request_error_handlers
+from src.requests.admin.error_handlers import (
+    register_admin_contact_request_error_handlers,
+)
 from src.requests.site.error_handlers import register_contact_request_error_handlers
 from src.tariffs.admin.error_handlers import register_admin_tariff_error_handlers
 from src.users.admin.error_handlers import register_admin_user_error_handlers

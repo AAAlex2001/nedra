@@ -8,7 +8,9 @@ from src.audit.audit_letters import AuditLetters
 from src.audit.enums import AuditStatus
 from src.audit.exceptions import AuditNotFoundError, AuditStateError
 from src.audit.repositories.audits import AuditRepository
-from src.audit.schemas.audit import AuditResponse
+from src.audit.site.schemas.answer_audit_counter_offer import (
+    AnswerAuditCounterOfferResponse,
+)
 from src.notifications.models.notification import Notification
 from src.notifications.repositories.notifications import NotificationRepository
 from src.users.enums import UserRole
@@ -43,7 +45,7 @@ class AnswerAuditCounterOfferUseCase:
         user: User,
         audit_id: int,
         accept: bool,
-    ) -> AuditResponse:
+    ) -> AnswerAuditCounterOfferResponse:
         """Ответить на встречную стоимость."""
 
         audit = await self.audits.get_for_update(audit_id=audit_id)
@@ -83,7 +85,7 @@ class AnswerAuditCounterOfferUseCase:
                 text=notification_text,
             )
         )
-        response = AuditResponse.from_model(audit=audit)
+        response = AnswerAuditCounterOfferResponse.from_model(audit=audit)
         await self.session.commit()
         await self.letters.send_price_update(
             audit_id=audit_id,

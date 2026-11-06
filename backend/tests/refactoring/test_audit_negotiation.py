@@ -11,15 +11,21 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from src.audit.enums import AuditOfferAnswer, AuditStatus
-from src.audit.exceptions import AuditNotFoundError, AuditStateError, InvalidAuditPriceError
+from src.audit.exceptions import (
+    AuditNotFoundError,
+    AuditStateError,
+    InvalidAuditPriceError,
+)
 from src.audit.models.audit import Audit
-from src.audit.schemas.audit import AuditResponse
-from src.audit.site.price_dependencies import (
+from src.audit.site.dependencies.price import (
     get_answer_audit_counter_offer_usecase,
     get_answer_audit_offer_usecase,
     get_propose_audit_price_usecase,
 )
-from src.audit.site.schemas.answer_audit_offer import AnswerAuditOfferRequest
+from src.audit.site.schemas.answer_audit_offer import (
+    AnswerAuditOfferRequest,
+    AnswerAuditOfferResponse,
+)
 from src.core.settings import Settings
 from src.notifications.models.notification import Notification
 from src.users.models.user import User
@@ -224,7 +230,7 @@ async def test_conflicting_answers_are_serialized(
 
     audit_id, customer_id, _ = offered_audit
 
-    async def answer_offer(*, answer: AuditOfferAnswer) -> AuditResponse:
+    async def answer_offer(*, answer: AuditOfferAnswer) -> AnswerAuditOfferResponse:
         """Ответить в отдельной транзакции."""
 
         async with session_factory() as session:
@@ -239,7 +245,7 @@ async def test_conflicting_answers_are_serialized(
         return_exceptions=True,
     )
 
-    assert sum(isinstance(result, AuditResponse) for result in results) == 1
+    assert sum(isinstance(result, AnswerAuditOfferResponse) for result in results) == 1
     assert sum(isinstance(result, AuditStateError) for result in results) == 1
 
     async with session_factory() as session:

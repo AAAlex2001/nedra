@@ -6,6 +6,7 @@ import Link from "next/link";
 import { SECTION_TITLE, articlePath, type ArticleAdminList } from "@/entities/article";
 import { formatDate, isFutureDate } from "@/shared/lib/date";
 import Button from "@/shared/ui/button";
+import DeleteButton from "@/shared/ui/delete-button";
 import { EyeIcon, ThumbDownIcon, ThumbUpIcon } from "@/shared/ui/icons";
 import Spinner from "@/shared/ui/spinner";
 import type { AdminListFilters } from "../../lib/list-href";
@@ -109,18 +110,15 @@ const ArticlesTable = ({ basePath, initialList, filters }: ArticlesTableProps) =
                     Перейти
                   </Link>
                 )}
-                <button
-                  type="button"
+                <DeleteButton
                   className={styles.delete}
                   disabled={pending}
-                  onClick={() => {
-                    if (window.confirm(`Удалить статью «${article.title}»?`)) {
-                      void remove(article.id);
-                    }
-                  }}
+                  title="Удалить публикацию?"
+                  description={`Публикация «${article.title}» будет удалена без возможности восстановления.`}
+                  onConfirm={() => remove(article.id)}
                 >
                   {pending ? <Spinner size={14} /> : "Удалить"}
-                </button>
+                </DeleteButton>
               </div>
             </li>
           );

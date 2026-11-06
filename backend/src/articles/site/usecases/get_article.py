@@ -38,7 +38,7 @@ class GetArticleUseCase:
 
         tags_by_article = await self.tags.list_for_articles(article_ids={article.id})
 
-        return GetArticleResponse.from_article(
+        return GetArticleResponse.from_model(
             article=article,
             content=content,
             tags=tags_by_article.get(article.id, []),

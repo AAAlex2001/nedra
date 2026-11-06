@@ -1,12 +1,16 @@
-"""План проведения аудита."""
+"""Сохранённый план аудита."""
 
 from datetime import date, datetime
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, Field, model_validator
+
+from src.audit.site.schemas.submit_audit_plan import (
+    SubmitAuditPlanRequest,
+)
 
 
-class SubmitAuditPlanRequest(BaseModel):
-    """Сроки проверки и совещания."""
+class AuditPlanResponse(BaseModel):
+    """Сохранённая версия плана."""
 
     documents_start: date
     documents_end: date
@@ -27,9 +31,10 @@ class SubmitAuditPlanRequest(BaseModel):
         min_length=2,
         max_length=2000,
     )
+    version: int = 1
 
     @model_validator(mode="after")
-    def validate_schedule(self) -> "SubmitAuditPlanRequest":
+    def validate_schedule(self) -> "AuditPlanResponse":
         """Проверить даты проверки и совещаний."""
 
         if self.documents_start > self.documents_end:
@@ -49,12 +54,6 @@ class SubmitAuditPlanRequest(BaseModel):
             raise ValueError("Укажите время вступительного и заключительного совещаний")
 
         return self
-
-
-class AuditPlanResponse(SubmitAuditPlanRequest):
-    """Сохранённая версия плана."""
-
-    version: int = 1
 
     @classmethod
     def from_request(
@@ -78,26 +77,6 @@ class AuditPlanResponse(SubmitAuditPlanRequest):
             interviewees=payload.interviewees,
             version=version,
         )
-
-
-class RequestAuditPlanChangesRequest(BaseModel):
-    """Замечания заказчика к плану."""
-
-    model_config = ConfigDict(str_strip_whitespace=True)
-
-    comment: str = Field(
-        min_length=3,
-        max_length=4000,
-    )
-
-
-class AuditTeamMemberResponse(BaseModel):
-    """Участник аудиторской группы."""
-
-    user_id: int
-    full_name: str
-    areas: list[str]
-    lead: bool
 
 
 class AuditPlanReviewResponse(BaseModel):

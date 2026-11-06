@@ -35,7 +35,7 @@ const RequestsList = ({ initialItems, basePath }: RequestsListProps) => {
               <RequestCard
                 request={item}
                 pending={state.pendingId === item.request_id}
-                onDelete={(id) => void remove(id)}
+                onDelete={remove}
               />
             </li>
           ))}

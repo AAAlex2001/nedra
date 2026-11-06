@@ -4,6 +4,7 @@ from datetime import UTC, datetime
 from typing import Literal
 
 from fastapi import UploadFile
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.billing.exceptions import InvoiceAlreadyPaidError, InvoiceNotFoundError
@@ -90,7 +91,16 @@ class ReportInvoicePaymentUseCase:
                     await self.attachments.remove(file=saved_file)
             raise
 
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except IntegrityError:
+            try:
+                await self.session.rollback()
+            finally:
+                if saved_file is not None:
+                    await self.attachments.remove(file=saved_file)
+            raise
+
         if first_report:
             await self.letters.send_payment_report(invoice=invoice)
         return response

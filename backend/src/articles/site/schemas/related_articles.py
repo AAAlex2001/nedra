@@ -3,6 +3,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel, Field
+
 from src.articles.enums import ArticleSection
 from src.articles.models.article import Article
 from src.articles.models.tag import Tag

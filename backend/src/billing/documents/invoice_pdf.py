@@ -12,7 +12,12 @@ from src.documents.company_requisites import CompanyRequisites
 from src.documents.money_formatting import amount_in_words, vat_text
 from src.documents.pdf.fonts import register_fonts
 from src.documents.pdf.options import BODY, SMALL, TITLE
-from src.documents.pdf.tables import items_table, requisites_table, signature_line, totals
+from src.documents.pdf.tables import (
+    items_table,
+    requisites_table,
+    signature_line,
+    totals,
+)
 
 
 def invoice_number(invoice: Invoice) -> str:

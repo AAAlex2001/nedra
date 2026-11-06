@@ -3,6 +3,7 @@
 from datetime import UTC, datetime
 
 from fastapi import UploadFile
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.expertise.enums import ExpertiseResult, ExpertiseStatus
@@ -11,11 +12,13 @@ from src.expertise.exceptions import (
     ExpertiseStateError,
     InvalidExpertiseError,
 )
-from src.expertise.models.expertise_document import ExpertiseDocument
 from src.expertise.repositories.expertise_documents import ExpertiseDocumentRepository
 from src.expertise.repositories.expertises import ExpertiseRepository
 from src.expertise.schemas.expertise import ExpertiseResponse
-from src.expertise.site.expertise_file_storage import ExpertiseAttachment, ExpertiseFileStorage
+from src.expertise.site.expertise_file_storage import (
+    ExpertiseAttachment,
+    ExpertiseFileStorage,
+)
 from src.notifications.email_delivery import NotificationEmailDelivery
 from src.notifications.models.notification import Notification
 from src.notifications.repositories.notifications import NotificationRepository
@@ -86,16 +89,7 @@ class SendExpertiseConclusionUseCase:
 
         try:
             documents = [
-                ExpertiseDocument(
-                    expertise_id=expertise_id,
-                    remark_id=None,
-                    uploaded_by=user.id,
-                    kind=document.kind,
-                    file_path=document.file.path,
-                    original_name=document.file.original_name,
-                    size=document.file.size,
-                    content_type=document.file.content_type,
-                )
+                document.to_model(expertise_id=expertise_id, uploaded_by=user.id, remark_id=None)
                 for document in saved_documents
             ]
             await self.documents.add_many(documents=documents)
@@ -114,7 +108,16 @@ class SendExpertiseConclusionUseCase:
 
             raise
 
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except IntegrityError:
+            try:
+                await self.session.rollback()
+            finally:
+                await self.file_storage.remove_all(documents=saved_documents)
+
+            raise
+
         await self.email_delivery.send(notification=notification)
 
         return response

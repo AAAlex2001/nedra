@@ -3,7 +3,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.commission.admin.exceptions import CommissionApplicationNotFoundError
-from src.commission.repositories.commission_applications import CommissionApplicationRepository
+from src.commission.repositories.commission_applications import (
+    CommissionApplicationRepository,
+)
 
 
 class DeleteCommissionApplicationUseCase:

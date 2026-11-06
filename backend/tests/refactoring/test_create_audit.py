@@ -6,6 +6,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from starlette.datastructures import Headers, UploadFile
 
@@ -16,7 +17,7 @@ from src.audit.models.audit_application import AuditApplication
 from src.audit.models.audit_company import AuditCompany
 from src.audit.models.audit_document import AuditDocument
 from src.audit.site.audit_upload_files import AuditUploadFiles
-from src.audit.site.request_dependencies import get_create_audit_usecase
+from src.audit.site.dependencies.audits import get_create_audit_usecase
 from src.audit.site.schemas.create_audit import CreateAuditRequest
 from src.contracts.models.contract import Contract
 from src.core.file_exceptions import InvalidUploadError
@@ -107,15 +108,17 @@ async def test_bad_second_file_rolls_back_request_and_removes_first_file(
         assert await session.scalar(select(func.count()).select_from(Audit)) == 1
 
 
-async def test_notification_failure_removes_files_and_request(
+@pytest.mark.parametrize("failure_stage", ["notification", "commit"])
+async def test_failed_transaction_removes_files_and_request(
     *,
     session_factory: async_sessionmaker,
     settings: Settings,
     audit_ids: tuple[int, int, int],
     audit_payload: CreateAuditRequest,
     tmp_path: Path,
+    failure_stage: str,
 ) -> None:
-    """Откатить заявку и файлы при ошибке уведомления."""
+    """Откатить заявку и файлы при отказе сохранения."""
 
     _, customer_id, _ = audit_ids
     settings.private_dir = tmp_path
@@ -128,10 +131,15 @@ async def test_notification_failure_removes_files_and_request(
     async with session_factory() as session:
         customer = await session.get(User, customer_id)
         usecase = get_create_audit_usecase(session=session, settings=settings)
-        usecase.notifications.add_many = AsyncMock(side_effect=RuntimeError("Ошибка уведомления"))
+        if failure_stage == "notification":
+            failure = RuntimeError("Ошибка уведомления")
+            usecase.notifications.add_many = AsyncMock(side_effect=failure)
+        else:
+            failure = IntegrityError("COMMIT", None, RuntimeError("Ошибка ограничения базы"))
+            session.commit = AsyncMock(side_effect=failure)
         usecase.letters.sender.send = AsyncMock()
 
-        with pytest.raises(RuntimeError, match="Ошибка уведомления"):
+        with pytest.raises(type(failure)):
             await usecase.execute(
                 user=customer,
                 payload=audit_payload,

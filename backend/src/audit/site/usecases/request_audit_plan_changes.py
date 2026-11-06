@@ -7,7 +7,9 @@ from src.audit.enums import AuditStatus
 from src.audit.exceptions import AuditNotFoundError, AuditStateError
 from src.audit.repositories.audit_plans import AuditPlanRepository
 from src.audit.repositories.audits import AuditRepository
-from src.audit.schemas.audit import AuditResponse
+from src.audit.site.schemas.request_audit_plan_changes import (
+    RequestAuditPlanChangesResponse,
+)
 from src.notifications.models.notification import Notification
 from src.notifications.repositories.notifications import NotificationRepository
 from src.users.enums import UserRole
@@ -44,7 +46,7 @@ class RequestAuditPlanChangesUseCase:
         user: User,
         audit_id: int,
         comment: str,
-    ) -> AuditResponse:
+    ) -> RequestAuditPlanChangesResponse:
         """Запросить изменения плана."""
 
         audit = await self.audits.get_for_update(audit_id=audit_id)
@@ -72,7 +74,7 @@ class RequestAuditPlanChangesUseCase:
                 text=f"Заказчик просит скорректировать план аудита по заявке №{audit_id}",
             )
         )
-        response = AuditResponse.from_model(audit=audit)
+        response = RequestAuditPlanChangesResponse.from_model(audit=audit)
         await self.session.commit()
         await self.letters.send_plan_changes(
             audit_id=audit_id,

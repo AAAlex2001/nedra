@@ -40,13 +40,13 @@ class ListRelatedArticlesUseCase:
             limit=payload.limit,
         )
         tags_by_article = await self.tags.list_for_articles(
-            article_ids={item.id for item in related},
+            article_ids={related_article.id for related_article in related},
         )
 
         return [
             RelatedArticleResponse.from_model(
-                article=item,
-                tags=tags_by_article.get(item.id, []),
+                article=related_article,
+                tags=tags_by_article.get(related_article.id, []),
             )
-            for item in related
+            for related_article in related
         ]

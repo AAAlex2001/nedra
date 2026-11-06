@@ -3,10 +3,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.audit.enums import AuditStatus
-from src.audit.exceptions import AuditNotFoundError, AuditStateError, InvalidAuditApplicationError
+from src.audit.exceptions import (
+    AuditNotFoundError,
+    AuditStateError,
+    InvalidAuditApplicationError,
+)
 from src.audit.repositories.audit_teams import AuditTeamRepository
 from src.audit.repositories.audits import AuditRepository
-from src.audit.schemas.audit import AuditResponse
+from src.audit.site.schemas.set_audit_team import SetAuditTeamResponse
 from src.notifications.models.notification import Notification
 from src.notifications.repositories.notifications import NotificationRepository
 from src.users.enums import UserRole
@@ -41,7 +45,7 @@ class SetAuditTeamUseCase:
         user: User,
         audit_id: int,
         user_ids: list[int],
-    ) -> AuditResponse:
+    ) -> SetAuditTeamResponse:
         """Изменить состав группы."""
 
         audit = await self.audits.get_for_update(audit_id=audit_id)
@@ -77,7 +81,7 @@ class SetAuditTeamUseCase:
             if member_id not in previous_member_ids
         ]
         await self.notifications.add_many(notifications=notifications)
-        response = AuditResponse.from_model(audit=audit)
+        response = SetAuditTeamResponse.from_model(audit=audit)
         await self.session.commit()
 
         return response

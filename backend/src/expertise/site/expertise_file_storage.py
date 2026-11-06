@@ -7,6 +7,7 @@ from fastapi import UploadFile
 
 from src.core.file_storage import FileStorage
 from src.core.stored_file import StoredFile
+from src.expertise.models.expertise_document import ExpertiseDocument
 from src.expertise.options import (
     DOCUMENT_TYPES,
     DOCUMENT_TYPES_LABEL,
@@ -30,8 +31,28 @@ class ExpertiseAttachment:
 class SavedExpertiseDocument:
     """Сохранённое приложение к экспертизе."""
 
-    file: StoredFile  # Файл в хранилище.  # Загруженный файл.
-    kind: str  # Назначение документа.  # Назначение документа.
+    file: StoredFile  # Файл в хранилище.
+    kind: str  # Назначение документа.
+
+    def to_model(
+        self,
+        *,
+        expertise_id: int,
+        uploaded_by: int,
+        remark_id: int | None = None,
+    ) -> ExpertiseDocument:
+        """Подготовить запись сохранённого документа."""
+
+        return ExpertiseDocument(
+            expertise_id=expertise_id,
+            uploaded_by=uploaded_by,
+            remark_id=remark_id,
+            kind=self.kind,
+            file_path=self.file.path,
+            original_name=self.file.original_name,
+            size=self.file.size,
+            content_type=self.file.content_type,
+        )
 
 
 class ExpertiseFileStorage:

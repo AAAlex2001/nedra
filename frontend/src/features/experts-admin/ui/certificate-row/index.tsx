@@ -8,6 +8,7 @@ import {
   type ExpertCatalog,
 } from "@/entities/expert";
 import Button from "@/shared/ui/button";
+import DeleteButton from "@/shared/ui/delete-button";
 import OutlineButton from "@/shared/ui/outline-button";
 import SelectField from "@/shared/ui/select-field";
 import TextField from "@/shared/ui/text-field";
@@ -78,9 +79,9 @@ const CertificateRow = ({
     });
 
   const remove = () => {
-    if (!certificate || !window.confirm("Удалить это удостоверение?")) return;
+    if (!certificate) return;
 
-    void run(async () => {
+    return run(async () => {
       await deleteCertificate(basePath, userId, certificate.id);
       onUpdated();
     });
@@ -124,9 +125,15 @@ const CertificateRow = ({
 
       <div className={styles.actions}>
         {certificate ? (
-          <button type="button" className={styles.remove} disabled={pending} onClick={remove}>
+          <DeleteButton
+            className={styles.remove}
+            disabled={pending}
+            title="Удалить удостоверение?"
+            description={`Удостоверение ${certificate.number || "без номера"} по области ${certificate.area_code} будет удалено из профиля эксперта.`}
+            onConfirm={remove}
+          >
             Удалить
-          </button>
+          </DeleteButton>
         ) : (
           <OutlineButton disabled={pending} onClick={onCancel}>
             Отмена

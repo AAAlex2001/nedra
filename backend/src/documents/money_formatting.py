@@ -2,7 +2,15 @@
 
 from decimal import ROUND_HALF_UP, Decimal
 
-from src.documents.options import HUNDREDS, KOPECKS, ONES, ONES_FEMALE, TEENS, TENS, UNITS
+from src.documents.options import (
+    HUNDREDS,
+    KOPECKS,
+    ONES,
+    ONES_FEMALE,
+    TEENS,
+    TENS,
+    UNITS,
+)
 
 
 def plural(

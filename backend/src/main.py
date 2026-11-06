@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
+from src.core.schemas.health import HealthResponse
 from src.core.settings import Settings
 from src.error_handlers import register_error_handlers
 from src.router import router
@@ -38,10 +39,10 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         await engine.dispose()
 
 
-async def health() -> dict[str, str]:
+async def health() -> HealthResponse:
     """Проверить доступность API."""
 
-    return {"status": "ok"}
+    return HealthResponse()
 
 
 def create_app(*, settings: Settings | None = None) -> FastAPI:

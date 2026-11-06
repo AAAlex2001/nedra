@@ -14,6 +14,7 @@ import { useState } from "react";
 import { formatRequestDate } from "@/entities/request";
 import { formatDate } from "@/shared/lib/date";
 import Spinner from "@/shared/ui/spinner";
+import DeleteButton from "@/shared/ui/delete-button";
 import { scanUrl } from "../../api/applications";
 import ExpertEditor from "../expert-editor";
 import styles from "./style.module.scss";
@@ -25,7 +26,7 @@ type ApplicationCardProps = {
   pending: boolean;
   onApprove: (id: number) => void;
   onReject: (id: number, comment: string) => void;
-  onDeleteExpert: (application: ExpertApplicationRecord) => void;
+  onDeleteExpert: (application: ExpertApplicationRecord) => Promise<void>;
   onUpdated: () => void;
 };
 
@@ -57,16 +58,6 @@ const ApplicationCard = ({
     const comment = window.prompt("Причина отклонения. Её увидит эксперт в письме:");
     if (comment && comment.trim().length >= 3) {
       onReject(application.id, comment.trim());
-    }
-  };
-
-  const handleDeleteExpert = () => {
-    if (
-      window.confirm(
-        `Удалить аккаунт эксперта ${application.full_name}? Удостоверения и доступ в кабинет пропадут.`,
-      )
-    ) {
-      onDeleteExpert(application);
     }
   };
 
@@ -116,14 +107,15 @@ const ApplicationCard = ({
             >
               {editing ? "Скрыть правку" : "Изменить"}
             </button>
-            <button
-              type="button"
+            <DeleteButton
               className={styles.reject}
               disabled={pending}
-              onClick={handleDeleteExpert}
+              title="Удалить эксперта?"
+              description={`Аккаунт «${application.full_name}», удостоверения и доступ в кабинет будут удалены. Эксперта с заявками или платежами удалить нельзя.`}
+              onConfirm={() => onDeleteExpert(application)}
             >
               {pending ? <Spinner size={14} /> : "Удалить эксперта"}
-            </button>
+            </DeleteButton>
           </div>
         )}
       </header>

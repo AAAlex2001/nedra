@@ -64,7 +64,7 @@ const ApplicationsList = ({ initialItems, catalog, basePath }: ApplicationsListP
                 pending={state.pendingId === item.id}
                 onApprove={(id) => void approve(id)}
                 onReject={(id, comment) => void reject(id, comment)}
-                onDeleteExpert={(application) => void removeExpert(application)}
+                onDeleteExpert={removeExpert}
                 onUpdated={() => void refresh()}
               />
             </li>

@@ -12,26 +12,8 @@
   color: #25252b;
   font-family: "Manrope", sans-serif;
   overflow-y: auto;
-  opacity: 0;
-  transform: translateY(-24px);
-  transition:
-    opacity 0.25s ease,
-    transform 0.3s ease,
-    display 0.3s allow-discrete,
-    overlay 0.3s allow-discrete;
-  &[open] {
-    opacity: 1;
-    transform: translateY(0);
-  }
   &::backdrop {
     background: #0b0b0b80;
-  }
-}
-
-@starting-style {
-  .drawer[open] {
-    opacity: 0;
-    transform: translateY(-24px);
   }
 }
 
@@ -146,8 +128,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .drawer {
-    transition: none;
-  }
-}

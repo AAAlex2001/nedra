@@ -3,7 +3,7 @@
 from src.audit.repositories.audit_plans import AuditPlanRepository
 from src.audit.site.audit_access import AuditAccess
 from src.audit.site.audit_team_members import AuditTeamMembers
-from src.audit.site.schemas.audit_plan import AuditTeamMemberResponse
+from src.audit.site.schemas.audit_team import AuditTeamMemberResponse
 from src.users.enums import UserRole
 from src.users.models.user import User
 

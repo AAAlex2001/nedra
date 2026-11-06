@@ -2,19 +2,27 @@
 
 from datetime import UTC, datetime
 
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.audit.audit_letters import AuditLetters
 from src.audit.enums import AuditStatus
-from src.audit.exceptions import AuditNotFoundError, AuditStateError, InvalidAuditApplicationError
+from src.audit.exceptions import (
+    AuditNotFoundError,
+    AuditStateError,
+    InvalidAuditApplicationError,
+)
 from src.audit.models.audit_document import AuditDocument
 from src.audit.models.audit_plan import AuditPlan
 from src.audit.repositories.audit_plans import AuditPlanRepository
 from src.audit.repositories.audits import AuditRepository
-from src.audit.schemas.audit import AuditResponse
 from src.audit.site.audit_plan_files import AuditPlanFiles
 from src.audit.site.audit_plan_preparation import AuditPlanPreparation
-from src.audit.site.schemas.audit_plan import AuditPlanResponse, SubmitAuditPlanRequest
+from src.audit.site.schemas.audit_plan import AuditPlanResponse
+from src.audit.site.schemas.submit_audit_plan import (
+    SubmitAuditPlanRequest,
+    SubmitAuditPlanResponse,
+)
 from src.notifications.models.notification import Notification
 from src.notifications.repositories.notifications import NotificationRepository
 from src.users.enums import UserRole
@@ -55,7 +63,7 @@ class SubmitAuditPlanUseCase:
         user: User,
         audit_id: int,
         payload: SubmitAuditPlanRequest,
-    ) -> AuditResponse:
+    ) -> SubmitAuditPlanResponse:
         """Отправить план на согласование."""
 
         audit = await self.audits.get_for_update(audit_id=audit_id)
@@ -77,10 +85,16 @@ class SubmitAuditPlanUseCase:
             raise UserNotFoundError()
 
         plan = await self.plans.get(audit_id=audit_id)
+
+        if plan is None:
+            plan = AuditPlan(audit_id=audit_id)
+
         version = 1
-        if plan is not None and plan.plan is not None:
+
+        if plan.plan is not None:
             previous_plan = AuditPlanResponse.model_validate(plan.plan)
             version = previous_plan.version + 1
+
         plan_data = AuditPlanResponse.from_request(
             payload=payload,
             version=version,
@@ -93,19 +107,16 @@ class SubmitAuditPlanUseCase:
         )
 
         try:
-            if plan is None:
-                plan = AuditPlan(audit_id=audit_id)
-
+            audit.status = AuditStatus.PLAN_REVIEW
             plan.plan = plan_data.model_dump(mode="json")
             plan.comment = None
             plan.sent_at = submitted_at
             plan.approved_at = None
-            audit.status = AuditStatus.PLAN_REVIEW
 
             await self.plans.save_with_document(
                 plan=plan,
                 document=AuditDocument(
-                    audit_id=audit_id,
+                    audit_id=plan.audit_id,
                     uploaded_by=user.id,
                     kind="audit_plan",
                     file_path=document.path,
@@ -121,7 +132,7 @@ class SubmitAuditPlanUseCase:
                     text=f"План аудита по заявке №{audit_id} ждёт вашего согласования",
                 )
             )
-            response = AuditResponse.from_model(audit=audit)
+            response = SubmitAuditPlanResponse.from_model(audit=audit)
         except Exception:
             try:
                 await self.session.rollback()
@@ -130,7 +141,16 @@ class SubmitAuditPlanUseCase:
 
             raise
 
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except IntegrityError:
+            try:
+                await self.session.rollback()
+            finally:
+                await self.files.remove_failed(document=document)
+
+            raise
+
         await self.letters.send_plan_submitted(
             audit_id=audit_id,
             recipient=customer.email,

@@ -3,6 +3,7 @@
 import asyncio
 from datetime import UTC, datetime
 
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.contracts.contract_documents import create_contract_document
@@ -12,11 +13,12 @@ from src.core.settings import Settings
 from src.expertise.enums import ExpertiseStatus
 from src.expertise.exceptions import ExpertiseNotFoundError, ExpertiseStateError
 from src.expertise.models.expertise_document import ExpertiseDocument
-from src.expertise.repositories.expertise_contract_details import ExpertiseContractDetailsRepository
+from src.expertise.repositories.expertise_contract_details import (
+    ExpertiseContractDetailsRepository,
+)
 from src.expertise.repositories.expertise_documents import ExpertiseDocumentRepository
 from src.expertise.repositories.expertises import ExpertiseRepository
 from src.expertise.schemas.expertise import ExpertiseResponse
-from src.expertise.site.expertise_contract import prepare_expertise_contract
 from src.notifications.models.notification import Notification
 from src.notifications.repositories.notifications import NotificationRepository
 from src.users.enums import UserRole
@@ -70,8 +72,7 @@ class ConfirmExpertiseContractUseCase:
             raise ExpertiseNotFoundError()
 
         signed_at = datetime.now(UTC)
-        terms = prepare_expertise_contract(
-            details=details,
+        terms = details.to_contract_terms(
             customer=user,
             signed_at=signed_at,
             settings=self.settings,
@@ -121,6 +122,14 @@ class ConfirmExpertiseContractUseCase:
 
             raise
 
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except IntegrityError:
+            try:
+                await self.session.rollback()
+            finally:
+                await self.files.remove_all(files=saved_files)
+
+            raise
 
         return response

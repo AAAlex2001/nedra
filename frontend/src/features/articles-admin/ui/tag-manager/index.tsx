@@ -2,6 +2,7 @@
 
 import type { TagAdmin } from "@/entities/article";
 import Button from "@/shared/ui/button";
+import DeleteButton from "@/shared/ui/delete-button";
 import { useTags } from "../../model/use-tags";
 import styles from "./style.module.scss";
 
@@ -45,19 +46,16 @@ const TagManager = ({ basePath, initialItems }: TagManagerProps) => {
           {state.items.map((tag) => (
             <li key={tag.id} className={styles.chip}>
               {tag.title}
-              <button
-                type="button"
+              <DeleteButton
                 className={styles.remove}
                 aria-label={`Удалить тег ${tag.title}`}
                 disabled={state.pending}
-                onClick={() => {
-                  if (window.confirm(`Удалить тег «${tag.title}»? Он снимется со всех статей.`)) {
-                    void remove(tag.id);
-                  }
-                }}
+                title="Удалить тег?"
+                description={`Тег «${tag.title}» будет удалён из всех публикаций.`}
+                onConfirm={() => remove(tag.id)}
               >
                 ×
-              </button>
+              </DeleteButton>
             </li>
           ))}
         </ul>

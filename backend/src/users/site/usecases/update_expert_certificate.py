@@ -2,14 +2,19 @@
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.users.attestation_validation import validate_certificate, validate_certificate_unique
+from src.users.attestation_validation import (
+    validate_certificate,
+    validate_certificate_unique,
+)
 from src.users.exceptions import CertificateNotFoundError, ExpertNotFoundError
 from src.users.models.user import User
 from src.users.repositories.expert_certificates import ExpertCertificateRepository
 from src.users.repositories.expert_profiles import ExpertProfileRepository
-from src.users.schemas.expert_certificate import ExpertCertificateRequest
 from src.users.site.expert_letters import ExpertLetters
-from src.users.site.schemas.expert_profile import ExpertProfileResponse
+from src.users.site.schemas.save_expert_certificate import (
+    SaveExpertCertificateRequest,
+    SaveExpertCertificateResponse,
+)
 
 
 class UpdateExpertCertificateUseCase:
@@ -35,8 +40,8 @@ class UpdateExpertCertificateUseCase:
         *,
         user: User,
         certificate_id: int,
-        payload: ExpertCertificateRequest,
-    ) -> ExpertProfileResponse:
+        payload: SaveExpertCertificateRequest,
+    ) -> SaveExpertCertificateResponse:
         """Изменить удостоверение эксперта."""
 
         validate_certificate(
@@ -70,7 +75,7 @@ class UpdateExpertCertificateUseCase:
         certificate.valid_until = payload.valid_until
         certificate.number = payload.number
         await self.certificates.save(certificate=certificate)
-        response = ExpertProfileResponse.from_model(
+        response = SaveExpertCertificateResponse.from_model(
             profile=profile,
             certificates=certificates,
         )

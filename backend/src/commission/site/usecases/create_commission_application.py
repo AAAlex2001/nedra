@@ -3,7 +3,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.commission.models.commission_application import CommissionApplication
-from src.commission.repositories.commission_applications import CommissionApplicationRepository
+from src.commission.repositories.commission_applications import (
+    CommissionApplicationRepository,
+)
 from src.commission.schemas.commission_application import (
     CommissionApplicationResponse,
     CreateCommissionApplicationRequest,

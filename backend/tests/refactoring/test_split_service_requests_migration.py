@@ -5,13 +5,13 @@ import os
 from pathlib import Path
 
 import pytest
+from alembic.migration import MigrationContext
+from alembic.operations import Operations
 from sqlalchemy import inspect, text
 from sqlalchemy.engine import Connection
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from alembic.migration import MigrationContext
-from alembic.operations import Operations
 from src.core.models import Base
 
 pytestmark = pytest.mark.skipif(

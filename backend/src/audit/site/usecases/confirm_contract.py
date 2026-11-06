@@ -3,6 +3,7 @@
 import asyncio
 from datetime import UTC, datetime
 
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.audit.enums import AuditStatus
@@ -12,7 +13,6 @@ from src.audit.repositories.audit_contract_details import AuditContractDetailsRe
 from src.audit.repositories.audit_documents import AuditDocumentRepository
 from src.audit.repositories.audits import AuditRepository
 from src.audit.schemas.audit import AuditResponse
-from src.audit.site.audit_contract import prepare_audit_contract
 from src.contracts.contract_documents import create_contract_document
 from src.contracts.contract_files import ContractFiles
 from src.contracts.repositories.contracts import ContractRepository
@@ -70,8 +70,7 @@ class ConfirmAuditContractUseCase:
             raise AuditNotFoundError()
 
         signed_at = datetime.now(UTC)
-        terms = prepare_audit_contract(
-            details=details,
+        terms = details.to_contract_terms(
             customer=user,
             signed_at=signed_at,
             settings=self.settings,
@@ -121,6 +120,14 @@ class ConfirmAuditContractUseCase:
 
             raise
 
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except IntegrityError:
+            try:
+                await self.session.rollback()
+            finally:
+                await self.files.remove_all(files=saved_files)
+
+            raise
 
         return response

@@ -12,6 +12,7 @@ import {
   type TagAdmin,
 } from "@/entities/article";
 import Button from "@/shared/ui/button";
+import DeleteButton from "@/shared/ui/delete-button";
 import Spinner from "@/shared/ui/spinner";
 import TextField from "@/shared/ui/text-field";
 import { useArticleEditor } from "../../model/use-article-editor";
@@ -184,13 +185,14 @@ const ArticleForm = ({ basePath, article, tags, section }: ArticleFormProps) => 
                       value={item.title}
                       onChange={(value) => editor.renameDocument(index, value)}
                     />
-                    <button
-                      type="button"
+                    <DeleteButton
                       className={styles.documentRemove}
-                      onClick={() => editor.removeDocument(index)}
+                      title="Убрать документ?"
+                      description={`Документ «${item.title}» будет убран из публикации после сохранения изменений.`}
+                      onConfirm={() => editor.removeDocument(index)}
                     >
                       Удалить
-                    </button>
+                    </DeleteButton>
                   </li>
                 ))}
               </ul>

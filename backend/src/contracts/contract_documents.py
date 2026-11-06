@@ -6,7 +6,12 @@ from typing import Literal
 from docx import Document
 
 from src.contracts.contract_terms import ContractTerms
-from src.contracts.customer_template_values import format_date, money_text, vat_clause, working_days
+from src.contracts.customer_template_values import (
+    format_date,
+    money_text,
+    vat_clause,
+    working_days,
+)
 from src.contracts.enums import ContractKind
 from src.contracts.options import (
     CONTRACT_SUBJECTS,
