@@ -10,32 +10,25 @@ type DesktopNavItem = HeaderNavItem | {
 };
 
 export const DESKTOP_NAV: DesktopNavItem[] = [
-  {
-    label: "Институт",
-    id: "institute",
-    children: [
-      { label: "О нас", href: "/#about", description: "Знакомство с НПИ «Недра»" },
-      { label: "Партнёры", href: "/#partners", description: "Компании, с которыми мы работаем" },
-    ],
-  },
+  { label: "О нас", href: "/#about" },
   { label: "Услуги", href: "/uslugi" },
-  { label: "Блиц-эксперт", href: "/blits-ekspert" },
-  { label: "Блиц-аудит", href: "/blits-audit" },
-  {
-    label: "Документы",
-    id: "documents",
-    children: [
-      { label: "Разрешительные документы", href: "/#documents", description: "Лицензии, свидетельства и сертификаты" },
-      { label: "Сведения об образовательной организации", href: "/svedeniya", description: "Официальная информация об обучении" },
-      { label: "Общественные обсуждения", href: "/obshchestvennye-obsuzhdeniya", description: "Материалы проектов и обсуждений" },
-    ],
-  },
+  { label: "Сведения об образовательной организации", href: "/svedeniya" },
+  { label: "Разрешительные документы", href: "/#documents" },
+  { label: "Общественные обсуждения", href: "/obshchestvennye-obsuzhdeniya" },
   {
     label: "Контент",
     id: "content",
     children: [
       { label: "Блог", href: "/blog", description: "Экспертные статьи и полезные материалы" },
       { label: "Новости", href: "/novosti", description: "События института и новости отрасли" },
+    ],
+  },
+  {
+    label: "Сервисы",
+    id: "blitz",
+    children: [
+      { label: "Блиц-эксперт", href: "/blits-ekspert", description: "Экспертиза промышленной безопасности онлайн" },
+      { label: "Блиц-аудит", href: "/blits-audit", description: "Аудит системы управления промышленной безопасностью" },
     ],
   },
   { label: "Контакты", href: "/#contacts" },

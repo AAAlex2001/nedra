@@ -6,6 +6,7 @@ export type ServiceCardItem = {
   image: string;
   title: string;
   description: string;
+  href?: string;
 };
 
 export const WHAT_IS_THIS_CARDS: ServiceCardItem[] = [
@@ -30,6 +31,7 @@ export const WHAT_IS_THIS_CARDS: ServiceCardItem[] = [
   {
     image: "/what_is_this/what_is_this_4.webp",
     title: "Образовательная деятельность",
+    href: "/svedeniya/osnovnye-svedeniya",
     description:
       "ООО «НПИ «Недра» ведет образовательную деятельность проектных специалистов, в части повышения квалификации. Подробная информация об образовательной деятельности компании, находится в отдельной вкладке «Сведения об образовательной организации»",
   },
