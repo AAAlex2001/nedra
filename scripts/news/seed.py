@@ -480,17 +480,85 @@ def build_schedule(count: int, start: date, per_week: int) -> list[datetime]:
     return dates
 
 
+_CREDIT_TRANSLATIONS = {
+    "Wikimedia Commons": "Викисклад",
+    "Flickr": "Фликр",
+    "Rawpixel": "Ропиксель",
+    "Openverse": "Открытая медиатека",
+    "Public domain": "Общественное достояние",
+    "CC0": "Передано в общественное достояние",
+    "CC BY-SA 4.0": "С указанием авторства — на тех же условиях 4.0",
+    "CC BY-SA 3.0": "С указанием авторства — на тех же условиях 3.0",
+    "CC BY-SA 2.5": "С указанием авторства — на тех же условиях 2.5",
+    "CC BY-SA 2.0": "С указанием авторства — на тех же условиях 2.0",
+    "CC BY 4.0": "С указанием авторства 4.0",
+    "CC BY 3.0": "С указанием авторства 3.0",
+    "CC BY 2.5": "С указанием авторства 2.5",
+    "CC BY 2.0": "С указанием авторства 2.0",
+    "Cropped and resized": "Кадрировано и уменьшено",
+    "Photographer": "Фотограф",
+    "IAEA Imagebank": "Фотобанк МАГАТЭ",
+    "Oregon Department of Transportation": "Департамент транспорта штата Орегон",
+    "ENERGY.GOV": "Министерство энергетики США",
+    "U.S. Fish and Wildlife Service Southeast Region": "Служба охраны рыбных ресурсов и дикой природы США, Юго-Восточный регион",
+    "USEPA Environmental-Protection-Agency": "Агентство по охране окружающей среды США",
+    "Department of Agronomy, Iowa State University": "Кафедра агрономии Университета штата Айова",
+    "The Official CTBTO Photostream": "Официальный фотопоток ОДВЗЯИ",
+    "USACE Europe District": "Европейский округ Инженерного корпуса армии США",
+}
+
+_LATIN_TO_CYRILLIC = str.maketrans({
+    "A": "А", "B": "Б", "C": "К", "D": "Д", "E": "Е", "F": "Ф", "G": "Г",
+    "H": "Х", "I": "И", "J": "Дж", "K": "К", "L": "Л", "M": "М", "N": "Н",
+    "O": "О", "P": "П", "Q": "К", "R": "Р", "S": "С", "T": "Т", "U": "У",
+    "V": "В", "W": "В", "X": "Кс", "Y": "Й", "Z": "З",
+    "a": "а", "b": "б", "c": "к", "d": "д", "e": "е", "f": "ф", "g": "г",
+    "h": "х", "i": "и", "j": "дж", "k": "к", "l": "л", "m": "м", "n": "н",
+    "o": "о", "p": "п", "q": "к", "r": "р", "s": "с", "t": "т", "u": "у",
+    "v": "в", "w": "в", "x": "кс", "y": "й", "z": "з",
+})
+
+
+def russian_credit_text(value: str) -> str:
+    """Перевести служебную подпись или транслитерировать имя автора."""
+
+    translated = _CREDIT_TRANSLATIONS.get(value, value)
+
+    def transliterate(match: re.Match[str]) -> str:
+        source = match.group(0)
+        result = source.lower()
+        for latin, cyrillic in (
+            ("shch", "щ"), ("sch", "щ"), ("zh", "ж"), ("kh", "х"),
+            ("ts", "ц"), ("ch", "ч"), ("sh", "ш"), ("ph", "ф"),
+            ("th", "т"), ("ya", "я"), ("yu", "ю"), ("yo", "ё"),
+            ("ye", "е"), ("ck", "к"), ("qu", "кв"), ("wh", "в"),
+        ):
+            result = result.replace(latin, cyrillic)
+        result = result.translate(_LATIN_TO_CYRILLIC)
+        if source.isupper():
+            return result.upper()
+        if source[0].isupper():
+            return result[0].upper() + result[1:]
+        return result
+
+    return re.sub(
+        r"[A-Za-z]+",
+        transliterate,
+        translated,
+    )
+
+
 def credit_paragraph(credit: dict | None) -> str:
     """HTML-подпись к обложке с автором и лицензией."""
 
     if credit is None:
         return ""
 
-    provider_names = {"flickr": "Flickr", "wikimedia": "Wikimedia Commons", "rawpixel": "Rawpixel"}
-    provider = provider_names.get(credit.get("provider", ""), "Openverse")
-    author = credit.get("author") or provider
+    provider_names = {"flickr": "Фликр", "wikimedia": "Викисклад", "rawpixel": "Ропиксель"}
+    provider = provider_names.get(credit.get("provider", ""), "Открытая медиатека")
+    author = russian_credit_text(credit.get("author") or provider)
     source = credit.get("source") or ""
-    license_name = credit.get("license") or ""
+    license_name = russian_credit_text(credit.get("license") or "")
 
     parts = [f"Фото: {escape(author)}"]
     if urlparse(source).scheme in {"http", "https"}:
@@ -502,7 +570,7 @@ def credit_paragraph(credit: dict | None) -> str:
         else:
             parts.append(escape(license_name))
     if credit.get("modifications"):
-        parts.append(escape(credit["modifications"]))
+        parts.append(escape(russian_credit_text(credit["modifications"])))
 
     return f"<p><em>{', '.join(parts)}</em></p>"
 

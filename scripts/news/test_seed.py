@@ -161,7 +161,9 @@ class CoverCreditTests(unittest.TestCase):
         ))
         self.assertIn('href="https://example.test/photo"', credit)
         self.assertIn('href="https://creativecommons.org/licenses/by/4.0/"', credit)
-        self.assertIn("Cropped and resized", credit)
+        self.assertIn("Кадрировано и уменьшено", credit)
+        self.assertIn("Фотограф", credit)
+        self.assertNotIn("Photographer", credit)
 
     def test_credit_escapes_metadata_and_rejects_non_web_urls(self):
         credit = seed.credit_paragraph(dict(
@@ -170,7 +172,7 @@ class CoverCreditTests(unittest.TestCase):
         ))
         self.assertNotIn("<script>", credit)
         self.assertNotIn("javascript:", credit)
-        self.assertIn("&lt;script&gt;", credit)
+        self.assertIn("&lt;скрипт&gt;", credit)
 
 
 if __name__ == "__main__":
