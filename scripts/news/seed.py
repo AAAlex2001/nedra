@@ -618,6 +618,28 @@ def ensure_tags(api: AdminApi, titles: set[str], dry_run: bool) -> dict[str, int
     return by_title
 
 
+def list_existing_articles(api: AdminApi) -> list[dict]:
+    """Получить все новости из постраничной админской ручки."""
+
+    limit = 100
+    offset = 0
+    articles: list[dict] = []
+
+    while True:
+        response = api.get(f"/articles?section=news&limit={limit}&offset={offset}")
+
+        # Совместимость со старой версией API, которая возвращала голый список.
+        if isinstance(response, list):
+            return response
+
+        page = response["articles"]
+        articles.extend(page)
+        offset += len(page)
+
+        if not page or offset >= response["total"]:
+            return articles
+
+
 def load_articles(plan: list[dict]) -> list[dict]:
     """Статьи из content/news/articles в порядке плана; отсутствующие пропускаются."""
 
@@ -694,7 +716,7 @@ def main() -> None:
     api = AdminApi(args.api, args.token)
     tag_ids = ensure_tags(api, {tag for article in articles for tag in article["tags"]}, args.dry_run)
 
-    existing = api.get("/articles?section=news")
+    existing = list_existing_articles(api)
     existing_by_slug = {article["slug"]: article for article in existing}
 
     new_articles = [article for article in articles if article["slug"] not in existing_by_slug]

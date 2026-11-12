@@ -98,6 +98,37 @@ class DraftImportTests(unittest.TestCase):
         self.assertEqual(notifications, [])
 
 
+class ExistingArticlesTests(unittest.TestCase):
+    def test_reads_every_page_from_paginated_admin_api(self):
+        class Api:
+            def __init__(self):
+                self.paths = []
+
+            def get(self, path):
+                self.paths.append(path)
+                offset = int(path.rsplit("offset=", 1)[1])
+                pages = {
+                    0: [{"slug": f"article-{index}"} for index in range(100)],
+                    100: [{"slug": "article-100"}],
+                }
+                return {"articles": pages[offset], "total": 101}
+
+        api = Api()
+        articles = seed.list_existing_articles(api)
+
+        self.assertEqual(len(articles), 101)
+        self.assertEqual(len(api.paths), 2)
+
+    def test_accepts_legacy_list_response(self):
+        expected = [{"slug": "legacy"}]
+
+        class Api:
+            def get(self, path):
+                return expected
+
+        self.assertEqual(seed.list_existing_articles(Api()), expected)
+
+
 class SourceLinkTests(unittest.TestCase):
     def test_verified_technical_sources_survive_import(self):
         sources = [
